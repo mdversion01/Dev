@@ -1,0 +1,200 @@
+.tag-component-wrapper {
+    background-color: #3e3e3e;
+    border: 1px solid #dee2e6;
+    margin: 1rem;
+    padding: 1rem;
+    position: relative;
+  }
+
+.input-container {
+    display: flex;
+    flex: 1 1 auto;
+    padding-right: 0.5rem;
+  }
+
+  .input-container:focus-within {
+    background-color: #2c2c2c;
+    outline: none;
+  }
+
+  .input-container .input[type="text"] {
+    font: inherit;
+    background: rgba(0, 0, 0, 0);
+    color: #fff;
+    border: none;
+    outline: none;
+    padding: 0.5rem;
+    margin: 0;
+    width: 150px;
+    flex: 1 1 150px;
+    vertical-align: bottom;
+    text-align: inherit;
+    box-sizing: content-box;
+  }
+
+  .input-container .input-group {
+    align-items: center;
+  }
+
+  .input-container .input-group-prepend {
+    margin-right: 0 !important;
+  }
+
+  .input-container .input-group-prepend .add-btn {
+    align-items: center;
+    border-radius: 50% !important;
+    cursor: pointer;
+    display: flex;
+    height: 24px;
+    justify-content: center;
+    padding: 0;
+    width: 24px;
+  }
+
+  .input-container .input-group-prepend .clear-btn {
+    align-items: center;
+    border-radius: 50% !important;
+    cursor: pointer;
+    display: flex;
+    font-size: 12px;
+    height: 24px;
+    justify-content: center;
+    padding: 0;
+    width: 24px;
+  }
+
+  .input-container .input-group-prepend .add-btn svg,
+  .input-container .input-group-prepend .clear-btn svg {
+    fill: #6c757d !important;
+    height: 1rem;
+    width: 1rem;
+  }
+
+  .input-container .input-group-prepend .clear-btn:hover svg,
+  .input-container .input-group-prepend .add-btn:hover svg {
+    fill: #FFF !important;
+    height: 1rem;
+    width: 1rem;
+  }
+
+  .input-container .input-group-prepend .clear-btn:focus-visible svg, 
+  .input-container .input-group-prepend .add-btn:focus-visible svg {
+    fill: #FFF !important;
+  }
+
+  .tags-wrapper {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+    position: relative;
+  }
+
+  .tags-wrapper:focus {
+    outline: none;
+  }
+
+  .tag-container {
+    display: flex;
+    flex-wrap: wrap;
+    max-height: 100px;
+    overflow-y: auto;
+    padding: 0;
+  }
+
+  .tag-container .badge {
+    align-items: center;
+    background-color: transparent !important;
+    border: 1px solid #8e8e8e !important;
+    border-radius: 1rem;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    margin: 0.25rem;
+    padding: 0.35rem 0.5rem;
+    position: relative;
+  }
+
+  .tag-container .badge::after {
+    border-radius: inherit;
+    bottom: 0;
+    content: "";
+    height: 100%;
+    left: 0;
+    opacity: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    transition: opacity 0.2s cubic-bezier(0.35, 0, 0.25, 1);
+    width: 100%;
+  }
+
+  .tag-container .badge:hover::after {
+    opacity: 0.12;
+  }
+
+  .tag-container .badge::after {
+    background: #fff;
+  }
+
+  .tag-container .badge span {
+    cursor: pointer;
+    margin-right: 0.5rem;
+    margin-top: -0.1rem;
+  }
+
+  .tag-container .badge .remove-btn {
+    background-color: transparent;
+    border: none;
+    border-radius: 25%;
+    margin: 0;
+    padding: 0;
+  }
+
+  .tag-container .badge .remove-btn:focus,
+  .tag-container .badge .remove-btn:focus-within {
+    outline: none;
+  }
+
+  .tag-container .badge .remove-btn svg {
+    cursor: pointer;
+    fill: #FFF;
+    height: 1rem;
+    position: relative;
+    width: 1rem;
+    z-index: 1;
+  }
+
+  .tag-container .badge .remove-btn:hover svg,
+  .tag-container .badge .remove-btn:focus svg {
+    fill: #ff5d6d;
+    outline: none;
+  }
+
+  /* Underline the .input-container */
+  .b-underline {
+    background-color: #ccc;
+    display: block;
+    height: 1px;
+    position: relative;
+    transition: 0.4s;
+    width: 100%;
+  }
+
+  .b-focus {
+    background-color: #2680eb;
+    bottom: 0;
+    height: 2px;
+    left: 50%;
+    position: absolute;
+    transition: 0.4s;
+    width: 0;
+  }
+
+  /* Validation styles */
+  .tag-exists {
+    color: #ff5d6d;
+    font-size: 0.8rem;
+    margin-top: 0.25rem;
+  }

@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- <link
+      rel="stylesheet"
+      href="../../../node_modules/bootstrap/dist/css/bootstrap.css"
+    /> -->
+    <!-- <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    /> -->
+    <!-- <link rel="stylesheet" href="./button.css" /> -->
+    <link
+      rel="stylesheet"
+      href="../../../node_modules/lit-fontawesome/css/font.css"
+    />
+    <style>
+      body {
+        font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+        font-size: 16px;
+        margin: 20px;
+      }
+
+      .table-wrapper {
+        border: thin solid rgba(0, 0, 0, 0.12);
+      }
+
+      table {
+        border-collapse: collapse;
+        width: 100%;
+      }
+
+      thead {
+        border-bottom: thin solid rgba(0, 0, 0, 0.12);
+      }
+
+      th,
+      td {
+        text-align: left;
+        padding: 8px;
+      }
+
+      tr:nth-child(even) {
+        background-color: #f2f2f2;
+      }
+
+      tr {
+        border-bottom: thin solid rgba(0, 0, 0, 0.12);
+      }
+
+      tr:last-child {
+        border-bottom: none;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Buttons solid -->
+    <div>
+      <pl-button primary small> Primary </pl-button>
+
+      <pl-button secondary small> Secondary </pl-button>
+
+      <pl-button tertiary small> Tertiary </pl-button>
+
+      <pl-button active-blue small> Active </pl-button>
+
+      <pl-button success small> Success </pl-button>
+
+      <pl-button danger small> Danger </pl-button>
+
+      <pl-button warning small> Warning </pl-button>
+
+      <pl-button info small> Info </pl-button>
+
+      <pl-button light small> Light </pl-button>
+
+      <pl-button dark small> Dark </pl-button>
+    </div>
+
+    <!-- Buttons solid disabled -->
+    <div style="margin-top: 15px">
+      <pl-button primary small disabled> Primary </pl-button>
+
+      <pl-button secondary small disabled> Secondary </pl-button>
+
+      <pl-button tertiary small disabled> Tertiary </pl-button>
+
+      <pl-button active-blue small disabled> Active </pl-button>
+
+      <pl-button success small disabled> Success </pl-button>
+
+      <pl-button danger small disabled> Danger </pl-button>
+
+      <pl-button warning small disabled> Warning </pl-button>
+
+      <pl-button info small disabled> Info </pl-button>
+
+      <pl-button light small disabled> Light </pl-button>
+
+      <pl-button dark small disabled> Dark </pl-button>
+    </div>
+
+    <!-- Buttons outlined -->
+    <div style="margin-top: 15px">
+      <pl-button primary outlined small> Primary </pl-button>
+
+      <pl-button secondary outlined small> Secondary </pl-button>
+
+      <pl-button tertiary outlined small> Tertiary </pl-button>
+
+      <pl-button success outlined small> Success </pl-button>
+
+      <pl-button danger outlined small> Danger </pl-button>
+
+      <pl-button warning outlined small> Warning </pl-button>
+
+      <pl-button info outlined small> Info </pl-button>
+
+      <pl-button light outlined small> Light </pl-button>
+
+      <pl-button dark outlined small> Dark </pl-button>
+
+      <pl-button link small> Link </pl-button>
+    </div>
+
+    <!-- Buttons sizes -->
+    <div style="margin-top: 15px">
+      <pl-button primary flat> no size </pl-button>
+
+      <pl-button primary flat x-small> x-small </pl-button>
+
+      <pl-button primary flat small> small </pl-button>
+
+      <pl-button primary flat default> default </pl-button>
+
+      <pl-button primary flat large> large </pl-button>
+
+      <pl-button primary outlined flat> no size </pl-button>
+
+      <pl-button primary flat outlined x-small> x-small </pl-button>
+
+      <pl-button primary flat outlined small> small </pl-button>
+
+      <pl-button primary flat outlined default> default </pl-button>
+
+      <pl-button primary flat outlined large> large </pl-button>
+    </div>
+
+    <!-- Buttons shapes -->
+    <div style="margin-top: 15px">
+      <pl-button primary flat default> Default </pl-button>
+
+      <pl-button primary flat tile default> Squared </pl-button>
+
+      <pl-button primary flat rounded default> Squared </pl-button>
+
+      <pl-button primary flat outlined default> Default </pl-button>
+
+      <pl-button primary flat tile outlined default> Squared </pl-button>
+
+      <pl-button primary flat rounded outlined default> Rounded </pl-button>
+    </div>
+
+    <!-- Text Buttons -->
+    <div style="margin-top: 15px">
+      <pl-button text small> Default </pl-button>
+
+      <pl-button text primary small> Primary </pl-button>
+
+      <pl-button text secondary small> Secondary </pl-button>
+
+      <pl-button text tertiary small> Tertiary </pl-button>
+
+      <pl-button text success small> Success </pl-button>
+
+      <pl-button text danger small> Danger </pl-button>
+
+      <pl-button text warning small> Warning </pl-button>
+
+      <pl-button text info small> Info </pl-button>
+
+      <pl-button text light small> Light </pl-button>
+
+      <pl-button text dark small> Dark </pl-button>
+    </div>
+
+    <!-- Text Buttons Disabled -->
+    <div style="margin-top: 15px">
+      <pl-button text small disabled> Default </pl-button>
+
+      <pl-button text primary small disabled> Primary </pl-button>
+
+      <pl-button text secondary small disabled> Secondary </pl-button>
+
+      <pl-button text tertiary small disabled> Tertiary </pl-button>
+
+      <pl-button text success small disabled> Success </pl-button>
+
+      <pl-button text danger small disabled> Danger </pl-button>
+
+      <pl-button text warning small disabled> Warning </pl-button>
+
+      <pl-button text info small disabled> Info </pl-button>
+
+      <pl-button text light small disabled> Light </pl-button>
+
+      <pl-button text dark small disabled> Dark </pl-button>
+    </div>
+
+    <!-- Active State -->
+    <div style="margin-top: 15px">
+      <pl-button primary active small aria-pressed="true"> Primary </pl-button>
+
+      <pl-button active small active-blue aria-pressed="true">
+        Active
+      </pl-button>
+
+      <pl-button secondary small active aria-pressed="true"> Button </pl-button>
+
+      <span>&nbsp;&nbsp; Links as buttons -- </span>
+
+      <pl-button primary link active small aria-pressed="true">
+        Primary
+      </pl-button>
+
+      <pl-button active link small active-blue aria-pressed="true">
+        Active
+      </pl-button>
+
+      <pl-button secondary link small active aria-pressed="true">
+        Button
+      </pl-button>
+    </div>
+
+    <!-- Icon Buttons Round -->
+    <div style="margin-top: 15px">
+      <pl-button primary round iconBtn icon="fas fa-home" title="Home">
+      </pl-button>
+
+      <pl-button secondary round iconBtn icon="fas fa-home" title="Home">
+      </pl-button>
+
+      <pl-button tertiary round iconBtn icon="fas fa-home" title="Home">
+      </pl-button>
+
+      <pl-button success round iconBtn icon="fas fa-home" title="Home">
+      </pl-button>
+
+      <pl-button danger round iconBtn icon="fas fa-home" title="Home">
+      </pl-button>
+
+      <pl-button warning round iconBtn icon="fas fa-home" title="Home">
+      </pl-button>
+
+      <pl-button info round iconBtn icon="fas fa-home" title="Home">
+      </pl-button>
+
+      <pl-button light round iconBtn icon="fas fa-home" title="Home">
+      </pl-button>
+
+      <pl-button dark round iconBtn icon="fas fa-home" title="Home">
+      </pl-button>
+    </div>
+
+    <!-- Icon Buttons Round disabled -->
+    <div style="margin-top: 15px">
+      <pl-button
+        primary
+        round
+        iconBtn
+        icon="fas fa-home"
+        title="Home"
+        disabled
+      >
+      </pl-button>
+
+      <pl-button
+        secondary
+        round
+        iconBtn
+        icon="fas fa-home"
+        title="Home"
+        disabled
+      >
+      </pl-button>
+
+      <pl-button
+        tertiary
+        round
+        iconBtn
+        icon="fas fa-home"
+        title="Home"
+        disabled
+      >
+      </pl-button>
+
+      <pl-button
+        success
+        round
+        iconBtn
+        icon="fas fa-home"
+        title="Home"
+        disabled
+      >
+      </pl-button>
+
+      <pl-button danger round iconBtn icon="fas fa-home" title="Home" disabled>
+      </pl-button>
+
+      <pl-button
+        warning
+        round
+        iconBtn
+        icon="fas fa-home"
+        title="Home"
+        disabled
+      >
+      </pl-button>
+
+      <pl-button info round iconBtn icon="fas fa-home" title="Home" disabled>
+      </pl-button>
+
+      <pl-button light round iconBtn icon="fas fa-home" title="Home" disabled>
+      </pl-button>
+
+      <pl-button dark round iconBtn icon="fas fa-home" title="Home" disabled>
+      </pl-button>
+    </div>
+
+    <!-- Icon Buttons Round outlined -->
+    <div style="margin-top: 15px">
+      <pl-button primary outlined round iconBtn icon="fas fa-home"></pl-button>
+
+      <pl-button
+        secondary
+        outlined
+        round
+        iconBtn
+        icon="fas fa-home"
+      ></pl-button>
+
+      <pl-button
+        tertiary
+        outlined
+        round
+        iconBtn
+        icon="fas fa-home"
+      ></pl-button>
+
+      <pl-button success outlined round iconBtn icon="fas fa-home"></pl-button>
+
+      <pl-button danger outlined round iconBtn icon="fas fa-home"></pl-button>
+
+      <pl-button warning outlined round iconBtn icon="fas fa-home"></pl-button>
+
+      <pl-button info outlined round iconBtn icon="fas fa-home"></pl-button>
+
+      <pl-button light outlined round iconBtn icon="fas fa-home"></pl-button>
+
+      <pl-button dark outlined round iconBtn icon="fas fa-home"></pl-button>
+    </div>
+
+    <!-- Icon Buttons Shapes sizes -->
+    <div style="margin-top: 15px">
+      <pl-button
+        primary
+        round
+        icon="fas fa-home"
+        iconBtn
+        icon-btn-xs
+        title="Home"
+      >
+      </pl-button>
+
+      <pl-button
+        primary
+        round
+        icon="fas fa-home"
+        iconBtn
+        icon-btn-sm
+        title="Home"
+      >
+      </pl-button>
+
+      <pl-button primary round icon="fas fa-home" iconBtn title="Home">
+      </pl-button>
+
+      <pl-button
+        primary
+        round
+        icon="fas fa-home"
+        iconBtn
+        icon-btn-lg
+        title="Home"
+      >
+      </pl-button>
+
+      <pl-button
+        primary
+        round
+        icon="fas fa-home"
+        outlined
+        iconBtn
+        icon-btn-xs
+        title="Home"
+      >
+      </pl-button>
+
+      <pl-button
+        primary
+        round
+        icon="fas fa-home"
+        outlined
+        iconBtn
+        icon-btn-sm
+        title="Home"
+      >
+      </pl-button>
+
+      <pl-button
+        primary
+        round
+        icon="fas fa-home"
+        outlined
+        iconBtn
+        title="Home"
+      >
+      </pl-button>
+
+      <pl-button
+        primary
+        round
+        icon="fas fa-home"
+        outlined
+        iconBtn
+        icon-btn-lg
+        title="Home"
+      >
+      </pl-button>
+    </div>
+
+    <!-- Icon Buttons Shapes -->
+    <div style="margin-top: 15px">
+      <pl-button primary round iconBtn icon="fas fa-home" title="Home">
+      </pl-button>
+
+      <pl-button primary tile iconBtn icon="fas fa-home" title="Home">
+      </pl-button>
+
+      <pl-button primary iconBtn icon="fas fa-home" title="Home"> </pl-button>
+
+      <pl-button
+        primary
+        round
+        outlined
+        iconBtn
+        icon="fas fa-home"
+        title="Home"
+      >
+      </pl-button>
+
+      <pl-button
+        primary
+        square
+        outlined
+        iconBtn
+        icon="fas fa-home"
+        title="Home"
+      >
+      </pl-button>
+
+      <pl-button primary iconBtn outlined icon="fas fa-home" title="Home">
+      </pl-button>
+    </div>
+
+    <!-- Icon Active State -->
+    <div style="margin-top: 15px">
+      <pl-button
+        iconBtn
+        default-icon
+        icon="fas fa-home"
+        title="Home"
+      ></pl-button>
+
+      <pl-button disabled iconBtn icon="fas fa-home" title="Home"></pl-button>
+
+      <pl-button
+        active-blue
+        iconBtn
+        icon="fas fa-home"
+        title="Home"
+        active
+        aria-pressed="true"
+      ></pl-button>
+    </div>
+
+    <!-- Buttons with Icons solid -->
+    <div style="margin-top: 15px">
+      <pl-button primary btnWithIcon btnIconPosition icon="fas fa-home" small>
+        Primary
+      </pl-button>
+
+      <pl-button
+        primary
+        btnWithIcon
+        btnIconPosition
+        outlined
+        icon="fas fa-home"
+        small
+      >
+        Primary
+      </pl-button>
+
+      <pl-button primary btnWithIcon icon="fas fa-home" small>
+        Primary
+      </pl-button>
+
+      <pl-button primary btnWithIcon outlined icon="fas fa-home" small>
+        Primary
+      </pl-button>
+    </div>
+
+    <!-- Elevated Buttons with Icons solid -->
+    <div style="margin-top: 15px">
+      <pl-button primary is-elevated small> Elevated </pl-button>
+
+      <pl-button primary elevated-5 small> Elevated 5 </pl-button>
+
+      <pl-button primary elevated-10 small> Elevated 10 </pl-button>
+
+      <pl-button primary elevated-15 small> Elevated 15 </pl-button>
+
+      <pl-button primary elevated-20 small> Elevated 20 </pl-button>
+
+      <pl-button primary elevated-24 small> Elevated 24 </pl-button>
+    </div>
+
+    <div style="margin-top: 50px">
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Property</th>
+              <th>Type</th>
+              <th>Default</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td>absolute</td>
+              <td>Boolean</td>
+              <td>false</td>
+              <td>Applies the inline style of position: absolute to the component.</td>
+            </tr>
+            <tr>
+              <td>block</td>
+              <td>Boolean</td>
+              <td>false</td>
+              <td>Expands the button to 100% of available space.</td>
+            </tr>
+            <tr>
+              <td>bottom</td>
+              <td>String</td>
+              <td>number | string</td>
+              <td>Aligns the component towards the bottom. This should be used with the absolute or fixed props. 
+                <br />Ex: bottom="50"
+              </td>
+            </tr>
+            <tr>
+              <td>btnWithIcon</td>
+              <td>Boolean</td>
+              <td>false</td>
+              <td>Sets a button with text to also have an icon. The icon is displayed to the right of the button's text by default.</td>
+            </tr>
+            <tr>
+              <td>btnIconPosition</td>
+              <td>String</td>
+              <td>left</td>
+              <td>Used with 'btnWithIcon' to change the icon's position from the default right of the button's text to the left.</td>
+            </tr>
+           <tr>
+              <td>classNames</td>
+              <td>String</td>
+              <td></td>
+              <td>This property maps through the CSS that is linked to the component and lets the user apply classnames that exists as properties to the component that will be rendered to the 'class' attribute. <br />Ex: <strong>&#60;pl-button small red&#62;</strong> will render to <strong>&#60;button class="small red"&#62;</strong>.</td>
+            </tr>
+            <tr>
+              <td>icon</td>
+              <td>String</td>
+              <td></td>
+              <td>
+                Add icon class to display icon. Ex: <strong>icon="fas fa-home"</strong> will render to <strong>&#60;i class="fas fa-home"&#62;&#60;/i&#62;</strong>.
+              </td>
+            </tr>
+            <tr>
+              <td>iconBtn</td>
+              <td>Boolean</td>
+              <td>false</td>
+              <td>
+                Designates the button as an icon button.
+              </td>
+            </tr>
+            <tr>
+              <td>left</td>
+              <td>String</td>
+              <td>number | string</td>
+              <td>Aligns the component towards the left. This should be used with the absolute or fixed props. 
+                <br />Ex: left="50"
+              </td>
+            </tr>
+            <tr>
+              <td>link</td>
+              <td>Boolean</td>
+              <td>false</td>
+              <td>Designates the button as an 'href' and not a 'button'.</td>
+            </tr>
+            <tr>
+              <td>outlined</td>
+              <td>Boolean</td>
+              <td>false</td>
+              <td>
+                When added, this makes the background transparent and applies a
+                thin border.
+              </td>
+            </tr>
+            <tr>
+              <td>right</td>
+              <td>String</td>
+              <td>number | string</td>
+              <td>Aligns the component towards the right. This should be used with the absolute or fixed props. 
+                <br />Ex: right="50"
+              </td>
+            </tr>
+            <tr>
+              <td>text</td>
+              <td>Boolean</td>
+              <td>false</td>
+              <td>Displays a button as text but with the same hover effects as a regular button.</td>
+            </tr>
+            <tr>
+              <td>title</td>
+              <td>String</td>
+              <td></td>
+              <td>Add a title attribute to the button.</td>
+            </tr>
+            <tr>
+              <td>right</td>
+              <td>String</td>
+              <td>number | string</td>
+              <td>Aligns the component towards the right. This should be used with the absolute or fixed props. 
+                <br />Ex: right="50"
+              </td>
+            </tr>
+            <tr>
+              <td>url</td>
+              <td>String</td>
+              <td></td>
+              <td>Used with the 'link' property, a url or path can be applied to the href that is rendered.</td>
+            </tr>
+            <tr>
+              <td>zIndex</td>
+              <td>String</td>
+              <td>number | string</td>
+              <td>Specifies the stack order of an element. This should be used with the absolute or fixed props. 
+                <br />Ex: zIndex="50"
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Instructions -->
+    <div style="margin-top: 15px">
+      <h4>PlButton Custom '_handleClick'</h4>
+      <p>
+        The _handleClick() method in the PlButton component is a custom event
+        dispatcher that triggers the custom-click event when the button is
+        clicked. To use this functionality in an instance of your PlButton
+        component, a user would listen for the custom-click event.
+      </p>
+      <p>
+        Here's an example of how a user might implement this event listener:
+      </p>
+      <pre>
+        <code>
+          // Creating an instance of the PlButton component
+          const myButton = document.createElement('pl-button');
+
+          // Attaching the component to the DOM
+          document.body.appendChild(myButton);
+
+          // Listening for the custom-click event
+          myButton.addEventListener('custom-click', (event) => {
+            console.log('Button was clicked!');
+            // Perform actions or handle the event here
+          });
+        </code>
+      </pre>
+      <p>
+        By adding an event listener to the pl-button element, the user can
+        respond to the custom-click event triggered by your component's
+        _handleClick() method. This allows them to execute specific actions or
+        code when the button is clicked.
+      </p>
+
+      <p>
+        To use the PlButton component in another JavaScript file, you'd
+        typically import it and then use it within that file.
+      </p>
+
+      <p>Here's an example of how you might do this:</p>
+
+      <pre>
+          <code>
+            // Import the PlButton component
+            import "./path/to/PlButton.js";
+
+            // Use the PlButton in your code
+            const button = document.createElement("pl-button");
+
+            // Add properties, attributes, or event listeners if needed
+            button.icon = "fas fa-home"; // Set an icon
+            button.addEventListener("custom-click", () => {
+              console.log("Button clicked!");
+            });
+
+            // Append the button to the document or any desired element
+            document.body.appendChild(button);
+          </code>
+      </pre>
+
+      <p>
+        This example demonstrates how you could import the PlButton component
+        and then use it within your JavaScript file. You can set properties,
+        attributes, or attach event listeners as needed, just like you would
+        with any other HTML element.
+      </p>
+
+      <h4>Using Component in other JavaScript Frameworks</h4>
+
+      <h5>Vue.js</h5>
+      <p>
+        In a Vue component, you'd use PlButton just like any other HTML element:
+      </p>
+      <pre>
+        <code>
+          &#60;template&#62;
+          &#60;div&#62;
+          &#60;!-- Using the PlButton component --&#62;
+          &#60;pl-button icon="fas fa-home" @custom-click="handleClick"&#62;Click me&#60;/pl-button&#62;
+          &#60;/div&#62;
+          &#60;/template&#62;
+          
+          &#60;script&#62;
+          // Import PlButton here if necessary
+          export default {
+            methods: {
+              handleClick() {
+                console.log('Button clicked!');
+              }
+            }
+          };
+          &#60;/script&#62;
+          
+        </code>
+      </pre>
+
+      <h5>React</h5>
+      <p>
+        In a React component, you'd similarly treat PlButton as a regular HTML
+        element:
+      </p>
+      <pre>
+        <code>
+          import React from 'react';
+          import './path/to/PlButton.js'; // Import PlButton here if necessary
+
+          class MyComponent extends React.Component {
+            handleClick() {
+              console.log('Button clicked!');
+            }
+
+            render() {
+              return (
+                &#60;div&#62;
+                  {/* Using the PlButton component */}
+                  &#60;pl-button icon="fas fa-home" onClick={this.handleClick}&#62;Click me&#60;/pl-button&#62;
+                  &#60;/div&#62;
+              );
+            }
+          }
+        </code>
+      </pre>
+
+      <h5>Angular</h5>
+      <p>In Angular, you'd use PlButton as part of your Angular template:</p>
+
+      <pre>
+        <code>
+          &#60;!-- Inside your Angular component template --&#62;
+          &#60;div&#62;
+          &#60;!-- Using the PlButton component --&#62;
+          &#60;pl-button [icon]="'fas fa-home'" (custom-click)="handleClick()"&#62;Click me&#60;/pl-button&#62;
+          &#60;/div&#62;
+
+        </code>
+      </pre>
+
+      <pre>
+        <code>
+          // Inside your Angular component class
+          import { Component } from '@angular/core';
+
+          @Component({
+            selector: 'app-my-component',
+            templateUrl: './my-component.component.html',
+          })
+          export class MyComponent {
+            handleClick() {
+              console.log('Button clicked!');
+            }
+          }
+        </code>
+      </pre>
+
+      <p>
+        The interoperability is possible because Web Components, once defined
+        and registered as custom elements, act like native HTML elements that
+        these frameworks can understand and interact with.
+      </p>
+    </div>
+
+    <script src="./button.js" type="module"></script>
+    <!-- <script src="../../../node_modules/bootstrap/dist/js/bootstrap.js"></script> -->
+  </body>
+</html>
