@@ -21,6 +21,10 @@
         margin: 20px;
       }
 
+      .example {
+        font-weight: bold;
+      }
+
       .table-wrapper {
         border: thin solid rgba(0, 0, 0, 0.12);
       }
@@ -36,8 +40,10 @@
 
       th,
       td {
+        font-size: 14px;
         text-align: left;
         padding: 8px;
+        min-width: 200px;
       }
 
       tr:nth-child(even) {
@@ -150,13 +156,13 @@
     <div style="margin-top: 15px">
       <pl-button primary flat default> Default </pl-button>
 
-      <pl-button primary flat tile default> Squared </pl-button>
+      <pl-button primary flat tile default> Tiled </pl-button>
 
-      <pl-button primary flat rounded default> Squared </pl-button>
+      <pl-button primary flat rounded default> Rounded </pl-button>
 
       <pl-button primary flat outlined default> Default </pl-button>
 
-      <pl-button primary flat tile outlined default> Squared </pl-button>
+      <pl-button primary flat tile outlined default> Tiled </pl-button>
 
       <pl-button primary flat rounded outlined default> Rounded </pl-button>
     </div>
@@ -209,25 +215,25 @@
 
     <!-- Active State -->
     <div style="margin-top: 15px">
-      <pl-button primary active small aria-pressed="true"> Primary </pl-button>
+      <pl-button primary active small ariaPressed="false"> Primary </pl-button>
 
-      <pl-button active small active-blue aria-pressed="true">
+      <pl-button active small active-blue ariaPressed="true">
         Active
       </pl-button>
 
-      <pl-button secondary small active aria-pressed="true"> Button </pl-button>
+      <pl-button secondary small active ariaPressed="true"> Button </pl-button>
 
       <span>&nbsp;&nbsp; Links as buttons -- </span>
 
-      <pl-button primary link active small aria-pressed="true">
+      <pl-button primary link active small ariaPressed="true">
         Primary
       </pl-button>
 
-      <pl-button active link small active-blue aria-pressed="true">
+      <pl-button active link small active-blue ariaPressed="true">
         Active
       </pl-button>
 
-      <pl-button secondary link small active aria-pressed="true">
+      <pl-button secondary link small active ariaPressed="true">
         Button
       </pl-button>
     </div>
@@ -461,7 +467,7 @@
 
       <pl-button
         primary
-        square
+        tile
         outlined
         iconBtn
         icon="fas fa-home"
@@ -490,7 +496,7 @@
         icon="fas fa-home"
         title="Home"
         active
-        aria-pressed="true"
+        ariaPressed="true"
       ></pl-button>
     </div>
 
@@ -536,6 +542,7 @@
     </div>
 
     <div style="margin-top: 50px">
+      <h2>Props</h2>
       <div class="table-wrapper">
         <table>
           <thead>
@@ -555,6 +562,20 @@
               <td>Applies the inline style of position: absolute to the component.</td>
             </tr>
             <tr>
+              <td>ariaPressed</td>
+              <td>String</td>
+              <td></td>
+              <td>Adding aria-pressed to an element with a role of button turns the button into a toggle button. The aria-pressed attribute is only relevant for toggle buttons. It represents the button's current "pressed" state.
+
+                The value is "tri-state", meaning the value can be set to true, false, mixed, or undefined values. In the case of aria-pressed, like most tri-state value types, the default value is undefined.
+                
+                Toggle buttons require a full press-and-release cycle to change their value. Pressing and releasing it once changes the value to true. If it's pressed and released again, the value changes back to false.
+                
+                A value of mixed means that the values of more than one item controlled by the button do not all share the same value.
+                <br /><span class="example">Ex: &#60;pl-button primary ariaPressed=" true | false | mixed "&#62;Button Name&#60;/pl-button&#62;</span> will render aria-pressed="true | false | mixed"
+              </td>
+            </tr>
+            <tr>
               <td>block</td>
               <td>Boolean</td>
               <td>false</td>
@@ -565,7 +586,7 @@
               <td>String</td>
               <td>number | string</td>
               <td>Aligns the component towards the bottom. This should be used with the absolute or fixed props. 
-                <br />Ex: bottom="50"
+                <br /><span class="example">Ex: bottom="50"</span>
               </td>
             </tr>
             <tr>
@@ -584,14 +605,20 @@
               <td>classNames</td>
               <td>String</td>
               <td></td>
-              <td>This property maps through the CSS that is linked to the component and lets the user apply classnames that exists as properties to the component that will be rendered to the 'class' attribute. <br />Ex: <strong>&#60;pl-button small red&#62;</strong> will render to <strong>&#60;button class="small red"&#62;</strong>.</td>
+              <td>This property maps through the CSS that is linked to the component and lets the user apply classnames that exist as properties to the component that will be rendered to the 'class' attribute. <br /><span class="example">Ex: &#60;pl-button small red&#62;</span> will render to <span class="example">&#60;button class="small red"&#62;</span>.</td>
+            </tr>
+            <tr>
+              <td>disabled</td>
+              <td>Boolean</td>
+              <td>false</td>
+              <td>This property adds disabled to the button element.</td>
             </tr>
             <tr>
               <td>icon</td>
               <td>String</td>
               <td></td>
               <td>
-                Add icon class to display icon. Ex: <strong>icon="fas fa-home"</strong> will render to <strong>&#60;i class="fas fa-home"&#62;&#60;/i&#62;</strong>.
+                Add icon class to display icon. <span class="example">Ex: icon="fas fa-home" will render to &#60;i class="fas fa-home"&#62;&#60;/i&#62;.</span>
               </td>
             </tr>
             <tr>
@@ -607,7 +634,7 @@
               <td>String</td>
               <td>number | string</td>
               <td>Aligns the component towards the left. This should be used with the absolute or fixed props. 
-                <br />Ex: left="50"
+                <br /><span class="example">Ex: left="50"</span>
               </td>
             </tr>
             <tr>
@@ -630,7 +657,7 @@
               <td>String</td>
               <td>number | string</td>
               <td>Aligns the component towards the right. This should be used with the absolute or fixed props. 
-                <br />Ex: right="50"
+                <br /><span class="example">Ex: right="50"</span>
               </td>
             </tr>
             <tr>
@@ -650,7 +677,7 @@
               <td>String</td>
               <td>number | string</td>
               <td>Aligns the component towards the right. This should be used with the absolute or fixed props. 
-                <br />Ex: right="50"
+                <br /><span class="example">Ex: right="50"</span>
               </td>
             </tr>
             <tr>
@@ -664,7 +691,93 @@
               <td>String</td>
               <td>number | string</td>
               <td>Specifies the stack order of an element. This should be used with the absolute or fixed props. 
-                <br />Ex: zIndex="50"
+                <br /><span class="example">Ex: zIndex="50"</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div style="margin-top: 50px">
+      <h2>Styling</h2>
+      <p>These class names can be added directly to the component similiar to Props.</p>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Style</th>
+              <th>Class Name</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td><span class="example">Color</span></td>
+              <td>primary, secondary, tertiary, active-blue, success, danger, warning, light, dark</td>
+              <td>These class names will set background color, border color and the hover colors for a regular button.
+                <br /><span class="example">Ex: &#60;pl-button primary&#62;Button Name&#60;/pl-button&#62;</span>
+              </td>
+            </tr>
+            <tr>
+              <td></td>
+              <td></td>
+              <td>When using these class names with a 'text' prop, the class names will be appeneded with '--text' which will set background color and border color to transparent and set the color of the text and the hover colors.
+                <br /><span class="example">Ex: &#60;pl-button text primary&#62;Button Name&#60;/pl-button&#62;</span>
+              </td>
+            </tr>
+            <tr>
+              <td></td>
+              <td></td>
+              <td>When using these class names with an 'outline' prop, the background color is transparent and it sets the border color, text color and the hover colors.
+                <br /><span class="example">Ex: &#60;pl-button primary outlined&#62;Button Name&#60;/pl-button&#62;</span>
+              </td>
+            </tr>
+            <tr>
+              <td></td>
+              <td>active and active-blue</td>
+              <td>For active state, the class names will set the background color, border color and the hover colors.<br />
+                When adding the 'active' class and the 'active-blue' class togather, the background color will be set to the active color and the hover color will be set to the active color.
+                <br /><span class="example">Ex: &#60;pl-button primary active active-blue &#62;Button Name&#60;/pl-button&#62;</span>
+              </td>
+            </tr>
+            <tr>
+              <td><span class="example">Elevation</span></td>
+              <td>flat, is-elevated, elevated-0 to elevated-24</td>
+              <td>The elevation helpers allow you to control relative depth, or distance, between two surfaces. There is a total of 25 elevation levels. You can set an element’s elevation by using the class elevated-{n}, where n is a integer between 0-24 corresponding to the desired elevation. Applying flat will give give the button no depth and applying is-elevated will give the button a slight amount of depth..
+                <br /><span class="example">Ex: &#60;pl-button primary flat" &#62;Button Name&#60;/pl-button&#62;</span>
+                <br /><span class="example">Ex: &#60;pl-button primary is-elevated" &#62;Button Name&#60;/pl-button&#62;</span>
+                <br /><span class="example">Ex: &#60;pl-button primary elevated-3" &#62;Button Name&#60;/pl-button&#62;</span> 
+              </td>
+            </tr>
+            <tr>
+              <td><span class="example">Sizes</span></td>
+              <td>x-small, small, default, large</td>
+              <td>Sizing for text buttons. 'x-small' is 20px, 'small' is 28px, 'default' is 36px and 'large' is 44px.
+                <br /><span class="example">Ex: &#60;pl-button primary x-small" &#62;Button Name&#60;/pl-button&#62;</span>
+                <br /><span class="example">Ex: &#60;pl-button primary small" &#62;Button Name&#60;/pl-button&#62;</span>
+                <br /><span class="example">Ex: &#60;pl-button primary default" &#62;Button Name&#60;/pl-button&#62;</span>
+                <br /><span class="example">Ex: &#60;pl-button primary large" &#62;Button Name&#60;/pl-button&#62;</span>
+              </td>
+            </tr>
+            <tr>
+              <td></td>
+              <td>icon-btn-xs, icon-btn-sm, icon-btn-lg</td>
+              <td>Sizing for icon buttons. 'icon-btn-xs' is 1rem by 1rem, 'icon-btn-sm' is 28px by 28px, 'icon-btn-lg' is 44px by 44px and the default size is 36px by 36px .
+                <br /><span class="example">Ex: &#60;pl-button primary" &#62;&#60;/pl-button&#62; (default size)</span>
+                <br /><span class="example">Ex: &#60;pl-button primary icon-btn-xs" &#62;&#60;/pl-button&#62;</span>
+                <br /><span class="example">Ex: &#60;pl-button primaryicon-btn-sm" &#62;&#60;/pl-button&#62;</span>
+                <br /><span class="example">Ex: &#60;pl-button primary icon-btn-lg" &#62;&#60;/pl-button&#62;</span>
+              </td>
+            </tr>
+            <tr>
+              <td><span class="example">Shape</span></td>
+              <td>round, rounded, tile</td>
+              <td>By default, these buttons, whether regular buttons or icon buttons, have rounded corners. 'round' is to make the circular icon buttons. 'tile' is to make the icon buttons, square or the regular buttons rectangle. 'rounded' is to make the regular button a pill shape.
+                <br /><span class="example">Ex: &#60;pl-button primary round iconBtn icon="fas fa-home" &#62;&#60;/pl-button&#62;</span>
+                <br /><span class="example">Ex: &#60;pl-button primary rounded" &#62;Button Name&#60;/pl-button&#62;</span>
+                <br /><span class="example">Ex: &#60;pl-button primary tile" &#62;Button Name&#60;/pl-button&#62;</span>
               </td>
             </tr>
           </tbody>
@@ -673,7 +786,7 @@
     </div>
 
     <!-- Instructions -->
-    <div style="margin-top: 15px">
+    <div style="margin-top: 50px">
       <h4>PlButton Custom '_handleClick'</h4>
       <p>
         The _handleClick() method in the PlButton component is a custom event

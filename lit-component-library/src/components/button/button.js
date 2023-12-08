@@ -1,5 +1,5 @@
 import { LitElement, html, css } from "lit";
-import {ifDefined} from 'lit/directives/if-defined.js';
+import { ifDefined } from "lit/directives/if-defined.js";
 import { buttonStyles } from "./button-styles";
 import Fontawesome from "lit-fontawesome";
 
@@ -16,7 +16,9 @@ class PlButton extends LitElement {
 
   static get properties() {
     return {
+      ariaPressed: { type: Boolean },
       classNames: { type: String },
+      disabled: { type: Boolean },
       inlineStyles: { type: String },
       outlined: { type: Boolean },
       iconBtn: { type: Boolean },
@@ -41,7 +43,9 @@ class PlButton extends LitElement {
 
   constructor() {
     super();
+    this.ariaPressed = false;
     this.classNames = "";
+    this.disabled = false;
     this.inlineStyles = "";
     this.outlined = false;
     this.iconBtn = false;
@@ -65,8 +69,23 @@ class PlButton extends LitElement {
 
   render() {
     // List of color classes to append '--text'
-    const colorClasses = ["primary", "secondary", "tertiary", "success", "danger", "warning", "info", "light", "dark"]; // Add your color classes here
+    const colorClasses = [
+      "primary",
+      "secondary",
+      "tertiary",
+      "success",
+      "danger",
+      "warning",
+      "info",
+      "light",
+      "dark",
+    ]; // Add your color classes here
 
+    const ariaPressedAttr = ifDefined(
+      this.ariaPressed === "true" || this.ariaPressed === "false"
+        ? this.ariaPressed
+        : undefined
+    );
     const outlinedClass = this.outlined ? "pl-btn--outlined" : "";
     const blockClass = this.block ? "pl-btn--block" : "";
     const content = this.iconBtn
@@ -94,7 +113,7 @@ class PlButton extends LitElement {
     ]
       .filter((style) => style) // Remove falsy values (undefined, empty strings)
       .join(" "); // Join the styles with a space
-    
+
     const inlineStyles = `${this.inlineStyles} ${dynamicStyles}`.trim();
 
     // Construct class attribute with conditional inclusion of classes
@@ -113,6 +132,7 @@ class PlButton extends LitElement {
           role="button"
           @click="${this._handleClick}"
           aria-label="${this.label || "Button"}"
+          ?disabled="${this.disabled}"
         >
           ${content}
         </a>
@@ -126,11 +146,13 @@ class PlButton extends LitElement {
       }
       return html`
         <button
+          aria-pressed="${ariaPressedAttr}"
           class="${classAttribute} text"
           style=${ifDefined(inlineStyles ? inlineStyles : undefined)}
           @click="${this._handleClick}"
           aria-label="${this.label || "Button"}"
           role="button"
+          ?disabled="${this.disabled}"
         >
           ${content}
         </button>
@@ -138,11 +160,13 @@ class PlButton extends LitElement {
     } else if (this.btnWithIcon) {
       return html`
         <button
+          aria-pressed="${ariaPressedAttr}"
           class="${classAttribute} pl-btn-ripple"
           style=${ifDefined(inlineStyles ? inlineStyles : undefined)}
           @click="${this._handleClick}"
           aria-label="${this.label || "Button"}"
           role="button"
+          ?disabled="${this.disabled}"
         >
           ${btnWithIconContent}
         </button>
@@ -150,12 +174,14 @@ class PlButton extends LitElement {
     } else if (this.iconBtn) {
       return html`
         <button
+          aria-pressed="${ariaPressedAttr}"
           class="${classAttribute} icon-btn"
           style=${ifDefined(inlineStyles ? inlineStyles : undefined)}
           @click="${this._handleClick}"
           aria-label="${this.label || "Button"}"
           title=${ifDefined(this.title ? this.title : undefined)}
           role="button"
+          ?disabled="${this.disabled}"
         >
           ${content}
         </button>
@@ -163,12 +189,14 @@ class PlButton extends LitElement {
     } else {
       return html`
         <button
+          aria-pressed="${ariaPressedAttr}"
           class="${classAttribute} ${ripple}"
-          style=${ifDefined(inlineStyles ? inlineStyles : undefined)}
+          style="${ifDefined(inlineStyles ? inlineStyles : undefined)}"
           @click="${this._handleClick}"
           aria-label="${this.label || "Button"}"
-          title=${ifDefined(this.title ? this.title : undefined)}
+          title="${ifDefined(this.title ? this.title : undefined)}"
           role="button"
+          ?disabled="${this.disabled}"
         >
           ${content}
         </button>
@@ -183,6 +211,9 @@ class PlButton extends LitElement {
   _getClassNames() {
     const excludedProperties = [
       "additionalstyles",
+      "aria-pressed",
+      "ariapressed",
+      "disabled",
       "inlinestyles",
       "dynamicstyles",
       "outlined",

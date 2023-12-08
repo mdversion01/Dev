@@ -587,6 +587,12 @@ export const buttonStyles = css`
     width: 36px;
   }
 
+  .pl-btn.fab, .pl-btn.icon-btn {
+    min-height: 0;
+    min-width: 0;
+    padding: 0;
+  }
+
   .pl-btn.icon-btn.default-icon:hover {
     background-color: transparent;
     color: #4b9cf5;
