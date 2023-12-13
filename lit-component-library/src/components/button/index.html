@@ -14,50 +14,7 @@
       rel="stylesheet"
       href="../../../node_modules/lit-fontawesome/css/font.css"
     />
-    <style>
-      body {
-        font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif !important;
-        font-size: 16px;
-        margin: 20px;
-      }
-
-      .example {
-        font-weight: bold;
-      }
-
-      .table-wrapper {
-        border: thin solid rgba(0, 0, 0, 0.12);
-      }
-
-      table {
-        border-collapse: collapse;
-        width: 100%;
-      }
-
-      thead {
-        border-bottom: thin solid rgba(0, 0, 0, 0.12);
-      }
-
-      th,
-      td {
-        font-size: 14px;
-        text-align: left;
-        padding: 8px;
-        min-width: 200px;
-      }
-
-      tr:nth-child(even) {
-        background-color: #f2f2f2;
-      }
-
-      tr {
-        border-bottom: thin solid rgba(0, 0, 0, 0.12);
-      }
-
-      tr:last-child {
-        border-bottom: none;
-      }
-    </style>
+    <link rel="stylesheet" href="../../styles/components.css" />
   </head>
   <body>
     <!-- Buttons solid -->
@@ -240,293 +197,255 @@
 
     <!-- Icon Buttons Round -->
     <div style="margin-top: 15px">
-      <pl-button primary round iconBtn icon="fas fa-home" title="Home">
+      <pl-button primary round iconBtn title="Home">
+        <icon-component icon="fas fa-tachometer-alt"></icon-component>
       </pl-button>
 
-      <pl-button secondary round iconBtn icon="fas fa-home" title="Home">
+      <pl-button secondary round iconBtn title="Home">
+        <icon-component icon="fas fa-home"></icon-component>
       </pl-button>
 
-      <pl-button tertiary round iconBtn icon="fas fa-home" title="Home">
+      <pl-button tertiary round iconBtn title="Home">
+        <icon-component icon="fas fa-home"></icon-component>
       </pl-button>
 
-      <pl-button success round iconBtn icon="fas fa-home" title="Home">
+      <pl-button success round iconBtn title="Home">
+        <icon-component icon="fas fa-home"></icon-component>
       </pl-button>
 
-      <pl-button danger round iconBtn icon="fas fa-home" title="Home">
+      <pl-button danger round iconBtn title="Home">
+        <icon-component icon="fas fa-home"></icon-component>
       </pl-button>
 
-      <pl-button warning round iconBtn icon="fas fa-home" title="Home">
+      <pl-button warning round iconBtn title="Home">
+        <icon-component icon="fas fa-home"></icon-component>
       </pl-button>
 
-      <pl-button info round iconBtn icon="fas fa-home" title="Home">
+      <pl-button info round iconBtn title="Home">
+        <icon-component icon="fas fa-home"></icon-component>
       </pl-button>
 
-      <pl-button light round iconBtn icon="fas fa-home" title="Home">
+      <pl-button light round iconBtn title="Home">
+        <icon-component icon="fas fa-home"></icon-component>
       </pl-button>
 
-      <pl-button dark round iconBtn icon="fas fa-home" title="Home">
+      <pl-button dark round iconBtn title="Home">
+        <icon-component icon="fas fa-home"></icon-component>
+      </pl-button>
+    </div>
+
+    <!-- SVG Buttons Round -->
+    <div style="margin-top: 15px">
+      <pl-button primary round iconBtn title="Home">
+        <svg-component fill="orange" ariaHidden="true" ariaLabel="Igloo">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            height="16"
+            width="18"
+            viewBox="0 0 576 512"
+            fill="currentColor"
+          >
+            <!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.-->
+            <path
+              d="M320 33.9c-10.5-1.2-21.2-1.9-32-1.9-99.8 0-187.8 50.8-239.4 128H320V33.9zM96 192H30.3C11.1 230.6 0 274 0 320h96V192zM352 39.4V160h175.4C487.2 99.9 424.8 55.9 352 39.4zM480 320h96c0-46-11.1-89.4-30.3-128H480v128zm-64 64v96h128c17.7 0 32-14.3 32-32v-96H411.5c2.6 10.3 4.5 20.9 4.5 32zm32-192H128v128h49.8c22.2-38.1 63-64 110.2-64s88 25.9 110.2 64H448V192zM0 448c0 17.7 14.3 32 32 32h128v-96c0-11.1 1.9-21.7 4.5-32H0v96zm288-160c-53 0-96 43-96 96v96h192v-96c0-53-43-96-96-96z"
+            />
+          </svg>
+        </svg-component>
+      </pl-button>
+
+      <pl-button primary small>
+        <svg-component svgMargin="left" fill="orange" ariaHidden="true" ariaLabel="Igloo">
+          <svg xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.--><path d="M256 8C119 8 8 119.1 8 256c0 137 111 248 248 248s248-111 248-248C504 119.1 393 8 256 8zm0 110c23.2 0 42 18.8 42 42s-18.8 42-42 42-42-18.8-42-42 18.8-42 42-42zm56 254c0 6.6-5.4 12-12 12h-88c-6.6 0-12-5.4-12-12v-24c0-6.6 5.4-12 12-12h12v-64h-12c-6.6 0-12-5.4-12-12v-24c0-6.6 5.4-12 12-12h64c6.6 0 12 5.4 12 12v100h12c6.6 0 12 5.4 12 12v24z"/></svg>
+        </svg-component>
+        Primary
       </pl-button>
     </div>
 
     <!-- Icon Buttons Round disabled -->
     <div style="margin-top: 15px">
-      <pl-button
-        primary
-        round
-        iconBtn
-        icon="fas fa-home"
-        title="Home"
-        disabled
-      >
+      <pl-button primary round iconBtn title="Home" disabled>
+        <icon-component icon="fas fa-home"></icon-component>
       </pl-button>
 
-      <pl-button
-        secondary
-        round
-        iconBtn
-        icon="fas fa-home"
-        title="Home"
-        disabled
-      >
+      <pl-button secondary round iconBtn title="Home" disabled>
+        <icon-component icon="fas fa-home"></icon-component>
       </pl-button>
 
-      <pl-button
-        tertiary
-        round
-        iconBtn
-        icon="fas fa-home"
-        title="Home"
-        disabled
-      >
+      <pl-button tertiary round iconBtn title="Home" disabled>
+        <icon-component icon="fas fa-home"></icon-component>
       </pl-button>
 
-      <pl-button
-        success
-        round
-        iconBtn
-        icon="fas fa-home"
-        title="Home"
-        disabled
-      >
+      <pl-button success round iconBtn title="Home" disabled>
+        <icon-component icon="fas fa-home"></icon-component>
       </pl-button>
 
-      <pl-button danger round iconBtn icon="fas fa-home" title="Home" disabled>
+      <pl-button danger round iconBtn title="Home" disabled>
+        <icon-component icon="fas fa-home"></icon-component>
       </pl-button>
 
-      <pl-button
-        warning
-        round
-        iconBtn
-        icon="fas fa-home"
-        title="Home"
-        disabled
-      >
+      <pl-button warning round iconBtn title="Home" disabled>
+        <icon-component icon="fas fa-home"></icon-component>
       </pl-button>
 
-      <pl-button info round iconBtn icon="fas fa-home" title="Home" disabled>
+      <pl-button info round iconBtn title="Home" disabled>
+        <icon-component icon="fas fa-home"></icon-component>
       </pl-button>
 
-      <pl-button light round iconBtn icon="fas fa-home" title="Home" disabled>
+      <pl-button light round iconBtn title="Home" disabled>
+        <icon-component icon="fas fa-home"></icon-component>
       </pl-button>
 
-      <pl-button dark round iconBtn icon="fas fa-home" title="Home" disabled>
+      <pl-button dark round iconBtn title="Home" disabled>
+        <icon-component icon="fas fa-home"></icon-component>
       </pl-button>
     </div>
 
     <!-- Icon Buttons Round outlined -->
     <div style="margin-top: 15px">
-      <pl-button primary outlined round iconBtn icon="fas fa-home"></pl-button>
+      <pl-button primary outlined round iconBtn>
+        <icon-component icon="fas fa-home"></icon-component>
+      </pl-button>
 
-      <pl-button
-        secondary
-        outlined
-        round
-        iconBtn
-        icon="fas fa-home"
-      ></pl-button>
+      <pl-button secondary outlined round iconBtn>
+        <icon-component icon="fas fa-home"></icon-component>
+      </pl-button>
 
-      <pl-button
-        tertiary
-        outlined
-        round
-        iconBtn
-        icon="fas fa-home"
-      ></pl-button>
+      <pl-button tertiary outlined round iconBtn>
+        <icon-component icon="fas fa-home"></icon-component>
+      </pl-button>
 
-      <pl-button success outlined round iconBtn icon="fas fa-home"></pl-button>
+      <pl-button success outlined round iconBtn>
+        <icon-component icon="fas fa-home"></icon-component>
+      </pl-button>
 
-      <pl-button danger outlined round iconBtn icon="fas fa-home"></pl-button>
+      <pl-button danger outlined round iconBtn>
+        <icon-component icon="fas fa-home"></icon-component>
+      </pl-button>
 
-      <pl-button warning outlined round iconBtn icon="fas fa-home"></pl-button>
+      <pl-button warning outlined round iconBtn>
+        <icon-component icon="fas fa-home"></icon-component>
+      </pl-button>
 
-      <pl-button info outlined round iconBtn icon="fas fa-home"></pl-button>
+      <pl-button info outlined round iconBtn>
+        <icon-component icon="fas fa-home"></icon-component>
+      </pl-button>
 
-      <pl-button light outlined round iconBtn icon="fas fa-home"></pl-button>
+      <pl-button light outlined round iconBtn>
+        <icon-component icon="fas fa-home"></icon-component>
+      </pl-button>
 
-      <pl-button dark outlined round iconBtn icon="fas fa-home"></pl-button>
+      <pl-button dark outlined round iconBtn>
+        <icon-component icon="fas fa-home"></icon-component>
+      </pl-button>
     </div>
 
     <!-- Icon Buttons Shapes sizes -->
     <div style="margin-top: 15px">
-      <pl-button
-        primary
-        round
-        icon="fas fa-home"
-        iconBtn
-        icon-btn-xs
-        title="Home"
-      >
+      <pl-button primary round iconBtn icon-btn-xs title="Home">
+        <icon-component icon="fas fa-home" iconSize="xs"></icon-component>
       </pl-button>
 
-      <pl-button
-        primary
-        round
-        icon="fas fa-home"
-        iconBtn
-        icon-btn-sm
-        title="Home"
-      >
+      <pl-button primary round iconBtn icon-btn-sm title="Home">
+        <icon-component icon="fas fa-home" iconSize="sm"></icon-component>
       </pl-button>
 
-      <pl-button primary round icon="fas fa-home" iconBtn title="Home">
+      <pl-button primary round iconBtn title="Home">
+        <icon-component icon="fas fa-home"></icon-component>
       </pl-button>
 
-      <pl-button
-        primary
-        round
-        icon="fas fa-home"
-        iconBtn
-        icon-btn-lg
-        title="Home"
-      >
+      <pl-button primary round iconBtn icon-btn-lg title="Home">
+        <icon-component icon="fas fa-home" iconSize="lg"></icon-component>
       </pl-button>
 
-      <pl-button
-        primary
-        round
-        icon="fas fa-home"
-        outlined
-        iconBtn
-        icon-btn-xs
-        title="Home"
-      >
+      <pl-button primary round outlined iconBtn icon-btn-xs title="Home">
+        <icon-component icon="fas fa-home"></icon-component>
       </pl-button>
 
-      <pl-button
-        primary
-        round
-        icon="fas fa-home"
-        outlined
-        iconBtn
-        icon-btn-sm
-        title="Home"
-      >
+      <pl-button primary round outlined iconBtn icon-btn-sm title="Home">
+        <icon-component icon="fas fa-home"></icon-component>
       </pl-button>
 
-      <pl-button
-        primary
-        round
-        icon="fas fa-home"
-        outlined
-        iconBtn
-        title="Home"
-      >
+      <pl-button primary round icon="fas fa-home" outlined iconBtn title="Home">
+        <icon-component icon="fas fa-home"></icon-component>
       </pl-button>
 
-      <pl-button
-        primary
-        round
-        icon="fas fa-home"
-        outlined
-        iconBtn
-        icon-btn-lg
-        title="Home"
-      >
+      <pl-button primary round outlined iconBtn icon-btn-lg title="Home">
+        <icon-component icon="fas fa-home"></icon-component>
       </pl-button>
     </div>
 
     <!-- Icon Buttons Shapes -->
     <div style="margin-top: 15px">
-      <pl-button primary round iconBtn icon="fas fa-home" title="Home">
+      <pl-button primary round iconBtn title="Home">
+        <icon-component icon="fas fa-home"></icon-component>
       </pl-button>
 
-      <pl-button primary tile iconBtn icon="fas fa-home" title="Home">
+      <pl-button primary tile iconBtn title="Home">
+        <icon-component icon="fas fa-home"></icon-component>
       </pl-button>
 
-      <pl-button primary iconBtn icon="fas fa-home" title="Home"> </pl-button>
-
-      <pl-button
-        primary
-        round
-        outlined
-        iconBtn
-        icon="fas fa-home"
-        title="Home"
-      >
+      <pl-button primary iconBtn title="Home">
+        <icon-component icon="fas fa-home"></icon-component>
       </pl-button>
 
-      <pl-button
-        primary
-        tile
-        outlined
-        iconBtn
-        icon="fas fa-home"
-        title="Home"
-      >
+      <pl-button primary round outlined iconBtn title="Home">
+        <icon-component icon="fas fa-home"></icon-component>
       </pl-button>
 
-      <pl-button primary iconBtn outlined icon="fas fa-home" title="Home">
+      <pl-button primary tile outlined iconBtn title="Home">
+        <icon-component icon="fas fa-home"></icon-component>
+      </pl-button>
+
+      <pl-button primary iconBtn outlined title="Home">
+        <icon-component icon="fas fa-home"></icon-component>
       </pl-button>
     </div>
 
     <!-- Icon Active State -->
     <div style="margin-top: 15px">
-      <pl-button
-        iconBtn
-        default-icon
-        icon="fas fa-home"
-        title="Home"
-      ></pl-button>
+      <pl-button iconBtn default-icon title="Home">
+        <icon-component icon="fas fa-home"></icon-component>
+      </pl-button>
 
-      <pl-button disabled iconBtn icon="fas fa-home" title="Home"></pl-button>
+      <pl-button disabled iconBtn title="Home">
+        <icon-component icon="fas fa-home"></icon-component>
+      </pl-button>
 
-      <pl-button
-        active-blue
-        iconBtn
-        icon="fas fa-home"
-        title="Home"
-        active
-        ariaPressed="true"
-      ></pl-button>
+      <pl-button active-blue iconBtn title="Home" active ariaPressed="true">
+        <icon-component icon="fas fa-home"></icon-component>
+      </pl-button>
     </div>
 
-    <!-- Buttons with Icons solid -->
+    <!-- Buttons with Icons -->
     <div style="margin-top: 15px">
-      <pl-button primary btnWithIcon btnIconPosition icon="fas fa-home" small>
+      <pl-button primary small>
+        <icon-component icon="fas fa-home" iconPosition="left"></icon-component>
         Primary
       </pl-button>
 
-      <pl-button
-        primary
-        btnWithIcon
-        btnIconPosition
-        outlined
-        icon="fas fa-home"
-        small
-      >
+      <pl-button primary outlined small>
+        <icon-component icon="fas fa-home" iconPosition="left"></icon-component>
         Primary
       </pl-button>
 
-      <pl-button primary btnWithIcon icon="fas fa-home" small>
+      <pl-button primary small>
         Primary
+        <icon-component
+          icon="fas fa-home"
+          iconPosition="right"
+        ></icon-component>
       </pl-button>
 
-      <pl-button primary btnWithIcon outlined icon="fas fa-home" small>
+      <pl-button primary outlined small>
         Primary
+        <icon-component
+          icon="fas fa-home"
+          iconPosition="right"
+        ></icon-component>
       </pl-button>
     </div>
 
-    <!-- Elevated Buttons with Icons solid -->
+    <!-- Elevated Buttons -->
     <div style="margin-top: 15px">
       <pl-button primary is-elevated small> Elevated </pl-button>
 
@@ -541,6 +460,7 @@
       <pl-button primary elevated-24 small> Elevated 24 </pl-button>
     </div>
 
+    <!-- Props -->
     <div style="margin-top: 50px">
       <h2>Props</h2>
       <div class="table-wrapper">
@@ -559,20 +479,32 @@
               <td>absolute</td>
               <td>Boolean</td>
               <td>false</td>
-              <td>Applies the inline style of position: absolute to the component.</td>
+              <td>
+                Applies the inline style of position: absolute to the component.
+              </td>
             </tr>
             <tr>
               <td>ariaPressed</td>
               <td>String</td>
               <td></td>
-              <td>Adding aria-pressed to an element with a role of button turns the button into a toggle button. The aria-pressed attribute is only relevant for toggle buttons. It represents the button's current "pressed" state.
-
-                The value is "tri-state", meaning the value can be set to true, false, mixed, or undefined values. In the case of aria-pressed, like most tri-state value types, the default value is undefined.
-                
-                Toggle buttons require a full press-and-release cycle to change their value. Pressing and releasing it once changes the value to true. If it's pressed and released again, the value changes back to false.
-                
-                A value of mixed means that the values of more than one item controlled by the button do not all share the same value.
-                <br /><span class="example">Ex: &#60;pl-button primary ariaPressed=" true | false | mixed "&#62;Button Name&#60;/pl-button&#62;</span> will render aria-pressed="true | false | mixed"
+              <td>
+                Adding aria-pressed to an element with a role of button turns
+                the button into a toggle button. The aria-pressed attribute is
+                only relevant for toggle buttons. It represents the button's
+                current "pressed" state. The value is "tri-state", meaning the
+                value can be set to true, false, mixed, or undefined values. In
+                the case of aria-pressed, like most tri-state value types, the
+                default value is undefined. Toggle buttons require a full
+                press-and-release cycle to change their value. Pressing and
+                releasing it once changes the value to true. If it's pressed and
+                released again, the value changes back to false. A value of
+                mixed means that the values of more than one item controlled by
+                the button do not all share the same value. <br /><span
+                  class="example"
+                  >Ex: &#60;pl-button primary ariaPressed=" true | false | mixed
+                  "&#62;Button Name&#60;/pl-button&#62;</span
+                >
+                will render aria-pressed="true | false | mixed"
               </td>
             </tr>
             <tr>
@@ -585,27 +517,27 @@
               <td>bottom</td>
               <td>String</td>
               <td>number | string</td>
-              <td>Aligns the component towards the bottom. This should be used with the absolute or fixed props. 
-                <br /><span class="example">Ex: bottom="50"</span>
+              <td>
+                Aligns the component towards the bottom. This should be used
+                with the absolute or fixed props. <br /><span class="example"
+                  >Ex: bottom="50"</span
+                >
               </td>
             </tr>
             <tr>
-              <td>btnWithIcon</td>
-              <td>Boolean</td>
-              <td>false</td>
-              <td>Sets a button with text to also have an icon. The icon is displayed to the right of the button's text by default.</td>
-            </tr>
-            <tr>
-              <td>btnIconPosition</td>
-              <td>String</td>
-              <td>left</td>
-              <td>Used with 'btnWithIcon' to change the icon's position from the default right of the button's text to the left.</td>
-            </tr>
-           <tr>
               <td>classNames</td>
               <td>String</td>
               <td></td>
-              <td>This property maps through the CSS that is linked to the component and lets the user apply classnames that exist as properties to the component that will be rendered to the 'class' attribute. <br /><span class="example">Ex: &#60;pl-button small red&#62;</span> will render to <span class="example">&#60;button class="small red"&#62;</span>.</td>
+              <td>
+                This property maps through the CSS that is linked to the
+                component and lets the user apply classnames that exist as
+                properties to the component that will be rendered to the 'class'
+                attribute. <br /><span class="example"
+                  >Ex: &#60;pl-button small red&#62;</span
+                >
+                will render to
+                <span class="example">&#60;button class="small red"&#62;</span>.
+              </td>
             </tr>
             <tr>
               <td>disabled</td>
@@ -614,27 +546,20 @@
               <td>This property adds disabled to the button element.</td>
             </tr>
             <tr>
-              <td>icon</td>
-              <td>String</td>
-              <td></td>
-              <td>
-                Add icon class to display icon. <span class="example">Ex: icon="fas fa-home" will render to &#60;i class="fas fa-home"&#62;&#60;/i&#62;.</span>
-              </td>
-            </tr>
-            <tr>
               <td>iconBtn</td>
               <td>Boolean</td>
               <td>false</td>
-              <td>
-                Designates the button as an icon button.
-              </td>
+              <td>Designates the button as an icon button.</td>
             </tr>
             <tr>
               <td>left</td>
               <td>String</td>
               <td>number | string</td>
-              <td>Aligns the component towards the left. This should be used with the absolute or fixed props. 
-                <br /><span class="example">Ex: left="50"</span>
+              <td>
+                Aligns the component towards the left. This should be used with
+                the absolute or fixed props. <br /><span class="example"
+                  >Ex: left="50"</span
+                >
               </td>
             </tr>
             <tr>
@@ -656,15 +581,21 @@
               <td>right</td>
               <td>String</td>
               <td>number | string</td>
-              <td>Aligns the component towards the right. This should be used with the absolute or fixed props. 
-                <br /><span class="example">Ex: right="50"</span>
+              <td>
+                Aligns the component towards the right. This should be used with
+                the absolute or fixed props. <br /><span class="example"
+                  >Ex: right="50"</span
+                >
               </td>
             </tr>
             <tr>
               <td>text</td>
               <td>Boolean</td>
               <td>false</td>
-              <td>Displays a button as text but with the same hover effects as a regular button.</td>
+              <td>
+                Displays a button as text but with the same hover effects as a
+                regular button.
+              </td>
             </tr>
             <tr>
               <td>title</td>
@@ -676,22 +607,31 @@
               <td>right</td>
               <td>String</td>
               <td>number | string</td>
-              <td>Aligns the component towards the right. This should be used with the absolute or fixed props. 
-                <br /><span class="example">Ex: right="50"</span>
+              <td>
+                Aligns the component towards the right. This should be used with
+                the absolute or fixed props. <br /><span class="example"
+                  >Ex: right="50"</span
+                >
               </td>
             </tr>
             <tr>
               <td>url</td>
               <td>String</td>
               <td></td>
-              <td>Used with the 'link' property, a url or path can be applied to the href that is rendered.</td>
+              <td>
+                Used with the 'link' property, a url or path can be applied to
+                the href that is rendered.
+              </td>
             </tr>
             <tr>
               <td>zIndex</td>
               <td>String</td>
               <td>number | string</td>
-              <td>Specifies the stack order of an element. This should be used with the absolute or fixed props. 
-                <br /><span class="example">Ex: zIndex="50"</span>
+              <td>
+                Specifies the stack order of an element. This should be used
+                with the absolute or fixed props. <br /><span class="example"
+                  >Ex: zIndex="50"</span
+                >
               </td>
             </tr>
           </tbody>
@@ -699,9 +639,13 @@
       </div>
     </div>
 
+    <!-- Styling -->
     <div style="margin-top: 50px">
       <h2>Styling</h2>
-      <p>These class names can be added directly to the component similiar to Props.</p>
+      <p>
+        These class names can be added directly to the component similiar to
+        Props.
+      </p>
       <div class="table-wrapper">
         <table>
           <thead>
@@ -715,69 +659,151 @@
           <tbody>
             <tr>
               <td><span class="example">Color</span></td>
-              <td>primary, secondary, tertiary, active-blue, success, danger, warning, light, dark</td>
-              <td>These class names will set background color, border color and the hover colors for a regular button.
-                <br /><span class="example">Ex: &#60;pl-button primary&#62;Button Name&#60;/pl-button&#62;</span>
+              <td>
+                primary, secondary, tertiary, active-blue, success, danger,
+                warning, light, dark
+              </td>
+              <td>
+                These class names will set background color, border color and
+                the hover colors for a regular button. <br /><span
+                  class="example"
+                  >Ex: &#60;pl-button primary&#62;Button
+                  Name&#60;/pl-button&#62;</span
+                >
               </td>
             </tr>
             <tr>
               <td></td>
               <td></td>
-              <td>When using these class names with a 'text' prop, the class names will be appeneded with '--text' which will set background color and border color to transparent and set the color of the text and the hover colors.
-                <br /><span class="example">Ex: &#60;pl-button text primary&#62;Button Name&#60;/pl-button&#62;</span>
+              <td>
+                When using these class names with a 'text' prop, the class names
+                will be appeneded with '--text' which will set background color
+                and border color to transparent and set the color of the text
+                and the hover colors. <br /><span class="example"
+                  >Ex: &#60;pl-button text primary&#62;Button
+                  Name&#60;/pl-button&#62;</span
+                >
               </td>
             </tr>
             <tr>
               <td></td>
               <td></td>
-              <td>When using these class names with an 'outline' prop, the background color is transparent and it sets the border color, text color and the hover colors.
-                <br /><span class="example">Ex: &#60;pl-button primary outlined&#62;Button Name&#60;/pl-button&#62;</span>
+              <td>
+                When using these class names with an 'outline' prop, the
+                background color is transparent and it sets the border color,
+                text color and the hover colors. <br /><span class="example"
+                  >Ex: &#60;pl-button primary outlined&#62;Button
+                  Name&#60;/pl-button&#62;</span
+                >
               </td>
             </tr>
             <tr>
               <td></td>
               <td>active and active-blue</td>
-              <td>For active state, the class names will set the background color, border color and the hover colors.<br />
-                When adding the 'active' class and the 'active-blue' class togather, the background color will be set to the active color and the hover color will be set to the active color.
-                <br /><span class="example">Ex: &#60;pl-button primary active active-blue &#62;Button Name&#60;/pl-button&#62;</span>
+              <td>
+                For active state, the class names will set the background color,
+                border color and the hover colors.<br />
+                When adding the 'active' class and the 'active-blue' class
+                togather, the background color will be set to the active color
+                and the hover color will be set to the active color.
+                <br /><span class="example"
+                  >Ex: &#60;pl-button primary active active-blue &#62;Button
+                  Name&#60;/pl-button&#62;</span
+                >
               </td>
             </tr>
             <tr>
               <td><span class="example">Elevation</span></td>
               <td>flat, is-elevated, elevated-0 to elevated-24</td>
-              <td>The elevation helpers allow you to control relative depth, or distance, between two surfaces. There is a total of 25 elevation levels. You can set an element’s elevation by using the class elevated-{n}, where n is a integer between 0-24 corresponding to the desired elevation. Applying flat will give give the button no depth and applying is-elevated will give the button a slight amount of depth..
-                <br /><span class="example">Ex: &#60;pl-button primary flat" &#62;Button Name&#60;/pl-button&#62;</span>
-                <br /><span class="example">Ex: &#60;pl-button primary is-elevated" &#62;Button Name&#60;/pl-button&#62;</span>
-                <br /><span class="example">Ex: &#60;pl-button primary elevated-3" &#62;Button Name&#60;/pl-button&#62;</span> 
+              <td>
+                The elevation helpers allow you to control relative depth, or
+                distance, between two surfaces. There is a total of 25 elevation
+                levels. You can set an element’s elevation by using the class
+                elevated-{n}, where n is a integer between 0-24 corresponding to
+                the desired elevation. Applying flat will give give the button
+                no depth and applying is-elevated will give the button a slight
+                amount of depth.. <br /><span class="example"
+                  >Ex: &#60;pl-button primary flat" &#62;Button
+                  Name&#60;/pl-button&#62;</span
+                >
+                <br /><span class="example"
+                  >Ex: &#60;pl-button primary is-elevated" &#62;Button
+                  Name&#60;/pl-button&#62;</span
+                >
+                <br /><span class="example"
+                  >Ex: &#60;pl-button primary elevated-3" &#62;Button
+                  Name&#60;/pl-button&#62;</span
+                >
               </td>
             </tr>
             <tr>
               <td><span class="example">Sizes</span></td>
               <td>x-small, small, default, large</td>
-              <td>Sizing for text buttons. 'x-small' is 20px, 'small' is 28px, 'default' is 36px and 'large' is 44px.
-                <br /><span class="example">Ex: &#60;pl-button primary x-small" &#62;Button Name&#60;/pl-button&#62;</span>
-                <br /><span class="example">Ex: &#60;pl-button primary small" &#62;Button Name&#60;/pl-button&#62;</span>
-                <br /><span class="example">Ex: &#60;pl-button primary default" &#62;Button Name&#60;/pl-button&#62;</span>
-                <br /><span class="example">Ex: &#60;pl-button primary large" &#62;Button Name&#60;/pl-button&#62;</span>
+              <td>
+                Sizing for text buttons. 'x-small' is 20px, 'small' is 28px,
+                'default' is 36px and 'large' is 44px. <br /><span
+                  class="example"
+                  >Ex: &#60;pl-button primary x-small" &#62;Button
+                  Name&#60;/pl-button&#62;</span
+                >
+                <br /><span class="example"
+                  >Ex: &#60;pl-button primary small" &#62;Button
+                  Name&#60;/pl-button&#62;</span
+                >
+                <br /><span class="example"
+                  >Ex: &#60;pl-button primary default" &#62;Button
+                  Name&#60;/pl-button&#62;</span
+                >
+                <br /><span class="example"
+                  >Ex: &#60;pl-button primary large" &#62;Button
+                  Name&#60;/pl-button&#62;</span
+                >
               </td>
             </tr>
             <tr>
               <td></td>
               <td>icon-btn-xs, icon-btn-sm, icon-btn-lg</td>
-              <td>Sizing for icon buttons. 'icon-btn-xs' is 1rem by 1rem, 'icon-btn-sm' is 28px by 28px, 'icon-btn-lg' is 44px by 44px and the default size is 36px by 36px .
-                <br /><span class="example">Ex: &#60;pl-button primary" &#62;&#60;/pl-button&#62; (default size)</span>
-                <br /><span class="example">Ex: &#60;pl-button primary icon-btn-xs" &#62;&#60;/pl-button&#62;</span>
-                <br /><span class="example">Ex: &#60;pl-button primaryicon-btn-sm" &#62;&#60;/pl-button&#62;</span>
-                <br /><span class="example">Ex: &#60;pl-button primary icon-btn-lg" &#62;&#60;/pl-button&#62;</span>
+              <td>
+                Sizing for icon buttons. 'icon-btn-xs' is 1rem by 1rem,
+                'icon-btn-sm' is 28px by 28px, 'icon-btn-lg' is 44px by 44px and
+                the default size is 36px by 36px . <br /><span class="example"
+                  >Ex: &#60;pl-button primary icon-btn"
+                  &#62;&#60;/pl-button&#62; (default size)</span
+                >
+                <br /><span class="example"
+                  >Ex: &#60;pl-button primary icon-btn icon-btn-xs"
+                  &#62;&#60;/pl-button&#62;</span
+                >
+                <br /><span class="example"
+                  >Ex: &#60;pl-button primary icon-btn icon-btn-sm"
+                  &#62;&#60;/pl-button&#62;</span
+                >
+                <br /><span class="example"
+                  >Ex: &#60;pl-button primary icon-btn icon-btn-lg"
+                  &#62;&#60;/pl-button&#62;</span
+                >
               </td>
             </tr>
             <tr>
               <td><span class="example">Shape</span></td>
               <td>round, rounded, tile</td>
-              <td>By default, these buttons, whether regular buttons or icon buttons, have rounded corners. 'round' is to make the circular icon buttons. 'tile' is to make the icon buttons, square or the regular buttons rectangle. 'rounded' is to make the regular button a pill shape.
-                <br /><span class="example">Ex: &#60;pl-button primary round iconBtn icon="fas fa-home" &#62;&#60;/pl-button&#62;</span>
-                <br /><span class="example">Ex: &#60;pl-button primary rounded" &#62;Button Name&#60;/pl-button&#62;</span>
-                <br /><span class="example">Ex: &#60;pl-button primary tile" &#62;Button Name&#60;/pl-button&#62;</span>
+              <td>
+                By default, these buttons, whether regular buttons or icon
+                buttons, have rounded corners. 'round' is to make the circular
+                icon buttons. 'tile' is to make the icon buttons, square or the
+                regular buttons rectangle. 'rounded' is to make the regular
+                button a pill shape. <br /><span class="example"
+                  >Ex: &#60;pl-button primary round iconBtn icon="fas fa-home"
+                  &#62;&#60;/pl-button&#62;</span
+                >
+                <br /><span class="example"
+                  >Ex: &#60;pl-button primary rounded" &#62;Button
+                  Name&#60;/pl-button&#62;</span
+                >
+                <br /><span class="example"
+                  >Ex: &#60;pl-button primary tile" &#62;Button
+                  Name&#60;/pl-button&#62;</span
+                >
               </td>
             </tr>
           </tbody>
@@ -947,6 +973,8 @@
     </div>
 
     <script src="./button.js" type="module"></script>
+    <script src="../icon/icon.js" type="module"></script>
+    <script src="../svg/svg.js" type="module"></script>
     <!-- <script src="../../../node_modules/bootstrap/dist/js/bootstrap.js"></script> -->
   </body>
 </html>

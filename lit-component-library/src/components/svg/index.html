@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- <link
+      rel="stylesheet"
+      href="../../../node_modules/bootstrap/dist/css/bootstrap.css"
+    /> -->
+    <!-- <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    /> -->
+    <!-- <link rel="stylesheet" href="./button.css" /> -->
+    <link
+      rel="stylesheet"
+      href="../../../node_modules/lit-fontawesome/css/font.css"
+    />
+    <link rel="stylesheet" href="../../styles/components.css" />
+  </head>
+  <body>
+    <div style="margin-top: 15px">
+      <h2>SVG Component</h2>
+      <p>
+        The SVG component is used to display SVG icons. Just copy and paste SVG
+        code into the component tag. The properties below can be used to style
+        the SVG element.
+      </p>
+
+      <div style="display: flex; align-items: center">
+        <div class="example-box">
+          <svg-component>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="16"
+              width="18"
+              viewBox="0 0 576 512"
+            >
+              <!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.-->
+              <path
+                d="M320 33.9c-10.5-1.2-21.2-1.9-32-1.9-99.8 0-187.8 50.8-239.4 128H320V33.9zM96 192H30.3C11.1 230.6 0 274 0 320h96V192zM352 39.4V160h175.4C487.2 99.9 424.8 55.9 352 39.4zM480 320h96c0-46-11.1-89.4-30.3-128H480v128zm-64 64v96h128c17.7 0 32-14.3 32-32v-96H411.5c2.6 10.3 4.5 20.9 4.5 32zm32-192H128v128h49.8c22.2-38.1 63-64 110.2-64s88 25.9 110.2 64H448V192zM0 448c0 17.7 14.3 32 32 32h128v-96c0-11.1 1.9-21.7 4.5-32H0v96zm288-160c-53 0-96 43-96 96v96h192v-96c0-53-43-96-96-96z"
+              />
+            </svg>
+          </svg-component>
+        </div>
+        <div>SVG</div>
+      </div>
+
+      <div style="display: flex; align-items: center">
+        <div class="example-box">
+          <svg-component fill="blue">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="16"
+              width="18"
+              viewBox="0 0 576 512"
+            >
+              <!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.-->
+              <path
+                d="M320 33.9c-10.5-1.2-21.2-1.9-32-1.9-99.8 0-187.8 50.8-239.4 128H320V33.9zM96 192H30.3C11.1 230.6 0 274 0 320h96V192zM352 39.4V160h175.4C487.2 99.9 424.8 55.9 352 39.4zM480 320h96c0-46-11.1-89.4-30.3-128H480v128zm-64 64v96h128c17.7 0 32-14.3 32-32v-96H411.5c2.6 10.3 4.5 20.9 4.5 32zm32-192H128v128h49.8c22.2-38.1 63-64 110.2-64s88 25.9 110.2 64H448V192zM0 448c0 17.7 14.3 32 32 32h128v-96c0-11.1 1.9-21.7 4.5-32H0v96zm288-160c-53 0-96 43-96 96v96h192v-96c0-53-43-96-96-96z"
+              />
+            </svg>
+          </svg-component>
+        </div>
+        <div>Changing the fill color</div>
+      </div>
+
+      <div style="display: flex; align-items: center">
+        <div class="example-box">
+          <svg-component fill="blue" height="48" width="48">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="16"
+              width="18"
+              viewBox="0 0 576 512"
+            >
+              <!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.-->
+              <path
+                d="M320 33.9c-10.5-1.2-21.2-1.9-32-1.9-99.8 0-187.8 50.8-239.4 128H320V33.9zM96 192H30.3C11.1 230.6 0 274 0 320h96V192zM352 39.4V160h175.4C487.2 99.9 424.8 55.9 352 39.4zM480 320h96c0-46-11.1-89.4-30.3-128H480v128zm-64 64v96h128c17.7 0 32-14.3 32-32v-96H411.5c2.6 10.3 4.5 20.9 4.5 32zm32-192H128v128h49.8c22.2-38.1 63-64 110.2-64s88 25.9 110.2 64H448V192zM0 448c0 17.7 14.3 32 32 32h128v-96c0-11.1 1.9-21.7 4.5-32H0v96zm288-160c-53 0-96 43-96 96v96h192v-96c0-53-43-96-96-96z"
+              />
+            </svg>
+          </svg-component>
+        </div>
+        <div>Changing the height and width</div>
+      </div>
+    </div>
+    
+    <!-- Props -->
+    <div style="margin-top: 50px">
+      <h2>Props</h2>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Property</th>
+              <th>Type</th>
+              <th>Default</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td>arialHidden</td>
+              <td>Boolean</td>
+              <td>false</td>
+              <td>
+                The 'ariaHidden' property can be used when using an SVG as an
+                icon.
+                <span class="example"
+                  >'ariaHidden="true" is rendered as 'aria-hidden="true"</span
+                >
+                in the rendered SVG.
+              </td>
+            </tr>
+            <tr>
+              <td>ariaLabel</td>
+              <td>String</td>
+              <td></td>
+              <td>
+                The 'ariaLabel' property will add
+                <span class="example"
+                  >'ariaLabel="value" is rendered as 'aria-label="value"'</span
+                >
+                in the rendered SVG.
+              </td>
+            </tr>
+
+            <tr>
+              <td>fill</td>
+              <td>String</td>
+              <td></td>
+              <td>
+                The 'fill' property can be used to change the color of the SVG.
+                By default the 'fill="currentColor', in which the SVG will
+                inherit the color of the parent element.
+                <br /><span class="example"
+                  >Ex: 'fill="#ffc0cb"' ( add a new color, rgb, rgba or hsl
+                  values of a color can be used as well) in the component will
+                  render to 'fill="#ffc0cb"' in the SVG.</span
+                >
+              </td>
+            </tr>
+            <tr>
+              <td>height</td>
+              <td>Number</td>
+              <td></td>
+              <td>
+                The 'height' property can be used to change the height of the
+                SVG.
+                <span class="example"
+                  >Ex: height="48" in the component will render to the
+                  SVG.</span
+                >
+              </td>
+            </tr>
+            <tr>
+              <td>svgMargin</td>
+              <td>String</td>
+              <td></td>
+              <td>
+                Used in buttons with text and SVG's as icons, the 'svgMargin' property is
+                used to wrap a span around the SVG add margin to an SVG when
+                added to the left or right of text in a button.
+                <span class="example"
+                  >Ex: svgMargin="left" in the component will render to and wrap a 
+                  &#60;span class="mr-1"&#62;&#60;/span&#62; around the SVG. svgMargin="right"
+                  will render "ml-1" each will give the SVG some space between it's self
+                  and the button text.</span
+                >
+              </td>
+            </tr>
+            <tr>
+              <td>width</td>
+              <td>Number</td>
+              <td></td>
+              <td>
+                The 'width' property can be used to change the width of the SVG.
+                <span class="example"
+                  >Ex: width="48" in the component will render to the SVG.</span
+                >
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Instructions -->
+    <div style="margin-top: 50px">
+      <h4>Using Component in other JavaScript Frameworks</h4>
+
+      <h5>Vue.js</h5>
+      <p>
+        Here's how the SVG component would be used in a Vue.js component:
+      </p>
+      <pre>
+      <code>
+        &#60;template&#62;
+        &#60;div&#62;
+        &#60;svg-component
+            fill="your-fill"
+            :width="20"
+            :height="20"
+        &#62;&#60;/svg-component&#62;
+            &#60;p&#62;Vue Component with Lit Element SVG&#60;/p&#62;
+            &#60;/div&#62;
+            &#60;/template&#62;
+        
+            &#60;script&#62;
+        import 'svg-component'; // Import the Lit Element Svg component
+        
+        export default {
+          // Vue component properties, methods, etc.
+        };
+        &#60;/script&#62;
+        
+        
+      </code>
+    </pre>
+
+      <h5>React</h5>
+      <p>Here's how the SVG component would be used in a React component:</p>
+      <pre>
+      <code>
+        import React from 'react';
+        import 'svg-component'; // Import the Lit Element Svg component
+
+        const MyReactComponent = () => {
+          return (
+            &#60;div&#62;
+            &#60;svg-component
+                fill="your-fill"
+                width={20}
+                height={20}
+              &#62; &#60;/svg-component&#62;
+              &#60;p>React Component with Lit Element Svg &#60;/p&#62;
+              &#60;/div&#62;
+          );
+        };
+
+        export default MyReactComponent;
+
+      </code>
+    </pre>
+
+      <h5>Angular</h5>
+      <p>
+        Here's how the SVG component would be used in an Angular component:
+      </p>
+
+      <p>
+        In Angular, using Lit Element components directly might require
+        additional steps due to differences in the way Angular handles the
+        DOM. You might need to create a wrapper or use a library like
+        ngx-build-plus to enable Angular to handle custom elements.
+      </p>
+      <p>
+        The approach would involve creating a custom Angular component that
+        wraps the Lit Element Icon component.
+      </p>
+
+      <p>Here's a basic example without wrapping the component.</p>
+
+      <pre>
+      <code>
+        &#60;div&#62;
+        &#60;svg-component
+            [fill]="'your-fill'"
+            [width]="20"
+            [height]="20"
+            &#62;&#60;/svg-component&#62;
+          &#60;p&#62;Angular Component with Lit Element SVG&#60;/p&#62;
+          &#60;/div&#62;
+        
+      </code>
+    </pre>
+      <p>Ensure to handle the compatibility between custom elements and the Angular lifecycle for proper usage.</p>
+
+      <p>
+        In Angular, you may need to add the custom element
+        (<strong>`svg-component`</strong>) to the
+        <strong>`schemas`</strong> array in your
+        <strong>`AppModule`</strong> to make it available across your Angular
+        app. The <strong>`schemas`</strong> array in
+        <strong>`AppModule`</strong> allows Angular to understand custom
+        elements.
+      </p>
+      <p>Here's an example of how you might do this:</p>
+
+      <pre>
+        <code>
+          // Import necessary modules
+          import { BrowserModule } from '@angular/platform-browser';
+          import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+
+          import { AppComponent } from './app.component';
+
+          @NgModule({
+            declarations: [
+              AppComponent
+            ],
+            imports: [
+              BrowserModule
+            ],
+            schemas: [CUSTOM_ELEMENTS_SCHEMA], // Add this line to include custom elements
+            providers: [],
+            bootstrap: [AppComponent]
+          })
+          export class AppModule { }
+
+        </code>
+      </pre>
+
+      <p>
+        By adding <strong>`CUSTOM_ELEMENTS_SCHEMA`</strong> to the
+        <strong>`schemas`</strong> array, Angular will recognize the custom
+        elements like <strong>`svg-component`</strong>. After adding this to
+        your <strong>`AppModule`</strong>, you should be able to use the
+        <strong>`svg-component`</strong> tag in your Angular templates
+        without any issues.
+      </p>
+
+      <p>
+        Please note that in each example, you need to ensure that you've
+        imported the <strong>`svg-component`</strong> from the correct file
+        path or library location where the component is defined. Additionally,
+        the attribute bindings might slightly vary depending on the framework
+        (for example, in Angular, attribute binding is done using square
+        brackets <strong>`[]`</strong>).
+      </p>
+    </div>
+
+    <script src="./svg.js" type="module"></script>
+    <!-- <script src="../../../node_modules/bootstrap/dist/js/bootstrap.js"></script> -->
+  </body>
+</html>

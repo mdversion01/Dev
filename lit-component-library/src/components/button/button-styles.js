@@ -40,14 +40,6 @@ export const buttonStyles = css`
     color: inherit;
   }
 
-  .mr-1 {
-    margin-right: 0.25rem !important;
-  }
-
-  .ml-1 {
-    margin-left: 0.25rem !important;
-  }
-
   .pl-btn-flex {
     align-items: center;
     display: flex;
@@ -118,6 +110,7 @@ export const buttonStyles = css`
 
   .pl-btn:hover {
     background-color: rgb(118, 118, 118);
+    color: #fff;
     text-decoration: none;
   }
 
@@ -216,6 +209,7 @@ export const buttonStyles = css`
   .pl-btn.active-blue {
     background-color: #909090;
     border-color: #909090;
+    color: #FFFF;
   }
 
   .pl-btn.active-blue:hover {
@@ -298,6 +292,10 @@ export const buttonStyles = css`
   .pl-btn.text {
     background-color: transparent;
     border-color: transparent;
+  }
+
+  .pl-btn.text:hover {
+    color: rgba(0,0,0,.87);
   }
 
   .pl-btn.primary--text {
@@ -412,7 +410,7 @@ export const buttonStyles = css`
   }
 
   .pl-btn.large {
-    font-size: 0.875rem !important;
+    font-size: 1.2rem !important;
     height: 44px !important;
     min-width: 78px !important;
     padding: 0 19.5555555556px !important;
@@ -579,7 +577,7 @@ export const buttonStyles = css`
   .pl-btn.icon-btn {
     align-items: center;
     display: inline-flex;
-    font-size: 0.875rem;
+    font-size: 1rem;
     height: 36px;
     justify-content: center;
     line-height: 1.2;
@@ -596,10 +594,6 @@ export const buttonStyles = css`
   .pl-btn.icon-btn.default-icon:hover {
     background-color: transparent;
     color: #4b9cf5;
-  }
-
-  .pl-btn.icon-btn > i {
-    font-size: 1.2rem;
   }
 
   .pl-btn.icon-btn-lg {
@@ -624,8 +618,8 @@ export const buttonStyles = css`
 
   .pl-btn.icon-btn-xs {
     font-size: 0.75rem;
-    height: 1rem;
-    width: 1rem;
+    height: 1.2rem;
+    width: 1.2rem;
   }
 
   .pl-btn.icon-btn-xs > i {
