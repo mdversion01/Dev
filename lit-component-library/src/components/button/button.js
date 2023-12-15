@@ -17,17 +17,16 @@ class PlButton extends LitElement {
   static get properties() {
     return {
       ariaPressed: { type: Boolean },
+      btnIcon: { type: Boolean },
       classNames: { type: String },
       disabled: { type: Boolean },
       inlineStyles: { type: String },
       outlined: { type: Boolean },
       iconBtn: { type: Boolean },
-      // icon: { type: String },
       link: { type: Boolean },
       text: { type: Boolean },
+      textBtn: { type: Boolean },
       url: { type: String },
-      // btnWithIcon: { type: Boolean },
-      // btnIconPosition: { type: String },
       block: { type: Boolean },
       title: { type: String },
       // For inline styles
@@ -44,17 +43,16 @@ class PlButton extends LitElement {
   constructor() {
     super();
     this.ariaPressed = false;
+    this.btnIcon = false;
     this.classNames = "";
     this.disabled = false;
     this.inlineStyles = "";
     this.outlined = false;
     this.iconBtn = false;
-    // this.icon = "";
     this.link = false;
     this.text = false;
+    this.textBtn = false;
     this.url = "";
-    // this.btnWithIcon = false;
-    // this.btnIconPosition = "left";
     this.block = false;
     this.title = "";
     // For inline styles
@@ -91,18 +89,9 @@ class PlButton extends LitElement {
     const content = this.iconBtn
       ? html`<slot></slot>`
       : html`<span class="pl-btn__content"><slot></slot></span>`;
-    // const btnWithIconContent = this.btnIconPosition
-    //   ? html`<div class="pl-btn-flex">
-    //       <i class="${this.icon} mr-1"></i
-    //       ><span class="pl-btn__content"><slot></slot></span>
-    //     </div>`
-    //   : html`<div class="pl-btn-flex">
-    //       <span class="pl-btn__content"><slot></slot></span
-    //       ><i class="${this.icon} ml-1"></i>
-    //     </div>`;
+    
     const ripple = this.iconBtn ? "" : "pl-btn-ripple";
-    const iconButton = this.iconBtn ? "icon-btn" : "";
-
+    
     const dynamicStyles = [
       this.absolute && `position: absolute;`,
       this.left && `left: ${this.left}px;`,
@@ -124,21 +113,6 @@ class PlButton extends LitElement {
     classAttribute += blockClass ? ` ${blockClass}` : "";
     classAttribute += this._getClassNames() ? ` ${this._getClassNames()}` : "";
 
-  //   return html`
-  //   <button
-  //     aria-pressed="${ariaPressedAttr}"
-  //     class="${classAttribute} ${ripple} ${iconButton}"
-  //     style="${ifDefined(inlineStyles ? inlineStyles : undefined)}"
-  //     @click="${this._handleClick}"
-  //     aria-label="${this.label || "Button"}"
-  //     title="${ifDefined(this.title ? this.title : undefined)}"
-  //     role="button"
-  //     ?disabled="${this.disabled}"
-  //   >
-  //     <slot></slot> <!-- Allow users to include any content within the button -->
-  //   </button>
-  // `;
-
     if (this.link) {
       return html`
         <a
@@ -153,7 +127,27 @@ class PlButton extends LitElement {
           ${content}
         </a>
       `;
-      } else if (this.text) {
+      } else if (this.textBtn) {
+      for (const colorClass of colorClasses) {
+        if (classAttribute.includes(colorClass)) {
+          classAttribute += ` ${colorClass}--text`;
+          classAttribute = classAttribute.replace(colorClass, "");
+        }
+      }
+      return html`
+        <button
+          aria-pressed="${ariaPressedAttr}"
+          class="${classAttribute} text-btn"
+          style=${ifDefined(inlineStyles ? inlineStyles : undefined)}
+          @click="${this._handleClick}"
+          aria-label="${this.label || "Button"}"
+          role="button"
+          ?disabled="${this.disabled}"
+        >
+          ${content}
+        </button>
+      `;
+    } else if (this.text) {
       for (const colorClass of colorClasses) {
         if (classAttribute.includes(colorClass)) {
           classAttribute += ` ${colorClass}--text`;
@@ -178,6 +172,27 @@ class PlButton extends LitElement {
         <button
           aria-pressed="${ariaPressedAttr}"
           class="${classAttribute} icon-btn"
+          style=${ifDefined(inlineStyles ? inlineStyles : undefined)}
+          @click="${this._handleClick}"
+          aria-label="${this.label || "Button"}"
+          title=${ifDefined(this.title ? this.title : undefined)}
+          role="button"
+          ?disabled="${this.disabled}"
+        >
+          ${content}
+        </button>
+      `;
+    } else if (this.btnIcon) {
+      for (const colorClass of colorClasses) {
+        if (classAttribute.includes(colorClass)) {
+          classAttribute += ` ${colorClass}--text`;
+          classAttribute = classAttribute.replace(colorClass, "");
+        }
+      }
+      return html`
+        <button
+          aria-pressed="${ariaPressedAttr}"
+          class="${classAttribute} btn-icon"
           style=${ifDefined(inlineStyles ? inlineStyles : undefined)}
           @click="${this._handleClick}"
           aria-label="${this.label || "Button"}"
@@ -215,6 +230,7 @@ class PlButton extends LitElement {
       "additionalstyles",
       "aria-pressed",
       "ariapressed",
+      "btnicon",
       "disabled",
       "inlinestyles",
       "dynamicstyles",
@@ -222,11 +238,8 @@ class PlButton extends LitElement {
       "link",
       "text",
       "url",
-      // "icon",
       "iconbtn",
       "title",
-      // "btnwithicon",
-      // "btniconposition",
       "block",
       "absolute",
       "left",

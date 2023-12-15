@@ -30,4 +30,8 @@ export const iconStyles = css`
   i.xs {
     font-size: 0.75rem;
   }
+
+  .token-icon { 
+    font-size: inherit !important;
+  }
 `;
