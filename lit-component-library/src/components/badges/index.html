@@ -18,566 +18,415 @@
   </head>
   <body>
     <!-- Buttons solid -->
-    <div>
-      <span style="margin-right: 15px">
+
+    <div class="title">Badge Types</div>
+    <div class="ex-container">
+      <div class="content-box">
+        <pl-badge variant="success" size="sm"> Test Badge </pl-badge>
+        <div class="context">Basic Badge</div>
+      </div>
+
+      <div class="content-box">
+        <pl-badge outlined size="sm">
+          Test Badge
+          <pl-button text variant="danger" stripped iconBtn>
+            <icon-component icon="fas fa-times-circle"></icon-component>
+          </pl-button>
+        </pl-badge>
+        <div class="context">Badge with (Icon) Button</div>
+      </div>
+
+      <div class="content-box">
+        <pl-badge variant="info" size="sm" icon>
+          Information
+          <span class="icon" slot="icon"
+            ><icon-component icon="fas fa-info-circle"></icon-component
+          ></span>
+        </pl-badge>
+        <div class="context">Badge with Icon</div>
+      </div>
+
+      <div class="content-box">
+        <pl-button variant="primary" size="sm">
+          Primary
+          <pl-badge variant="light" size="xs" bdgPosition="right">1</pl-badge>
+        </pl-button>
+        <div class="context">Button with Badge(as a Counter)</div>
+      </div>
+
+      <div class="content-box">
         <pl-badge
           token
-          round
+          shape="circle"
           bordered
-          outlined
-          danger
+          variant="danger"
           inset
           offsetX="12"
           offsetY="12"
         >
-          <pl-button primary small> Primary </pl-button>
+          <pl-button variant="primary" size="sm"> Primary </pl-button>
           <span slot="token">10</span>
         </pl-badge>
-      </span>
-      <span style="margin-right: 15px">
-        <pl-badge
-          token
-          rounded
-          bordered
-          outlined
-          danger
-          inset
-          offsetX="12"
-          offsetY="12"
-        >
-          <pl-button primary small> Primary </pl-button>
-          <span slot="token">10</span>
-        </pl-badge>
-      </span>
-      <span style="margin-right: 15px">
-        <pl-badge
-          token
-          bordered
-          outlined
-          danger
-          inset
-          offsetX="12"
-          offsetY="12"
-        >
-          <pl-button primary small> Primary </pl-button>
-          <span slot="token">10</span>
-        </pl-badge>
-      </span>
-      <span style="margin-right: 15px">
-        <pl-badge token round bordered danger inset offsetX="12" offsetY="12">
-          <pl-button primary small> Primary </pl-button>
-          <span slot="token">10</span>
-        </pl-badge>
-      </span>
+        <div class="context">Button Badge Token</div>
+      </div>
 
-      <span style="margin-right: 15px">
-        <pl-badge token rounded bordered yellow inset offsetX="12" offsetY="12">
-          <pl-button primary small> Primary </pl-button>
-          <span slot="token">10</span>
+      <div class="content-box">
+        <pl-badge dot variant="green" inset offsetX="10" offsetY="10">
+          <pl-button iconBtn shape="circle" title="Rocket">
+            <icon-component icon="fab fa-rocketchat"></icon-component>
+          </pl-button>
         </pl-badge>
-      </span>
+        <div class="context">Button Badge Dot</div>
+      </div>
+    </div>
 
-      <span style="margin-right: 15px">
-        <pl-badge token rounded bordered purple inset offsetX="12" offsetY="12">
-          <pl-button primary small> Primary </pl-button>
-          <span slot="token" >10</span>
-        </pl-badge>
-      </span>
+    <div style="margin-top: 15px">
+      <div class="title">Predefined badge styles</div>
+      <div class="ex-container no-flex">
+        <div class="content-box">
+          <pl-badge variant="primary" size="sm"> Primary </pl-badge>
+          <pl-badge variant="secondary" size="sm"> Secondary </pl-badge>
+          <pl-badge variant="tertiary" size="sm"> Tertiary </pl-badge>
+          <pl-badge variant="success" size="sm"> Success </pl-badge>
+          <pl-badge variant="danger" size="sm"> Danger </pl-badge>
+          <pl-badge variant="warning" size="sm"> Warning </pl-badge>
+          <pl-badge variant="info" size="sm"> Info </pl-badge>
+          <pl-badge variant="light" size="sm"> Light </pl-badge>
+          <pl-badge variant="dark" size="sm"> Dark </pl-badge>
+          <div class="context">
+            Solid Badges. Predifined badge variant colors/styles - primary,
+            secondary, tertiary, active-blue, success, danger, warning, light,
+            dark
+          </div>
+        </div>
 
-      <span style="margin-right: 15px">
-        <pl-badge token round purple inset offsetX="12" offsetY="12">
-          <pl-button primary small> Primary </pl-button>
-          <span slot="token">
-            <icon-component icon="fas fa-home" tokenIcon></icon-component>
+        <div class="content-box">
+          <pl-badge variant="primary" size="sm" disabled> Primary </pl-badge>
+          <pl-badge variant="secondary" size="sm" disabled>
+            Secondary
+          </pl-badge>
+          <pl-badge variant="tertiary" size="sm" disabled> Tertiary </pl-badge>
+          <pl-badge variant="success" size="sm" disabled> Success </pl-badge>
+          <pl-badge variant="danger" size="sm" disabled> Danger </pl-badge>
+          <pl-badge variant="warning" size="sm" disabled> Warning </pl-badge>
+          <pl-badge variant="info" size="sm" disabled> Info </pl-badge>
+          <pl-badge variant="light" size="sm" disabled> Light </pl-badge>
+          <pl-badge variant="dark" size="sm" disabled> Dark </pl-badge>
+          <div class="context">Disabled Badges.</div>
+        </div>
+
+        <div class="content-box">
+          <pl-badge variant="blue" size="sm"> Blue </pl-badge>
+          <pl-badge variant="blue-grey" size="sm"> Blue-Grey </pl-badge>
+          <pl-badge variant="brown" size="sm"> Brown </pl-badge>
+          <pl-badge variant="deep-orange" size="sm"> Deep-Orange </pl-badge>
+          <pl-badge variant="deep-purple" size="sm"> Deep-Purple </pl-badge>
+          <pl-badge variant="green" size="sm"> Green </pl-badge>
+          <pl-badge variant="grey" size="sm"> Grey </pl-badge>
+          <pl-badge variant="indigo" size="sm"> Indigo </pl-badge>
+          <pl-badge variant="light-blue" size="sm"> Light-Blue </pl-badge>
+          <pl-badge variant="pink" size="sm"> Pink </pl-badge>
+          <pl-badge variant="purple" size="sm"> Purple </pl-badge>
+          <pl-badge variant="red" size="sm"> Red </pl-badge>
+          <pl-badge variant="teal" size="sm"> Teal </pl-badge>
+          <pl-badge variant="shades black" size="sm"> Shades Black </pl-badge>
+          <pl-badge variant="shades white" size="sm"> Shades White </pl-badge>
+          <pl-badge variant="amber" size="sm"> Amber </pl-badge>
+          <pl-badge variant="cyan" size="sm"> Cyan </pl-badge>
+          <pl-badge variant="lime" size="sm"> Lime </pl-badge>
+          <pl-badge variant="light-green" size="sm"> Light-Green </pl-badge>
+          <pl-badge variant="orange" size="sm"> Orange </pl-badge>
+          <pl-badge variant="yellow" size="sm"> Yellow </pl-badge>
+          <div class="context">
+            Solid Badges. Other predifined badge variatn colors/styles - blue,
+            blue-grey, brown, deep-orange, deep-purple, green, grey, indigo,
+            light-blue, pink, purple, red, teal, shades black, shades white,
+            amber, cyan, lime, light-green, orange, yellow
+          </div>
+        </div>
+
+        <div class="content-box">
+          <pl-badge variant="blue" outlined size="sm"> Blue </pl-badge>
+          <pl-badge variant="blue-grey" outlined size="sm">
+            Blue-Grey
+          </pl-badge>
+          <pl-badge variant="brown" outlined size="sm"> Brown </pl-badge>
+          <pl-badge variant="deep-orange" outlined size="sm">
+            Deep-Orange
+          </pl-badge>
+          <pl-badge variant="deep-purple" outlined size="sm">
+            Deep-Purple
+          </pl-badge>
+          <pl-badge variant="green" outlined size="sm"> Green </pl-badge>
+          <pl-badge variant="grey" outlined size="sm"> Grey </pl-badge>
+          <pl-badge variant="indigo" outlined size="sm"> Indigo </pl-badge>
+          <pl-badge variant="light-blue" outlined size="sm">
+            Light-Blue
+          </pl-badge>
+          <pl-badge variant="pink" outlined size="sm"> Pink </pl-badge>
+          <pl-badge variant="purple" outlined size="sm"> Purple </pl-badge>
+          <pl-badge variant="red" outlined size="sm"> Red </pl-badge>
+          <pl-badge variant="teal" outlined size="sm"> Teal </pl-badge>
+          <pl-badge variant="amber" outlined size="sm"> Amber </pl-badge>
+          <pl-badge variant="cyan" outlined size="sm"> Cyan </pl-badge>
+          <pl-badge variant="lime" outlined size="sm"> Lime </pl-badge>
+          <pl-badge variant="light-green" outlined size="sm">
+            Light-Green
+          </pl-badge>
+          <pl-badge variant="orange" outlined size="sm"> Orange </pl-badge>
+          <pl-badge variant="yellow" outlined size="sm"> Yellow </pl-badge>
+          <div class="context">Outlined badge examples.</div>
+        </div>
+
+        <div class="content-box">
+          <pl-badge variant="blue" size="xs"> x-small </pl-badge>
+          <pl-badge variant="blue" size="sm"> small </pl-badge>
+          <pl-badge variant="blue"> default </pl-badge>
+          <pl-badge variant="blue" size="lg"> large </pl-badge>
+          <pl-badge variant="blue" outlined size="x"> x-small </pl-badge>
+          <pl-badge variant="blue" outlined size="sm"> small </pl-badge>
+          <pl-badge variant="blue" outlined> default </pl-badge>
+          <pl-badge variant="blue" outlined size="lg"> large </pl-badge>
+          <div class="context">Badge sizes.</div>
+        </div>
+
+        <div class="content-box">
+          <pl-badge variant="blue"> default </pl-badge>
+          <pl-badge variant="blue" shape="square"> square </pl-badge>
+          <pl-badge variant="blue" shape="pill"> pill </pl-badge>
+          <pl-badge variant="blue" outlined> default </pl-badge>
+          <pl-badge variant="blue" shape="square" outlined> square </pl-badge>
+          <pl-badge variant="blue" shape="pill" outlined> pill </pl-badge>
+          <div class="context">Badge shapes.</div>
+        </div>
+
+        <div class="content-box" style="padding-top: 15px">
+          <span style="margin-right: 15px">
+            <pl-badge
+              token
+              shape="circle"
+              outlined
+              variant="danger"
+              inset
+              offsetX="12"
+              offsetY="12"
+            >
+              <pl-button variant="primary" size="sm"> Primary </pl-button>
+              <span slot="token">10</span>
+            </pl-badge>
           </span>
-        </pl-badge>
-      </span>
-    </div>
-
-    <div style="margin-top: 15px">
-      <pl-badge dot purple>
-        <pl-button primary small> Primary </pl-button>
-      </pl-badge>
-
-      <pl-badge dot orange bordered inset offsetX="10" offsetY="10">
-        <pl-button primary round iconBtn title="Home">
-          <icon-component icon="fas fa-home"></icon-component>
-        </pl-button>
-      </pl-badge>
-
-      <pl-badge dot green inset offsetX="10" offsetY="10">
-        <pl-button round iconBtn title="Rocket">
-          <icon-component icon="fab fa-rocketchat"></icon-component>
-        </pl-button>
-      </pl-badge>
-    </div>
-
-    <div style="margin-top: 15px">
-      <pl-badge success outlined small> Test Badge </pl-badge>
-
-      <pl-badge success small> Test Badge </pl-badge>
-    </div>
-
-    <div style="margin-top: 15px">
-      <pl-badge outlined small> 
-        Test Badge 
-        <pl-button text danger basic iconBtn>
-          <icon-component icon="fas fa-times-circle"></icon-component>
-        </pl-button>
-      </pl-badge>
-    </div>
-
-    <!-- <div style="margin-top: 15px">
-      <pl-badge primary small> Primary </pl-badge>
-
-      <pl-badge secondary small> Secondary </pl-badge>
-
-      <pl-badge tertiary small> Tertiary </pl-badge>
-
-      <pl-badge active-blue small> Active </pl-badge>
-
-      <pl-badge success small> Success </pl-badge>
-
-      <pl-badge danger small> Danger </pl-badge>
-
-      <pl-badge warning small> Warning </pl-badge>
-
-      <pl-badge info small> Info </pl-badge>
-
-      <pl-badge light small> Light </pl-badge>
-
-      <pl-badge dark small> Dark </pl-badge>
-    </div> -->
-
-    <!-- Buttons solid disabled -->
-    <!-- <div style="margin-top: 15px">
-      <pl-badge primary small disabled> Primary </pl-badge>
-
-      <pl-badge secondary small disabled> Secondary </pl-badge>
-
-      <pl-badge tertiary small disabled> Tertiary </pl-badge>
-
-      <pl-badge active-blue small disabled> Active </pl-badge>
-
-      <pl-badge success small disabled> Success </pl-badge>
-
-      <pl-badge danger small disabled> Danger </pl-badge>
-
-      <pl-badge warning small disabled> Warning </pl-badge>
-
-      <pl-badge info small disabled> Info </pl-badge>
-
-      <pl-badge light small disabled> Light </pl-badge>
-
-      <pl-badge dark small disabled> Dark </pl-badge>
-    </div> -->
-
-    <!-- Buttons outlined -->
-    <!-- <div style="margin-top: 15px">
-      <pl-badge primary outlined small> Primary </pl-badge>
-
-      <pl-badge secondary outlined small> Secondary </pl-badge>
-
-      <pl-badge tertiary outlined small> Tertiary </pl-badge>
-
-      <pl-badge success outlined small> Success </pl-badge>
-
-      <pl-badge danger outlined small> Danger </pl-badge>
-
-      <pl-badge warning outlined small> Warning </pl-badge>
-
-      <pl-badge info outlined small> Info </pl-badge>
-
-      <pl-badge light outlined small> Light </pl-badge>
-
-      <pl-badge dark outlined small> Dark </pl-badge>
-
-      <pl-badge link small> Link </pl-badge>
-    </div> -->
-
-    <!-- Buttons sizes -->
-    <!-- <div style="margin-top: 15px">
-      <pl-badge primary flat> no size </pl-badge>
-
-      <pl-badge primary flat x-small> x-small </pl-badge>
-
-      <pl-badge primary flat small> small </pl-badge>
-
-      <pl-badge primary flat default> default </pl-badge>
-
-      <pl-badge primary flat large> large </pl-badge>
-
-      <pl-badge primary outlined flat> no size </pl-badge>
-
-      <pl-badge primary flat outlined x-small> x-small </pl-badge>
-
-      <pl-badge primary flat outlined small> small </pl-badge>
-
-      <pl-badge primary flat outlined default> default </pl-badge>
-
-      <pl-badge primary flat outlined large> large </pl-badge>
-    </div> -->
-
-    <!-- Buttons shapes -->
-    <!-- <div style="margin-top: 15px">
-      <pl-badge primary flat default> Default </pl-badge>
-
-      <pl-badge primary flat tile default> Tiled </pl-badge>
-
-      <pl-badge primary flat pill default> Rounded </pl-badge>
-
-      <pl-badge primary flat outlined default> Default </pl-badge>
-
-      <pl-badge primary flat tile outlined default> Tiled </pl-badge>
-
-      <pl-badge primary flat pill outlined default> Rounded </pl-badge>
-    </div> -->
-
-    <!-- Text Buttons -->
-    <!-- <div style="margin-top: 15px">
-      <pl-badge text small> Default </pl-badge>
-
-      <pl-badge text primary small> Primary </pl-badge>
-
-      <pl-badge text secondary small> Secondary </pl-badge>
-
-      <pl-badge text tertiary small> Tertiary </pl-badge>
-
-      <pl-badge text success small> Success </pl-badge>
-
-      <pl-badge text danger small> Danger </pl-badge>
-
-      <pl-badge text warning small> Warning </pl-badge>
-
-      <pl-badge text info small> Info </pl-badge>
-
-      <pl-badge text light small> Light </pl-badge>
-
-      <pl-badge text dark small> Dark </pl-badge>
-    </div> -->
-
-    <!-- Text Buttons Disabled -->
-    <!-- <div style="margin-top: 15px">
-      <pl-badge text small disabled> Default </pl-badge>
-
-      <pl-badge text primary small disabled> Primary </pl-badge>
-
-      <pl-badge text secondary small disabled> Secondary </pl-badge>
-
-      <pl-badge text tertiary small disabled> Tertiary </pl-badge>
-
-      <pl-badge text success small disabled> Success </pl-badge>
-
-      <pl-badge text danger small disabled> Danger </pl-badge>
-
-      <pl-badge text warning small disabled> Warning </pl-badge>
-
-      <pl-badge text info small disabled> Info </pl-badge>
-
-      <pl-badge text light small disabled> Light </pl-badge>
-
-      <pl-badge text dark small disabled> Dark </pl-badge>
-    </div> -->
-
-    <!-- Active State -->
-    <!-- <div style="margin-top: 15px">
-      <pl-badge primary active small ariaPressed="false"> Primary </pl-badge>
-
-      <pl-badge active small active-blue ariaPressed="true"> Active </pl-badge>
-
-      <pl-badge secondary small active ariaPressed="true"> Button </pl-badge>
-
-      <span>&nbsp;&nbsp; Links as buttons -- </span>
-
-      <pl-badge primary link active small ariaPressed="true">
-        Primary
-      </pl-badge>
-
-      <pl-badge active link small active-blue ariaPressed="true">
-        Active
-      </pl-badge>
-
-      <pl-badge secondary link small active ariaPressed="true">
-        Button
-      </pl-badge>
-    </div> -->
-
-    <!-- Icon Buttons Round -->
-    <!-- <div style="margin-top: 15px">
-      <pl-badge primary round title="Home">
-        <icon-component icon="fas fa-tachometer-alt"></icon-component>
-      </pl-badge>
-
-      <pl-badge secondary round title="Home">
-        <icon-component icon="fas fa-home"></icon-component>
-      </pl-badge>
-
-      <pl-badge tertiary round title="Home">
-        <icon-component icon="fas fa-home"></icon-component>
-      </pl-badge>
-
-      <pl-badge success round title="Home">
-        <icon-component icon="fas fa-home"></icon-component>
-      </pl-badge>
-
-      <pl-badge danger round title="Home">
-        <icon-component icon="fas fa-home"></icon-component>
-      </pl-badge>
-
-      <pl-badge warning round title="Home">
-        <icon-component icon="fas fa-home"></icon-component>
-      </pl-badge>
-
-      <pl-badge info round title="Home">
-        <icon-component icon="fas fa-home"></icon-component>
-      </pl-badge>
-
-      <pl-badge light round title="Home">
-        <icon-component icon="fas fa-home"></icon-component>
-      </pl-badge>
-
-      <pl-badge dark round title="Home">
-        <icon-component icon="fas fa-home"></icon-component>
-      </pl-badge>
-    </div> -->
-
-    <!-- SVG Buttons Round -->
-    <!-- <div style="margin-top: 15px">
-      <pl-badge primary round title="Home">
-        <svg-component ariaHidden="true" ariaLabel="Igloo">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            height="16"
-            width="18"
-            viewBox="0 0 576 512"
-            fill="currentColor"
+          <span style="margin-right: 15px">
+            <pl-badge
+              token
+              shape="rounded"
+              outlined
+              variant="danger"
+              inset
+              offsetX="12"
+              offsetY="12"
+            >
+              <pl-button variant="primary" size="sm"> Primary </pl-button>
+              <span slot="token">10</span>
+            </pl-badge>
+          </span>
+          <span style="margin-right: 15px">
+            <pl-badge
+              token
+              outlined
+              variant="danger"
+              inset
+              offsetX="12"
+              offsetY="12"
+            >
+              <pl-button variant="primary" size="sm"> Primary </pl-button>
+              <span slot="token">10</span>
+            </pl-badge>
+          </span>
+          <span style="margin-right: 15px">
+            <pl-badge
+              token
+              shape="circle"
+              bordered
+              variant="danger"
+              inset
+              offsetX="12"
+              offsetY="12"
+            >
+              <pl-button variant="primary" size="sm"> Primary </pl-button>
+              <span slot="token">10</span>
+            </pl-badge>
+          </span>
+
+          <span style="margin-right: 15px">
+            <pl-badge
+              token
+              shape="rounded"
+              bordered
+              variant="yellow"
+              inset
+              offsetX="12"
+              offsetY="12"
+            >
+              <pl-button variant="primary" size="sm"> Primary </pl-button>
+              <span slot="token">10</span>
+            </pl-badge>
+          </span>
+
+          <span style="margin-right: 15px">
+            <pl-badge
+              token
+              shape="rounded"
+              bordered
+              variant="purple"
+              inset
+              offsetX="12"
+              offsetY="12"
+            >
+              <pl-button variant="primary" size="sm"> Primary </pl-button>
+              <span slot="token">10</span>
+            </pl-badge>
+          </span>
+
+          <span style="margin-right: 15px">
+            <pl-badge
+              token
+              shape="circle"
+              variant="purple"
+              bordered
+              inset
+              offsetX="12"
+              offsetY="12"
+            >
+              <pl-button variant="primary" size="sm"> Primary </pl-button>
+              <span slot="token">
+                <icon-component icon="fas fa-home" tokenIcon></icon-component>
+              </span>
+            </pl-badge>
+          </span>
+
+          <span style="margin-right: 15px">
+            <pl-badge
+              token
+              shape="circle"
+              outlined
+              bordered
+              variant="purple"
+              inset
+              offsetX="12"
+              offsetY="12"
+            >
+              <pl-button variant="primary" size="sm"> Primary </pl-button>
+              <span slot="token">
+                <icon-component icon="fas fa-home" tokenIcon></icon-component>
+              </span>
+            </pl-badge>
+          </span>
+
+          <div class="context">
+            Badge tokens (used with here, with the button component).
+          </div>
+        </div>
+
+        <div class="content-box" style="padding-top: 15px">
+          <span style="margin-right: 15px">
+            <pl-badge dot variant="purple">
+              <pl-button variant="primary" size="sm"> Primary </pl-button>
+            </pl-badge></span
           >
-            <path
-              d="M320 33.9c-10.5-1.2-21.2-1.9-32-1.9-99.8 0-187.8 50.8-239.4 128H320V33.9zM96 192H30.3C11.1 230.6 0 274 0 320h96V192zM352 39.4V160h175.4C487.2 99.9 424.8 55.9 352 39.4zM480 320h96c0-46-11.1-89.4-30.3-128H480v128zm-64 64v96h128c17.7 0 32-14.3 32-32v-96H411.5c2.6 10.3 4.5 20.9 4.5 32zm32-192H128v128h49.8c22.2-38.1 63-64 110.2-64s88 25.9 110.2 64H448V192zM0 448c0 17.7 14.3 32 32 32h128v-96c0-11.1 1.9-21.7 4.5-32H0v96zm288-160c-53 0-96 43-96 96v96h192v-96c0-53-43-96-96-96z"
-            />
-          </svg>
-        </svg-component>
-      </pl-badge>
 
-      <pl-badge primary small>
-        <svg-component svgMargin="left" ariaHidden="true" ariaLabel="Igloo">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            height="16"
-            width="16"
-            viewBox="0 0 512 512"
+          <span style="margin-right: 15px">
+            <pl-badge dot variant="orange" inset offsetX="10" offsetY="10">
+              <pl-button variant="primary" shape="circle" iconBtn title="Home">
+                <icon-component icon="fas fa-home"></icon-component>
+              </pl-button> </pl-badge
+          ></span>
+
+          <span style="margin-right: 15px">
+            <pl-badge dot variant="green" inset offsetX="10" offsetY="10">
+              <pl-button shape="circle" iconBtn title="Rocket">
+                <icon-component icon="fab fa-rocketchat"></icon-component>
+              </pl-button> </pl-badge
+          ></span>
+
+          <span style="margin-right: 15px">
+            <pl-badge dot pulse variant="pink" inset offsetX="10" offsetY="10">
+              <pl-button shape="circle" iconBtn title="Home">
+                <icon-component icon="fas fa-home"></icon-component>
+              </pl-button> </pl-badge
+          ></span>
+
+          <span style="margin-right: 15px">
+            <pl-badge dot variant="orange" inset offsetX="3" offsetY="3">
+              <icon-component icon="fab fa-rocketchat"></icon-component>
+            </pl-badge>
+          </span>
+          <div class="context">
+            Badge dots are used as indicators to draw attention to a specific
+            element. Used here with the button and icon components.
+          </div>
+        </div>
+
+        <div class="content-box">
+          <span style="margin-right: 15px">
+            <pl-badge
+              token
+              shape="circle"
+              bordered
+              elevated-2
+              variant="danger"
+              inset
+            >
+              <pl-button variant="primary" size="sm"> Primary </pl-button>
+              <span slot="token">10</span>
+            </pl-badge>
+          </span>
+
+          <span style="margin-right: 15px"
+            ><pl-badge elevated-3 variant="success" size="sm">
+              Test Badge
+            </pl-badge></span
           >
-            <path
-              d="M256 8C119 8 8 119.1 8 256c0 137 111 248 248 248s248-111 248-248C504 119.1 393 8 256 8zm0 110c23.2 0 42 18.8 42 42s-18.8 42-42 42-42-18.8-42-42 18.8-42 42-42zm56 254c0 6.6-5.4 12-12 12h-88c-6.6 0-12-5.4-12-12v-24c0-6.6 5.4-12 12-12h12v-64h-12c-6.6 0-12-5.4-12-12v-24c0-6.6 5.4-12 12-12h64c6.6 0 12 5.4 12 12v100h12c6.6 0 12 5.4 12 12v24z"
-            />
-          </svg>
-        </svg-component>
-        Primary
-      </pl-badge>
-    </div> -->
 
-    <!-- Icon Buttons Round disabled -->
-    <!-- <div style="margin-top: 15px">
-      <pl-badge primary round title="Home" disabled>
-        <icon-component icon="fas fa-home"></icon-component>
-      </pl-badge>
+          <span style="margin-right: 15px"
+            ><pl-badge
+              elevated-6
+              outlined
+              variant="primary"
+              shape="pill"
+              size="sm"
+            >
+              Test Badge
+              <pl-button text variant="primary" stripped iconBtn>
+                <icon-component
+                  icon="fas fa-exclamation-circle"
+                ></icon-component>
+              </pl-button> </pl-badge
+          ></span>
 
-      <pl-badge secondary round title="Home" disabled>
-        <icon-component icon="fas fa-home"></icon-component>
-      </pl-badge>
+          <span style="margin-right: 15px">
+            <pl-badge
+              dot
+              elevated-4
+              variant="orange"
+              inset
+              offsetX="10"
+              offsetY="10"
+            >
+              <pl-button variant="primary" shape="circle" iconBtn title="Home">
+                <icon-component icon="fas fa-home"></icon-component>
+              </pl-button> </pl-badge
+          ></span>
 
-      <pl-badge tertiary round title="Home" disabled>
-        <icon-component icon="fas fa-home"></icon-component>
-      </pl-badge>
-
-      <pl-badge success round title="Home" disabled>
-        <icon-component icon="fas fa-home"></icon-component>
-      </pl-badge>
-
-      <pl-badge danger round title="Home" disabled>
-        <icon-component icon="fas fa-home"></icon-component>
-      </pl-badge>
-
-      <pl-badge warning round title="Home" disabled>
-        <icon-component icon="fas fa-home"></icon-component>
-      </pl-badge>
-
-      <pl-badge info round title="Home" disabled>
-        <icon-component icon="fas fa-home"></icon-component>
-      </pl-badge>
-
-      <pl-badge light round title="Home" disabled>
-        <icon-component icon="fas fa-home"></icon-component>
-      </pl-badge>
-
-      <pl-badge dark round title="Home" disabled>
-        <icon-component icon="fas fa-home"></icon-component>
-      </pl-badge>
-    </div> -->
-
-    <!-- Icon Buttons Round outlined -->
-    <!-- <div style="margin-top: 15px">
-      <pl-badge primary outlined round>
-        <icon-component icon="fas fa-home"></icon-component>
-      </pl-badge>
-
-      <pl-badge secondary outlined round>
-        <icon-component icon="fas fa-home"></icon-component>
-      </pl-badge>
-
-      <pl-badge tertiary outlined round>
-        <icon-component icon="fas fa-home"></icon-component>
-      </pl-badge>
-
-      <pl-badge success outlined round>
-        <icon-component icon="fas fa-home"></icon-component>
-      </pl-badge>
-
-      <pl-badge danger outlined round>
-        <icon-component icon="fas fa-home"></icon-component>
-      </pl-badge>
-
-      <pl-badge warning outlined round>
-        <icon-component icon="fas fa-home"></icon-component>
-      </pl-badge>
-
-      <pl-badge info outlined round>
-        <icon-component icon="fas fa-home"></icon-component>
-      </pl-badge>
-
-      <pl-badge light outlined round>
-        <icon-component icon="fas fa-home"></icon-component>
-      </pl-badge>
-
-      <pl-badge dark outlined round>
-        <icon-component icon="fas fa-home"></icon-component>
-      </pl-badge>
-    </div> -->
-
-    <!-- Icon Buttons Shapes sizes -->
-    <!-- <div style="margin-top: 15px">
-      <pl-badge primary round icon-btn-xs title="Home">
-        <icon-component icon="fas fa-home" iconSize="xs"></icon-component>
-      </pl-badge>
-
-      <pl-badge primary round icon-btn-sm title="Home">
-        <icon-component icon="fas fa-home" iconSize="sm"></icon-component>
-      </pl-badge>
-
-      <pl-badge primary round title="Home">
-        <icon-component icon="fas fa-home"></icon-component>
-      </pl-badge>
-
-      <pl-badge primary round icon-btn-lg title="Home">
-        <icon-component icon="fas fa-home" iconSize="lg"></icon-component>
-      </pl-badge>
-
-      <pl-badge primary round outlined icon-btn-xs title="Home">
-        <icon-component icon="fas fa-home" iconSize="xs"></icon-component>
-      </pl-badge>
-
-      <pl-badge primary round outlined icon-btn-sm title="Home">
-        <icon-component icon="fas fa-home" iconSize="sm"></icon-component>
-      </pl-badge>
-
-      <pl-badge primary round icon="fas fa-home" outlined title="Home">
-        <icon-component icon="fas fa-home"></icon-component>
-      </pl-badge>
-
-      <pl-badge primary round outlined icon-btn-lg title="Home">
-        <icon-component icon="fas fa-home"></icon-component>
-      </pl-badge>
+          <div class="context">
+            Elevated badge examples (Flat by default). Elevated badges go from
+            0-24.
+          </div>
+        </div>
+      </div>
     </div>
-
-    <!-- Icon Buttons Shapes -->
-
-    <!-- <div style="margin-top: 15px">
-      <pl-badge primary round title="Home">
-        <icon-component icon="fas fa-home"></icon-component>
-      </pl-badge>
-
-      <pl-badge primary tile title="Home">
-        <icon-component icon="fas fa-home"></icon-component>
-      </pl-badge>
-
-      <pl-badge primary title="Home">
-        <icon-component icon="fas fa-home"></icon-component>
-      </pl-badge>
-
-      <pl-badge primary round outlined title="Home">
-        <icon-component icon="fas fa-home"></icon-component>
-      </pl-badge>
-
-      <pl-badge primary tile outlined title="Home">
-        <icon-component icon="fas fa-home"></icon-component>
-      </pl-badge>
-
-      <pl-badge primary outlined title="Home">
-        <icon-component icon="fas fa-home"></icon-component>
-      </pl-badge>
-    </div> -->
-
-    <!-- Icon Active State -->
-    <!-- <div style="margin-top: 15px">
-      <pl-badge default-icon title="Home">
-        <icon-component icon="fas fa-home"></icon-component>
-      </pl-badge>
-
-      <pl-badge disabled title="Home">
-        <icon-component icon="fas fa-home"></icon-component>
-      </pl-badge>
-
-      <pl-badge active-blue title="Home" active ariaPressed="true">
-        <icon-component icon="fas fa-home"></icon-component>
-      </pl-badge>
-    </div> -->
-
-    <!-- Buttons with Icons -->
-    <!-- <div style="margin-top: 15px">
-      <pl-badge primary small>
-        <icon-component icon="fas fa-home" iconPosition="left"></icon-component>
-        Primary
-      </pl-badge>
-
-      <pl-badge primary outlined small>
-        <icon-component icon="fas fa-home" iconPosition="left"></icon-component>
-        Primary
-      </pl-badge>
-
-      <pl-badge primary small>
-        Primary
-        <icon-component
-          icon="fas fa-home"
-          iconPosition="right"
-        ></icon-component>
-      </pl-badge>
-
-      <pl-badge primary outlined small>
-        Primary
-        <icon-component
-          icon="fas fa-home"
-          iconPosition="right"
-        ></icon-component>
-      </pl-badge>
-    </div> -->
-
-    <!-- Elevated Buttons -->
-    <!-- <div style="margin-top: 15px">
-      <pl-badge primary is-elevated small> Elevated </pl-badge>
-
-      <pl-badge primary elevated-5 small> Elevated 5 </pl-badge>
-
-      <pl-badge primary elevated-10 small> Elevated 10 </pl-badge>
-
-      <pl-badge primary elevated-15 small> Elevated 15 </pl-badge>
-
-      <pl-badge primary elevated-20 small> Elevated 20 </pl-badge>
-
-      <pl-badge primary elevated-24 small> Elevated 24 </pl-badge>
-    </div> -->
 
     <!-- Props -->
-    <!-- <div style="margin-top: 50px">
+    <div style="margin-top: 50px">
       <h2>Props</h2>
       <div class="table-wrapper">
         <table>
@@ -600,59 +449,48 @@
               </td>
             </tr>
             <tr>
-              <td>ariaPressed</td>
+              <td>bdgPosition</td>
               <td>String</td>
-              <td></td>
+              <td>left</td>
               <td>
-                Adding aria-pressed to an element with a role of button turns
-                the button into a toggle button. The aria-pressed attribute is
-                only relevant for toggle buttons. It represents the button's
-                current "pressed" state. The value is "tri-state", meaning the
-                value can be set to true, false, mixed, or undefined values. In
-                the case of aria-pressed, like most tri-state value types, the
-                default value is undefined. Toggle buttons require a full
-                press-and-release cycle to change their value. Pressing and
-                releasing it once changes the value to true. If it's pressed and
-                released again, the value changes back to false. A value of
-                mixed means that the values of more than one item controlled by
-                the button do not all share the same value. <br /><span
-                  class="example"
-                  >Ex: &#60;pl-badge primary ariaPressed=" true | false | mixed
-                  "&#62;Button Name&#60;/pl-badge&#62;</span
+                When placing a badge on the left of any content, this adds the
+                class 'mr-1' to the badge, which provide 4px's of space between
+                the badge and the content. Placing the badge to the right, and
+                assigning 'right' to the propery will do the reverse, adding the
+                class of 'ml-1'.
+                <br /><span class="example"
+                  >Ex: bdgPosition="left" or bdgPosition="right"</span
                 >
-                will render aria-pressed="true | false | mixed"
               </td>
             </tr>
             <tr>
-              <td>block</td>
+              <td>bordered</td>
               <td>Boolean</td>
               <td>false</td>
-              <td>Expands the button to 100% of available space.</td>
+              <td>
+                This property will add a border around a solid colored badge
+                token, the border color will be inherit from the color of the
+                font. This is no the same as the 'outlined' property.
+              </td>
             </tr>
             <tr>
               <td>bottom</td>
               <td>String</td>
               <td>number | string</td>
               <td>
-                Aligns the component towards the bottom. This should be used
-                with the absolute or fixed props. <br /><span class="example"
-                  >Ex: bottom="50"</span
-                >
+                Positions the component towards the bottom using the inline
+                style attribute. This should be used with the absolute prop.
+                <br /><span class="example">Ex: bottom="50"</span>
               </td>
             </tr>
             <tr>
-              <td>classNames</td>
+              <td>color</td>
               <td>String</td>
               <td></td>
               <td>
-                This property maps through the CSS that is linked to the
-                component and lets the user apply classnames that exist as
-                properties to the component that will be rendered to the 'class'
-                attribute. <br /><span class="example"
-                  >Ex: &#60;pl-badge small red&#62;</span
-                >
-                will render to
-                <span class="example">&#60;button class="small red"&#62;</span>.
+                This property lets the user add an inline style for the css
+                'color' element. The hex color, rgb, rgba, and hsl values can be
+                used.
               </td>
             </tr>
             <tr>
@@ -662,27 +500,63 @@
               <td>This property adds disabled to the button element.</td>
             </tr>
             <tr>
-              <td>iconBtn</td>
+              <td>dot</td>
               <td>Boolean</td>
               <td>false</td>
-              <td>Designates the button as an icon button.</td>
+              <td>
+                This property applies a dot indicator(used with a color) to draw
+                attention to a specific element.
+              </td>
+            </tr>
+            <tr>
+              <td>icon</td>
+              <td>Boolean</td>
+              <td>false</td>
+              <td>
+                When using an icon with the badge, this property will add the
+                some spacing to the left and right of the icon.
+              </td>
+            </tr>
+            <tr>
+              <td>inset</td>
+              <td>Boolean</td>
+              <td>false</td>
+              <td>
+                This property is to be used with the badge tokens. When used it
+                adds the set default style of 'inset: auto auto calc(100% -
+                12px) calc(100% - 12px);' that positions the badge token to the
+                upper right of the element it is used with.
+              </td>
             </tr>
             <tr>
               <td>left</td>
               <td>String</td>
               <td>number | string</td>
               <td>
-                Aligns the component towards the left. This should be used with
-                the absolute or fixed props. <br /><span class="example"
-                  >Ex: left="50"</span
-                >
+                Positions the component towards the left using the inline style
+                attribute. This should be used with the absolute prop.
+                <br /><span class="example">Ex: left="50"</span>
               </td>
             </tr>
             <tr>
-              <td>link</td>
-              <td>Boolean</td>
-              <td>false</td>
-              <td>Designates the button as an 'href' and not a 'button'.</td>
+              <td>offsetX</td>
+              <td>String</td>
+              <td>number | string</td>
+              <td>
+                This property is used with the 'inset' property if the user
+                wants to overwrite the default bottom position value of the
+                'inset'.<br /><span class="example">Ex: offsetX="50"</span>
+              </td>
+            </tr>
+            <tr>
+              <td>offsetY</td>
+              <td>String</td>
+              <td>number | string</td>
+              <td>
+                This property is used with the 'inset' property if the user
+                wants to overwrite the default left position value of the
+                'inset'.<br /><span class="example">Ex: offsetY="50"</span>
+              </td>
             </tr>
             <tr>
               <td>outlined</td>
@@ -690,7 +564,8 @@
               <td>false</td>
               <td>
                 When added, this makes the background transparent and applies a
-                thin border.
+                thin border around the badge, unless adding it to the token,
+                then the token's outlined background will be white.
               </td>
             </tr>
             <tr>
@@ -698,45 +573,61 @@
               <td>String</td>
               <td>number | string</td>
               <td>
-                Aligns the component towards the right. This should be used with
-                the absolute or fixed props. <br /><span class="example"
-                  >Ex: right="50"</span
-                >
+                Positions the component towards the right using the inline style
+                attribute. This should be used with the absolute prop.
+                <br /><span class="example">Ex: right="50"</span>
               </td>
             </tr>
             <tr>
-              <td>text</td>
+              <td>shape</td>
+              <td>String</td>
+              <td></td>
+              <td>
+                This property allows the user to change the shape of the badge
+                to square, pill, rounded(default) for badge and badge tokens,
+                and circle for badge tokens.
+                <br /><span class="example">Ex: shape="square"</span>
+              </td>
+            </tr>
+            <tr>
+              <td>size</td>
+              <td>String</td>
+              <td></td>
+              <td>
+                This property allows the user to change the size of the badge to
+                xs(x-small), sm(small), default and lg(large).
+                <br /><span class="example">Ex: size="sm"</span>
+              </td>
+            </tr>
+            <tr>
+              <td>token</td>
               <td>Boolean</td>
               <td>false</td>
               <td>
-                Displays a button as text but with the same hover effects as a
-                regular button.
+                This property changes a badge into a badge token. A badge token,
+                by default is placed to the upper right on which it is used.
+                Commonly used with buttons, icons, and tabs. The position can be
+                changed using the offsetX and offsetY properties.
               </td>
             </tr>
             <tr>
-              <td>title</td>
-              <td>String</td>
-              <td></td>
-              <td>Add a title attribute to the button.</td>
-            </tr>
-            <tr>
-              <td>right</td>
+              <td>top</td>
               <td>String</td>
               <td>number | string</td>
               <td>
-                Aligns the component towards the right. This should be used with
-                the absolute or fixed props. <br /><span class="example"
-                  >Ex: right="50"</span
-                >
+                Positions the component towards the top using the inline style
+                attribute. This should be used with the absolute prop.
+                <br /><span class="example">Ex: top="50"</span>
               </td>
             </tr>
             <tr>
-              <td>url</td>
+              <td>variant</td>
               <td>String</td>
               <td></td>
               <td>
-                Used with the 'link' property, a url or path can be applied to
-                the href that is rendered.
+                This property allows the user to change the color of the badge
+                to one of the predefined colors/styles.
+                <br /><span class="example">Ex: varian="primary"</span>
               </td>
             </tr>
             <tr>
@@ -753,10 +644,10 @@
           </tbody>
         </table>
       </div>
-    </div> -->
+    </div>
 
     <!-- Styling -->
-    <!-- <div style="margin-top: 50px">
+    <div style="margin-top: 50px">
       <h2>Styling</h2>
       <p>
         These class names can be added directly to the component similiar to
@@ -777,13 +668,17 @@
               <td><span class="example">Color</span></td>
               <td>
                 primary, secondary, tertiary, active-blue, success, danger,
-                warning, light, dark
+                warning, light, dark, blue, blue-grey, brown, deep-orange,
+                deep-purple, green, grey, indigo, light-blue, pink, purple, red,
+                teal, shades black, shades white, amber, cyan, lime,
+                light-green, orange, yellow
               </td>
               <td>
-                These class names will set background color, border color and
-                the hover colors for a regular button. <br /><span
-                  class="example"
-                  >Ex: &#60;pl-badge primary&#62;Button
+                These class names can be added to the component by using the
+                'variant' property (shown above in Props) and will set
+                background color, and border color for a solid badge.
+                <br /><span class="example"
+                  >Ex: &#60;pl-badge variant="primary"&#62;Badge
                   Name&#60;/pl-badge&#62;</span
                 >
               </td>
@@ -792,28 +687,15 @@
               <td></td>
               <td></td>
               <td>
-                When using these class names with a 'text' prop, the class names
-                will be appeneded with '--text' which will set background color
-                and border color to transparent and set the color of the text
-                and the hover colors. <br /><span class="example"
-                  >Ex: &#60;pl-badge text primary&#62;Button
+                When using these class names with the 'variant' and 'outlined'
+                prop, the background color is transparent and it sets the border
+                color and text color. <br /><span class="example"
+                  >Ex: &#60;pl-badge variant="primary" outlined&#62;Badge
                   Name&#60;/pl-badge&#62;</span
                 >
               </td>
             </tr>
-            <tr>
-              <td></td>
-              <td></td>
-              <td>
-                When using these class names with an 'outline' prop, the
-                background color is transparent and it sets the border color,
-                text color and the hover colors. <br /><span class="example"
-                  >Ex: &#60;pl-badge primary outlined&#62;Button
-                  Name&#60;/pl-badge&#62;</span
-                >
-              </td>
-            </tr>
-            <tr>
+            <!-- <tr>
               <td></td>
               <td>active and active-blue</td>
               <td>
@@ -823,11 +705,11 @@
                 togather, the background color will be set to the active color
                 and the hover color will be set to the active color.
                 <br /><span class="example"
-                  >Ex: &#60;pl-badge primary active active-blue &#62;Button
+                  >Ex: &#60;pl-badge primary active active-blue &#62;Badge
                   Name&#60;/pl-badge&#62;</span
                 >
               </td>
-            </tr>
+            </tr> -->
             <tr>
               <td><span class="example">Elevation</span></td>
               <td>flat, is-elevated, elevated-0 to elevated-24</td>
@@ -839,184 +721,111 @@
                 the desired elevation. Applying flat will give give the button
                 no depth and applying is-elevated will give the button a slight
                 amount of depth.. <br /><span class="example"
-                  >Ex: &#60;pl-badge primary flat" &#62;Button
+                  >Ex: &#60;pl-badge variant="primary" flat &#62;Badge
                   Name&#60;/pl-badge&#62;</span
                 >
                 <br /><span class="example"
-                  >Ex: &#60;pl-badge primary is-elevated" &#62;Button
+                  >Ex: &#60;pl-badge variant="primary" is-elevated &#62;Badge
                   Name&#60;/pl-badge&#62;</span
                 >
                 <br /><span class="example"
-                  >Ex: &#60;pl-badge primary elevated-3" &#62;Button
+                  >Ex: &#60;pl-badge variant="primary" elevated-3 &#62;Badge
                   Name&#60;/pl-badge&#62;</span
                 >
               </td>
             </tr>
             <tr>
               <td><span class="example">Sizes</span></td>
-              <td>x-small, small, default, large</td>
+              <td>xs, sm, default, lg</td>
               <td>
-                Sizing for text buttons. 'x-small' is 20px, 'small' is 28px,
-                'default' is 36px and 'large' is 44px. <br /><span
-                  class="example"
-                  >Ex: &#60;pl-badge primary x-small" &#62;Button
+                Sizing for text buttons. 'size="xs"' is 20px, 'size="sm"' is
+                28px, 'size="default"' is 36px and 'size="lg"' is 44px.
+                <br /><span class="example"
+                  >Ex: &#60;pl-badge variant="primary" size="xs" &#62;Badge
                   Name&#60;/pl-badge&#62;</span
                 >
                 <br /><span class="example"
-                  >Ex: &#60;pl-badge primary small" &#62;Button
+                  >Ex: &#60;pl-badge variant="primary" size="sm" &#62;Badge
                   Name&#60;/pl-badge&#62;</span
                 >
                 <br /><span class="example"
-                  >Ex: &#60;pl-badge primary default" &#62;Button
+                  >Ex: &#60;pl-badge variant="primary" size="default" &#62;Badge
                   Name&#60;/pl-badge&#62;</span
                 >
                 <br /><span class="example"
-                  >Ex: &#60;pl-badge primary large" &#62;Button
+                  >Ex: &#60;pl-badge variant="primary" size="lg" &#62;Badge
                   Name&#60;/pl-badge&#62;</span
-                >
-              </td>
-            </tr>
-            <tr>
-              <td></td>
-              <td>icon-btn-xs, icon-btn-sm, icon-btn-lg</td>
-              <td>
-                Sizing for icon buttons. 'icon-btn-xs' is 1rem by 1rem,
-                'icon-btn-sm' is 28px by 28px, 'icon-btn-lg' is 44px by 44px and
-                the default size is 36px by 36px . <br /><span class="example"
-                  >Ex: &#60;pl-badge primary icon-btn" &#62;&#60;/pl-badge&#62;
-                  (default size)</span
-                >
-                <br /><span class="example"
-                  >Ex: &#60;pl-badge primary icon-btn icon-btn-xs"
-                  &#62;&#60;/pl-badge&#62;</span
-                >
-                <br /><span class="example"
-                  >Ex: &#60;pl-badge primary icon-btn icon-btn-sm"
-                  &#62;&#60;/pl-badge&#62;</span
-                >
-                <br /><span class="example"
-                  >Ex: &#60;pl-badge primary icon-btn icon-btn-lg"
-                  &#62;&#60;/pl-badge&#62;</span
                 >
               </td>
             </tr>
             <tr>
               <td><span class="example">Shape</span></td>
-              <td>round, pill, tile</td>
+              <td>circle, pill, rounded, square</td>
               <td>
-                By default, these buttons, whether regular buttons or icon
-                buttons, have rounded corners. 'round' is to make the circular
-                icon buttons. 'tile' is to make the icon buttons, square or the
-                regular buttons rectangle. 'pill' is to make the regular button
-                a pill shape. <br /><span class="example"
-                  >Ex: &#60;pl-badge primary round icon="fas fa-home"
-                  &#62;&#60;/pl-badge&#62;</span
+                By default, badge and badge tokens, have rounded corners, in
+                which the user does not have to use the 'shape' prop but, they
+                can use the 'rounded' value to be sure that the corners if they
+                so desire. Badges also use the 'square' and the 'pill' for
+                squared and pill shaped badges. Badge tokens can use those three
+                and also the 'circle' value to make the token a circle.
+                <br /><span class="example"
+                  >Ex: &#60;pl-badge variant="primary" shape="circle" icon="fas
+                  fa-home" &#62;&#60;/pl-badge&#62; *This is used with badge
+                  tokens.</span
                 >
                 <br /><span class="example"
-                  >Ex: &#60;pl-badge primary pill" &#62;Button
+                  >Ex: &#60;pl-badge variant="primary" shape="pill" &#62;Badge
                   Name&#60;/pl-badge&#62;</span
                 >
                 <br /><span class="example"
-                  >Ex: &#60;pl-badge primary tile" &#62;Button
+                  >Ex: &#60;pl-badge variant="primary" shape="square" &#62;Badge
                   Name&#60;/pl-badge&#62;</span
+                >
+                <br /><span class="example"
+                  >Ex: &#60;pl-badge variant="primary" shape="rounded"
+                  &#62;Badge Name&#60;/pl-badge&#62;</span
                 >
               </td>
             </tr>
           </tbody>
         </table>
       </div>
-    </div> -->
+    </div>
 
     <!-- Instructions -->
-    <!-- <div style="margin-top: 50px">
-      <h4>PlButton Custom '_handleClick'</h4>
-      <p>
-        The _handleClick() method in the PlButton component is a custom event
-        dispatcher that triggers the custom-click event when the button is
-        clicked. To use this functionality in an instance of your PlButton
-        component, a user would listen for the custom-click event.
-      </p>
-      <p>
-        Here's an example of how a user might implement this event listener:
-      </p>
-      <pre>
-        <code>
-          // Creating an instance of the PlButton component
-          const myButton = document.createElement('pl-badge');
-
-          // Attaching the component to the DOM
-          document.body.appendChild(myButton);
-
-          // Listening for the custom-click event
-          myButton.addEventListener('custom-click', (event) => {
-            console.log('Button was clicked!');
-            // Perform actions or handle the event here
-          });
-        </code>
-      </pre>
-      <p>
-        By adding an event listener to the pl-badge element, the user can
-        respond to the custom-click event triggered by your component's
-        _handleClick() method. This allows them to execute specific actions or
-        code when the button is clicked.
-      </p>
-
-      <p>
-        To use the PlButton component in another JavaScript file, you'd
-        typically import it and then use it within that file.
-      </p>
-
-      <p>Here's an example of how you might do this:</p>
-
-      <pre>
-          <code>
-            // Import the PlButton component
-            import "./path/to/PlButton.js";
-
-            // Use the PlButton in your code
-            const button = document.createElement("pl-badge");
-
-            // Add properties, attributes, or event listeners if needed
-            button.icon = "fas fa-home"; // Set an icon
-            button.addEventListener("custom-click", () => {
-              console.log("Button clicked!");
-            });
-
-            // Append the button to the document or any desired element
-            document.body.appendChild(button);
-          </code>
-      </pre>
-
-      <p>
-        This example demonstrates how you could import the PlButton component
-        and then use it within your JavaScript file. You can set properties,
-        attributes, or attach event listeners as needed, just like you would
-        with any other HTML element.
-      </p>
-
+    <div style="margin-top: 50px">
       <h4>Using Component in other JavaScript Frameworks</h4>
 
       <h5>Vue.js</h5>
       <p>
-        In a Vue component, you'd use PlButton just like any other HTML element:
+        In a Vue component, you'd use PlBadge just like any other HTML element:
       </p>
       <pre>
         <code>
           &#60;template&#62;
           &#60;div&#62;
-          &#60;!-- Using the PlButton component --&#62;
-          &#60;pl-badge icon="fas fa-home" @custom-click="handleClick"&#62;Click me&#60;/pl-badge&#62;
-          &#60;/div&#62;
+          &#60;!-- Vue component using the PlBadge component --&#62;
+          &#60;pl-badge
+                bordered
+                variant="red"
+                dot
+                :icon="true"
+                :token="false"
+                :disabled="false"
+                &#62;
+              &#60;!-- Content within the badge --&#62;
+              &#60;span slot="icon"&#62;V&#60;/span&#62;
+              &#60;/pl-badge&#62;
+              &#60;/div&#62;
           &#60;/template&#62;
           
           &#60;script&#62;
-          // Import PlButton here if necessary
+          // Import the PlBadge component
+          import 'path/to/PlBadge.js'; // Adjust the path to your PlBadge file
+          
           export default {
-            methods: {
-              handleClick() {
-                console.log('Button clicked!');
-              }
-            }
+            name: 'VueBadgeComponent',
+            // Other Vue component properties and methods
           };
           &#60;/script&#62;
           
@@ -1025,58 +834,70 @@
 
       <h5>React</h5>
       <p>
-        In a React component, you'd similarly treat PlButton as a regular HTML
+        In a React component, you'd similarly treat PlBadge as a regular HTML
         element:
       </p>
       <pre>
         <code>
           import React from 'react';
-          import './path/to/PlButton.js'; // Import PlButton here if necessary
+          // Import the PlBadge component
+          import 'path/to/PlBadge.js'; // Adjust the path to your PlBadge file
 
-          class MyComponent extends React.Component {
-            handleClick() {
-              console.log('Button clicked!');
-            }
+          const ReactBadgeComponent = () => {
+            return (
+              &#60;div&#62;
+                {/* React component using the PlBadge component */}
+                &#60;pl-badge
+                  bordered
+                  variant="blue"
+                  dot
+                  icon={true}
+                  token={false}
+                  disabled={false}
+                &#62;
+                  {/* Content within the badge */}
+                  &#60;span slot="icon"&#62;R&#60;/span&#62;
+                  &#60;/pl-badge&#62;
+                &#60;/div&#62;
+            );
+          };
 
-            render() {
-              return (
-                &#60;div&#62;
-                  {/* Using the PlButton component */}
-                  &#60;pl-badge icon="fas fa-home" onClick={this.handleClick}&#62;Click me&#60;/pl-badge&#62;
-                  &#60;/div&#62;
-              );
-            }
-          }
+          export default ReactBadgeComponent;
+
         </code>
       </pre>
 
       <h5>Angular</h5>
-      <p>In Angular, you'd use PlButton as part of your Angular template:</p>
-
+      <p>In Angular, you'd use PlBadge as part of your Angular template:</p>
       <pre>
         <code>
-          &#60;!-- Inside your Angular component template --&#62;
-          &#60;div&#62;
-          &#60;!-- Using the PlButton component --&#62;
-          &#60;pl-badge [icon]="'fas fa-home'" (custom-click)="handleClick()"&#62;Click me&#60;/pl-badge&#62;
-          &#60;/div&#62;
-
-        </code>
-      </pre>
-
-      <pre>
-        <code>
-          // Inside your Angular component class
           import { Component } from '@angular/core';
 
+          // Register the PlBadge component in your Angular module
+          // Import the PlBadge component in your Angular module file
+          import 'path/to/PlBadge.js'; // Adjust the path to your PlBadge file
+
           @Component({
-            selector: 'app-my-component',
-            templateUrl: './my-component.component.html',
+            selector: 'app-angular-badge',
+            template: `
+            &#60;div&#62;
+            &#60;!-- Angular component using the PlBadge component --&#62;
+                &#60;pl-badge
+                  bordered
+                  [variant]="'green'"
+                  [dot]="true"
+                  [icon]="true"
+                  [token]="false"
+                  [disabled]="false"
+                &#62;
+                &#60;!-- Content within the badge --&#62;
+                &#60;span slot="icon"&#62;A&#60;/span&#62;
+                &#60;/pl-badge&#62;
+              &#60;/div&#62;
+            `,
           })
-          export class MyComponent {
-            handleClick() {
-              console.log('Button clicked!');
-            }
+          export class AngularBadgeComponent {
+            // Angular component properties and methods
           }
         </code>
       </pre>
@@ -1086,9 +907,8 @@
         and registered as custom elements, act like native HTML elements that
         these frameworks can understand and interact with.
       </p>
-    </div> -->
+    </div>
 
-    
     <script src="../button/button.js" type="module"></script>
     <script src="../icon/icon.js" type="module"></script>
     <script src="./badge.js" type="module"></script>

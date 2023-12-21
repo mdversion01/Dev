@@ -1,8 +1,6 @@
 import { css } from "lit";
 
 export const buttonStyles = css`
-  //:host {}
-
   body {
     font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif !important;
     font-size: 16px;
@@ -146,6 +144,7 @@ export const buttonStyles = css`
   .pl-btn.stripped {
     background-color: transparent !important;
     border-color: transparent !important; 
+    color: #333;
     height: auto !important;
     margin: 0 !important;
     padding: 0 !important;
@@ -155,7 +154,7 @@ export const buttonStyles = css`
   .pl-btn.stripped:hover {
     background-color: transparent !important;
     border-color: transparent !important; 
-    color: inherit !important;
+    /* color: inherit !important; */
   }
 
   .pl-btn--block {
@@ -479,31 +478,31 @@ export const buttonStyles = css`
     color: #505050;
   }
 
-  .pl-btn.x-small {
+  .pl-btn.xs {
     font-size: 0.625rem;
-    height: 20px !important;
-    min-width: 36px !important;
+    height: 20px;
+    min-width: 36px;
     padding: 0 8.8888888889px 2px !important;
   }
 
-  .pl-btn.small {
+  .pl-btn.sm {
     font-size: 0.75rem;
-    height: 28px !important;
-    min-width: 50px !important;
+    height: 28px;
+    min-width: 50px;
     padding: 0 12.4444444444px !important;
   }
 
-  .pl-btn.regular,
-  .pl-btn:not(.pl-btn.round).pl-btn.regular {
+  .pl-btn.default,
+  .pl-btn:not(.pl-btn.circle).pl-btn.default {
     height: 36px;
     min-width: 64px;
     padding: 0 16px;
   }
 
-  .pl-btn.large {
-    font-size: 1.2rem !important;
-    height: 44px !important;
-    min-width: 78px !important;
+  .pl-btn.lg {
+    font-size: 1.2rem;
+    height: 44px;
+    min-width: 78px;
     padding: 0 19.5555555556px !important;
   }
   
@@ -523,15 +522,15 @@ export const buttonStyles = css`
     box-shadow: none;
   }
 
-  .pl-btn.rounded {
+  .pl-btn.pill {
     border-radius: 28px;
   }
 
-  .pl-btn.tile {
+  .pl-btn.square {
     border-radius: 0;
   }
 
-  .pl-btn.round {
+  .pl-btn.circle {
     border-radius: 50%;
   }
 
@@ -687,34 +686,34 @@ export const buttonStyles = css`
     color: #4b9cf5;
   }
 
-  .pl-btn.icon-btn-lg {
-    font-size: 0.875rem;
-    height: 44px;
-    width: 44px;
+  .pl-btn.icon-btn.icon-lg {
+    font-size: 0.875rem !important;
+    height: 44px !important;
+    width: 44px !important;
   }
 
-  .pl-btn.icon-btn-lg > i {
-    font-size: 1.5rem;
+  .pl-btn.icon-btn.large > i {
+    font-size: 1.5rem !important;
   }
 
-  .pl-btn.icon-btn-sm {
-    font-size: 0.75rem;
-    height: 28px;
-    width: 28px;
+  .pl-btn.icon-btn.icon-sm {
+    font-size: 0.75rem !important;
+    height: 28px !important;
+    width: 28px !important;
   }
 
-  .pl-btn.icon-btn-sm > i {
-    font-size: 1rem;
+  .pl-btn.icon-btn.small > i {
+    font-size: 1rem !important;
   }
 
-  .pl-btn.icon-btn-xs {
-    font-size: 0.75rem;
-    height: 1.2rem;
-    width: 1.2rem;
+  .pl-btn.icon-btn.icon-xs {
+    font-size: 0.75rem !important;
+    height: 1.2rem !important;
+    width: 1.2rem !important;
   }
 
-  .pl-btn.icon-btn-xs > i {
-    font-size: 0.6rem;
+  .pl-btn.icon-btn.x-small > i {
+    font-size: 0.6rem !important;
   }
 
   .pl-btn--outlined {
