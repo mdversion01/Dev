@@ -858,4 +858,30 @@ export const buttonStyles = css`
     opacity: 0.65;
     pointer-events: none;
   }
+
+
+  /* Button group styles */
+  .pl-btn.pl-btn-group-start {
+    border-radius: 4px 0 0 4px;
+  }
+
+  .pl-btn.pl-btn-group-end {
+    border-radius: 0 4px 4px 0;
+  }
+
+  .pl-btn.pl-btn-group-vertical-start {
+    border-radius: 4px 4px 0 0;
+    width: 100%;
+  }
+
+  .pl-btn.pl-btn-group-vertical-end {
+    border-radius: 0 0 4px 4px;
+    width: 100%;
+  }
+
+  .pl-btn.pl-btn-group.pl-btn-group__btn,
+  .pl-btn.pl-btn-group-vertical.pl-btn-group__btn {
+    border-radius: 0;
+    width: 100%;
+  }
 `;

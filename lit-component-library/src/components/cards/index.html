@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html>
+  <title>Cards</title>
+  <head>
+    <!-- <link
+      rel="stylesheet"
+      href="../../../node_modules/bootstrap/dist/css/bootstrap.css"
+    /> -->
+    <!-- <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    /> -->
+    <link
+      rel="stylesheet"
+      href="../../../node_modules/lit-fontawesome/css/font.css"
+    />
+    <link rel="stylesheet" href="../../styles/components.css" />
+
+    <style>
+      .content-box {
+        flex: 1 1 auto;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="title">Card Examples</div>
+    <div class="ex-container">
+      <div class="content-box">
+        <card-component>
+          <div slot="header">Card Header</div>
+          <div slot="title">Card Title</div>
+          <div slot="text">
+            <p>
+              Example of the card's body text. Example of the card's body text.
+            </p>
+            <p>Example of the card's body text.</p>
+          </div>
+          <div slot="footer">
+            <p>Card Footer</p>
+          </div>
+        </card-component>
+
+        <div class="context">Card</div>
+      </div>
+
+      <div class="content-box">
+        <card-component noHeader>
+          <div slot="header">Card Header</div>
+          <div slot="title">Card Title</div>
+          <div slot="text">
+            <p>
+              Example of the card's body text. Example of the card's body text.
+            </p>
+            <p>Example of the card's body text.</p>
+          </div>
+          <div slot="footer">
+            <p>Card Footer</p>
+          </div>
+        </card-component>
+
+        <div class="context">Card without Header</div>
+      </div>
+
+      <div class="content-box">
+        <card-component noFooter>
+          <div slot="header">Card Header</div>
+          <div slot="title">Card Title</div>
+          <div slot="text">
+            <p>
+              Example of the card's body text. Example of the card's body text.
+            </p>
+            <p>Example of the card's body text.</p>
+          </div>
+          <div slot="footer">
+            <p>Card Footer</p>
+          </div>
+        </card-component>
+
+        <div class="context">Card without Footer</div>
+      </div>
+
+      <div class="content-box">
+        <card-component noHeader noFooter>
+          <div slot="header">Card Header</div>
+          <div slot="title">Card Title</div>
+          <div slot="text">
+            <p>
+              Example of the card's body text. Example of the card's body text.
+            </p>
+            <p>Example of the card's body text.</p>
+          </div>
+          <div slot="footer">
+            <p>Card Footer</p>
+          </div>
+        </card-component>
+
+        <div class="context">Card without Header and Footer</div>
+      </div>
+
+      <div class="content-box">
+        <card-component actions>
+          <div slot="header">Card Header</div>
+          <div slot="title">Card Title</div>
+          <div slot="text">
+            <p>
+              Example of the card's body text. Example of the card's body text.
+            </p>
+            <p>Example of the card's body text.</p>
+          </div>
+          <div slot="actions">Action Buttons or Links can go here.</div>
+        </card-component>
+
+        <div class="context">Card with Action area</div>
+      </div>
+
+      <div class="content-box">
+        <card-component img imgSrc="./FillImg.png">
+          <div slot="header">Card Header</div>
+          <div slot="title">Card Title</div>
+          <div slot="text">
+            <p>
+              Example of the card's body text. Example of the card's body text.
+            </p>
+            <p>Example of the card's body text.</p>
+          </div>
+          <div slot="footer">
+            <p>Card Footer</p>
+          </div>
+        </card-component>
+
+        <div class="context">Card with an Image</div>
+      </div>
+
+      <div class="content-box">
+        <card-component img imgSrc="./FillImg.png" actions>
+          <div slot="header">Card Header</div>
+          <div slot="title">Card Title</div>
+          <div slot="text">
+            <p>
+              Example of the card's body text. Example of the card's body text.
+            </p>
+            <p>Example of the card's body text.</p>
+          </div>
+          <div slot="actions">Action Buttons or Links can go here.</div>
+          <div slot="footer">
+            <p>Card Footer</p>
+          </div>
+        </card-component>
+
+        <div class="context">Card with everything</div>
+      </div>
+    </div>
+
+    <div class="title">Elevated Card Examples</div>
+    <div class="ex-container no-flex">
+      <div class="content-box">
+        <div style="display: flex; justify-content: space-evenly">
+          <span style="margin: 15px">
+            <card-component elevated-2>
+              <div slot="header">Card Header</div>
+              <div slot="title">Card Title</div>
+              <div slot="text">
+                <p>
+                  Example of the card's body text. Example of the card's body
+                  text.
+                </p>
+                <p>Example of the card's body text.</p>
+              </div>
+              <div slot="footer">
+                <p>Card Footer</p>
+              </div>
+            </card-component>
+          </span>
+          <span style="margin: 15px">
+            <card-component elevated-5>
+              <div slot="header">Card Header</div>
+              <div slot="title">Card Title</div>
+              <div slot="text">
+                <p>
+                  Example of the card's body text. Example of the card's body
+                  text.
+                </p>
+                <p>Example of the card's body text.</p>
+              </div>
+              <div slot="footer">
+                <p>Card Footer</p>
+              </div>
+            </card-component>
+          </span>
+          <span style="margin: 15px">
+            <card-component elevated-10>
+              <div slot="header">Card Header</div>
+              <div slot="title">Card Title</div>
+              <div slot="text">
+                <p>
+                  Example of the card's body text. Example of the card's body
+                  text.
+                </p>
+                <p>Example of the card's body text.</p>
+              </div>
+              <div slot="footer">
+                <p>Card Footer</p>
+              </div>
+            </card-component>
+          </span>
+          <span style="margin: 15px">
+            <card-component elevated-15>
+              <div slot="header">Card Header</div>
+              <div slot="title">Card Title</div>
+              <div slot="text">
+                <p>
+                  Example of the card's body text. Example of the card's body
+                  text.
+                </p>
+                <p>Example of the card's body text.</p>
+              </div>
+              <div slot="footer">
+                <p>Card Footer</p>
+              </div>
+            </card-component>
+          </span>
+          <span style="margin: 15px">
+            <card-component elevated-24>
+              <div slot="header">Card Header</div>
+              <div slot="title">Card Title</div>
+              <div slot="text">
+                <p>
+                  Example of the card's body text. Example of the card's body
+                  text.
+                </p>
+                <p>Example of the card's body text.</p>
+              </div>
+              <div slot="footer">
+                <p>Card Footer</p>
+              </div>
+            </card-component>
+          </span>
+        </div>
+        <div class="context">
+          Elevated Card Examples from l-r, elevated-2, elevated-5, elevated-10,
+          elevated-15, elevated-24
+        </div>
+      </div>
+    </div>
+
+    <!-- Props -->
+    <div style="margin-top: 50px">
+      <h2>Props</h2>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Property</th>
+              <th>Type</th>
+              <th>Default</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td>actions</td>
+              <td>Boolean</td>
+              <td>false</td>
+              <td>
+                When this is true, the user can add
+                <span class="example"
+                  >'&#60;div slot="actions"&#62;Action Buttons or Links can go
+                  here.&#60;/div&#62;'</span
+                >
+                to provide the card with any action or interactive elements and
+                wraps the actions in a div with the class of 'pl-card-actions'.
+              </td>
+            </tr>
+            <tr>
+              <td>altText</td>
+              <td>String</td>
+              <td></td>
+              <td>
+                When adding an image to the top of the card, use this property to set the image's 'alt' text.<br />
+                <span class="example">Ex: altText="Image Alt Text"</span>
+              </td>
+            </tr>
+            <tr>
+                <td>cardMaxWidth</td>
+                <td>String</td>
+                <td>20</td>
+                <td>
+                  This property allows the user to set the 'max-width' of the card in rem's not px's. The style is place inline of the 'pl-card' div and the default is '20rem'.<br />
+                  <span class="example">Ex: cardMaxWidth="10"</span>
+                </td>
+              </tr>
+              <tr>
+                <td>img</td>
+                <td>Boolean</td>
+                <td>false</td>
+                <td>
+                  When this is true, an area is provided for the user to adda n image.
+                </td>
+              </tr>
+              <tr>
+                <td>imgSrc</td>
+                <td>String</td>
+                <td></td>
+                <td>
+                  When the 'img' property is true, use this property to provide the path or url to an image.
+                </td>
+              </tr>
+              <tr>
+                <td>inlineStyles</td>
+                <td>String</td>
+                <td></td>
+                <td>
+                  When using this property, additional inline styles can be added
+                  to the card.<br />
+                  <span class="example"
+                    >Ex:&#60;card-component inlineStyles="color: pink; padding:
+                    10px;"&#62;&#60;/card-component&#62;</span
+                  >
+                </td>
+              </tr>
+              <tr>
+                <td>noFooter</td>
+                <td>Boolean</td>
+                <td>false</td>
+                <td>
+                  When this is true, the footer is not displayed and the slotted content will not be shown.
+                </td>
+              </tr>
+              <tr>
+                <td>noHeader</td>
+                <td>Boolean</td>
+                <td>false</td>
+                <td>
+                  When this is true, the header is not displayed and the slotted content will not be shown.
+                </td>
+              </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Instructions -->
+    <div style="margin-top: 50px">
+      <h4>Using Component in other JavaScript Frameworks</h4>
+
+      <p>
+        Integrating a Lit Element component with other JavaScript frameworks
+        like Vue, React, and Angular involves creating a wrapper component in
+        each framework to encapsulate and use the Lit Element component. Here
+        are examples for each framework:
+      </p>
+
+      <h5>Vue.js</h5>
+      <p>
+        In a Vue component, you'd use CardComponent just like any other HTML
+        element:
+      </p>
+      <pre>
+          <code>
+            &#60;template&#62;
+                &#60;div&#62;
+                    &#60;lit-element-wrapper&#62;&#60;/lit-element-wrapper&#62;
+                &#60;/div&#62;
+            &#60;/template&#62;
+              
+            &#60;script&#62;
+              import { LitElement, html, css } from 'lit';
+              import { property, customElement } from 'lit/decorators.js';
+              
+              @customElement('lit-element-wrapper')
+              class LitElementWrapper extends LitElement {
+                @property({ type: Boolean }) actions = true;
+                @property({ type: String }) altText = 'Sample Image';
+                @property({ type: String }) cardWidth = '300px';
+                @property({ type: String }) classNames = 'custom-class';
+                @property({ type: Boolean }) img = true;
+                @property({ type: String }) imgSrc = 'path/to/image.jpg';
+                @property({ type: String }) inlineStyles = 'color: red;';
+                @property({ type: Boolean }) noFooter = false;
+                @property({ type: Boolean }) noHeader = false;
+              
+                render() {
+                  return html`
+                    &#60;card-component
+                      .actions="${this.actions}"
+                      .altText="${this.altText}"
+                      .cardWidth="${this.cardWidth}"
+                      .classNames="${this.classNames}"
+                      .img="${this.img}"
+                      .imgSrc="${this.imgSrc}"
+                      .inlineStyles="${this.inlineStyles}"
+                      .noFooter="${this.noFooter}"
+                      .noHeader="${this.noHeader}"
+                    &#62;
+                    &#60;div slot="header"&#62;Header Content&#60;/div&#62;
+                    &#60;div slot="title"&#62;Title Content&#60;/div&#62;
+                    &#60;div slot="text"&#62;Text Content&#60;/div&#62;
+                    &#60;div slot="actions"&#62;Actions Content&#60;/div&#62;
+                    &#60;div slot="footer"&#62;Footer Content&#60;/div&#62;
+                    &#60;/card-component&#62;
+                  `;
+                }
+              }
+              
+              export default {
+                components: {
+                  LitElementWrapper,
+                },
+              };
+              &#60;/script&#62;
+              
+          </code>
+        </pre>
+
+      <h5>React</h5>
+      <p>
+        In a React component, you'd similarly treat CardComponent as a regular
+        HTML element:
+      </p>
+      <pre>
+          <code>
+            import React from 'react';
+            import { LitElement, html, css } from 'lit';
+            import { property, customElement } from 'lit/decorators.js';
+
+            @customElement('lit-element-wrapper')
+            class LitElementWrapper extends LitElement {
+            @property({ type: Boolean }) actions = true;
+            @property({ type: String }) altText = 'Sample Image';
+            @property({ type: String }) cardWidth = '300px';
+            @property({ type: String }) classNames = 'custom-class';
+            @property({ type: Boolean }) img = true;
+            @property({ type: String }) imgSrc = 'path/to/image.jpg';
+            @property({ type: String }) inlineStyles = 'color: red;';
+            @property({ type: Boolean }) noFooter = false;
+            @property({ type: Boolean }) noHeader = false;
+
+            render() {
+                return html`
+                &#60;card-component
+                    .actions="${this.actions}"
+                    .altText="${this.altText}"
+                    .cardWidth="${this.cardWidth}"
+                    .classNames="${this.classNames}"
+                    .img="${this.img}"
+                    .imgSrc="${this.imgSrc}"
+                    .inlineStyles="${this.inlineStyles}"
+                    .noFooter="${this.noFooter}"
+                    .noHeader="${this.noHeader}"
+                &#62;
+                    &#60;div slot="header"&#62;Header Content&#60;/div&#62;
+                    &#60;div slot="title"&#62;Title Content&#60;/div&#62;
+                    &#60;div slot="text"&#62;Text Content&#60;/div&#62;
+                    &#60;div slot="actions"&#62;Actions Content&#60;/div&#62;
+                    &#60;div slot="footer"&#62;Footer Content&#60;/div&#62;
+                &#60;/card-component&#62;
+                `;
+            }
+            }
+
+            function App() {
+            return (
+                &#60;div&#62;
+                &#60;LitElementWrapper /&#62;
+                &#60;/div&#62;
+            );
+            }
+
+            export default App;
+          </code>
+        </pre>
+
+      <h5>Angular</h5>
+      <p>In Angular, you'd use CardComponent as part of your Angular template:</p>
+
+      <pre>
+          <code>
+            import { Component } from '@angular/core';
+            import { LitElement, html, css } from 'lit';
+            import { property, customElement } from 'lit/decorators.js';
+
+            @customElement('lit-element-wrapper')
+            class LitElementWrapper extends LitElement {
+            @property({ type: Boolean }) actions = true;
+            @property({ type: String }) altText = 'Sample Image';
+            @property({ type: String }) cardWidth = '300px';
+            @property({ type: String }) classNames = 'custom-class';
+            @property({ type: Boolean }) img = true;
+            @property({ type: String }) imgSrc = 'path/to/image.jpg';
+            @property({ type: String }) inlineStyles = 'color: red;';
+            @property({ type: Boolean }) noFooter = false;
+            @property({ type: Boolean }) noHeader = false;
+
+            render() {
+                return html`
+                &#60;card-component
+                    .actions="${this.actions}"
+                    .altText="${this.altText}"
+                    .cardWidth="${this.cardWidth}"
+                    .classNames="${this.classNames}"
+                    .img="${this.img}"
+                    .imgSrc="${this.imgSrc}"
+                    .inlineStyles="${this.inlineStyles}"
+                    .noFooter="${this.noFooter}"
+                    .noHeader="${this.noHeader}"
+                &#62;
+                    &#60;div slot="header"&#62;Header Content&#60;/div&#62;
+                    &#60;div slot="title"&#62;Title Content&#60;/div&#62;
+                    &#60;div slot="text"&#62;Text Content&#60;/div&#62;
+                    &#60;div slot="actions"&#62;Actions Content&#60;/div&#62;
+                    &#60;div slot="footer"&#62;Footer Content&#60;/div&#62;
+                &#60;/card-component&#62;
+                `;
+            }
+            }
+
+            @Component({
+            selector: 'app-root',
+            template: `
+                &#60;div&#62;
+                &#60;lit-element-wrapper&#62;&#60;/lit-element-wrapper&#62;
+                &#60;/div&#62;
+            `,
+            })
+            export class AppComponent {}
+          </code>
+        </pre>
+
+      <p>
+        These examples assume that you've configured your framework project to
+        work with web components and that you've imported the Lit Element
+        component correctly. Adjust import paths accordingly.
+      </p>
+
+      <p>
+        The interoperability is possible because Web Components, once defined
+        and registered as custom elements, act like native HTML elements that
+        these frameworks can understand and interact with.
+      </p>
+    </div>
+
+    <script src="./cards.js" type="module"></script>
+    <!-- <script src="../../../node_modules/bootstrap/dist/js/bootstrap.js"></script> -->
+  </body>
+</html>

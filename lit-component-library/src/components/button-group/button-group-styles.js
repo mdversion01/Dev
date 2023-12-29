@@ -1,5 +1,4 @@
 import { css } from "lit";
-import { buttonStyles } from "../button/button-styles.js";
 
 export const buttonGroupStyles = css`
   .pl-btn-group,
@@ -8,23 +7,17 @@ export const buttonGroupStyles = css`
     display: -ms-inline-flexbox;
     display: inline-flex;
     vertical-align: middle;
-
-    border-radius: 4px;
-    overflow: hidden;
   }
 
-  .pl-btn-group > .pl-btn-group:not(:last-child) > .pl-btn,
-  .pl-btn-group > .pl-btn:not(:last-child):not(.dropdown-toggle) {
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
+  .pl-btn-group-vertical {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+}
 
-    /* border: 1px solid red; */
-  }
-
-  .pl-btn-group-vertical > ::slotted(pl-button),
-  .pl-btn-group > ::slotted(pl-button) {
+  .pl-btn-group-vertical > .pl-btn,
+  .pl-btn-group > .pl-btn {
     position: relative;
-    -ms-flex: 1 1 auto;
     flex: 1 1 auto;
   }
 `;

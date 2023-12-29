@@ -22,7 +22,7 @@
     <div class="title">Button Examples</div>
     <div class="ex-container">
       <div class="content-box">
-        <pl-button> Default Button </pl-button>
+        <pl-button ariaLabel="Default Button"> Default Button </pl-button>
         <div class="context">Solid default button. No specific styling.</div>
       </div>
       <div class="content-box">
@@ -695,6 +695,58 @@
       </div>
     </div>
 
+    <div style="margin-top: 15px">
+      <div class="title">Button Group Examples</div>
+      <div class="ex-container">
+        <div class="content-box">
+          <button-group>
+            <pl-button slot="buttons" size="sm" variant="primary" groupBtn start
+              >Button 1</pl-button
+            >
+            <pl-button slot="buttons" size="sm" variant="secondary" groupBtn
+              >Button 2</pl-button
+            >
+            <pl-button slot="buttons" size="sm" variant="tertiary" groupBtn end
+              >Button 3</pl-button
+            >
+          </button-group>
+          <div class="context">Default button Group (Horizontal)</div>
+        </div>
+
+        <div class="content-box">
+          <button-group vertical>
+            <pl-button
+              slot="buttons"
+              size="sm"
+              variant="primary"
+              groupBtn
+              vertical
+              start
+              >Button 1</pl-button
+            >
+            <pl-button
+              slot="buttons"
+              size="sm"
+              variant="secondary"
+              groupBtn
+              vertical
+              >Button 2</pl-button
+            >
+            <pl-button
+              slot="buttons"
+              size="sm"
+              variant="tertiary"
+              groupBtn
+              vertical
+              end
+              >Button 3</pl-button
+            >
+          </button-group>
+          <div class="context">Default button Group (Vertical)</div>
+        </div>
+      </div>
+    </div>
+
     <!-- Props -->
     <div style="margin-top: 50px">
       <h2>Props</h2>
@@ -718,6 +770,17 @@
                 Applies the inline style of position: absolute to the component.
               </td>
             </tr>
+            <tr>
+              <td>ariaLabel</td>
+              <td>String</td>
+              <td></td>
+              <td>
+                Changes the default 'aria-label' of 'Button' to the inputed
+                value.<br />
+                <span class="example">Ex: ariaLabel="This is a button"</span>
+              </td>
+            </tr>
+
             <tr>
               <td>block</td>
               <td>Boolean</td>
@@ -750,6 +813,16 @@
               <td>This property adds disabled to the button element.</td>
             </tr>
             <tr>
+              <td>end</td>
+              <td>Boolean</td>
+              <td>false</td>
+              <td>
+                Used with the button-group component. This property will add the
+                'pl-btn-group-end' or 'pl-btn-group-vertical-end' (when the
+                property 'vertical' is used) class to the button.
+              </td>
+            </tr>
+            <tr>
               <td>fixed</td>
               <td>Boolean</td>
               <td>false</td>
@@ -757,6 +830,16 @@
                 If this property is added, an inline style with 'position:
                 fixed' will be added to the component and it's position is will
                 be fixed.
+              </td>
+            </tr>
+
+            <tr>
+              <td>groupBtn</td>
+              <td>Boolean</td>
+              <td>false</td>
+              <td>
+                Designates the button as part of a 'Button Group' when used with
+                the 'button-group' component.
               </td>
             </tr>
             <tr>
@@ -860,6 +943,16 @@
               </td>
             </tr>
             <tr>
+              <td>start</td>
+              <td>Boolean</td>
+              <td>false</td>
+              <td>
+                Used with the button-group component. This property will add the
+                'pl-btn-group-start' or 'pl-btn-group-vertical-start' (when the
+                property 'vertical' is used) class to the button.
+              </td>
+            </tr>
+            <tr>
               <td>text</td>
               <td>Boolean</td>
               <td>false</td>
@@ -900,6 +993,16 @@
                 This property allows the user to change the color of the button
                 to one of the predefined colors/styles.
                 <br /><span class="example">Ex: varian="primary"</span>
+              </td>
+            </tr>
+            <tr>
+              <td>vertical</td>
+              <td>Boolean</td>
+              <td>false</td>
+              <td>
+                Used with the button-group component. This property will add the
+                'pl-btn-group-vertical' class to the button, which will make the
+                buttons stack vertically.
               </td>
             </tr>
             <tr>
@@ -985,8 +1088,7 @@
                 class togather, the background color will be set to the active
                 color and the hover color will be set to the active color.
                 <br /><span class="example"
-                  >Ex: &#60;pl-button active
-                  variant="active-blue" &#62;Button
+                  >Ex: &#60;pl-button active variant="active-blue" &#62;Button
                   Name&#60;/pl-button&#62;</span
                 >
               </td>
@@ -1253,6 +1355,7 @@
     </div>
 
     <script src="./button.js" type="module"></script>
+    <script src="../button-group/button-group.js" type="module"></script>
     <script src="../badges/badge.js" type="module"></script>
     <script src="../icon/icon.js" type="module"></script>
     <script src="../svg/svg.js" type="module"></script>

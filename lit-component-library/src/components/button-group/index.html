@@ -15,32 +15,124 @@
       href="../../../node_modules/lit-fontawesome/css/font.css"
     />
     <link rel="stylesheet" href="../../styles/components.css" />
-    
   </head>
   <body>
     <!-- Button Groups -->
-
     <div class="title">Button Group Examples</div>
     <div class="ex-container">
       <div class="content-box">
-        <button-group>
-          <pl-button slot="buttons" tile small secondary>Button 1</pl-button>
-          <pl-button slot="buttons" tile small secondary>Button 2</pl-button>
-          <pl-button slot="buttons" tile small secondary>Button 3</pl-button>
+        <button-group ariaLabel="This is a Button Group">
+          <pl-button slot="buttons" size="sm" variant="primary" groupBtn start
+            >Button 1</pl-button
+          >
+          <pl-button slot="buttons" size="sm" variant="secondary" groupBtn
+            >Button 2</pl-button
+          >
+          <pl-button slot="buttons" size="sm" variant="tertiary" groupBtn end
+            >Button 3</pl-button
+          >
         </button-group>
-        <div class="context">Default button Group. No specific styling.</div>
+        <div class="context">Default button Group (Horizontal)</div>
+      </div>
+
+      <div class="content-box">
+        <button-group vertical>
+          <pl-button
+            slot="buttons"
+            size="sm"
+            variant="primary"
+            groupBtn
+            vertical
+            start
+            >Button 1</pl-button
+          >
+          <pl-button
+            slot="buttons"
+            size="sm"
+            variant="secondary"
+            groupBtn
+            vertical
+            >Button 2</pl-button
+          >
+          <pl-button
+            slot="buttons"
+            size="sm"
+            variant="tertiary"
+            groupBtn
+            vertical
+            end
+            >Button 3</pl-button
+          >
+        </button-group>
+        <div class="context">Default button Group (Vertical)</div>
       </div>
     </div>
 
-    
+    <div class="title">Button Group States</div>
+    <div class="ex-container">
+      <div class="content-box">
+        <button-group>
+          <pl-button
+            slot="buttons"
+            size="sm"
+            variant="active-blue"
+            active
+            groupBtn
+            start
+            >Active</pl-button
+          >
+          <pl-button slot="buttons" active size="sm" groupBtn
+            >Default</pl-button
+          >
+          <pl-button
+            slot="buttons"
+            size="sm"
+            variant="secondary"
+            disabled
+            groupBtn
+            end
+            >Disabled</pl-button
+          >
+        </button-group>
+        <div class="context">Active States button Group (Horizontal)</div>
+      </div>
 
-    
+      <div class="content-box">
+        <button-group vertical>
+          <pl-button
+            slot="buttons"
+            size="sm"
+            variant="active-blue"
+            active
+            groupBtn
+            vertical
+            start
+            >Active</pl-button
+          >
+          <pl-button slot="buttons" size="sm" groupBtn vertical
+            >Default</pl-button
+          >
+          <pl-button
+            slot="buttons"
+            size="sm"
+            variant="secondary"
+            disabled
+            groupBtn
+            vertical
+            end
+            >Disabled</pl-button
+          >
+        </button-group>
+        <div class="context">Disabled States button Group (Vertical)</div>
+      </div>
+    </div>
 
-    
-
-  
     <!-- Props -->
-    <!-- <div style="margin-top: 50px">
+    <div style="margin-top: 50px">
+      <div>
+        This component is a wrapper for grouping buttons from the button
+        component.
+      </div>
       <h2>Props</h2>
       <div class="table-wrapper">
         <table>
@@ -55,498 +147,145 @@
 
           <tbody>
             <tr>
-              <td>absolute</td>
-              <td>Boolean</td>
-              <td>false</td>
-              <td>
-                Applies the inline style of position: absolute to the component.
-              </td>
-            </tr>
-            <tr>
-              <td>ariaPressed</td>
+              <td>ariaLabel</td>
               <td>String</td>
               <td></td>
               <td>
-                Adding aria-pressed to an element with a role of button turns
-                the button into a toggle button. The aria-pressed attribute is
-                only relevant for toggle buttons. It represents the button's
-                current "pressed" state. The value is "tri-state", meaning the
-                value can be set to true, false, mixed, or undefined values. In
-                the case of aria-pressed, like most tri-state value types, the
-                default value is undefined. Toggle buttons require a full
-                press-and-release cycle to change their value. Pressing and
-                releasing it once changes the value to true. If it's pressed and
-                released again, the value changes back to false. A value of
-                mixed means that the values of more than one item controlled by
-                the button do not all share the same value. <br /><span
-                  class="example"
-                  >Ex: &#60;pl-button primary ariaPressed=" true | false | mixed
-                  "&#62;Button Name&#60;/pl-button&#62;</span
-                >
-                will render aria-pressed="true | false | mixed"
-              </td>
-            </tr>
-            <tr>
-              <td>block</td>
-              <td>Boolean</td>
-              <td>false</td>
-              <td>Expands the button to 100% of available space.</td>
-            </tr>
-            <tr>
-              <td>bottom</td>
-              <td>String</td>
-              <td>number | string</td>
-              <td>
-                Aligns the component towards the bottom. This should be used
-                with the absolute or fixed props. <br /><span class="example"
-                  >Ex: bottom="50"</span
-                >
-              </td>
-            </tr>
-            <tr>
-              <td>disabled</td>
-              <td>Boolean</td>
-              <td>false</td>
-              <td>This property adds disabled to the button element.</td>
-            </tr>
-            <tr>
-              <td>iconBtn</td>
-              <td>Boolean</td>
-              <td>false</td>
-              <td>Designates the button as an icon button.</td>
-            </tr>
-            <tr>
-              <td>inlineStyles</td>
-              <td>String</td>
-              <td></td>
-              <td>When using this property, additional inline styles can be added to the button.<br />
+                Changes the default 'aria-label' of 'Button Group' to the
+                inputed value.<br />
                 <span class="example"
-                >Ex:&#60;pl-button inlineStyles="color: pink; padding: 10px;"&#62;&#60;/pl-button&#62;</span></td>
-            </tr>
-            <tr>
-              <td>left</td>
-              <td>String</td>
-              <td>number | string</td>
-              <td>
-                Aligns the component towards the left. This should be used with
-                the absolute or fixed props. <br /><span class="example"
-                  >Ex: left="50"</span
+                  >Ex: ariaLabel="This is a button group"</span
                 >
               </td>
             </tr>
             <tr>
-              <td>link</td>
-              <td>Boolean</td>
-              <td>false</td>
-              <td>Designates the button as an 'href' and not a 'button'.</td>
-            </tr>
-            <tr>
-              <td>outlined</td>
+              <td>vertical</td>
               <td>Boolean</td>
               <td>false</td>
               <td>
-                When added, this makes the background transparent and applies a
-                thin border.
-              </td>
-            </tr>
-            <tr>
-              <td>right</td>
-              <td>String</td>
-              <td>number | string</td>
-              <td>
-                Aligns the component towards the right. This should be used with
-                the absolute or fixed props. <br /><span class="example"
-                  >Ex: right="50"</span
-                >
-              </td>
-            </tr>
-            <tr>
-              <td>text</td>
-              <td>Boolean</td>
-              <td>false</td>
-              <td>
-                Displays a button as just text with no background hover effects
-                like with a regular or textBtn button.
-              </td>
-            </tr>
-            <tr>
-              <td>textBtn</td>
-              <td>Boolean</td>
-              <td>false</td>
-              <td>
-                Displays a button as text but with the same hover effects as a
-                regular button.
-              </td>
-            </tr>
-            <tr>
-              <td>title</td>
-              <td>String</td>
-              <td></td>
-              <td>Add a title attribute to the button.</td>
-            </tr>
-            <tr>
-              <td>url</td>
-              <td>String</td>
-              <td></td>
-              <td>
-                Used with the 'link' property, a url or path can be applied to
-                the href that is rendered.
-              </td>
-            </tr>
-            <tr>
-              <td>zIndex</td>
-              <td>String</td>
-              <td>number | string</td>
-              <td>
-                Specifies the stack order of an element. This should be used
-                with the absolute or fixed props. <br /><span class="example"
-                  >Ex: zIndex="50"</span
-                >
+                Changes the default horizontal layout of the button group to a
+                vertical layout.<br />
+                <span class="example">Ex: vertical</span>
               </td>
             </tr>
           </tbody>
         </table>
       </div>
-    </div> -->
-
-    <!-- Styling -->
-    <!-- <div style="margin-top: 50px">
-      <h2>Styling</h2>
-      <p>
-        These class names can be added directly to the component similiar to
-        Props.
-      </p>
-      <div class="table-wrapper">
-        <table>
-          <thead>
-            <tr>
-              <th>Style</th>
-              <th>Class Name</th>
-              <th>Description</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            <tr>
-              <td><span class="example">Color</span></td>
-              <td>
-                primary, secondary, tertiary, active-blue, success, danger,
-                warning, light, dark
-              </td>
-              <td>
-                These class names will set background color, border color and
-                the hover colors for a regular button. <br /><span
-                  class="example"
-                  >Ex: &#60;pl-button primary&#62;Button
-                  Name&#60;/pl-button&#62;</span
-                >
-              </td>
-            </tr>
-            <tr>
-              <td></td>
-              <td></td>
-              <td>
-                When using these class names with a 'text' prop, the class names
-                will be appeneded with '--text' which will set background color
-                and border color to transparent and set the color of the text
-                and the hover colors. <br /><span class="example"
-                  >Ex: &#60;pl-button text primary&#62;Button
-                  Name&#60;/pl-button&#62;</span
-                >
-              </td>
-            </tr>
-            <tr>
-              <td></td>
-              <td></td>
-              <td>
-                When using these class names with an 'outline' prop, the
-                background color is transparent and it sets the border color,
-                text color and the hover colors. <br /><span class="example"
-                  >Ex: &#60;pl-button primary outlined&#62;Button
-                  Name&#60;/pl-button&#62;</span
-                >
-              </td>
-            </tr>
-            <tr>
-              <td></td>
-              <td>active and active-blue</td>
-              <td>
-                For active state, the class names will set the background color,
-                border color and the hover colors.<br />
-                When adding the 'active' class and the 'active-blue' class
-                togather, the background color will be set to the active color
-                and the hover color will be set to the active color.
-                <br /><span class="example"
-                  >Ex: &#60;pl-button primary active active-blue &#62;Button
-                  Name&#60;/pl-button&#62;</span
-                >
-              </td>
-            </tr>
-            <tr>
-              <td><span class="example">Elevation</span></td>
-              <td>flat, is-elevated, elevated-0 to elevated-24</td>
-              <td>
-                The elevation helpers allow you to control relative depth, or
-                distance, between two surfaces. There is a total of 25 elevation
-                levels. You can set an element’s elevation by using the class
-                elevated-{n}, where n is a integer between 0-24 corresponding to
-                the desired elevation. Applying flat will give give the button
-                no depth and applying is-elevated will give the button a slight
-                amount of depth.. <br /><span class="example"
-                  >Ex: &#60;pl-button primary flat" &#62;Button
-                  Name&#60;/pl-button&#62;</span
-                >
-                <br /><span class="example"
-                  >Ex: &#60;pl-button primary is-elevated" &#62;Button
-                  Name&#60;/pl-button&#62;</span
-                >
-                <br /><span class="example"
-                  >Ex: &#60;pl-button primary elevated-3" &#62;Button
-                  Name&#60;/pl-button&#62;</span
-                >
-              </td>
-            </tr>
-            <tr>
-              <td><span class="example">Sizes</span></td>
-              <td>x-small, small, regular, large</td>
-              <td>
-                Sizing for text buttons. 'x-small' is 20px, 'small' is 28px,
-                'regular' is 36px and 'large' is 44px. <br /><span
-                  class="example"
-                  >Ex: &#60;pl-button primary x-small" &#62;Button
-                  Name&#60;/pl-button&#62;</span
-                >
-                <br /><span class="example"
-                  >Ex: &#60;pl-button primary small" &#62;Button
-                  Name&#60;/pl-button&#62;</span
-                >
-                <br /><span class="example"
-                  >Ex: &#60;pl-button primary regular" &#62;Button
-                  Name&#60;/pl-button&#62;</span
-                >
-                <br /><span class="example"
-                  >Ex: &#60;pl-button primary large" &#62;Button
-                  Name&#60;/pl-button&#62;</span
-                >
-              </td>
-            </tr>
-            <tr>
-              <td></td>
-              <td>icon-btn-xs, icon-btn-sm, icon-btn-lg</td>
-              <td>
-                Sizing for icon buttons. 'icon-btn-xs' is 1rem by 1rem,
-                'icon-btn-sm' is 28px by 28px, 'icon-btn-lg' is 44px by 44px and
-                the regular size is 36px by 36px . <br /><span class="example"
-                  >Ex: &#60;pl-button primary icon-btn"
-                  &#62;&#60;/pl-button&#62; (regular size)</span
-                >
-                <br /><span class="example"
-                  >Ex: &#60;pl-button primary icon-btn icon-btn-xs"
-                  &#62;&#60;/pl-button&#62;</span
-                >
-                <br /><span class="example"
-                  >Ex: &#60;pl-button primary icon-btn icon-btn-sm"
-                  &#62;&#60;/pl-button&#62;</span
-                >
-                <br /><span class="example"
-                  >Ex: &#60;pl-button primary icon-btn icon-btn-lg"
-                  &#62;&#60;/pl-button&#62;</span
-                >
-              </td>
-            </tr>
-            <tr>
-              <td><span class="example">Shape</span></td>
-              <td>round, rounded, tile</td>
-              <td>
-                By default, these buttons, whether regular buttons or icon
-                buttons, have rounded corners. 'round' is to make the circular
-                icon buttons. 'tile' is to make the icon buttons, square or the
-                regular buttons rectangle. 'rounded' is to make the regular
-                button a pill shape. <br /><span class="example"
-                  >Ex: &#60;pl-button primary round iconBtn icon="fas fa-home"
-                  &#62;&#60;/pl-button&#62;</span
-                >
-                <br /><span class="example"
-                  >Ex: &#60;pl-button primary rounded" &#62;Button
-                  Name&#60;/pl-button&#62;</span
-                >
-                <br /><span class="example"
-                  >Ex: &#60;pl-button primary tile" &#62;Button
-                  Name&#60;/pl-button&#62;</span
-                >
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div> -->
+    </div>
 
     <!-- Instructions -->
-    <!-- <div style="margin-top: 50px">
-      <h4>PlButton Custom '_handleClick'</h4>
-      <p>
-        The _handleClick() method in the PlButton component is a custom event
-        dispatcher that triggers the custom-click event when the button is
-        clicked. To use this functionality in an instance of your PlButton
-        component, a user would listen for the custom-click event.
-      </p>
-      <p>
-        Here's an example of how a user might implement this event listener:
-      </p>
-      <pre>
-        <code>
-          // Creating an instance of the PlButton component
-          const myButton = document.createElement('pl-button');
-
-          // Attaching the component to the DOM
-          document.body.appendChild(myButton);
-
-          // Listening for the custom-click event
-          myButton.addEventListener('custom-click', (event) => {
-            console.log('Button was clicked!');
-            // Perform actions or handle the event here
-          });
-        </code>
-      </pre>
-      <p>
-        By adding an event listener to the pl-button element, the user can
-        respond to the custom-click event triggered by your component's
-        _handleClick() method. This allows them to execute specific actions or
-        code when the button is clicked.
-      </p>
-
-      <p>
-        To use the PlButton component in another JavaScript file, you'd
-        typically import it and then use it within that file.
-      </p>
-
-      <p>Here's an example of how you might do this:</p>
-
-      <pre>
-          <code>
-            // Import the PlButton component
-            import "./path/to/PlButton.js";
-
-            // Use the PlButton in your code
-            const button = document.createElement("pl-button");
-
-            // Add properties, attributes, or event listeners if needed
-            button.icon = "fas fa-home"; // Set an icon
-            button.addEventListener("custom-click", () => {
-              console.log("Button clicked!");
-            });
-
-            // Append the button to the document or any desired element
-            document.body.appendChild(button);
-          </code>
-      </pre>
-
-      <p>
-        This example demonstrates how you could import the PlButton component
-        and then use it within your JavaScript file. You can set properties,
-        attributes, or attach event listeners as needed, just like you would
-        with any other HTML element.
-      </p>
-
+    <div style="margin-top: 50px">
       <h4>Using Component in other JavaScript Frameworks</h4>
+
+      <p>
+        Integrating a Lit Element component with other JavaScript frameworks
+        like Vue, React, and Angular involves creating a wrapper component in
+        each framework to encapsulate and use the Lit Element component. Here
+        are examples for each framework:
+      </p>
 
       <h5>Vue.js</h5>
       <p>
-        In a Vue component, you'd use PlButton just like any other HTML element:
+        In a Vue component, you'd use ButtonGroup just like any other HTML element:
       </p>
       <pre>
         <code>
           &#60;template&#62;
-          &#60;div&#62;
-          &#60;!-- Using the PlButton component --&#62;
-          &#60;pl-button icon="fas fa-home" @custom-click="handleClick"&#62;Click me&#60;/pl-button&#62;
-          &#60;/div&#62;
+              &#60;div&#62;
+                  &#60;button-group :aria-label="ariaLabel" :class-names="classNames" :vertical="vertical"&#62;
+                      &#60;pl-button slot="buttons"&#62;Button 1&#60;/pl-button&#62;
+                      &#60;pl-button slot="buttons"&#62;Button 2&#60;/pl-button&#62;
+                      &#60;pl-button slot="buttons"&#62;Button 3&#60;/pl-button&#62;
+                  &#60;/button-group&#62;
+              &#60;/div&#62;
           &#60;/template&#62;
           
           &#60;script&#62;
-          // Import PlButton here if necessary
-          export default {
-            methods: {
-              handleClick() {
-                console.log('Button clicked!');
-              }
-            }
-          };
+          import { defineComponent } from 'vue';
+          
+          export default defineComponent({
+            data() {
+              return {
+                ariaLabel: 'Vue Button Group',
+                classNames: 'my-custom-class',
+                vertical: false,
+              };
+            },
+          });
           &#60;/script&#62;
+          
           
         </code>
       </pre>
 
       <h5>React</h5>
       <p>
-        In a React component, you'd similarly treat PlButton as a regular HTML
+        In a React component, you'd similarly treat ButtonGroup as a regular HTML
         element:
       </p>
       <pre>
         <code>
           import React from 'react';
-          import './path/to/PlButton.js'; // Import PlButton here if necessary
+          import ButtonGroup from 'path-to-button-group'; // Update the import path
 
-          class MyComponent extends React.Component {
-            handleClick() {
-              console.log('Button clicked!');
-            }
+          function MyReactComponent() {
+            const ariaLabel = 'React Button Group';
+            const classNames = 'my-custom-class';
+            const vertical = false;
 
-            render() {
-              return (
-                &#60;div&#62;
-                  {/* Using the PlButton component */}
-                  &#60;pl-button icon="fas fa-home" onClick={this.handleClick}&#62;Click me&#60;/pl-button&#62;
-                  &#60;/div&#62;
-              );
-            }
+            return (
+              &#60;div&#62;
+                  &#60;ButtonGroup ariaLabel={ariaLabel} classNames={classNames} vertical={vertical}&#62;
+                      &#60;pl-button slot="buttons"&#62;Button 1&#60;/pl-button&#62;
+                      &#60;pl-button slot="buttons"&#62;Button 2&#60;/pl-button&#62;
+                      &#60;pl-button slot="buttons"&#62;Button 3&#60;/pl-button&#62;
+                  &#60;/ButtonGroup&#62;
+              &#60;/div&#62;
+            );
           }
+
         </code>
       </pre>
 
       <h5>Angular</h5>
-      <p>In Angular, you'd use PlButton as part of your Angular template:</p>
+      <p>In Angular, you'd use ButtonGroup as part of your Angular template:</p>
 
       <pre>
         <code>
-          &#60;!-- Inside your Angular component template --&#62;
-          &#60;div&#62;
-          &#60;!-- Using the PlButton component --&#62;
-          &#60;pl-button [icon]="'fas fa-home'" (custom-click)="handleClick()"&#62;Click me&#60;/pl-button&#62;
-          &#60;/div&#62;
-
-        </code>
-      </pre>
-
-      <pre>
-        <code>
-          // Inside your Angular component class
           import { Component } from '@angular/core';
 
           @Component({
-            selector: 'app-my-component',
-            templateUrl: './my-component.component.html',
+            selector: 'app-root',
+            template: `
+            &#60;div&#62;
+                &#60;button-group [ariaLabel]="'Angular Button Group'" [classNames]="'my-custom-class'" [vertical]="false"&#62;
+                    &#60;pl-button slot="buttons"&#62;Button 1&#60;/pl-button&#62;
+                    &#60;pl-button slot="buttons"&#62;Button 2&#60;/pl-button&#62;
+                    &#60;pl-button slot="buttons"&#62;Button 3&#60;/pl-button&#62;
+                &#60;/button-group&#62;
+            &#60;/div>
+            `,
           })
-          export class MyComponent {
-            handleClick() {
-              console.log('Button clicked!');
-            }
-          }
+          export class AppComponent {}
+          
+
         </code>
       </pre>
+
+      <p>
+        These examples assume that you've configured your framework project to
+        work with web components and that you've imported the Lit Element
+        component correctly. Adjust import paths accordingly.
+      </p>
 
       <p>
         The interoperability is possible because Web Components, once defined
         and registered as custom elements, act like native HTML elements that
         these frameworks can understand and interact with.
       </p>
-    </div> -->
+    </div>
 
-    <!-- <script src="./button.js" type="module"></script> -->
-    <script src="../button-group/button-group.js" type="module"></script>
-    <script src="../badges/badge.js" type="module"></script>
-    <script src="../icon/icon.js" type="module"></script>
-    <script src="../svg/svg.js" type="module"></script>
+    <script src="./button-group.js" type="module"></script>
     <!-- <script src="../../../node_modules/bootstrap/dist/js/bootstrap.js"></script> -->
   </body>
 </html>

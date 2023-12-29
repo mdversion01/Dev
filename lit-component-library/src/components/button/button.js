@@ -19,12 +19,15 @@ class PlButton extends LitElement {
   static get properties() {
     return {
       absolute: { type: Boolean },
+      ariaLabel: { type: String },
       block: { type: Boolean },
       bottom: { type: String },
       btnIcon: { type: Boolean },
       classNames: { type: String },
       disabled: { type: Boolean },
+      end: { type: Boolean },
       fixed: { type: Boolean },
+      groupBtn: { type: Boolean },
       iconBtn: { type: Boolean },
       inlineStyles: { type: String },
       left: { type: String },
@@ -34,12 +37,14 @@ class PlButton extends LitElement {
       right: { type: String },
       shape: { type: String },
       size: { type: String },
+      start: { type: Boolean },
       text: { type: Boolean },
       textBtn: { type: Boolean },
       title: { type: String },
       top: { type: String },
       url: { type: String },
       variant: { type: String },
+      vertical: { type: Boolean },
       zIndex: { type: String },
     };
   }
@@ -47,12 +52,15 @@ class PlButton extends LitElement {
   constructor() {
     super();
     this.absolute = false;
+    this.ariaLabel = "";
     this.block = false;
     this.bottom = "";
     this.btnIcon = false;
     this.classNames = "";
     this.disabled = false;
+    this.end = false;
     this.fixed = false;
+    this.groupBtn = false;
     this.iconBtn = false;
     this.inlineStyles = "";
     this.left = "";
@@ -62,12 +70,14 @@ class PlButton extends LitElement {
     this.right = "";
     this.shape = "";
     this.size = "";
+    this.start = false;
     this.text = false;
     this.textBtn = false;
     this.title = "";
     this.top = "";
     this.url = "";
     this.variant = "";
+    this.vertical = false;
     this.zIndex = "";
   }
 
@@ -87,7 +97,7 @@ class PlButton extends LitElement {
         href="${this.url || "#"}"
         role="button"
         @click="${this._handleClick}"
-        aria-label="${this.label || "Button"}"
+        aria-label="${this.ariaLabel || "Button"}"
         ?disabled="${this.disabled}"
       >
         ${content}
@@ -115,7 +125,7 @@ class PlButton extends LitElement {
         class="${classAttribute} ${size} text-btn"
         style=${ifDefined(inlineStyles ? inlineStyles : undefined)}
         @click="${this._handleClick}"
-        aria-label="${this.label || "Button"}"
+        aria-label="${this.ariaLabel || "Button"}"
         role="button"
         ?disabled="${this.disabled}"
       >
@@ -144,7 +154,7 @@ class PlButton extends LitElement {
         class="${classAttribute} ${size} text"
         style=${ifDefined(inlineStyles ? inlineStyles : undefined)}
         @click="${this._handleClick}"
-        aria-label="${this.label || "Button"}"
+        aria-label="${this.ariaLabel || "Button"}"
         role="button"
         ?disabled="${this.disabled}"
       >
@@ -168,7 +178,7 @@ class PlButton extends LitElement {
         class="${classAttribute} ${size} icon-btn"
         style=${ifDefined(inlineStyles ? inlineStyles : undefined)}
         @click="${this._handleClick}"
-        aria-label="${this.label || "Button"}"
+        aria-label="${this.ariaLabel || "Button"}"
         title=${ifDefined(this.title ? this.title : undefined)}
         role="button"
         ?disabled="${this.disabled}"
@@ -199,7 +209,7 @@ class PlButton extends LitElement {
         class="${classAttribute} ${size} btn-icon"
         style=${ifDefined(inlineStyles ? inlineStyles : undefined)}
         @click="${this._handleClick}"
-        aria-label="${this.label || "Button"}"
+        aria-label="${this.ariaLabel || "Button"}"
         title=${ifDefined(this.title ? this.title : undefined)}
         role="button"
         ?disabled="${this.disabled}"
@@ -225,7 +235,7 @@ class PlButton extends LitElement {
         class="${classAttribute} ${size} ${ripple}"
         style="${ifDefined(inlineStyles ? inlineStyles : undefined)}"
         @click="${this._handleClick}"
-        aria-label="${this.label || "Button"}"
+        aria-label="${this.ariaLabel || "Button"}"
         title="${ifDefined(this.title ? this.title : undefined)}"
         role="button"
         ?disabled="${this.disabled}"
@@ -292,7 +302,17 @@ class PlButton extends LitElement {
         buttonShape = "";
     }
 
-    // Combine sizeClass and buttonTypeClass to get the final class for the button
+    let buttonGroup = "";
+    switch (this.vertical) {
+      case true:
+        buttonGroup = "pl-btn-group-vertical";
+        break;
+      default:
+        buttonGroup = "pl-btn-group";
+    }
+
+    const groupDirection = `${buttonGroup}`;
+    const placement = this.start ? `${buttonGroup}-start` : this.end ? `${buttonGroup}-end` : !this.start || !this.end ? "pl-btn-group__btn" : "";
     const size = `${buttonTypeClass}`;
     const shape = `${buttonShape}`;
     const variant = `${this.variant}`;
@@ -332,6 +352,8 @@ class PlButton extends LitElement {
     classAttribute += blockClass ? ` ${blockClass}` : "";
     classAttribute += variant ? ` ${variant}` : "";
     classAttribute += shape ? ` ${shape}` : "";
+    classAttribute += this.groupBtn ? ` ${groupDirection}` : "";
+    classAttribute += this.groupBtn ? ` ${placement}` : "";
     classAttribute += this._getClassNames() ? ` ${this._getClassNames()}` : "";
 
     if (this.link) {
@@ -404,9 +426,14 @@ class PlButton extends LitElement {
     const excludedProperties = [
       "additionalstyles",
       "aria-pressed",
+      "arialabel",
       "pressed",
       "btnicon",
+      "buttongroup",
+      "classattribute",
       "disabled",
+      "end",
+      "groupbtn",
       "inlinestyles",
       "dynamicstyles",
       "outlined",
@@ -417,6 +444,8 @@ class PlButton extends LitElement {
       "icon",
       "iconbtn",
       "shape",
+      "slot",
+      "start",
       "title",
       "block",
       "variant",
@@ -426,6 +455,7 @@ class PlButton extends LitElement {
       "top",
       "bottom",
       "fixed",
+      "vertical",
       "zindex",
       // Add other property names to be excluded from the class here
     ];

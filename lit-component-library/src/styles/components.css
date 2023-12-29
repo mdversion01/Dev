@@ -29,7 +29,7 @@ body {
 
   .content-box {
     border: thin solid rgba(0, 0, 0, 0.12);
-    flex: 1 1 0;
+    flex: 1 1 auto;
     padding: 10px;
     text-align: center;
   }
@@ -85,4 +85,9 @@ body {
 
   tr:last-child {
     border-bottom: none;
+  }
+
+ .pl-card-footer {
+    background-color: #686868;
+    color: #FFF;
   }
