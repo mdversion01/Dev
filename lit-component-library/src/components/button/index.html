@@ -518,33 +518,41 @@
 
           <div class="context">Button shape examples.</div>
         </div>
-        <div class="content-box">
-          <pl-button variant="primary" flat size="sm"> Flat </pl-button>
-          <pl-button variant="primary" is-elevated size="sm">
-            Is Elevated
-          </pl-button>
+        <div style="display: flex">
+          <div class="content-box">
+            <pl-button variant="primary" ripple size="sm">
+              Ripple Effect
+            </pl-button>
+            <div class="context">Ripple effect on click.</div>
+          </div>
+          <div class="content-box">
+            <pl-button variant="primary" flat size="sm"> Flat </pl-button>
+            <pl-button variant="primary" is-elevated size="sm">
+              Is Elevated
+            </pl-button>
 
-          <pl-button variant="primary" elevated-5 size="sm">
-            Elevated 5
-          </pl-button>
+            <pl-button variant="primary" elevated-5 size="sm">
+              Elevated 5
+            </pl-button>
 
-          <pl-button variant="primary" elevated-10 size="sm">
-            Elevated 10
-          </pl-button>
+            <pl-button variant="primary" elevated-10 size="sm">
+              Elevated 10
+            </pl-button>
 
-          <pl-button variant="primary" elevated-15 size="sm">
-            Elevated 15
-          </pl-button>
+            <pl-button variant="primary" elevated-15 size="sm">
+              Elevated 15
+            </pl-button>
 
-          <pl-button variant="primary" elevated-20 size="sm">
-            Elevated 20
-          </pl-button>
+            <pl-button variant="primary" elevated-20 size="sm">
+              Elevated 20
+            </pl-button>
 
-          <pl-button variant="primary" elevated-24 size="sm">
-            Elevated 24
-          </pl-button>
-          <div class="context">
-            Flat and Elevated button examples. Elevated buttons go from 0-24.
+            <pl-button variant="primary" elevated-24 size="sm">
+              Elevated 24
+            </pl-button>
+            <div class="context">
+              Flat and Elevated button examples. Elevated buttons go from 0-24.
+            </div>
           </div>
         </div>
       </div>
@@ -849,19 +857,6 @@
               <td>Designates the button as a button that only uses an icon.</td>
             </tr>
             <tr>
-              <td>inlineStyles</td>
-              <td>String</td>
-              <td></td>
-              <td>
-                When using this property, additional inline styles can be added
-                to the button.<br />
-                <span class="example"
-                  >Ex:&#60;pl-button inlineStyles="color: pink; padding:
-                  10px;"&#62;&#60;/pl-button&#62;</span
-                >
-              </td>
-            </tr>
-            <tr>
               <td>left</td>
               <td>String</td>
               <td>number | string</td>
@@ -923,6 +918,15 @@
               </td>
             </tr>
             <tr>
+              <td>ripple</td>
+              <td>Boolean</td>
+              <td>false</td>
+              <td>
+                When added, a ripple effect is added to the button to indicate
+                when the button is clicked.
+              </td>
+            </tr>
+            <tr>
               <td>shape</td>
               <td>String</td>
               <td></td>
@@ -950,6 +954,19 @@
                 Used with the button-group component. This property will add the
                 'pl-btn-group-start' or 'pl-btn-group-vertical-start' (when the
                 property 'vertical' is used) class to the button.
+              </td>
+            </tr>
+            <tr>
+              <td>styles</td>
+              <td>String</td>
+              <td></td>
+              <td>
+                When using this property, additional inline styles can be added
+                to the button.<br />
+                <span class="example"
+                  >Ex:&#60;pl-button styles="color: pink; padding:
+                  10px;"&#62;&#60;/pl-button&#62;</span
+                >
               </td>
             </tr>
             <tr>

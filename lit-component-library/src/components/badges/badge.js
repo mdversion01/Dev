@@ -25,7 +25,7 @@ class PlBadge extends LitElement {
       disabled: { type: Boolean },
       dot: { type: Boolean },
       icon: { type: Boolean },
-      inlineStyles: { type: String },
+      styles: { type: String },
       inset: { type: Boolean },
       left: { type: String },
       offsetX: { type: String },
@@ -52,7 +52,7 @@ class PlBadge extends LitElement {
     this.disabled = false;
     this.dot = false;
     this.icon = false;
-    this.inlineStyles = "";
+    this.styles = "";
     this.inset = false;
     this.left = "";
     this.offsetX = "12";
@@ -69,7 +69,7 @@ class PlBadge extends LitElement {
   renderBadgeToken(
     tokenClassAttribute,
     colorClassAttribute,
-    inlineStyles,
+    styles,
     bordered
   ) {
     return html`
@@ -85,7 +85,7 @@ class PlBadge extends LitElement {
             aria-live="polite"
             class="${tokenClassAttribute}"
             role="status"
-            style=${ifDefined(inlineStyles ? inlineStyles : undefined)}
+            style=${ifDefined(styles ? styles : undefined)}
           >
             <slot name="token"></slot>
           </span>
@@ -94,7 +94,7 @@ class PlBadge extends LitElement {
     `;
   }
 
-  renderDotBadge(tokenClassAttribute, inlineStyles) {
+  renderDotBadge(tokenClassAttribute, styles) {
     return html`
       <div
         class="${PL_BADGE_BADGE} ${PL_BADGE_DOT}"
@@ -108,7 +108,7 @@ class PlBadge extends LitElement {
             aria-live="polite"
             class="${tokenClassAttribute}"
             role="status"
-            style=${ifDefined(inlineStyles ? inlineStyles : undefined)}
+            style=${ifDefined(styles ? styles : undefined)}
           >
           </span>
         </span>
@@ -201,7 +201,7 @@ class PlBadge extends LitElement {
       .filter((style) => style) // Remove falsy values (undefined, empty strings)
       .join(" "); // Join the styles with a space
 
-    const inlineStyles = `${this.inlineStyles} ${dynamicStyles}`.trim();
+    const styles = `${this.styles} ${dynamicStyles}`.trim();
 
     // Construct class attribute with conditional inclusion of classes
     let classAttribute = this.token ? PL_BADGE_BADGE : PL_BADGE;
@@ -239,11 +239,11 @@ class PlBadge extends LitElement {
       return this.renderBadgeToken(
         tokenClassAttribute,
         colorClassAttribute,
-        inlineStyles,
+        styles,
         bordered
       );
     } else if (this.dot) {
-      return this.renderDotBadge(tokenClassAttribute, inlineStyles);
+      return this.renderDotBadge(tokenClassAttribute, styles);
     } else if (this.bdgPosition) {
       return this.renderPositionedBadge(classAttribute);
     } else {

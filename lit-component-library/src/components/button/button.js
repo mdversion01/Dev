@@ -29,12 +29,13 @@ class PlButton extends LitElement {
       fixed: { type: Boolean },
       groupBtn: { type: Boolean },
       iconBtn: { type: Boolean },
-      inlineStyles: { type: String },
+      styles: { type: String },
       left: { type: String },
       link: { type: Boolean },
       outlined: { type: Boolean },
       pressed: { type: Boolean },
       right: { type: String },
+      ripple: { type: Boolean },
       shape: { type: String },
       size: { type: String },
       start: { type: Boolean },
@@ -46,6 +47,10 @@ class PlButton extends LitElement {
       variant: { type: String },
       vertical: { type: Boolean },
       zIndex: { type: String },
+
+      isOpen: { type: Boolean },
+      targetId: { type: String },
+      accordion: { type: Boolean },
     };
   }
 
@@ -62,12 +67,13 @@ class PlButton extends LitElement {
     this.fixed = false;
     this.groupBtn = false;
     this.iconBtn = false;
-    this.inlineStyles = "";
+    this.styles = "";
     this.left = "";
     this.link = false;
     this.outlined = false;
     this.pressed = false;
     this.right = "";
+    this.ripple = false;
     this.shape = "";
     this.size = "";
     this.start = false;
@@ -79,12 +85,16 @@ class PlButton extends LitElement {
     this.variant = "";
     this.vertical = false;
     this.zIndex = "";
+
+    this.isOpen = false;
+    this.targetId = "";
+    this.accordion = false;
   }
 
   renderLinkButton(
     classAttribute,
     size,
-    inlineStyles,
+    styles,
     content,
     colorVariants,
     pressed,
@@ -92,8 +102,8 @@ class PlButton extends LitElement {
   ) {
     return html`
       <a
-        class="${classAttribute} ${size}"
-        style=${ifDefined(inlineStyles ? inlineStyles : undefined)}
+        class="${classAttribute}"
+        style=${ifDefined(styles ? styles : undefined)}
         href="${this.url || "#"}"
         role="button"
         @click="${this._handleClick}"
@@ -108,7 +118,7 @@ class PlButton extends LitElement {
   renderTextButton(
     classAttribute,
     size,
-    inlineStyles,
+    styles,
     content,
     colorVariants,
     pressed
@@ -122,8 +132,8 @@ class PlButton extends LitElement {
     return html`
       <button
         aria-pressed="${pressed}"
-        class="${classAttribute} ${size} text-btn"
-        style=${ifDefined(inlineStyles ? inlineStyles : undefined)}
+        class="${classAttribute} text-btn"
+        style=${ifDefined(styles ? styles : undefined)}
         @click="${this._handleClick}"
         aria-label="${this.ariaLabel || "Button"}"
         role="button"
@@ -137,7 +147,7 @@ class PlButton extends LitElement {
   renderTextAsButton(
     classAttribute,
     size,
-    inlineStyles,
+    styles,
     content,
     colorVariants,
     pressed
@@ -151,8 +161,8 @@ class PlButton extends LitElement {
     return html`
       <button
         aria-pressed="${pressed}"
-        class="${classAttribute} ${size} text"
-        style=${ifDefined(inlineStyles ? inlineStyles : undefined)}
+        class="${classAttribute} text"
+        style=${ifDefined(styles ? styles : undefined)}
         @click="${this._handleClick}"
         aria-label="${this.ariaLabel || "Button"}"
         role="button"
@@ -166,7 +176,7 @@ class PlButton extends LitElement {
   renderIconButton(
     classAttribute,
     size,
-    inlineStyles,
+    styles,
     content,
     colorVariants,
     pressed,
@@ -175,8 +185,8 @@ class PlButton extends LitElement {
     return html`
       <button
         aria-pressed="${pressed}"
-        class="${classAttribute} ${size} icon-btn"
-        style=${ifDefined(inlineStyles ? inlineStyles : undefined)}
+        class="${classAttribute} icon-btn"
+        style=${ifDefined(styles ? styles : undefined)}
         @click="${this._handleClick}"
         aria-label="${this.ariaLabel || "Button"}"
         title=${ifDefined(this.title ? this.title : undefined)}
@@ -191,7 +201,7 @@ class PlButton extends LitElement {
   renderIconAsButton(
     classAttribute,
     size,
-    inlineStyles,
+    styles,
     content,
     colorVariants,
     pressed,
@@ -206,8 +216,8 @@ class PlButton extends LitElement {
     return html`
       <button
         aria-pressed="${pressed}"
-        class="${classAttribute} ${size} btn-icon"
-        style=${ifDefined(inlineStyles ? inlineStyles : undefined)}
+        class="${classAttribute} btn-icon"
+        style=${ifDefined(styles ? styles : undefined)}
         @click="${this._handleClick}"
         aria-label="${this.ariaLabel || "Button"}"
         title=${ifDefined(this.title ? this.title : undefined)}
@@ -222,7 +232,7 @@ class PlButton extends LitElement {
   renderDefaultButton(
     classAttribute,
     size,
-    inlineStyles,
+    styles,
     content,
     colorVariants,
     pressed,
@@ -232,8 +242,8 @@ class PlButton extends LitElement {
     return html`
       <button
         aria-pressed="${pressed}"
-        class="${classAttribute} ${size} ${ripple}"
-        style="${ifDefined(inlineStyles ? inlineStyles : undefined)}"
+        class="${classAttribute}"
+        style="${ifDefined(styles ? styles : undefined)}"
         @click="${this._handleClick}"
         aria-label="${this.ariaLabel || "Button"}"
         title="${ifDefined(this.title ? this.title : undefined)}"
@@ -246,6 +256,7 @@ class PlButton extends LitElement {
   }
 
   render() {
+    
     // List of color classes to append '--text'
     const colorVariants = [
       "primary",
@@ -312,7 +323,13 @@ class PlButton extends LitElement {
     }
 
     const groupDirection = `${buttonGroup}`;
-    const placement = this.start ? `${buttonGroup}-start` : this.end ? `${buttonGroup}-end` : !this.start || !this.end ? "pl-btn-group__btn" : "";
+    const placement = this.start
+      ? `${buttonGroup}-start`
+      : this.end
+      ? `${buttonGroup}-end`
+      : !this.start || !this.end
+      ? "pl-btn-group__btn"
+      : "";
     const size = `${buttonTypeClass}`;
     const shape = `${buttonShape}`;
     const variant = `${this.variant}`;
@@ -322,7 +339,7 @@ class PlButton extends LitElement {
       ? html`<slot></slot>`
       : html`<span class="pl-btn__content"><slot></slot></span>`;
 
-    const ripple = this.iconBtn ? "" : "pl-btn-ripple";
+    const rippleEffect = this.ripple ? "pl-btn-ripple" : "";
 
     // aria-pressed attribute
     const pressed = ifDefined(
@@ -343,7 +360,7 @@ class PlButton extends LitElement {
       .filter((style) => style) // Remove falsy values (undefined, empty strings)
       .join(" "); // Join the styles with a space
 
-    const inlineStyles = `${this.inlineStyles} ${dynamicStyles}`.trim();
+    const styles = `${this.styles} ${dynamicStyles}`.trim();
 
     // Construct class attribute with conditional inclusion of classes
     let classAttribute = "pl-btn";
@@ -351,6 +368,8 @@ class PlButton extends LitElement {
     classAttribute += outlinedClass ? ` ${outlinedClass}` : "";
     classAttribute += blockClass ? ` ${blockClass}` : "";
     classAttribute += variant ? ` ${variant}` : "";
+    classAttribute += rippleEffect ? ` ${rippleEffect}` : "";
+    classAttribute += size ? ` ${size}` : "";
     classAttribute += shape ? ` ${shape}` : "";
     classAttribute += this.groupBtn ? ` ${groupDirection}` : "";
     classAttribute += this.groupBtn ? ` ${placement}` : "";
@@ -360,7 +379,7 @@ class PlButton extends LitElement {
       return this.renderLinkButton(
         classAttribute,
         size,
-        inlineStyles,
+        styles,
         content,
         colorVariants,
         pressed,
@@ -370,7 +389,7 @@ class PlButton extends LitElement {
       return this.renderTextButton(
         classAttribute,
         size,
-        inlineStyles,
+        styles,
         content,
         colorVariants,
         pressed
@@ -379,7 +398,7 @@ class PlButton extends LitElement {
       return this.renderTextAsButton(
         classAttribute,
         size,
-        inlineStyles,
+        styles,
         content,
         colorVariants,
         pressed
@@ -388,7 +407,7 @@ class PlButton extends LitElement {
       return this.renderIconButton(
         classAttribute,
         size,
-        inlineStyles,
+        styles,
         content,
         colorVariants,
         pressed,
@@ -398,7 +417,7 @@ class PlButton extends LitElement {
       return this.renderIconAsButton(
         classAttribute,
         size,
-        inlineStyles,
+        styles,
         content,
         colorVariants,
         pressed,
@@ -408,12 +427,12 @@ class PlButton extends LitElement {
       return this.renderDefaultButton(
         classAttribute,
         size,
-        inlineStyles,
+        styles,
         content,
         colorVariants,
         pressed,
         this.title,
-        ripple
+        rippleEffect
       );
     }
   }
@@ -457,6 +476,13 @@ class PlButton extends LitElement {
       "fixed",
       "vertical",
       "zindex",
+      "data-toggle",
+      "aria-expanded",
+      "aria-controls",
+      "class",
+      "data-target",
+      "isOpen",
+      "targetId",
       // Add other property names to be excluded from the class here
     ];
 

@@ -52,6 +52,7 @@ export const cardStyles = css`
     align-items: center;
     display: flex;
     flex-wrap: wrap;
+    font-size: 1rem;
     letter-spacing: 0.0125em;
     margin-bottom: 0.75rem;
     margin-top: 0;

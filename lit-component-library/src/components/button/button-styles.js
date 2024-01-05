@@ -83,7 +83,7 @@ export const buttonStyles = css`
     background-color: #e7e7e7;
     border: 1px solid transparent;
     border-radius: 4px;
-    color: rgba(0,0,0,.87);
+    color: rgba(0, 0, 0, 0.87);
     cursor: pointer;
     display: inline-flex;
     flex: 0 0 auto;
@@ -143,7 +143,7 @@ export const buttonStyles = css`
 
   .pl-btn.stripped {
     background-color: transparent !important;
-    border-color: transparent !important; 
+    border-color: transparent !important;
     color: #333;
     height: auto !important;
     margin: 0 !important;
@@ -153,7 +153,7 @@ export const buttonStyles = css`
 
   .pl-btn.stripped:hover {
     background-color: transparent !important;
-    border-color: transparent !important; 
+    border-color: transparent !important;
     /* color: inherit !important; */
   }
 
@@ -223,7 +223,7 @@ export const buttonStyles = css`
   .pl-btn.active-blue {
     background-color: #909090;
     border-color: #909090;
-    color: #FFFF;
+    color: #ffff;
   }
 
   .pl-btn.active-blue:hover {
@@ -315,7 +315,7 @@ export const buttonStyles = css`
   .pl-btn.text-btn:hover,
   .pl-btn.text:hover,
   .pl-btn.btn-icon:hover {
-    color: rgba(0,0,0,.87);
+    color: rgba(0, 0, 0, 0.87);
   }
 
   .pl-btn.text-btn:hover {
@@ -409,7 +409,7 @@ export const buttonStyles = css`
   .pl-btn.btn-icon.danger--text:hover {
     color: #de2730;
   }
-  
+
   .pl-btn.text-btn.warning--text,
   .pl-btn.text.warning--text,
   .pl-btn.text-btn.warning--text {
@@ -426,7 +426,7 @@ export const buttonStyles = css`
   .pl-btn.btn-icon.warning--text:hover {
     color: #c47215;
   }
-  
+
   .pl-btn.text-btn.info--text,
   .pl-btn.text.info--text,
   .pl-btn.text-btn.info--text {
@@ -443,7 +443,7 @@ export const buttonStyles = css`
   .pl-btn.btn-icon.info--text:hover {
     color: #3596f9;
   }
-  
+
   .pl-btn.text-btn.light--text,
   .pl-btn.text.light--text,
   .pl-btn.text-btn.light--text {
@@ -505,7 +505,7 @@ export const buttonStyles = css`
     min-width: 78px;
     padding: 0 19.5555555556px !important;
   }
-  
+
   .pl-btn:not(.pl-btn--outlined).accent,
   .pl-btn:not(.pl-btn--outlined).danger,
   .pl-btn:not(.pl-btn--outlined).info,
@@ -675,7 +675,8 @@ export const buttonStyles = css`
     width: 36px;
   }
 
-  .pl-btn.fab, .pl-btn.icon-btn {
+  .pl-btn.fab,
+  .pl-btn.icon-btn {
     min-height: 0;
     min-width: 0;
     padding: 0;
@@ -859,7 +860,6 @@ export const buttonStyles = css`
     pointer-events: none;
   }
 
-
   /* Button group styles */
   .pl-btn.pl-btn-group-start {
     border-radius: 4px 0 0 4px;
@@ -884,4 +884,13 @@ export const buttonStyles = css`
     border-radius: 0;
     width: 100%;
   }
+
+  .accordion-btn {
+    text-align: left !important;
+    justify-content: space-between;
+    border-radius: 0;
+    display: flex;
+    width: 100%;
+  }
+  
 `;
