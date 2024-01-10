@@ -192,7 +192,7 @@
         <code>
           &#60;template&#62;
               &#60;div&#62;
-                  &#60;button-group :aria-label="ariaLabel" :class-names="classNames" :vertical="vertical"&#62;
+                  &#60;button-group :aria-label="ariaLabel" :class-names="classNames"&#62;
                       &#60;pl-button slot="buttons"&#62;Button 1&#60;/pl-button&#62;
                       &#60;pl-button slot="buttons"&#62;Button 2&#60;/pl-button&#62;
                       &#60;pl-button slot="buttons"&#62;Button 3&#60;/pl-button&#62;
@@ -235,7 +235,7 @@
 
             return (
               &#60;div&#62;
-                  &#60;ButtonGroup ariaLabel={ariaLabel} classNames={classNames} vertical={vertical}&#62;
+                  &#60;ButtonGroup ariaLabel={ariaLabel} classNames={classNames}&#62;
                       &#60;pl-button slot="buttons"&#62;Button 1&#60;/pl-button&#62;
                       &#60;pl-button slot="buttons"&#62;Button 2&#60;/pl-button&#62;
                       &#60;pl-button slot="buttons"&#62;Button 3&#60;/pl-button&#62;
@@ -258,7 +258,7 @@
             selector: 'app-root',
             template: `
             &#60;div&#62;
-                &#60;button-group [ariaLabel]="'Angular Button Group'" [classNames]="'my-custom-class'" [vertical]="false"&#62;
+                &#60;button-group [ariaLabel]="'Angular Button Group'" [classNames]="'my-custom-class'"&#62;
                     &#60;pl-button slot="buttons"&#62;Button 1&#60;/pl-button&#62;
                     &#60;pl-button slot="buttons"&#62;Button 2&#60;/pl-button&#62;
                     &#60;pl-button slot="buttons"&#62;Button 3&#60;/pl-button&#62;

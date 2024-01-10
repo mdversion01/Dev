@@ -10,14 +10,14 @@ class Collapse extends LitElement {
 
   static get properties() {
     return {
-      targetId: { type: String },
-      isOpen: { type: Boolean },
-      buttonText: { type: String },
-      isTransitioning: { type: Boolean },
-      targetHeight: { type: Number },
-      collapseButton: { type: Boolean },
       accordion: { type: Boolean },
+      classAttribute: { type: String },
       contentTxtSize: { type: String },
+      isOpen: { type: Boolean },
+      isTransitioning: { type: Boolean },
+      targetId: { type: String },
+      targetHeight: { type: Number },
+      toggle: { type: String},
       // For button component
       classNames: { type: String },
       outlined: { type: Boolean },
@@ -46,15 +46,14 @@ class Collapse extends LitElement {
 constructor() {
     super();
     const { 
-            targetId = "",
-            isOpen = false,
-            isTransitioning = false,
-            buttonText = "Toggle",
-            targetHeight = 0,
-            collapseButton = false,
             accordion = false,
             classAttribute = "",
             contentTxtSize = "",
+            isOpen = false,
+            isTransitioning = false,
+            targetId = "",
+            targetHeight = 0,
+            toggle = "",
             // For button component
             classNames = "",
             outlined = false,
@@ -71,12 +70,11 @@ constructor() {
             targetId,
             isOpen,
             isTransitioning,
-            buttonText,
             targetHeight,
-            collapseButton,
             accordion,
             classAttribute,
             contentTxtSize,
+            toggle,
             // For button component
             classNames,
             outlined,
@@ -112,6 +110,37 @@ async toggleCollapse(event) {
   }, 350); // Adjust this value to match the transition duration
 }
 
+async toggleSingleCollapse(event) {
+  if (!this.targetId) {
+    console.error("No target ID provided");
+    return;
+  }
+  const clickedTargetId = event.currentTarget.dataset.target;
+
+  // Close all accordions except the one being clicked
+  Array.from(document.querySelectorAll("collapse-component"))
+    .filter((accordion) => accordion.targetId !== clickedTargetId)
+    .forEach((accordion) => {
+      accordion.isOpen = false;
+    });
+
+  const target = this.shadowRoot.querySelector(`#${clickedTargetId}`);
+  if (!target) return;
+
+  this.isTransitioning = true;
+  this.isOpen = !this.isOpen;
+
+  if (this.isOpen) {
+    this.targetHeight = target.scrollHeight;
+  }
+
+  setTimeout(() => {
+    this.isTransitioning = false;
+    this.requestUpdate();
+  }, 350); // Adjust this value to match the transition duration
+}
+
+
   updateClassAttribute() {
     this.classAttribute = this.classNames ? ` ${this.classNames}` : "";
     this.classAttribute += this.outlined ? " pl-btn--outlined" : "";
@@ -143,7 +172,7 @@ async toggleCollapse(event) {
     this.updateClassAttribute();
     return html`
       <pl-button
-        @custom-click="${this.toggleCollapse}"
+        @custom-click="${this.toggle === 'single' ? this.toggleSingleCollapse : this.toggleCollapse}"
         aria-expanded=${this.isOpen}
         aria-controls="${this.targetId}"
         class="${this.isOpen ? "collapsed" : ""} ${this.classAttribute}"
@@ -179,6 +208,7 @@ async toggleCollapse(event) {
         .isOpen="${this.isOpen}"
         .targetId="${this.targetId}"
         url="#${this.targetId}"
+        variant="${this.variant}"
       >
         <slot name="button-text"></slot>
       </pl-button>
@@ -190,7 +220,7 @@ async toggleCollapse(event) {
     const displayIcon = this.icon.length === 1 ? this.icon[0] : this.icon[this.isOpen ? 0 : 1];
     return html`
       <pl-button
-        @custom-click="${this.toggleCollapse}"
+        @custom-click="${this.toggle === 'single' ? this.toggleSingleCollapse : this.toggleCollapse}"
         aria-expanded=${this.isOpen}
         aria-controls="${this.targetId}"
         class="${this.isOpen ? "collapsed" : ""} ${this.classAttribute}"
@@ -266,7 +296,6 @@ async toggleCollapse(event) {
     const excludedProperties = [
       "targetId",
       "isOpen",
-      "buttonText",
       "isTransitioning",
       "targetHeight",
       "classNames",
@@ -277,6 +306,8 @@ async toggleCollapse(event) {
       "disabled",
       "ripple",
       "icon",
+      "link",
+      "toggle",
       "accordion",
       "contentTxtSize",
       // Add other property names to be excluded from the class here
