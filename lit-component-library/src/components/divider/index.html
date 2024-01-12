@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- <link
+      rel="stylesheet"
+      href="../../../node_modules/bootstrap/dist/css/bootstrap.css"
+    /> -->
+    <!-- <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    /> -->
+    <!-- <link rel="stylesheet" href="./button.css" /> -->
+    <link
+      rel="stylesheet"
+      href="../../../node_modules/lit-fontawesome/css/font.css"
+    />
+    <link rel="stylesheet" href="../../styles/components.css" />
+  </head>
+  <body>
+    <div class="title">Divider</div>
+    <div class="ex-container">
+      <div class="content-box" style="width: 400px;">
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nonne
+          merninisti licere mihi ista probare, quae sunt a te dicta? Refert
+          tamen, quo modo.
+        </p>
+        <pl-divider></pl-divider>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nonne
+          merninisti licere mihi ista probare, quae sunt a te dicta? Refert
+          tamen, quo modo.
+        </p>
+        <div class="context">Divider</div>
+      </div>
+      <div class="content-box" style="width: 400px;">
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nonne
+          merninisti licere mihi ista probare, quae sunt a te dicta? Refert
+          tamen, quo modo.
+        </p>
+        <pl-divider dashed></pl-divider>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nonne
+          merninisti licere mihi ista probare, quae sunt a te dicta? Refert
+          tamen, quo modo.
+        </p>
+        <div class="context">Divider - Dashed</div>
+      </div>
+      <div class="content-box" style="width: 400px;">
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nonne
+          merninisti licere mihi ista probare, quae sunt a te dicta? Refert
+          tamen, quo modo.
+        </p>
+        <pl-divider orientation="center">Text Center</pl-divider>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nonne
+          merninisti licere mihi ista probare, quae sunt a te dicta? Refert
+          tamen, quo modo.
+        </p>
+        <div class="context">Divider with Center Text/Title</div>
+      </div>
+      <div class="content-box" style="width: 400px;">
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nonne
+          merninisti licere mihi ista probare, quae sunt a te dicta? Refert
+          tamen, quo modo.
+        </p>
+        <pl-divider orientation="left">Text Left</pl-divider>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nonne
+          merninisti licere mihi ista probare, quae sunt a te dicta? Refert
+          tamen, quo modo.
+        </p>
+        <div class="context">Divider with Left Text/Title</div>
+      </div>
+      <div class="content-box" style="width: 400px;">
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nonne
+          merninisti licere mihi ista probare, quae sunt a te dicta? Refert
+          tamen, quo modo.
+        </p>
+        <pl-divider orientation="left" orientationMargin="left">Text Left</pl-divider>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nonne
+          merninisti licere mihi ista probare, quae sunt a te dicta? Refert
+          tamen, quo modo.
+        </p>
+        <div class="context">Divider with Left Text/Title with 0 orientationMargin</div>
+      </div>
+      <div class="content-box" style="width: 400px;">
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nonne
+          merninisti licere mihi ista probare, quae sunt a te dicta? Refert
+          tamen, quo modo.
+        </p>
+        <pl-divider orientation="right">Text Right</pl-divider>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nonne
+          merninisti licere mihi ista probare, quae sunt a te dicta? Refert
+          tamen, quo modo.
+        </p>
+        <div class="context">Divider with Right Text/Title</div>
+      </div>
+      <div class="content-box" style="width: 400px;">
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nonne
+          merninisti licere mihi ista probare, quae sunt a te dicta? Refert
+          tamen, quo modo.
+        </p>
+        <pl-divider orientation="right" orientationMargin="right">Text Right</pl-divider>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nonne
+          merninisti licere mihi ista probare, quae sunt a te dicta? Refert
+          tamen, quo modo.
+        </p>
+        <div class="context">Divider with Right Text/Title with 0 orientationMargin</div>
+      </div>
+      <div class="content-box" style="width: 400px;">
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nonne
+          merninisti licere mihi ista probare, quae sunt a te dicta? Refert
+          tamen, quo modo.
+        </p>
+        <pl-divider orientation="center" plain
+          >Text Center and Plain</pl-divider
+        >
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nonne
+          merninisti licere mihi ista probare, quae sunt a te dicta? Refert
+          tamen, quo modo.
+        </p>
+        <div class="context">Divider with Plain Text</div>
+      </div>
+      <div class="content-box" style="width: 400px;">
+        <div class="txt-14">
+          Test <pl-divider type="vertical"></pl-divider> Test
+          <pl-divider type="vertical"></pl-divider> Test
+          <pl-divider type="vertical"></pl-divider>
+        </div>
+
+        <div class="context">Vertical Dividers</div>
+      </div>
+    </div>
+
+    <!-- Props -->
+    <!-- <div style="margin-top: 50px">
+      <div>
+        This component is a wrapper for grouping buttons from the button
+        component.
+      </div>
+      <h2>Props</h2>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Property</th>
+              <th>Type</th>
+              <th>Default</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td>ariaLabel</td>
+              <td>String</td>
+              <td></td>
+              <td>
+                Changes the default 'aria-label' of 'Button Group' to the
+                inputed value.<br />
+                <span class="example"
+                  >Ex: ariaLabel="This is a button group"</span
+                >
+              </td>
+            </tr>
+            <tr>
+              <td>vertical</td>
+              <td>Boolean</td>
+              <td>false</td>
+              <td>
+                Changes the default horizontal layout of the button group to a
+                vertical layout.<br />
+                <span class="example">Ex: vertical</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div> -->
+
+    <!-- Instructions -->
+    <!-- <div style="margin-top: 50px">
+      <h4>Using Component in other JavaScript Frameworks</h4>
+
+      <p>
+        Integrating a Lit Element component with other JavaScript frameworks
+        like Vue, React, and Angular involves creating a wrapper component in
+        each framework to encapsulate and use the Lit Element component. Here
+        are examples for each framework:
+      </p>
+
+      <h5>Vue.js</h5>
+      <p>
+        In a Vue component, you'd use ButtonGroup just like any other HTML element:
+      </p>
+      <pre>
+        <code>
+          &#60;template&#62;
+              &#60;div&#62;
+                  &#60;button-group :aria-label="ariaLabel" :class-names="classNames"&#62;
+                      &#60;pl-button slot="buttons"&#62;Button 1&#60;/pl-button&#62;
+                      &#60;pl-button slot="buttons"&#62;Button 2&#60;/pl-button&#62;
+                      &#60;pl-button slot="buttons"&#62;Button 3&#60;/pl-button&#62;
+                  &#60;/button-group&#62;
+              &#60;/div&#62;
+          &#60;/template&#62;
+          
+          &#60;script&#62;
+          import { defineComponent } from 'vue';
+          
+          export default defineComponent({
+            data() {
+              return {
+                ariaLabel: 'Vue Button Group',
+                classNames: 'my-custom-class',
+                vertical: false,
+              };
+            },
+          });
+          &#60;/script&#62;
+          
+          
+        </code>
+      </pre>
+
+      <h5>React</h5>
+      <p>
+        In a React component, you'd similarly treat ButtonGroup as a regular HTML
+        element:
+      </p>
+      <pre>
+        <code>
+          import React from 'react';
+          import ButtonGroup from 'path-to-button-group'; // Update the import path
+
+          function MyReactComponent() {
+            const ariaLabel = 'React Button Group';
+            const classNames = 'my-custom-class';
+            const vertical = false;
+
+            return (
+              &#60;div&#62;
+                  &#60;ButtonGroup ariaLabel={ariaLabel} classNames={classNames}&#62;
+                      &#60;pl-button slot="buttons"&#62;Button 1&#60;/pl-button&#62;
+                      &#60;pl-button slot="buttons"&#62;Button 2&#60;/pl-button&#62;
+                      &#60;pl-button slot="buttons"&#62;Button 3&#60;/pl-button&#62;
+                  &#60;/ButtonGroup&#62;
+              &#60;/div&#62;
+            );
+          }
+
+        </code>
+      </pre>
+
+      <h5>Angular</h5>
+      <p>In Angular, you'd use ButtonGroup as part of your Angular template:</p>
+
+      <pre>
+        <code>
+          import { Component } from '@angular/core';
+
+          @Component({
+            selector: 'app-root',
+            template: `
+            &#60;div&#62;
+                &#60;button-group [ariaLabel]="'Angular Button Group'" [classNames]="'my-custom-class'"&#62;
+                    &#60;pl-button slot="buttons"&#62;Button 1&#60;/pl-button&#62;
+                    &#60;pl-button slot="buttons"&#62;Button 2&#60;/pl-button&#62;
+                    &#60;pl-button slot="buttons"&#62;Button 3&#60;/pl-button&#62;
+                &#60;/button-group&#62;
+            &#60;/div>
+            `,
+          })
+          export class AppComponent {}
+          
+
+        </code>
+      </pre>
+
+      <p>
+        These examples assume that you've configured your framework project to
+        work with web components and that you've imported the Lit Element
+        component correctly. Adjust import paths accordingly.
+      </p>
+
+      <p>
+        The interoperability is possible because Web Components, once defined
+        and registered as custom elements, act like native HTML elements that
+        these frameworks can understand and interact with.
+      </p>
+    </div> -->
+
+    <script src="./divider.js" type="module"></script>
+    <!-- <script src="../../../node_modules/bootstrap/dist/js/bootstrap.js"></script> -->
+  </body>
+</html>

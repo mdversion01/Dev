@@ -4,6 +4,10 @@ body {
   margin: 20px;
 }
 
+.txt-14 {
+  font-size: 14px;
+}
+
 .title {
   background-color: #686868;
   color: #fff;
@@ -96,4 +100,8 @@ pre {
   background-color: #f7f7f7;
   border-radius: 5px;
   border: 1px solid #ccc;
+}
+
+p {
+  font-size: 14px;
 }
