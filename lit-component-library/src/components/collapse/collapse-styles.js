@@ -18,7 +18,7 @@ export const collapseStyles = css`
   .collapse {
     position: relative;
     overflow: hidden;
-    transition: height 0.15s ease;
+    transition: height 0.35s ease;
     height: 0;
   }
 
@@ -27,17 +27,17 @@ export const collapseStyles = css`
   }
 
   .collapsing {
-    transition: height 0.15s ease;
+    transition: height 0.35s ease;
   }
 
   .rotate-down {
     transform: rotate(180deg);
-    transition: transform 0.2s ease-in-out;
+    transition: transform 0.3s ease-in-out;
   }
 
   .rotate-up {
     transform: rotate(0deg);
-    transition: transform 0.25s ease-in-out;
+    transition: transform 0.35s ease-in-out;
   }
 
   @media (prefers-reduced-motion: reduce) {
