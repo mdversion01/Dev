@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html>
+  <title>Input Field</title>
+  <head>
+    <!-- <link
+      rel="stylesheet"
+      href="../../../node_modules/bootstrap/dist/css/bootstrap.css"
+    /> -->
+    <!-- <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    /> -->
+    <link
+      rel="stylesheet"
+      href="../../../node_modules/lit-fontawesome/css/font.css"
+    />
+    <link rel="stylesheet" href="../../styles/components.css" />
+    <link rel="stylesheet" href="../layout.css" />
+
+    <style>
+      .content-box {
+        flex: 1 1 auto;
+      }
+      .flex {
+        display: flex;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container-fluid">
+    <div class="title">Plumage Input Group Examples</div>
+    <div class="ex-container">
+      <div class="content-box" style="width: 40%">
+        <form-component>
+          <pl-input-group-component
+            label="Username"
+            name="input-1"
+            value=""
+            labelHidden
+            prepend
+            prependId="prepend-1"
+          >
+            <span slot="prepend">@</span>
+          </pl-input-group-component>
+
+          <pl-input-group-component
+            label="Username"
+            name="input-1"
+            value=""
+            labelHidden
+            append
+            appendId="append-1"
+          >
+            <span slot="append">@</span>
+          </pl-input-group-component>
+        </form-component>
+        <div class="context">Prepend or Append Input Group</div>
+      </div>
+
+      <div class="content-box" style="width: 40%">
+        <form-component>
+          <pl-input-group-component
+            label="Username"
+            name="input-1"
+            value=""
+            prepend
+            prependId="prepend-1"
+            formLayout="vertical"
+            ><span slot="prepend">@</span></pl-input-group-component
+          >
+
+          <pl-input-group-component
+            label="Username"
+            name="input-1"
+            value=""
+            append
+            appendId="append-1"
+            formLayout="vertical"
+            ><span slot="append">@</span></pl-input-group-component
+          >
+        </form-component>
+        <div class="context">Prepend or Append Vertical Input Group with Label</div>
+      </div>
+
+      <div class="content-box" style="width: 40%">
+        <form-component formLayout="horizontal">
+          <pl-input-group-component
+            label="Username"
+            name="input-1"
+            value=""
+            formLayout="horizontal"
+            prepend
+            prependId="prepend-1"
+          >
+            <span slot="prepend">@</span>
+          </pl-input-group-component>
+          <pl-input-group-component
+            label="Username"
+            name="input-1"
+            value=""
+            formLayout="horizontal"
+            append
+            appendId="append-1"
+          >
+            <span slot="append">@</span>
+          </pl-input-group-component>
+        </form-component>
+        <div class="context">Prepend or Append Horizontal Input Group with Label</div>
+      </div>
+
+      <div class="content-box" style="width: 40%">
+        <form-component formLayout="inline">
+          <pl-input-group-component
+            label="Username"
+            name="input-1"
+            value=""
+            formLayout="inline"
+            prepend
+            prependId="prepend-1"
+            ><span slot="prepend">@</span></pl-input-group-component
+          >
+
+          <pl-input-group-component
+            label="Password"
+            name="input-2"
+            value=""
+            formLayout="inline"
+            icon="fas fa-unlock"
+            prepend
+            prependId="prepend-2"
+          ></pl-input-group-component>
+        </form-component>
+        <div class="context">Prepend or Append Inline Input Group with Label</div>
+      </div>
+
+      <div class="content-box" style="width: 40%">
+        <form-component>
+          <pl-input-group-component
+            label="Username"
+            name="input-1"
+            value=""
+            labelHidden
+            append
+            appendId="append-1"
+            prepend
+            prependId="prepend-1"
+          >
+            <span slot="prepend">@</span>
+            <span slot="append">@</span>
+          </pl-input-group-component>
+        </form-component>
+        <div class="context">Both Prepend and Append Input Group</div>
+      </div>
+      
+      <div class="content-box" style="width: 40%">
+        <form-component>
+          <pl-input-group-component
+            label="Username"
+            name="input-1"
+            value=""
+            labelHidden
+            prepend
+            prependId="prepend-1"
+            disabled
+          >
+            <span slot="prepend">@</span>
+          </pl-input-group-component>
+
+          <pl-input-group-component
+            label="Username"
+            name="input-1"
+            value=""
+            labelHidden
+            append
+            appendId="append-1"
+            disabled
+          >
+            <span slot="append">@</span>
+          </pl-input-group-component>
+        </form-component>
+        <div class="context">Disabled Prepend or Append Input Group</div>
+      </div>
+
+      <div class="content-box" style="width: 40%">
+        <form-component>
+          <pl-input-group-component
+            label="Username"
+            name="input-1"
+            value=""
+            prepend
+            prependId="prepend-1"
+            required
+          >
+            <span slot="prepend">@</span>
+          </pl-input-group-component>
+
+          <pl-input-group-component
+            label="Username"
+            name="input-1"
+            value=""
+            append
+            appendId="append-1"
+            required
+          >
+            <span slot="append">@</span>
+          </pl-input-group-component>
+        </form-component>
+        <div class="context">Required Prepend or Append Input Group</div>
+      </div>
+
+      <div class="content-box" style="width: 40%">
+        <form-component>
+          <pl-input-group-component
+            label="Username"
+            name="input-1"
+            value=""
+            prepend
+            prependId="prepend-1"
+            required
+            validation
+            validationMessage="Please enter your Username."
+          >
+            <span slot="prepend">@</span>
+          </pl-input-group-component>
+
+          <pl-input-group-component
+            label="Username"
+            name="input-1"
+            value=""
+            append
+            appendId="append-1"
+            required
+            validation
+            validationMessage="Please enter your Username."
+          >
+            <span slot="append">@</span>
+          </pl-input-group-component>
+        </form-component>
+        <hr />
+        <form-component formLayout="horizontal">
+          <pl-input-group-component
+            label="Username"
+            name="input-1"
+            value=""
+            prepend
+            prependId="prepend-1"
+            formLayout="horizontal"
+            required
+            validation
+            validationMessage="Please enter your Username."
+          >
+            <span slot="prepend">@</span>
+          </pl-input-group-component>
+
+          <pl-input-group-component
+            label="Username"
+            name="input-1"
+            value=""
+            append
+            appendId="append-1"
+            formLayout="horizontal"
+            required
+            validation
+            validationMessage="Please enter your Username."
+          >
+            <span slot="append">@</span>
+          </pl-input-group-component>
+        </form-component>
+        <hr />
+        <form-component formLayout="inline">
+          <pl-input-group-component
+            label="Username"
+            name="input-1"
+            value=""
+            formLayout="inline"
+            append
+            appendId="append-1"
+            required
+            validation
+            validationMessage="Please enter your Username."
+            ><span slot="append">@</span></pl-input-group-component
+          >
+          <pl-input-group-component
+            label="Password"
+            name="input-2"
+            value=""
+            formLayout="inline"
+            icon="fas fa-unlock"
+            append
+            appendId="append-2"
+            required
+            validation
+            validationMessage="Please enter your Password."
+          ></pl-input-group-component>
+        </form-component>
+        <div class="context">Validation Message Prepend or Append Input Group</div>
+      </div>
+
+      <div class="content-box" style="width: 40%">
+        <form-component>
+          <pl-input-group-component
+            label="Username"
+            name="input-1"
+            value=""
+            labelHidden
+            size="sm"
+            prepend
+            prependId="prepend-1"
+            placeholder="Small Input Group"
+          >
+            <span slot="prepend">@</span>
+          </pl-input-group-component>
+
+          <pl-input-group-component
+            label="Username"
+            name="input-2"
+            value=""
+            labelHidden
+            prepend
+            prependId="prepend-2"
+            placeholder="Default Input Group"
+          >
+            <span slot="prepend">@</span>
+         </pl-input-group-component>
+
+         <pl-input-group-component
+            label="Username"
+            name="input-3"
+            value=""
+            labelHidden
+            prepend
+            prependId="prepend-3"
+            size="lg"
+            placeholder="Large Input Group"
+          >
+            <span slot="prepend">@</span>
+         </pl-input-group-component>
+        </form-component>
+        <div class="context">Input Group Sizing</div>
+      </div>
+
+      <div class="content-box" style="width: 40%">
+        <form-component>
+          <pl-input-group-component
+            label="Search"
+            name="search"
+            value=""
+            plumageSearch
+          ></pl-input-group-component>
+        </form-component>
+        <div class="context">Plumage Search Field</div>
+      </div>
+    </div>
+
+    <!-- Props -->
+    <!-- <div style="margin-top: 50px">
+      <h2>Props</h2>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Property</th>
+              <th>Type</th>
+              <th>Default</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td>accordion</td>
+              <td>Boolean</td>
+              <td>false</td>
+              <td>
+                When this is true, the collapse component will look and behave
+                like an accordion.
+              </td>
+            </tr>
+            <tr>
+              <td>contentTxtSize</td>
+              <td>String</td>
+              <td></td>
+              <td>
+                This property allows you to change the overall size of the text
+                (xs, sm, default, lg, xl, or xxl) that is in the content area of
+                the collapse component.
+              </td>
+            </tr>
+            <tr>
+              <td>icon</td>
+              <td>Array</td>
+              <td>["fas fa-angle-down"]</td>
+              <td>
+                This property uses the Font Awesome fa-angle-down(caret down)
+                icon by default. It rotates the icon 180 degrees when the
+                collapse component opens and again when it closes. You can pass in an array of two
+                icons to change the icon when the collapse component is open and
+                closed. The first icon in the array is the icon when the
+                collapse component is closed, and the second icon is the icon
+                when the collapse component is open.<br />
+                <span class="example">Ex: icon="fas fa-minus-circle, fas fa-plus-circle"</span>
+              </td>
+            </tr>
+            <tr>
+              <td>isOpen</td>
+              <td>Boolean</td>
+              <td>false</td>
+              <td>
+                When true, the collapse component will be open by default.
+              </td>
+            </tr>
+            <tr>
+              <td>targetId</td>
+              <td>String</td>
+              <td></td>
+              <td>
+                Providing a targetId will allow the collapse component to
+                toggle. The targetId is used by 'aria-controls',
+                'aria-labelledby', 'data-target' attributes of the button and
+                'id' of the content area.
+              </td>
+            </tr>
+            <tr>
+              <td>toggle</td>
+              <td>String</td>
+              <td></td>
+              <td>
+                To use when implementing and Accordion, when property is set to
+                'single', only one collapse component can be opened at a time.
+              </td>
+            </tr>
+            <tr>
+              <td>Other</td>
+              <td></td>
+              <td></td>
+              <td>
+                The collapse component also accepts other properties from
+                the Button component. Those properties are: block, variant,
+                size, disabled, ripple, and link, and they can be found here -
+                <a href="../button/index.html">Button API</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div> -->
+
+    <!-- Instructions -->
+    <!-- <div style="margin-top: 50px">
+      <h4>Using Component in other JavaScript Frameworks</h4>
+
+      <p>
+        Integrating a Lit Element component with other JavaScript frameworks
+        like Vue, React, and Angular involves creating a wrapper component in
+        each framework to encapsulate and use the Lit Element component. Here
+        are examples for each framework:
+      </p>
+
+      <h5>Vue.js</h5>
+      <p>
+        In a Vue component, you'd use Collapse just like any other HTML
+        element:
+      </p>
+      <pre>
+          <code>
+            &#60;template&#62;
+              &#60;div&#62;
+                &#60;collapse-component targetId="collapse-1" toggle="single" :accordion="true" contentTxtSize="sm"&#62;
+                  &#60;span slot="expansion-header"&#62;Default Toggle&#60;/span&#62;
+                  &#60;div slot="content"&#62;This content can be collapsed&#60;/div&#62;
+                &#60;/collapse-component&#62;
+              &#60;/div&#62;
+            &#60;/template&#62;
+            
+            &#60;script&#62;
+            import 'path_to_your_libraries/collapse.js'; // Import your Collapse component
+            
+            export default {
+              // Your Vue component definition
+            };
+            &#60;/script&#62;
+          </code>
+        </pre>
+
+      <h5>React</h5>
+      <p>
+        In a React component, you'd similarly treat Collapse as a regular
+        HTML element:
+      </p>
+      <pre>
+          <code>
+            import React from 'react';
+            import 'path_to_your_libraries/collapse.js'; // Import your Collapse component
+
+            function App() {
+              return (
+                &#60;div&#62;
+                  &#60;collapse-component targetId="collapse-1" toggle="single" accordion={true} contentTxtSize="sm"&#62;
+                    &#60;span slot="expansion-header"&#62;Default Toggle&#60;/span&#62;
+                    &#60;div slot="content"&#62;This content can be collapsed&#60;/div&#62;
+                  &#60;/collapse-component&#62;
+                &#60;/div&#62;
+              );
+            }
+
+            export default App;
+
+          </code>
+        </pre>
+
+      <h5>Angular</h5>
+      <p>In Angular, you'd use Collapse as part of your Angular template:</p>
+
+      <pre>
+          <code>
+            // Import the required decorators and other necessary modules
+
+            @Component({
+              selector: 'app-root',
+              template: `
+                &#60;div&#62;
+                  &#60;collapse-component targetId="collapse-1" [toggle]="'single'" [accordion]="true" [contentTxtSize]="'sm'"&#62;
+                    &#60;span slot="expansion-header"&#62;Default Toggle&#60;/span&#62;
+                    &#60;div slot="content"&#62;This content can be collapsed&#60;/div&#62;
+                  &#60;/collapse-component&#62;
+                &#60;/div&#62;
+              `
+            })
+            export class AppComponent {
+              // Your Angular component logic
+            }
+
+          </code>
+        </pre>
+
+      <p>
+        These examples assume that you've configured your framework project to
+        work with web components and that you've imported the Lit Element
+        component correctly. Adjust import paths accordingly.
+      </p>
+
+      <p>
+        The interoperability is possible because Web Components, once defined
+        and registered as custom elements, act like native HTML elements that
+        these frameworks can understand and interact with.
+      </p>
+    </div> -->
+  </div>
+
+    <script src="./pl-input-group.js" type="module"></script>
+    <script src="../form/form.js" type="module"></script>
+
+    <!-- <script src="../../../node_modules/bootstrap/dist/js/bootstrap.js"></script> -->
+  </body>
+</html>
