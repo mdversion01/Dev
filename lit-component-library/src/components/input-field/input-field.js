@@ -33,7 +33,6 @@ class InputField extends LitElement {
   constructor() {
     super();
     this.disabled = false;
-    // this.handleDocumentClick = this.handleDocumentClick.bind(this);
     this.label = "";
     this.labelHidden = false;
     this.required = false;
