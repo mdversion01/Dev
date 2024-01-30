@@ -1,52 +1,6 @@
 import { css } from "lit";
 
 export const plInputGroupStyles = css`
-  .sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    -webkit-clip-path: inset(50%);
-    clip-path: inset(50%);
-    border: 0;
-  }
-
-  .sr-only-focusable:active,
-  .sr-only-focusable:focus {
-    position: static;
-    width: auto;
-    height: auto;
-    overflow: visible;
-    clip: auto;
-    white-space: normal;
-    -webkit-clip-path: none;
-    clip-path: none;
-  }
-
-  *,
-  ::after,
-  ::before {
-    box-sizing: border-box;
-  }
-
-  button,
-  input,
-  optgroup,
-  select,
-  textarea {
-    margin: 0;
-    font-family: inherit;
-    font-size: inherit;
-    line-height: inherit;
-  }
-
-  button,
-  input {
-    overflow: visible;
-  }
 
   .pl-input-group {
     position: relative;
@@ -198,11 +152,6 @@ export const plInputGroupStyles = css`
     color: #e34850;
   }
 
-  [type="search"] {
-    outline-offset: -2px;
-    -webkit-appearance: none;
-  }
-
   .search-bar-container {
     align-items: center;
     background-color: #e1e1e1;
@@ -252,4 +201,5 @@ export const plInputGroupStyles = css`
     line-height: 50%;
     padding: 0 0.5rem 0 0.5rem;
   }
+
 `;

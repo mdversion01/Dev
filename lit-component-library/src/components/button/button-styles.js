@@ -138,7 +138,7 @@ export const buttonStyles = css`
 
   .pl-btn:focus {
     outline: 0;
-    box-shadow: 0 0 0 0.2rem rgba(38, 128, 235, 0.5);
+    box-shadow: 0 0 0 0.2rem #8e8e8e;
   }
 
   .pl-btn.stripped {
@@ -222,25 +222,24 @@ export const buttonStyles = css`
 
   .pl-btn.active-blue {
     background-color: #909090;
-    border-color: #909090;
-    color: #ffff;
+    border-color: #838383;
+    color: #252525;
   }
 
+  .pl-btn.active-blue.active,
   .pl-btn.active-blue:hover {
     background-color: #5aa9fa;
-    border-color: #7d7d7d;
+    color: #252525;
   }
 
   .pl-btn.active-blue.active {
-    background-color: #5aa9fa;
-    border-color: #5aa9fa;
-    color: #252525;
+    border-color: #419cf9;
   }
 
   .pl-btn.icon-btn.active-blue.active {
     background-color: transparent;
     border-color: transparent;
-    color: #5aa9fa;
+    color: #419cf9;
   }
 
   .pl-btn.success {

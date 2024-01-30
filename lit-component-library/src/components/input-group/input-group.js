@@ -3,11 +3,13 @@ import { ifDefined } from "lit/directives/if-defined.js";
 import { layoutStyles } from "../layout-styles.js";
 import { plInputFieldStyles } from "../pl-input-field/pl-input-field-styles.js";
 import { inputGroupStyles } from "./input-group-styles.js";
+import { formStyles } from "../form-styles.js"; 
 import Fontawesome from "lit-fontawesome";
 
 class InputGroup extends LitElement {
   static styles = [
     layoutStyles,
+    formStyles,
     plInputFieldStyles,
     inputGroupStyles,
     Fontawesome,

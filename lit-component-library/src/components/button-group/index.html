@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+  <title>Button Group Component</title>
   <head>
     <!-- <link
       rel="stylesheet"
@@ -18,112 +19,148 @@
   </head>
   <body>
     <!-- Button Groups -->
-    <div class="title">Button Group Examples</div>
-    <div class="ex-container">
-      <div class="content-box">
-        <button-group ariaLabel="This is a Button Group">
-          <pl-button slot="buttons" size="sm" variant="primary" groupBtn start
-            >Button 1</pl-button
-          >
-          <pl-button slot="buttons" size="sm" variant="secondary" groupBtn
-            >Button 2</pl-button
-          >
-          <pl-button slot="buttons" size="sm" variant="tertiary" groupBtn end
-            >Button 3</pl-button
-          >
-        </button-group>
-        <div class="context">Default button Group (Horizontal)</div>
-      </div>
+    <div class="title">Button Group Component</div>
 
-      <div class="content-box">
-        <button-group vertical>
-          <pl-button
-            slot="buttons"
-            size="sm"
-            variant="primary"
-            groupBtn
-            vertical
-            start
-            >Button 1</pl-button
-          >
-          <pl-button
-            slot="buttons"
-            size="sm"
-            variant="secondary"
-            groupBtn
-            vertical
-            >Button 2</pl-button
-          >
-          <pl-button
-            slot="buttons"
-            size="sm"
-            variant="tertiary"
-            groupBtn
-            vertical
-            end
-            >Button 3</pl-button
-          >
-        </button-group>
-        <div class="context">Default button Group (Vertical)</div>
-      </div>
-    </div>
+    <div class="demo-wrapper">
+      <div class="main">
+        <section>
+          <section class="section">
+            <section class="display-box" id="db-1">
+              <section class="display-box-demo" style="text-align: center;">
+                <button-group ariaLabel="This is a Button Group">
+                  <pl-button slot="buttons" size="sm" variant="primary" groupBtn start
+                    >Button 1</pl-button
+                  >
+                  <pl-button slot="buttons" size="sm" variant="secondary" groupBtn
+                    >Button 2</pl-button
+                  >
+                  <pl-button slot="buttons" size="sm" variant="tertiary" groupBtn end
+                    >Button 3</pl-button
+                  >
+                </button-group>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">Default button Group (Horizontal)</div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
 
-    <div class="title">Button Group States</div>
-    <div class="ex-container">
-      <div class="content-box">
-        <button-group>
-          <pl-button
-            slot="buttons"
-            size="sm"
-            variant="active-blue"
-            active
-            groupBtn
-            start
-            >Active</pl-button
-          >
-          <pl-button slot="buttons" active size="sm" groupBtn
-            >Default</pl-button
-          >
-          <pl-button
-            slot="buttons"
-            size="sm"
-            variant="secondary"
-            disabled
-            groupBtn
-            end
-            >Disabled</pl-button
-          >
-        </button-group>
-        <div class="context">Active States button Group (Horizontal)</div>
-      </div>
+          <section class="section">
+            <section class="display-box" id="db-2">
+              <section class="display-box-demo style="text-align: center;"">
+                <button-group vertical>
+                  <pl-button
+                    slot="buttons"
+                    size="sm"
+                    variant="primary"
+                    groupBtn
+                    vertical
+                    start
+                    >Button 1</pl-button
+                  >
+                  <pl-button
+                    slot="buttons"
+                    size="sm"
+                    variant="secondary"
+                    groupBtn
+                    vertical
+                    >Button 2</pl-button
+                  >
+                  <pl-button
+                    slot="buttons"
+                    size="sm"
+                    variant="tertiary"
+                    groupBtn
+                    vertical
+                    end
+                    >Button 3</pl-button
+                  >
+                </button-group>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">Default button Group (Vertical)</div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
+        </section>
 
-      <div class="content-box">
-        <button-group vertical>
-          <pl-button
-            slot="buttons"
-            size="sm"
-            variant="active-blue"
-            active
-            groupBtn
-            vertical
-            start
-            >Active</pl-button
-          >
-          <pl-button slot="buttons" size="sm" groupBtn vertical
-            >Default</pl-button
-          >
-          <pl-button
-            slot="buttons"
-            size="sm"
-            variant="secondary"
-            disabled
-            groupBtn
-            vertical
-            end
-            >Disabled</pl-button
-          >
-        </button-group>
-        <div class="context">Disabled States button Group (Vertical)</div>
+        <section>
+          <section class="section">
+            <section class="display-box" id="db-3">
+              <section class="display-box-demo" style="text-align: center;">
+                <button-group>
+                  <pl-button
+                    slot="buttons"
+                    size="sm"
+                    variant="active-blue"
+                    active
+                    groupBtn
+                    start
+                    >Active</pl-button
+                  >
+                  <pl-button slot="buttons" size="sm" groupBtn variant="active-blue"
+                    >Default</pl-button
+                  >
+                  <pl-button
+                    slot="buttons"
+                    size="sm"
+                    variant="active-blue"
+                    disabled
+                    groupBtn
+                    end
+                    >Disabled</pl-button
+                  >
+                </button-group>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">Active States button Group (Horizontal)</div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
+
+          <section class="section">
+            <section class="display-box" id="db-4">
+              <section class="display-box-demo" style="text-align: center;">
+                <button-group vertical>
+                  <pl-button
+                    slot="buttons"
+                    size="sm"
+                    variant="active-blue"
+                    active
+                    groupBtn
+                    vertical
+                    start
+                    >Active</pl-button
+                  >
+                  <pl-button slot="buttons" size="sm" groupBtn vertical variant="active-blue"
+                    >Default</pl-button
+                  >
+                  <pl-button
+                    slot="buttons"
+                    size="sm"
+                    variant="active-blue"
+                    disabled
+                    groupBtn
+                    vertical
+                    end
+                    >Disabled</pl-button
+                  >
+                </button-group>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">Active States button Group (Vertical)</div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
+        </section>
       </div>
     </div>
 

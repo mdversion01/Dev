@@ -1,59 +1,7 @@
 import { css } from "lit";
 
 export const inputGroupStyles = css`
-  *,
-  ::after,
-  ::before {
-    box-sizing: border-box;
-  }
-
-  .sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    -webkit-clip-path: inset(50%);
-    clip-path: inset(50%);
-    border: 0;
-  }
-
-  .sr-only-focusable:active,
-  .sr-only-focusable:focus {
-    position: static;
-    width: auto;
-    height: auto;
-    overflow: visible;
-    clip: auto;
-    white-space: normal;
-    -webkit-clip-path: none;
-    clip-path: none;
-  }
-
-  *,
-  ::after,
-  ::before {
-    box-sizing: border-box;
-  }
-
-  button,
-  input,
-  optgroup,
-  select,
-  textarea {
-    margin: 0;
-    font-family: inherit;
-    font-size: inherit;
-    line-height: inherit;
-  }
-
-  button,
-  input {
-    overflow: visible;
-  }
-
+  
   .pl-input-group {
     position: relative;
     display: flex;
@@ -233,59 +181,4 @@ export const inputGroupStyles = css`
     color: rgb(227, 72, 80);
   }
 
-  [type="search"] {
-    outline-offset: -2px;
-    -webkit-appearance: none;
-  }
-
-  .search-bar-container {
-    align-items: center;
-    background-color: #e1e1e1;
-    border: 1px solid transparent;
-    border-radius: 0.25rem;
-    color: #383838;
-    display: flex;
-    max-height: 2.5rem;
-    padding: 0;
-    width: unset;
-  }
-
-  .search-bar-container:focus,
-  .search-bar-container:hover,
-  .search-bar-container:focus-within {
-    background-color: #eaeaea;
-    border: 1px solid #2680eb;
-  }
-
-  .search-bar-container .form-control {
-    border: 1px solid transparent;
-  }
-
-  .search-bar-container .form-control:focus {
-    background-color: transparent;
-    /* border-color: #9bc4f6; */
-    color: #383838;
-    outline: 0;
-    box-shadow: none;
-  }
-
-  .search-bar {
-    box-shadow: none;
-    display: inline-block;
-    flex: auto;
-    padding: 0.188rem;
-    width: 8rem;
-  }
-
-  .search-bar-container .clear-icon {
-    padding: 0 0.25rem;
-  }
-
-  .search-bar-icon {
-    color: #8e8e8e;
-    display: inline-block;
-    font-size: 0.75rem;
-    line-height: 50%;
-    padding: 0 0.25rem;
-  }
 `;

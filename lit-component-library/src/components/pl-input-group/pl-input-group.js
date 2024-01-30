@@ -3,6 +3,7 @@ import { ifDefined } from "lit/directives/if-defined.js";
 import { layoutStyles } from "../layout-styles.js";
 import { plInputFieldStyles } from "../pl-input-field/pl-input-field-styles.js";
 import { plInputGroupStyles } from "./pl-input-group-styles.js";
+import { formStyles } from "../form-styles.js";
 import Fontawesome from "lit-fontawesome";
 
 class PlInputGroup extends LitElement {
@@ -10,6 +11,7 @@ class PlInputGroup extends LitElement {
     layoutStyles,
     plInputFieldStyles,
     plInputGroupStyles,
+    formStyles,
     Fontawesome,
     css``,
   ];
@@ -117,7 +119,7 @@ class PlInputGroup extends LitElement {
 
   renderInputGroup(ids) {
     return html`
-      <div class=${ifDefined(this.formLayout ? this.formLayout : undefined)}>
+      <div class="plumage${this.formLayout ? ` ${this.formLayout}` : ""}">
         <div class="form-group form-pl-input-group row">
           <label
             class="form-control-label${this.labelHidden ? " sr-only" : ""}${this

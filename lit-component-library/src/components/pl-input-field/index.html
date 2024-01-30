@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-  <title>Input Field</title>
+  <title>Plumage Input Field Component</title>
   <head>
     <!-- <link
       rel="stylesheet"
@@ -16,199 +16,285 @@
     />
     <link rel="stylesheet" href="../../styles/components.css" />
 
-    <style>
-      .content-box {
+     <style>
+     /* .content-box {
         flex: 1 1 auto;
       }
       .flex {
         display: flex;
+      } */
+
+      section form-component:not(last-child) {
+        border-bottom: 1px solid #e5e5e5;
       }
-    </style>
+    </style> 
   </head>
   <body>
-    <div class="title">Plumage Input Field Examples</div>
-    <div class="ex-container">
-      <div class="content-box" style="width: 40%;">
-        <form-component>
-          <pl-input-field-component
-            label="First Name"
-            name="input-1"
-            value=""
-            labelHidden
-          ></pl-input-field-component>
-          <pl-input-field-component
-            label="Last Name"
-            name="input-2"
-            value=""
-            labelHidden
-          ></pl-input-field-component>
-        </form-component>
-        <div class="context">Label used as Placeholder text</div>
-      </div>
-      <div class="content-box" style="width: 40%;">
-        <form-component>
-          <pl-input-field-component
-            label="First Name"
-            name="input-1"
-            value=""
-            formLayout="vertical"
-          ></pl-input-field-component>
-          <pl-input-field-component
-            label="Last Name"
-            name="input-2"
-            value=""
-            formLayout="vertical"
-          ></pl-input-field-component>
-        </form-component>
-        <div class="context">Vertical Input Field</div>
-      </div>
-      <div class="content-box" style="width: 40%;">
-        <form-component formLayout="horizontal">
-          <pl-input-field-component
-            label="First Name"
-            name="input-1"
-            value=""
-            formLayout="horizontal"
-          ></pl-input-field-component>
-          <pl-input-field-component
-            label="Last Name"
-            name="input-2"
-            value=""
-            formLayout="horizontal"
-          ></pl-input-field-component>
-        </form-component>
-        <div class="context">Horizontal Input Field</div>
-      </div>
-      <div class="content-box" style="width: 40%;">
-        <form-component formLayout="inline">
-          <pl-input-field-component
-            label="First Name"
-            name="input-1"
-            value=""
-            formLayout="inline"
-          ></pl-input-field-component>
-          <pl-input-field-component
-            label="Last Name"
-            name="input-2"
-            value=""
-            formLayout="inline"
-          ></pl-input-field-component>
-        </form-component>
-        <div class="context">In-line Input Field</div>
-      </div>
+    <div class="title">Plumage Input Field Component</div>
+    <div class="demo-wrapper">
+      <div class="main">
+        <section>
+          <section class="section">
+            <section class="display-box" id="db-1">
+              <section class="display-box-demo">
+                <form-component>
+                  <pl-input-field-component
+                    label="First Name"
+                    name="input-1"
+                    value=""
+                    formLayout="vertical"
+                  ></pl-input-field-component>
+                  <pl-input-field-component
+                    label="Last Name"
+                    name="input-2"
+                    value=""
+                    formLayout="vertical"
+                  ></pl-input-field-component>
+                </form-component>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">
+                  Vertical layout Input Field
+                </div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
 
-      <div class="content-box" style="width: 40%;">
-        <form-component>
-          <pl-input-field-component
-            label="First Name"
-            name="input-1"
-            value=""
-            disabled
-          ></pl-input-field-component>
-          <pl-input-field-component
-            label="Last Name"
-            name="input-2"
-            value=""
-            disabled
-          ></pl-input-field-component>
-        </form-component>
-        <div class="context">Disabled Input Field</div>
-      </div>
-      <div class="content-box" style="width: 40%;">
-        <form-component>
-          <pl-input-field-component
-            label="First Name"
-            name="input-1"
-            value=""
-            required
-          ></pl-input-field-component>
-          <pl-input-field-component
-            label="Last Name"
-            name="input-2"
-            value=""
-            required
-          ></pl-input-field-component>
-        </form-component>
-        <div class="context">Required Input Field</div>
-      </div>
-      <div class="content-box" style="width: 40%;">
-        <form-component>
-          <pl-input-field-component
-            label="First Name"
-            name="input-1"
-            value=""
-            validation
-            validationMessage="Please enter your first name."
-          ></pl-input-field-component>
-          <pl-input-field-component
-            label="Last Name"
-            name="input-2"
-            value=""
-            validation
-            validationMessage="Please enter your last name."
-          ></pl-input-field-component>
-        </form-component>
-        <hr />
-        <form-component formLayout="horizontal">
-          <pl-input-field-component
-            label="First Name"
-            name="input-1"
-            value=""
-            validation
-            validationMessage="Please enter your first name."
-            formLayout="horizontal"
-          ></pl-input-field-component>
-          <pl-input-field-component
-            label="Last Name"
-            name="input-2"
-            value=""
-            validation
-            validationMessage="Please enter your last name."
-            formLayout="horizontal"
-          ></pl-input-field-component>
-        </form-component>
-        <hr />
-        <form-component formLayout="inline">
-          <pl-input-field-component
-            label="First Name"
-            name="input-1"
-            value=""
-            formLayout="inline"
-            validation
-            validationMessage="Please enter your first name."
-          ></pl-input-field-component>
-          <pl-input-field-component
-            label="Last Name"
-            name="input-2"
-            value=""
-            formLayout="inline"
-            validation
-            validationMessage="Please enter your last name."
-          ></pl-input-field-component>
-        </form-component>
-        <div class="context">Required Input Field</div>
-      </div>
-      <div class="content-box" style="width: 40%;">
-        <form-component>
-          <pl-input-field-component
-            label="First Name"
-            name="input-1"
-            value="Small input field"
-            size="sm"
-          ></pl-input-field-component>
-          <pl-input-field-component
-            label="Last Name"
-            name="input-2"
-            value="Default input field"
-          ></pl-input-field-component>
-          <pl-input-field-component
-            label="Email Address"
-            name="input-3"
-            value="Large input field"
-            size="lg"
-          ></pl-input-field-component>
-        </form-component>
-        <div class="context">Input Field Sizes</div>
+          <section class="section">
+            <section class="display-box" id="db-2">
+              <section class="display-box-demo">
+                <form-component formLayout="horizontal">
+                  <pl-input-field-component
+                    label="First Name"
+                    name="input-1"
+                    value=""
+                    formLayout="horizontal"
+                  ></pl-input-field-component>
+                  <pl-input-field-component
+                    label="Last Name"
+                    name="input-2"
+                    value=""
+                    formLayout="horizontal"
+                  ></pl-input-field-component>
+                </form-component>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">
+                  Horizontal layout for Input Field
+                </div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
+
+          <section class="section">
+            <section class="display-box" id="db-3">
+              <section class="display-box-demo">
+                <form-component formLayout="inline">
+                  <pl-input-field-component
+                    label="First Name"
+                    name="input-1"
+                    value=""
+                    formLayout="inline"
+                  ></pl-input-field-component>
+                  <pl-input-field-component
+                    label="Last Name"
+                    name="input-2"
+                    value=""
+                    formLayout="inline"
+                  ></pl-input-field-component>
+                </form-component>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">
+                  In-line layout Input Field
+                </div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
+          <section class="section">
+            <section class="display-box" id="db-4">
+              <section class="display-box-demo">
+                <form-component>
+                  <pl-input-field-component
+                    label="First Name"
+                    name="input-1"
+                    value=""
+                    labelHidden
+                  ></pl-input-field-component>
+                  <pl-input-field-component
+                    label="Last Name"
+                    name="input-2"
+                    value=""
+                    labelHidden
+                  ></pl-input-field-component>
+                </form-component>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">
+                  Labels are hidden but used as Placeholder text.
+                </div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
+          <section class="section">
+            <section class="display-box" id="db-5">
+              <section class="display-box-demo">
+                <form-component>
+                  <pl-input-field-component
+                    label="First Name"
+                    name="input-1"
+                    value=""
+                    disabled
+                  ></pl-input-field-component>
+                  <pl-input-field-component
+                    label="Last Name"
+                    name="input-2"
+                    value=""
+                    disabled
+                  ></pl-input-field-component>
+                </form-component>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">Disabled Input Field</div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
+        </section>
+
+        <section>
+          <section class="section">
+            <section class="display-box" id="db-6">
+              <section class="display-box-demo">
+                <form-component>
+                  <pl-input-field-component
+                    label="First Name"
+                    name="input-1"
+                    value=""
+                    required
+                  ></pl-input-field-component>
+                  <pl-input-field-component
+                    label="Last Name"
+                    name="input-2"
+                    value=""
+                    required
+                  ></pl-input-field-component>
+                </form-component>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">Required Input Field</div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
+
+          <section class="section">
+            <section class="display-box" id="db-7">
+              <section class="display-box-demo">
+                <form-component>
+                  <pl-input-field-component
+                    label="First Name"
+                    name="input-1"
+                    value=""
+                    validation
+                    validationMessage="Please enter your first name."
+                  ></pl-input-field-component>
+                  <pl-input-field-component
+                    label="Last Name"
+                    name="input-2"
+                    value=""
+                    validation
+                    validationMessage="Please enter your last name."
+                  ></pl-input-field-component>
+                </form-component>
+                <hr />
+                <form-component formLayout="horizontal">
+                  <pl-input-field-component
+                    label="First Name"
+                    name="input-1"
+                    value=""
+                    validation
+                    validationMessage="Please enter your first name."
+                    formLayout="horizontal"
+                  ></pl-input-field-component>
+                  <pl-input-field-component
+                    label="Last Name"
+                    name="input-2"
+                    value=""
+                    validation
+                    validationMessage="Please enter your last name."
+                    formLayout="horizontal"
+                  ></pl-input-field-component>
+                </form-component>
+                <hr />
+                <form-component formLayout="inline">
+                  <pl-input-field-component
+                    label="First Name"
+                    name="input-1"
+                    value=""
+                    formLayout="inline"
+                    validation
+                    validationMessage="Please enter your first name."
+                  ></pl-input-field-component>
+                  <pl-input-field-component
+                    label="Last Name"
+                    name="input-2"
+                    value=""
+                    formLayout="inline"
+                    validation
+                    validationMessage="Please enter your last name."
+                  ></pl-input-field-component>
+                </form-component>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">Required Input Field</div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
+
+          <section class="section">
+            <section class="display-box" id="db-8">
+              <section class="display-box-demo">
+                <form-component>
+                  <pl-input-field-component
+                    label="First Name"
+                    name="input-1"
+                    value="Small input field"
+                    size="sm"
+                  ></pl-input-field-component>
+                  <pl-input-field-component
+                    label="Last Name"
+                    name="input-2"
+                    value="Default input field"
+                  ></pl-input-field-component>
+                  <pl-input-field-component
+                    label="Email Address"
+                    name="input-3"
+                    value="Large input field"
+                    size="lg"
+                  ></pl-input-field-component>
+                </form-component>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">Input Field Sizes</div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
+        </section>
       </div>
     </div>
 

@@ -1,0 +1,3 @@
+import './index.html'; // Adjust this to your main JavaScript file
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';

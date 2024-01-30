@@ -4,7 +4,7 @@ export const layoutStyles = css`
   body {
     font-size: 16px;
   }
-  
+
   .container {
     width: 100%;
     padding-right: 15px;

@@ -1,0 +1,130 @@
+import { css } from "lit";
+
+export const formStyles = css`
+*,
+::after,
+::before {
+  box-sizing: border-box;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    -webkit-clip-path: inset(50%);
+    clip-path: inset(50%);
+    border: 0;
+  }
+
+  .sr-only-focusable:active,
+  .sr-only-focusable:focus {
+    position: static;
+    width: auto;
+    height: auto;
+    overflow: visible;
+    clip: auto;
+    white-space: normal;
+    -webkit-clip-path: none;
+    clip-path: none;
+  }
+
+  button,
+  input,
+  optgroup,
+  select,
+  textarea {
+    margin: 0;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+  }
+
+  button,
+  input {
+    overflow: visible;
+  }
+
+  input {
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    margin: 0;
+  }
+
+  input {
+    overflow: visible;
+  }
+
+  .form-group {
+    padding: 5px 15px;
+  }
+
+  .form-group {
+    margin-bottom: 0.25rem;
+  }
+
+  .form-group {
+    text-align: left;
+  }
+
+  .horizontal .form-group {
+    padding: 5px;
+  }
+
+  // Plumage Search Bar
+
+  /* .search-bar-container {
+    align-items: center;
+    background-color: #e1e1e1;
+    border: 1px solid transparent;
+    border-radius: 0.25rem;
+    color: #383838;
+    display: flex;
+    max-height: 2.5rem;
+    padding: 0;
+    width: unset;
+  }
+
+  .search-bar-container:focus,
+  .search-bar-container:hover,
+  .search-bar-container:focus-within {
+    background-color: #eaeaea;
+    border: 1px solid #2680eb;
+  }
+
+  .search-bar-container .form-control {
+    border: 1px solid transparent;
+  }
+
+  .search-bar-container .form-control:focus {
+    background-color: transparent;
+    color: #383838;
+    outline: 0;
+    box-shadow: none;
+  }
+
+  .search-bar {
+    box-shadow: none;
+    display: inline-block;
+    flex: auto;
+    padding: 0.188rem;
+    width: 8rem;
+  }
+
+  .search-bar-container .clear-icon {
+    padding: 0 0.25rem;
+  }
+
+  .search-bar-icon {
+    color: #8e8e8e;
+    display: inline-block;
+    font-size: 0.75rem;
+    line-height: 50%;
+    padding: 0 0.5rem 0 0.5rem;
+  } */
+
+`;

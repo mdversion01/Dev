@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-  <title>Divider</title>
+  <title>Divider Component</title>
   <head>
     <!-- <link
       rel="stylesheet"
@@ -18,138 +18,231 @@
     <link rel="stylesheet" href="../../styles/components.css" />
   </head>
   <body>
-    <div class="title">Divider</div>
-    <div class="ex-container">
-      <div class="content-box" style="width: 400px">
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nonne
-          merninisti licere mihi ista probare, quae sunt a te dicta? Refert
-          tamen, quo modo.
-        </p>
-        <pl-divider></pl-divider>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nonne
-          merninisti licere mihi ista probare, quae sunt a te dicta? Refert
-          tamen, quo modo.
-        </p>
-        <div class="context">Divider</div>
-      </div>
-      <div class="content-box" style="width: 400px">
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nonne
-          merninisti licere mihi ista probare, quae sunt a te dicta? Refert
-          tamen, quo modo.
-        </p>
-        <pl-divider dashed></pl-divider>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nonne
-          merninisti licere mihi ista probare, quae sunt a te dicta? Refert
-          tamen, quo modo.
-        </p>
-        <div class="context">Divider - Dashed</div>
-      </div>
-      <div class="content-box" style="width: 400px">
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nonne
-          merninisti licere mihi ista probare, quae sunt a te dicta? Refert
-          tamen, quo modo.
-        </p>
-        <pl-divider orientation="center">Text Center</pl-divider>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nonne
-          merninisti licere mihi ista probare, quae sunt a te dicta? Refert
-          tamen, quo modo.
-        </p>
-        <div class="context">Divider with Center Text/Title</div>
-      </div>
-      <div class="content-box" style="width: 400px">
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nonne
-          merninisti licere mihi ista probare, quae sunt a te dicta? Refert
-          tamen, quo modo.
-        </p>
-        <pl-divider orientation="left">Text Left</pl-divider>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nonne
-          merninisti licere mihi ista probare, quae sunt a te dicta? Refert
-          tamen, quo modo.
-        </p>
-        <div class="context">Divider with Left Text/Title</div>
-      </div>
-      <div class="content-box" style="width: 400px">
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nonne
-          merninisti licere mihi ista probare, quae sunt a te dicta? Refert
-          tamen, quo modo.
-        </p>
-        <pl-divider orientation="left" orientationMargin="left"
-          >Text Left</pl-divider
-        >
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nonne
-          merninisti licere mihi ista probare, quae sunt a te dicta? Refert
-          tamen, quo modo.
-        </p>
-        <div class="context">
-          Divider with Left Text/Title with 0 orientationMargin
-        </div>
-      </div>
-      <div class="content-box" style="width: 400px">
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nonne
-          merninisti licere mihi ista probare, quae sunt a te dicta? Refert
-          tamen, quo modo.
-        </p>
-        <pl-divider orientation="right">Text Right</pl-divider>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nonne
-          merninisti licere mihi ista probare, quae sunt a te dicta? Refert
-          tamen, quo modo.
-        </p>
-        <div class="context">Divider with Right Text/Title</div>
-      </div>
-      <div class="content-box" style="width: 400px">
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nonne
-          merninisti licere mihi ista probare, quae sunt a te dicta? Refert
-          tamen, quo modo.
-        </p>
-        <pl-divider orientation="right" orientationMargin="right"
-          >Text Right</pl-divider
-        >
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nonne
-          merninisti licere mihi ista probare, quae sunt a te dicta? Refert
-          tamen, quo modo.
-        </p>
-        <div class="context">
-          Divider with Right Text/Title with 0 orientationMargin
-        </div>
-      </div>
-      <div class="content-box" style="width: 400px">
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nonne
-          merninisti licere mihi ista probare, quae sunt a te dicta? Refert
-          tamen, quo modo.
-        </p>
-        <pl-divider orientation="center" plain
-          >Text Center and Plain</pl-divider
-        >
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nonne
-          merninisti licere mihi ista probare, quae sunt a te dicta? Refert
-          tamen, quo modo.
-        </p>
-        <div class="context">Divider with Plain Text</div>
-      </div>
-      <div class="content-box" style="width: 400px">
-        <div class="txt-14">
-          Test <pl-divider type="vertical"></pl-divider> Test
-          <pl-divider type="vertical"></pl-divider> Test
-          <pl-divider type="vertical"></pl-divider>
-        </div>
+    <div class="title">Divider Component</div>
 
-        <div class="context">Vertical Dividers</div>
+    <div class="demo-wrapper">
+      <div class="main">
+        <section>
+          <section class="section">
+            <section class="display-box" id="db-1">
+              <section class="display-box-demo">
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
+                  nonne merninisti licere mihi ista probare, quae sunt a te
+                  dicta? Refert tamen, quo modo.
+                </p>
+                <pl-divider></pl-divider>
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
+                  nonne merninisti licere mihi ista probare, quae sunt a te
+                  dicta? Refert tamen, quo modo.
+                </p>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">Basic Divider</div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
+
+          <section class="section">
+            <section class="display-box" id="db-2">
+              <section class="display-box-demo">
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
+                  nonne merninisti licere mihi ista probare, quae sunt a te
+                  dicta? Refert tamen, quo modo.
+                </p>
+                <pl-divider dashed></pl-divider>
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
+                  nonne merninisti licere mihi ista probare, quae sunt a te
+                  dicta? Refert tamen, quo modo.
+                </p>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">Divider - Dashed</div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
+
+          <section class="section">
+            <section class="display-box" id="db-3">
+              <section class="display-box-demo">
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
+                  nonne merninisti licere mihi ista probare, quae sunt a te
+                  dicta? Refert tamen, quo modo.
+                </p>
+                <pl-divider orientation="center">Text Center</pl-divider>
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
+                  nonne merninisti licere mihi ista probare, quae sunt a te
+                  dicta? Refert tamen, quo modo.
+                </p>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">
+                  Divider with Center Text/Title
+                </div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
+
+          <section class="section">
+            <section class="display-box" id="db-4">
+              <section class="display-box-demo">
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
+                  nonne merninisti licere mihi ista probare, quae sunt a te
+                  dicta? Refert tamen, quo modo.
+                </p>
+                <pl-divider orientation="left">Text Left</pl-divider>
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
+                  nonne merninisti licere mihi ista probare, quae sunt a te
+                  dicta? Refert tamen, quo modo.
+                </p>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">
+                  Divider with Left Text/Title
+                </div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
+
+          <section class="section">
+            <section class="display-box" id="db-5">
+              <section class="display-box-demo">
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
+                  nonne merninisti licere mihi ista probare, quae sunt a te
+                  dicta? Refert tamen, quo modo.
+                </p>
+                <pl-divider orientation="left" orientationMargin="left"
+                  >Text Left</pl-divider
+                >
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
+                  nonne merninisti licere mihi ista probare, quae sunt a te
+                  dicta? Refert tamen, quo modo.
+                </p>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">
+                  Divider with Left Text/Title with 0 orientationMargin
+                </div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
+        </section>
+        <section>
+          <section class="section">
+            <section class="display-box" id="db-6">
+              <section class="display-box-demo">
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
+                  nonne merninisti licere mihi ista probare, quae sunt a te
+                  dicta? Refert tamen, quo modo.
+                </p>
+                <pl-divider orientation="right">Text Right</pl-divider>
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
+                  nonne merninisti licere mihi ista probare, quae sunt a te
+                  dicta? Refert tamen, quo modo.
+                </p>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">
+                  Divider with Right Text/Title
+                </div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
+
+          <section class="section">
+            <section class="display-box" id="db-7">
+              <section class="display-box-demo">
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
+                  nonne merninisti licere mihi ista probare, quae sunt a te
+                  dicta? Refert tamen, quo modo.
+                </p>
+                <pl-divider orientation="right" orientationMargin="right"
+                  >Text Right</pl-divider
+                >
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
+                  nonne merninisti licere mihi ista probare, quae sunt a te
+                  dicta? Refert tamen, quo modo.
+                </p>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">
+                  Divider with Right Text/Title with 0 orientationMargin
+                </div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
+
+          <section class="section">
+            <section class="display-box" id="db-8">
+              <section class="display-box-demo">
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
+                  nonne merninisti licere mihi ista probare, quae sunt a te
+                  dicta? Refert tamen, quo modo.
+                </p>
+                <pl-divider orientation="center" plain
+                  >Text Center and Plain</pl-divider
+                >
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
+                  nonne merninisti licere mihi ista probare, quae sunt a te
+                  dicta? Refert tamen, quo modo.
+                </p>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">
+                  Divider with Plain Text
+                </div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
+
+          <section class="section">
+            <section class="display-box" id="db-9">
+              <section class="display-box-demo">
+                <div class="txt-14">
+                  Test <pl-divider type="vertical"></pl-divider> Test
+                  <pl-divider type="vertical"></pl-divider> Test
+                  <pl-divider type="vertical"></pl-divider>
+                </div>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">Vertical Dividers</div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
+        </section>
       </div>
     </div>
 
@@ -211,21 +304,24 @@
               <td>Divider text show as plain style (not bold)</td>
             </tr>
             <tr>
-                <td>styles</td>
-                <td>String</td>
-                <td>left or right</td>
-                <td>
-                  Allows the user to place inline CSS styles to the 'span' of the divider's text.<br />
-                </td>
-              </tr>
-              <tr>
-                <td>type</td>
-                <td>String</td>
-                <td>vertical</td>
-                <td>
-                    The direction type of divider. By default the type is horizontal, but when set to vertical, the divider(s) will be vertical.
-                </td>
-              </tr>
+              <td>styles</td>
+              <td>String</td>
+              <td>left or right</td>
+              <td>
+                Allows the user to place inline CSS styles to the 'span' of the
+                divider's text.<br />
+              </td>
+            </tr>
+            <tr>
+              <td>type</td>
+              <td>String</td>
+              <td>vertical</td>
+              <td>
+                The direction type of divider. By default the type is
+                horizontal, but when set to vertical, the divider(s) will be
+                vertical.
+              </td>
+            </tr>
           </tbody>
         </table>
       </div>

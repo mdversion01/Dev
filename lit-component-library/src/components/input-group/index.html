@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-  <title>Input Field</title>
+  <title>Input Field Group Component</title>
   <head>
     <!-- <link
       rel="stylesheet"
@@ -27,305 +27,368 @@
     </style>
   </head>
   <body>
-    <div class="container-fluid">
-      <div class="title">Input Group Examples</div>
-      <div class="ex-container">
-        <div class="content-box" style="width: 40%">
-          <form-component>
-            <input-group-component
-              label="Username"
-              name="input-1"
-              value=""
-              labelHidden
-              prepend
-              prependId="prepend-1"
-            >
-              <span slot="prepend">@</span>
-            </input-group-component>
+    <div class="title">Input Group Component</div>
+    <div class="demo-wrapper">
+      <div class="main">
+        <section>
+          <section class="section">
+            <section class="display-box" id="db-1">
+              <section class="display-box-demo">
+                <form-component>
+                  <input-group-component
+                    label="Username"
+                    name="input-1"
+                    value=""
+                    prepend
+                    prependId="prepend-1"
+                    formLayout="vertical"
+                    ><span slot="prepend">@</span></input-group-component
+                  >
 
-            <input-group-component
-              label="Username"
-              name="input-1"
-              value=""
-              labelHidden
-              append
-              appendId="append-1"
-            >
-              <span slot="append">@</span>
-            </input-group-component>
-          </form-component>
-          <div class="context">Prepend or Append Input Group</div>
-        </div>
+                  <input-group-component
+                    label="Username"
+                    name="input-1"
+                    value=""
+                    append
+                    appendId="append-1"
+                    formLayout="vertical"
+                    ><span slot="append">@</span></input-group-component
+                  >
+                </form-component>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">
+                  Prepend or Append Vertical Input Group with Label
+                </div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
 
-        <div class="content-box" style="width: 40%">
-          <form-component>
-            <input-group-component
-              label="Username"
-              name="input-1"
-              value=""
-              prepend
-              prependId="prepend-1"
-              formLayout="vertical"
-              ><span slot="prepend">@</span></input-group-component
-            >
+          <section class="section">
+            <section class="display-box" id="db-2">
+              <section class="display-box-demo">
+                <form-component formLayout="horizontal">
+                  <input-group-component
+                    label="Username"
+                    name="input-1"
+                    value=""
+                    formLayout="horizontal"
+                    prepend
+                    prependId="prepend-1"
+                  >
+                    <span slot="prepend">@</span>
+                  </input-group-component>
+                  <input-group-component
+                    label="Username"
+                    name="input-1"
+                    value=""
+                    formLayout="horizontal"
+                    append
+                    appendId="append-1"
+                  >
+                    <span slot="append">@</span>
+                  </input-group-component>
+                </form-component>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">
+                  Prepend or Append Horizontal Input Group with Label
+                </div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
 
-            <input-group-component
-              label="Username"
-              name="input-1"
-              value=""
-              append
-              appendId="append-1"
-              formLayout="vertical"
-              ><span slot="append">@</span></input-group-component
-            >
-          </form-component>
-          <div class="context">
-            Prepend or Append Vertical Input Group with Label
-          </div>
-        </div>
+          <section class="section">
+            <section class="display-box" id="db-3">
+              <section class="display-box-demo">
+                <form-component formLayout="inline">
+                  <input-group-component
+                    label="Username"
+                    name="input-1"
+                    value=""
+                    formLayout="inline"
+                    prepend
+                    prependId="prepend-1"
+                    ><span slot="prepend">@</span></input-group-component
+                  >
 
-        <div class="content-box" style="width: 40%">
-          <form-component formLayout="horizontal">
-            <input-group-component
-              label="Username"
-              name="input-1"
-              value=""
-              formLayout="horizontal"
-              prepend
-              prependId="prepend-1"
-            >
-              <span slot="prepend">@</span>
-            </input-group-component>
-            <input-group-component
-              label="Username"
-              name="input-1"
-              value=""
-              formLayout="horizontal"
-              append
-              appendId="append-1"
-            >
-              <span slot="append">@</span>
-            </input-group-component>
-          </form-component>
-          <div class="context">
-            Prepend or Append Horizontal Input Group with Label
-          </div>
-        </div>
+                  <input-group-component
+                    label="Password"
+                    name="input-2"
+                    value=""
+                    formLayout="inline"
+                    icon="fas fa-unlock"
+                    prepend
+                    prependId="prepend-2"
+                  ></input-group-component>
+                </form-component>
 
-        <div class="content-box" style="width: 40%">
-          <form-component formLayout="inline">
-            <input-group-component
-              label="Username"
-              name="input-1"
-              value=""
-              formLayout="inline"
-              prepend
-              prependId="prepend-1"
-              ><span slot="prepend">@</span></input-group-component
-            >
+                <form-component formLayout="inline">
+                  <input-group-component
+                    label="Username"
+                    name="input-1"
+                    value=""
+                    formLayout="inline"
+                    append
+                    appendId="append-1"
+                    ><span slot="append">@</span></input-group-component
+                  >
 
-            <input-group-component
-              label="Password"
-              name="input-2"
-              value=""
-              formLayout="inline"
-              icon="fas fa-unlock"
-              prepend
-              prependId="prepend-2"
-            ></input-group-component>
-          </form-component>
+                  <input-group-component
+                    label="Password"
+                    name="input-2"
+                    value=""
+                    formLayout="inline"
+                    icon="fas fa-unlock"
+                    append
+                    appendId="append-2"
+                  ></input-group-component>
+                </form-component>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">
+                  Prepend or Append Inline Input Group with Label
+                </div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
 
-          <form-component formLayout="inline">
-            <input-group-component
-              label="Username"
-              name="input-1"
-              value=""
-              formLayout="inline"
-              append
-              appendId="append-1"
-              ><span slot="append">@</span></input-group-component
-            >
+          <section class="section">
+            <section class="display-box" id="db-4">
+              <section class="display-box-demo">
+                <form-component>
+                  <input-group-component
+                    label="Username"
+                    name="input-1"
+                    value=""
+                    labelHidden
+                    prepend
+                    prependId="prepend-1"
+                  >
+                    <span slot="prepend">@</span>
+                  </input-group-component>
 
-            <input-group-component
-              label="Password"
-              name="input-2"
-              value=""
-              formLayout="inline"
-              icon="fas fa-unlock"
-              append
-              appendId="append-2"
-            ></input-group-component>
-          </form-component>
-          <div class="context">
-            Prepend or Append Inline Input Group with Label
-          </div>
-        </div>
-        <div class="content-box" style="width: 40%">
-          <form-component>
-            <input-group-component
-              label="Username"
-              name="input-1"
-              value=""
-              prepend
-              prependId="prepend-1"
-              required
-            >
-              <span slot="prepend">@</span>
-            </input-group-component>
+                  <input-group-component
+                    label="Username"
+                    name="input-1"
+                    value=""
+                    labelHidden
+                    append
+                    appendId="append-1"
+                  >
+                    <span slot="append">@</span>
+                  </input-group-component>
+                </form-component>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">
+                  Prepend or Append Input Group
+                </div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
 
-            <input-group-component
-              label="Username"
-              name="input-1"
-              value=""
-              append
-              appendId="append-1"
-              required
-            >
-              <span slot="append">@</span>
-            </input-group-component>
-          </form-component>
-          <div class="context">Required Input Group</div>
-        </div>
+          <section class="section">
+            <section class="display-box" id="db-5">
+              <section class="display-box-demo">
+                <form-component>
+                  <input-group-component
+                    label="Username"
+                    name="input-1"
+                    value=""
+                    labelHidden
+                    append
+                    appendId="append-1"
+                    prepend
+                    prependId="prepend-1"
+                  >
+                    <span slot="prepend">@</span>
+                    <span slot="append">@</span>
+                  </input-group-component>
+                </form-component>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">
+                  Both Prepend and Append Input Group
+                </div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
+        </section>
+        <section>
+          <section class="section">
+            <section class="display-box" id="db-6">
+              <section class="display-box-demo">
+                <form-component>
+                  <input-group-component
+                    label="Username"
+                    name="input-1"
+                    value=""
+                    prepend
+                    prependId="prepend-1"
+                    required
+                  >
+                    <span slot="prepend">@</span>
+                  </input-group-component>
 
-        <div class="content-box" style="width: 40%">
-          <form-component>
-            <input-group-component
-              label="Username"
-              name="input-1"
-              value=""
-              prepend
-              prependId="prepend-1"
-              required
-              validation
-              validationMessage="Please enter your Username."
-            >
-              <span slot="prepend">@</span>
-            </input-group-component>
-          </form-component>
-          <hr />
-          <form-component formLayout="horizontal">
-            <input-group-component
-              label="Username"
-              name="input-1"
-              value=""
-              append
-              appendId="append-1"
-              required
-              validation
-              validationMessage="Please enter your Username."
-              formLayout="horizontal"
-            >
-              <span slot="append">@</span>
-            </input-group-component>
-          </form-component>
-          <hr />
-          <form-component formLayout="inline">
-            <input-group-component
-              label="Username"
-              name="input-1"
-              value=""
-              formLayout="inline"
-              append
-              appendId="append-1"
-              required
-              validation
-              validationMessage="Please enter your Username."
-              ><span slot="append">@</span></input-group-component
-            >
+                  <input-group-component
+                    label="Username"
+                    name="input-1"
+                    value=""
+                    append
+                    appendId="append-1"
+                    required
+                  >
+                    <span slot="append">@</span>
+                  </input-group-component>
+                </form-component>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">Required Input Group</div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
 
-            <input-group-component
-              label="Password"
-              name="input-2"
-              value=""
-              formLayout="inline"
-              icon="fas fa-unlock"
-              append
-              appendId="append-2"
-              required
-              validation
-              validationMessage="Please enter your Password."
-            ></input-group-component>
-          </form-component>
-          <div class="context">Validation Input Group</div>
-        </div>
+          <section class="section">
+            <section class="display-box" id="db-7">
+              <section class="display-box-demo">
+                <form-component>
+                  <input-group-component
+                    label="Username"
+                    name="input-1"
+                    value=""
+                    prepend
+                    prependId="prepend-1"
+                    required
+                    validation
+                    validationMessage="Please enter your Username."
+                  >
+                    <span slot="prepend">@</span>
+                  </input-group-component>
+                </form-component>
+                <hr />
+                <form-component formLayout="horizontal">
+                  <input-group-component
+                    label="Username"
+                    name="input-1"
+                    value=""
+                    append
+                    appendId="append-1"
+                    required
+                    validation
+                    validationMessage="Please enter your Username."
+                    formLayout="horizontal"
+                  >
+                    <span slot="append">@</span>
+                  </input-group-component>
+                </form-component>
+                <hr />
+                <form-component formLayout="inline">
+                  <input-group-component
+                    label="Username"
+                    name="input-1"
+                    value=""
+                    formLayout="inline"
+                    append
+                    appendId="append-1"
+                    required
+                    validation
+                    validationMessage="Please enter your Username."
+                    ><span slot="append">@</span></input-group-component
+                  >
 
-        <div class="content-box" style="width: 40%">
-          <form-component>
-            <input-group-component
-              label="Username"
-              name="input-1"
-              value=""
-              labelHidden
-              append
-              appendId="append-1"
-              prepend
-              prependId="prepend-1"
-            >
-              <span slot="prepend">@</span>
-              <span slot="append">@</span>
-            </input-group-component>
-          </form-component>
-          <div class="context">Both Prepend and Append Input Group</div>
-        </div>
+                  <input-group-component
+                    label="Password"
+                    name="input-2"
+                    value=""
+                    formLayout="inline"
+                    icon="fas fa-unlock"
+                    append
+                    appendId="append-2"
+                    required
+                    validation
+                    validationMessage="Please enter your Password."
+                  ></input-group-component>
+                </form-component>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">
+                  Validation Input Group
+                </div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
 
-        <div class="content-box" style="width: 40%">
-          <form-component>
-            <input-group-component
-              label="Username"
-              name="input-1"
-              value=""
-              labelHidden
-              size="sm"
-              prepend
-              prependId="prepend-1"
-              placeholder="Small Input Group"
-            >
-              <span slot="prepend">@</span>
-            </input-group-component>
+          <section class="section">
+            <section class="display-box" id="db-8">
+              <section class="display-box-demo">
+                <form-component>
+                  <input-group-component
+                    label="Username"
+                    name="input-1"
+                    value=""
+                    labelHidden
+                    size="sm"
+                    prepend
+                    prependId="prepend-1"
+                    placeholder="Small Input Group"
+                  >
+                    <span slot="prepend">@</span>
+                  </input-group-component>
 
-            <input-group-component
-              label="Username"
-              name="input-2"
-              value=""
-              labelHidden
-              prepend
-              prependId="prepend-2"
-              placeholder="Default Input Group"
-            >
-              <span slot="prepend">@</span>
-            </input-group-component>
+                  <input-group-component
+                    label="Username"
+                    name="input-2"
+                    value=""
+                    labelHidden
+                    prepend
+                    prependId="prepend-2"
+                    placeholder="Default Input Group"
+                  >
+                    <span slot="prepend">@</span>
+                  </input-group-component>
 
-            <input-group-component
-              label="Username"
-              name="input-3"
-              value=""
-              labelHidden
-              prepend
-              prependId="prepend-3"
-              size="lg"
-              placeholder="Large Input Group"
-            >
-              <span slot="prepend">@</span>
-            </input-group-component>
-          </form-component>
-          <div class="context">Input Group Sizing</div>
-        </div>
-
-        <!-- <div class="content-box" style="width: 40%">
-        <form-component>
-          <input-group-component
-            label="Search"
-            name="search"
-            value=""
-            search
-          ></input-group-component>
-        </form-component>
-        <div class="context">Plumage Search Field</div>
-      </div> -->
+                  <input-group-component
+                    label="Username"
+                    name="input-3"
+                    value=""
+                    labelHidden
+                    prepend
+                    prependId="prepend-3"
+                    size="lg"
+                    placeholder="Large Input Group"
+                  >
+                    <span slot="prepend">@</span>
+                  </input-group-component>
+                </form-component>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">Input Group Sizing</div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
+        </section>
       </div>
+    </div>
 
-      <!-- Props -->
-      <!-- <div style="margin-top: 50px">
+    <!-- Props -->
+    <!-- <div style="margin-top: 50px">
       <h2>Props</h2>
       <div class="table-wrapper">
         <table>
@@ -417,8 +480,8 @@
       </div>
     </div> -->
 
-      <!-- Instructions -->
-      <!-- <div style="margin-top: 50px">
+    <!-- Instructions -->
+    <!-- <div style="margin-top: 50px">
       <h4>Using Component in other JavaScript Frameworks</h4>
 
       <p>
@@ -517,7 +580,6 @@
         these frameworks can understand and interact with.
       </p>
     </div> -->
-    </div>
 
     <script src="./input-group.js" type="module"></script>
     <script src="../form/form.js" type="module"></script>

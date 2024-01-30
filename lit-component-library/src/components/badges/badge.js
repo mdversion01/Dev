@@ -26,6 +26,7 @@ class PlBadge extends LitElement {
       dot: { type: Boolean },
       icon: { type: Boolean },
       styles: { type: String },
+      inlineStyles: { type: String },
       inset: { type: Boolean },
       left: { type: String },
       offsetX: { type: String },
@@ -53,6 +54,7 @@ class PlBadge extends LitElement {
     this.dot = false;
     this.icon = false;
     this.styles = "";
+    this.inlineStyles = "";
     this.inset = false;
     this.left = "";
     this.offsetX = "12";
@@ -131,7 +133,7 @@ class PlBadge extends LitElement {
 
   renderDefaultBadge(classAttribute) {
     return html`
-      <div class="${classAttribute}" ?disabled="${this.disabled}">
+      <div class="${classAttribute}" ?disabled="${this.disabled}" style=${ifDefined(this.inlineStyles ? this.inlineStyles : undefined)}>
         <slot></slot>
         ${this.icon
           ? html`<span class="${ICON_CLASS}"
@@ -304,6 +306,7 @@ class PlBadge extends LitElement {
       "dot",
       "shape",
       "size",
+      "styles",
       "variant",
       "inlinestyles",
       "dynamicstyles",
@@ -358,6 +361,7 @@ class PlBadge extends LitElement {
       "block",
       "shape",
       "size",
+      "styles",
       "variant",
       "color",
       "absolute",

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+  <title>Badge Component</title>
   <head>
     <!-- <link
       rel="stylesheet"
@@ -17,413 +18,559 @@
     <link rel="stylesheet" href="../../styles/components.css" />
   </head>
   <body>
-    <!-- Buttons solid -->
+    <div class="title">Badge Component</div>
 
-    <div class="title">Badge Types</div>
-    <div class="ex-container">
-      <div class="content-box">
-        <pl-badge variant="success" size="sm"> Test Badge </pl-badge>
-        <div class="context">Basic Badge</div>
+    <div class="demo-wrapper">
+      <div class="main">
+        <section>
+          <section class="section">
+            <section class="display-box" id="db-1">
+              <section class="display-box-demo" style="text-align: center">
+                <pl-badge variant="success" size="sm"> Test Badge </pl-badge>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">Basic Badge</div>
+              </section>
+            </section>
+          </section>
+
+          <section class="section">
+            <section class="display-box" id="db-3">
+              <section class="display-box-demo" style="text-align: center">
+                <pl-badge variant="info" size="sm" icon>
+                  Information
+                  <span class="icon" slot="icon"
+                    ><icon-component icon="fas fa-info-circle"></icon-component
+                  ></span>
+                </pl-badge>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">Badge with Icon</div>
+              </section>
+            </section>
+          </section>
+
+          <section class="section">
+            <section class="display-box" id="db-5">
+              <section class="display-box-demo" style="text-align: center">
+                <pl-badge
+                  token
+                  shape="circle"
+                  bordered
+                  variant="danger"
+                  inset
+                  offsetX="12"
+                  offsetY="12"
+                >
+                  <pl-button variant="primary" size="sm"> Primary </pl-button>
+                  <span slot="token">10</span>
+                </pl-badge>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">Button Badge Token</div>
+              </section>
+            </section>
+          </section>
+        </section>
+
+        <section>
+          <section class="section">
+            <section class="display-box" id="db-2">
+              <section class="display-box-demo" style="text-align: center">
+                <pl-badge outlined size="sm">
+                  Test Badge
+                  <pl-button text variant="danger" stripped iconBtn>
+                    <icon-component icon="fas fa-times-circle"></icon-component>
+                  </pl-button>
+                </pl-badge>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">
+                  Badge with (Icon) Button
+                </div>
+              </section>
+            </section>
+          </section>
+
+          <section class="section">
+            <section class="display-box" id="db-4">
+              <section class="display-box-demo" style="text-align: center">
+                <pl-button variant="primary" size="sm">
+                  Primary
+                  <pl-badge variant="light" size="xs" bdgPosition="right"
+                    >1</pl-badge
+                  >
+                </pl-button>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">
+                  Button with Badge(as a Counter)
+                </div>
+              </section>
+            </section>
+          </section>
+
+          <section class="section">
+            <section class="display-box" id="db-6">
+              <section class="display-box-demo" style="text-align: center">
+                <pl-badge dot variant="green" inset offsetX="10" offsetY="10">
+                  <pl-button iconBtn shape="circle" title="Rocket">
+                    <icon-component icon="fab fa-rocketchat"></icon-component>
+                  </pl-button>
+                </pl-badge>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">Button Badge Dot</div>
+              </section>
+            </section>
+          </section>
+        </section>
       </div>
+    </div>
 
-      <div class="content-box">
-        <pl-badge outlined size="sm">
-          Test Badge
-          <pl-button text variant="danger" stripped iconBtn>
-            <icon-component icon="fas fa-times-circle"></icon-component>
-          </pl-button>
-        </pl-badge>
-        <div class="context">Badge with (Icon) Button</div>
-      </div>
+    <div class="title">Predefined badge styles</div>
 
-      <div class="content-box">
-        <pl-badge variant="info" size="sm" icon>
-          Information
-          <span class="icon" slot="icon"
-            ><icon-component icon="fas fa-info-circle"></icon-component
-          ></span>
-        </pl-badge>
-        <div class="context">Badge with Icon</div>
-      </div>
+    <div class="demo-wrapper">
+      <div class="main">
+        <section>
+          <section class="section">
+            <section class="display-box" id="db-7">
+              <section class="display-box-demo" style="text-align: center">
+                <pl-badge variant="primary" size="sm" inlineStyles="margin-bottom: 10px;"> Primary </pl-badge>
+                <pl-badge variant="secondary" size="sm" inlineStyles="margin-bottom: 10px;"> Secondary </pl-badge>
+                <pl-badge variant="tertiary" size="sm" inlineStyles="margin-bottom: 10px;"> Tertiary </pl-badge>
+                <pl-badge variant="success" size="sm" inlineStyles="margin-bottom: 10px;"> Success </pl-badge>
+                <pl-badge variant="danger" size="sm" inlineStyles="margin-bottom: 10px;"> Danger </pl-badge>
+                <pl-badge variant="warning" size="sm" inlineStyles="margin-bottom: 10px;"> Warning </pl-badge>
+                <pl-badge variant="info" size="sm" inlineStyles="margin-bottom: 10px;"> Info </pl-badge>
+                <pl-badge variant="light" size="sm" inlineStyles="margin-bottom: 10px;"> Light </pl-badge>
+                <pl-badge variant="dark" size="sm" inlineStyles="margin-bottom: 10px;"> Dark </pl-badge>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">
+                  Solid Badges. Predifined badge variant colors/styles -
+                  primary, secondary, tertiary, active-blue, success, danger,
+                  warning, light, dark
+                </div>
+              </section>
+            </section>
+          </section>
 
-      <div class="content-box">
-        <pl-button variant="primary" size="sm">
-          Primary
-          <pl-badge variant="light" size="xs" bdgPosition="right">1</pl-badge>
-        </pl-button>
-        <div class="context">Button with Badge(as a Counter)</div>
-      </div>
+          <section class="section">
+            <section class="display-box" id="db-9">
+              <section class="display-box-demo" style="text-align: center">
+                <pl-badge variant="blue" size="sm" inlineStyles="margin-bottom: 10px;"> Blue </pl-badge>
+                <pl-badge variant="blue-grey" size="sm" inlineStyles="margin-bottom: 10px;"> Blue-Grey </pl-badge>
+                <pl-badge variant="brown" size="sm" inlineStyles="margin-bottom: 10px;"> Brown </pl-badge>
+                <pl-badge variant="deep-orange" size="sm" inlineStyles="margin-bottom: 10px;">
+                  Deep-Orange
+                </pl-badge>
+                <pl-badge variant="deep-purple" size="sm" inlineStyles="margin-bottom: 10px;">
+                  Deep-Purple
+                </pl-badge>
+                <pl-badge variant="green" size="sm" inlineStyles="margin-bottom: 10px;"> Green </pl-badge>
+                <pl-badge variant="grey" size="sm" inlineStyles="margin-bottom: 10px;"> Grey </pl-badge>
+                <pl-badge variant="indigo" size="sm" inlineStyles="margin-bottom: 10px;"> Indigo </pl-badge>
+                <pl-badge variant="light-blue" size="sm" inlineStyles="margin-bottom: 10px;"> Light-Blue </pl-badge>
+                <pl-badge variant="pink" size="sm" inlineStyles="margin-bottom: 10px;"> Pink </pl-badge>
+                <pl-badge variant="purple" size="sm" inlineStyles="margin-bottom: 10px;"> Purple </pl-badge>
+                <pl-badge variant="red" size="sm" inlineStyles="margin-bottom: 10px;"> Red </pl-badge>
+                <pl-badge variant="teal" size="sm" inlineStyles="margin-bottom: 10px;"> Teal </pl-badge>
+                <pl-badge variant="shades black" size="sm" inlineStyles="margin-bottom: 10px;">
+                  Shades Black
+                </pl-badge>
+                <pl-badge variant="shades white" size="sm" inlineStyles="margin-bottom: 10px;">
+                  Shades White
+                </pl-badge>
+                <pl-badge variant="amber" size="sm" inlineStyles="margin-bottom: 10px;"> Amber </pl-badge>
+                <pl-badge variant="cyan" size="sm" inlineStyles="margin-bottom: 10px;"> Cyan </pl-badge>
+                <pl-badge variant="lime" size="sm" inlineStyles="margin-bottom: 10px;"> Lime </pl-badge>
+                <pl-badge variant="light-green" size="sm" inlineStyles="margin-bottom: 10px;">
+                  Light-Green
+                </pl-badge>
+                <pl-badge variant="orange" size="sm" inlineStyles="margin-bottom: 10px;"> Orange </pl-badge>
+                <pl-badge variant="yellow" size="sm" inlineStyles="margin-bottom: 10px;"> Yellow </pl-badge>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">
+                  Solid Badges. Other predifined badge variatn colors/styles -
+                  blue, blue-grey, brown, deep-orange, deep-purple, green, grey,
+                  indigo, light-blue, pink, purple, red, teal, shades black,
+                  shades white, amber, cyan, lime, light-green, orange, yellow
+                </div>
+              </section>
+            </section>
+          </section>
 
-      <div class="content-box">
-        <pl-badge
-          token
-          shape="circle"
-          bordered
-          variant="danger"
-          inset
-          offsetX="12"
-          offsetY="12"
-        >
-          <pl-button variant="primary" size="sm"> Primary </pl-button>
-          <span slot="token">10</span>
-        </pl-badge>
-        <div class="context">Button Badge Token</div>
-      </div>
+          <section class="section">
+            <section class="display-box" id="db-11">
+              <section class="display-box-demo" style="text-align: center">
+                <pl-badge variant="blue" size="xs" inlineStyles="margin-bottom: 10px;"> x-small </pl-badge>
+                <pl-badge variant="blue" size="sm" inlineStyles="margin-bottom: 10px;"> small </pl-badge>
+                <pl-badge variant="blue" inlineStyles="margin-bottom: 10px;"> default </pl-badge>
+                <pl-badge variant="blue" size="lg" inlineStyles="margin-bottom: 10px;"> large </pl-badge>
+                <pl-badge variant="blue" outlined size="x" inlineStyles="margin-bottom: 10px;"> x-small </pl-badge>
+                <pl-badge variant="blue" outlined size="sm" inlineStyles="margin-bottom: 10px;"> small </pl-badge>
+                <pl-badge variant="blue" outlined inlineStyles="margin-bottom: 10px;"> default </pl-badge>
+                <pl-badge variant="blue" outlined size="lg" inlineStyles="margin-bottom: 10px;"> large </pl-badge>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">Badge sizes.</div>
+              </section>
+            </section>
+          </section>
 
-      <div class="content-box">
-        <pl-badge dot variant="green" inset offsetX="10" offsetY="10">
-          <pl-button iconBtn shape="circle" title="Rocket">
-            <icon-component icon="fab fa-rocketchat"></icon-component>
-          </pl-button>
-        </pl-badge>
-        <div class="context">Button Badge Dot</div>
+          <section class="section">
+            <section class="display-box" id="db-13">
+              <section class="display-box-demo" style="text-align: center">
+                <span style="margin-right: 15px;">
+                  <pl-badge
+                    token
+                    shape="circle"
+                    outlined
+                    variant="danger"
+                    inset
+                    offsetX="12"
+                    offsetY="12"
+                  >
+                    <pl-button variant="primary" size="sm"> Primary </pl-button>
+                    <span slot="token">10</span>
+                  </pl-badge>
+                </span>
+                <span style="margin-right: 15px;">
+                  <pl-badge
+                    token
+                    shape="rounded"
+                    outlined
+                    variant="danger"
+                    inset
+                    offsetX="12"
+                    offsetY="12"
+                  >
+                    <pl-button variant="primary" size="sm"> Primary </pl-button>
+                    <span slot="token">10</span>
+                  </pl-badge>
+                </span>
+                <span style="margin-right: 15px;">
+                  <pl-badge
+                    token
+                    outlined
+                    variant="danger"
+                    inset
+                    offsetX="12"
+                    offsetY="12"
+                  >
+                    <pl-button variant="primary" size="sm"> Primary </pl-button>
+                    <span slot="token">10</span>
+                  </pl-badge>
+                </span>
+                <span style="margin-right: 15px;">
+                  <pl-badge
+                    token
+                    shape="circle"
+                    bordered
+                    variant="danger"
+                    inset
+                    offsetX="12"
+                    offsetY="12"
+                  >
+                    <pl-button variant="primary" size="sm"> Primary </pl-button>
+                    <span slot="token">10</span>
+                  </pl-badge>
+                </span>
+      
+                <span style="margin-right: 15px;">
+                  <pl-badge
+                    token
+                    shape="rounded"
+                    bordered
+                    variant="yellow"
+                    inset
+                    offsetX="12"
+                    offsetY="12"
+                  >
+                    <pl-button variant="primary" size="sm"> Primary </pl-button>
+                    <span slot="token">10</span>
+                  </pl-badge>
+                </span>
+      
+                <span style="margin-right: 15px;">
+                  <pl-badge
+                    token
+                    shape="rounded"
+                    bordered
+                    variant="purple"
+                    inset
+                    offsetX="12"
+                    offsetY="12"
+                  >
+                    <pl-button variant="primary" size="sm"> Primary </pl-button>
+                    <span slot="token">10</span>
+                  </pl-badge>
+                </span>
+      
+                <span style="margin-right: 15px;">
+                  <pl-badge
+                    token
+                    shape="circle"
+                    variant="purple"
+                    bordered
+                    inset
+                    offsetX="12"
+                    offsetY="12"
+                  >
+                    <pl-button variant="primary" size="sm"> Primary </pl-button>
+                    <span slot="token">
+                      <icon-component icon="fas fa-home" tokenIcon></icon-component>
+                    </span>
+                  </pl-badge>
+                </span>
+      
+                <span style="margin-right: 15px;">
+                  <pl-badge
+                    token
+                    shape="circle"
+                    outlined
+                    bordered
+                    variant="purple"
+                    inset
+                    offsetX="12"
+                    offsetY="12"
+                  >
+                    <pl-button variant="primary" size="sm"> Primary </pl-button>
+                    <span slot="token">
+                      <icon-component icon="fas fa-home" tokenIcon></icon-component>
+                    </span>
+                  </pl-badge>
+                </span>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description"> Badge tokens (used with here, with the button component).</div>
+              </section>
+            </section>
+          </section>
+
+          <section class="section">
+            <section class="display-box" id="db-8">
+              <section class="display-box-demo" style="text-align: center">
+                <span style="margin-right: 15px;">
+                  <pl-badge
+                    token
+                    shape="circle"
+                    bordered
+                    elevated-2
+                    variant="danger"
+                    inset
+                  >
+                    <pl-button variant="primary" size="sm"> Primary </pl-button>
+                    <span slot="token">10</span>
+                  </pl-badge>
+                </span>
+      
+                <span style="margin-right: 15px;"
+                  ><pl-badge elevated-3 variant="success" size="sm">
+                    Test Badge
+                  </pl-badge></span
+                >
+      
+                <span style="margin-right: 15px;"
+                  ><pl-badge
+                    elevated-6
+                    outlined
+                    variant="primary"
+                    shape="pill"
+                    size="sm"
+                  >
+                    Test Badge
+                    <pl-button text variant="primary" stripped iconBtn>
+                      <icon-component
+                        icon="fas fa-exclamation-circle"
+                      ></icon-component>
+                    </pl-button> </pl-badge
+                ></span>
+      
+                <span style="margin-right: 15px;">
+                  <pl-badge
+                    dot
+                    elevated-4
+                    variant="orange"
+                    inset
+                    offsetX="10"
+                    offsetY="10"
+                  >
+                    <pl-button variant="primary" shape="circle" iconBtn title="Home">
+                      <icon-component icon="fas fa-home"></icon-component>
+                    </pl-button> </pl-badge
+                ></span>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">Elevated badge examples (Flat by default). Elevated badges go from
+                  0-24.</div>
+              </section>
+            </section>
+          </section>
+        </section>
+
+        <section>
+          <section class="section">
+            <section class="display-box" id="db-10">
+              <section class="display-box-demo" style="text-align: center">
+                <pl-badge variant="primary" size="sm" disabled inlineStyles="margin-bottom: 10px;">
+                  Primary
+                </pl-badge>
+                <pl-badge variant="secondary" size="sm" disabled inlineStyles="margin-bottom: 10px;">
+                  Secondary
+                </pl-badge>
+                <pl-badge variant="tertiary" size="sm" disabled inlineStyles="margin-bottom: 10px;">
+                  Tertiary
+                </pl-badge>
+                <pl-badge variant="success" size="sm" disabled inlineStyles="margin-bottom: 10px;">
+                  Success
+                </pl-badge>
+                <pl-badge variant="danger" size="sm" disabled inlineStyles="margin-bottom: 10px;">
+                  Danger
+                </pl-badge>
+                <pl-badge variant="warning" size="sm" disabled inlineStyles="margin-bottom: 10px;">
+                  Warning
+                </pl-badge>
+                <pl-badge variant="info" size="sm" disabled inlineStyles="margin-bottom: 10px;"> Info </pl-badge>
+                <pl-badge variant="light" size="sm" disabled inlineStyles="margin-bottom: 10px;"> Light </pl-badge>
+                <pl-badge variant="dark" size="sm" disabled inlineStyles="margin-bottom: 10px;"> Dark </pl-badge>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">Disabled Badges.</div>
+              </section>
+            </section>
+          </section>
+
+          <section class="section">
+            <section class="display-box" id="db-12">
+              <section class="display-box-demo" style="text-align: center">
+                <pl-badge variant="blue" outlined size="sm" inlineStyles="margin-bottom: 10px;"> Blue </pl-badge>
+                <pl-badge variant="blue-grey" outlined size="sm" inlineStyles="margin-bottom: 10px;">
+                  Blue-Grey
+                </pl-badge>
+                <pl-badge variant="brown" outlined size="sm" inlineStyles="margin-bottom: 10px;"> Brown </pl-badge>
+                <pl-badge variant="deep-orange" outlined size="sm" inlineStyles="margin-bottom: 10px;">
+                  Deep-Orange
+                </pl-badge>
+                <pl-badge variant="deep-purple" outlined size="sm" inlineStyles="margin-bottom: 10px;">
+                  Deep-Purple
+                </pl-badge>
+                <pl-badge variant="green" outlined size="sm" inlineStyles="margin-bottom: 10px;"> Green </pl-badge>
+                <pl-badge variant="grey" outlined size="sm" inlineStyles="margin-bottom: 10px;"> Grey </pl-badge>
+                <pl-badge variant="indigo" outlined size="sm" inlineStyles="margin-bottom: 10px;">
+                  Indigo
+                </pl-badge>
+                <pl-badge variant="light-blue" outlined size="sm" inlineStyles="margin-bottom: 10px;">
+                  Light-Blue
+                </pl-badge>
+                <pl-badge variant="pink" outlined size="sm" inlineStyles="margin-bottom: 10px;"> Pink </pl-badge>
+                <pl-badge variant="purple" outlined size="sm" inlineStyles="margin-bottom: 10px;">
+                  Purple
+                </pl-badge>
+                <pl-badge variant="red" outlined size="sm" inlineStyles="margin-bottom: 10px;"> Red </pl-badge>
+                <pl-badge variant="teal" outlined size="sm" inlineStyles="margin-bottom: 10px;"> Teal </pl-badge>
+                <pl-badge variant="amber" outlined size="sm" inlineStyles="margin-bottom: 10px;"> Amber </pl-badge>
+                <pl-badge variant="cyan" outlined size="sm" inlineStyles="margin-bottom: 10px;"> Cyan </pl-badge>
+                <pl-badge variant="lime" outlined size="sm" inlineStyles="margin-bottom: 10px;"> Lime </pl-badge>
+                <pl-badge variant="light-green" outlined size="sm" inlineStyles="margin-bottom: 10px;">
+                  Light-Green
+                </pl-badge>
+                <pl-badge variant="orange" outlined size="sm" inlineStyles="margin-bottom: 10px;">
+                  Orange
+                </pl-badge>
+                <pl-badge variant="yellow" outlined size="sm" inlineStyles="margin-bottom: 10px;">
+                  Yellow
+                </pl-badge>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">
+                  Outlined badge examples.
+                </div>
+              </section>
+            </section>
+          </section>
+
+          <section class="section">
+            <section class="display-box" id="db-14">
+              <section class="display-box-demo" style="text-align: center">
+                <pl-badge variant="blue"> default </pl-badge>
+                <pl-badge variant="blue" shape="square"> square </pl-badge>
+                <pl-badge variant="blue" shape="pill"> pill </pl-badge>
+                <pl-badge variant="blue" outlined> default </pl-badge>
+                <pl-badge variant="blue" shape="square" outlined>
+                  square
+                </pl-badge>
+                <pl-badge variant="blue" shape="pill" outlined> pill </pl-badge>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">Badge shapes.</div>
+              </section>
+            </section>
+          </section>
+
+          <section class="section">
+            <section class="display-box" id="db-16">
+              <section class="display-box-demo" style="text-align: center">
+                <span style="margin-right: 15px;">
+                  <pl-badge dot variant="purple">
+                    <pl-button variant="primary" size="sm"> Primary </pl-button>
+                  </pl-badge></span
+                >
+      
+                <span style="margin-right: 15px;">
+                  <pl-badge dot variant="orange" inset offsetX="10" offsetY="10">
+                    <pl-button variant="primary" shape="circle" iconBtn title="Home">
+                      <icon-component icon="fas fa-home"></icon-component>
+                    </pl-button> </pl-badge
+                ></span>
+      
+                <span style="margin-right: 15px;">
+                  <pl-badge dot variant="green" inset offsetX="10" offsetY="10">
+                    <pl-button shape="circle" iconBtn title="Rocket">
+                      <icon-component icon="fab fa-rocketchat"></icon-component>
+                    </pl-button> </pl-badge
+                ></span>
+      
+                <span style="margin-right: 15px;">
+                  <pl-badge dot pulse variant="pink" inset offsetX="10" offsetY="10">
+                    <pl-button shape="circle" iconBtn title="Home">
+                      <icon-component icon="fas fa-home"></icon-component>
+                    </pl-button> </pl-badge
+                ></span>
+      
+                <span style="margin-right: 15px;">
+                  <pl-badge dot variant="orange" inset offsetX="3" offsetY="3">
+                    <icon-component icon="fab fa-rocketchat"></icon-component>
+                  </pl-badge>
+                </span>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">Badge dots are used as indicators to draw attention to a specific
+                  element. Used here with the button and icon components.</div>
+              </section>
+            </section>
+          </section>
+        </section>
       </div>
     </div>
 
-    <div style="margin-top: 15px">
-      <div class="title">Predefined badge styles</div>
-      <div class="ex-container no-flex">
-        <div class="content-box">
-          <pl-badge variant="primary" size="sm"> Primary </pl-badge>
-          <pl-badge variant="secondary" size="sm"> Secondary </pl-badge>
-          <pl-badge variant="tertiary" size="sm"> Tertiary </pl-badge>
-          <pl-badge variant="success" size="sm"> Success </pl-badge>
-          <pl-badge variant="danger" size="sm"> Danger </pl-badge>
-          <pl-badge variant="warning" size="sm"> Warning </pl-badge>
-          <pl-badge variant="info" size="sm"> Info </pl-badge>
-          <pl-badge variant="light" size="sm"> Light </pl-badge>
-          <pl-badge variant="dark" size="sm"> Dark </pl-badge>
-          <div class="context">
-            Solid Badges. Predifined badge variant colors/styles - primary,
-            secondary, tertiary, active-blue, success, danger, warning, light,
-            dark
-          </div>
-        </div>
-
-        <div class="content-box">
-          <pl-badge variant="primary" size="sm" disabled> Primary </pl-badge>
-          <pl-badge variant="secondary" size="sm" disabled>
-            Secondary
-          </pl-badge>
-          <pl-badge variant="tertiary" size="sm" disabled> Tertiary </pl-badge>
-          <pl-badge variant="success" size="sm" disabled> Success </pl-badge>
-          <pl-badge variant="danger" size="sm" disabled> Danger </pl-badge>
-          <pl-badge variant="warning" size="sm" disabled> Warning </pl-badge>
-          <pl-badge variant="info" size="sm" disabled> Info </pl-badge>
-          <pl-badge variant="light" size="sm" disabled> Light </pl-badge>
-          <pl-badge variant="dark" size="sm" disabled> Dark </pl-badge>
-          <div class="context">Disabled Badges.</div>
-        </div>
-
-        <div class="content-box">
-          <pl-badge variant="blue" size="sm"> Blue </pl-badge>
-          <pl-badge variant="blue-grey" size="sm"> Blue-Grey </pl-badge>
-          <pl-badge variant="brown" size="sm"> Brown </pl-badge>
-          <pl-badge variant="deep-orange" size="sm"> Deep-Orange </pl-badge>
-          <pl-badge variant="deep-purple" size="sm"> Deep-Purple </pl-badge>
-          <pl-badge variant="green" size="sm"> Green </pl-badge>
-          <pl-badge variant="grey" size="sm"> Grey </pl-badge>
-          <pl-badge variant="indigo" size="sm"> Indigo </pl-badge>
-          <pl-badge variant="light-blue" size="sm"> Light-Blue </pl-badge>
-          <pl-badge variant="pink" size="sm"> Pink </pl-badge>
-          <pl-badge variant="purple" size="sm"> Purple </pl-badge>
-          <pl-badge variant="red" size="sm"> Red </pl-badge>
-          <pl-badge variant="teal" size="sm"> Teal </pl-badge>
-          <pl-badge variant="shades black" size="sm"> Shades Black </pl-badge>
-          <pl-badge variant="shades white" size="sm"> Shades White </pl-badge>
-          <pl-badge variant="amber" size="sm"> Amber </pl-badge>
-          <pl-badge variant="cyan" size="sm"> Cyan </pl-badge>
-          <pl-badge variant="lime" size="sm"> Lime </pl-badge>
-          <pl-badge variant="light-green" size="sm"> Light-Green </pl-badge>
-          <pl-badge variant="orange" size="sm"> Orange </pl-badge>
-          <pl-badge variant="yellow" size="sm"> Yellow </pl-badge>
-          <div class="context">
-            Solid Badges. Other predifined badge variatn colors/styles - blue,
-            blue-grey, brown, deep-orange, deep-purple, green, grey, indigo,
-            light-blue, pink, purple, red, teal, shades black, shades white,
-            amber, cyan, lime, light-green, orange, yellow
-          </div>
-        </div>
-
-        <div class="content-box">
-          <pl-badge variant="blue" outlined size="sm"> Blue </pl-badge>
-          <pl-badge variant="blue-grey" outlined size="sm">
-            Blue-Grey
-          </pl-badge>
-          <pl-badge variant="brown" outlined size="sm"> Brown </pl-badge>
-          <pl-badge variant="deep-orange" outlined size="sm">
-            Deep-Orange
-          </pl-badge>
-          <pl-badge variant="deep-purple" outlined size="sm">
-            Deep-Purple
-          </pl-badge>
-          <pl-badge variant="green" outlined size="sm"> Green </pl-badge>
-          <pl-badge variant="grey" outlined size="sm"> Grey </pl-badge>
-          <pl-badge variant="indigo" outlined size="sm"> Indigo </pl-badge>
-          <pl-badge variant="light-blue" outlined size="sm">
-            Light-Blue
-          </pl-badge>
-          <pl-badge variant="pink" outlined size="sm"> Pink </pl-badge>
-          <pl-badge variant="purple" outlined size="sm"> Purple </pl-badge>
-          <pl-badge variant="red" outlined size="sm"> Red </pl-badge>
-          <pl-badge variant="teal" outlined size="sm"> Teal </pl-badge>
-          <pl-badge variant="amber" outlined size="sm"> Amber </pl-badge>
-          <pl-badge variant="cyan" outlined size="sm"> Cyan </pl-badge>
-          <pl-badge variant="lime" outlined size="sm"> Lime </pl-badge>
-          <pl-badge variant="light-green" outlined size="sm">
-            Light-Green
-          </pl-badge>
-          <pl-badge variant="orange" outlined size="sm"> Orange </pl-badge>
-          <pl-badge variant="yellow" outlined size="sm"> Yellow </pl-badge>
-          <div class="context">Outlined badge examples.</div>
-        </div>
-
-        <div class="content-box">
-          <pl-badge variant="blue" size="xs"> x-small </pl-badge>
-          <pl-badge variant="blue" size="sm"> small </pl-badge>
-          <pl-badge variant="blue"> default </pl-badge>
-          <pl-badge variant="blue" size="lg"> large </pl-badge>
-          <pl-badge variant="blue" outlined size="x"> x-small </pl-badge>
-          <pl-badge variant="blue" outlined size="sm"> small </pl-badge>
-          <pl-badge variant="blue" outlined> default </pl-badge>
-          <pl-badge variant="blue" outlined size="lg"> large </pl-badge>
-          <div class="context">Badge sizes.</div>
-        </div>
-
-        <div class="content-box">
-          <pl-badge variant="blue"> default </pl-badge>
-          <pl-badge variant="blue" shape="square"> square </pl-badge>
-          <pl-badge variant="blue" shape="pill"> pill </pl-badge>
-          <pl-badge variant="blue" outlined> default </pl-badge>
-          <pl-badge variant="blue" shape="square" outlined> square </pl-badge>
-          <pl-badge variant="blue" shape="pill" outlined> pill </pl-badge>
-          <div class="context">Badge shapes.</div>
-        </div>
-
-        <div class="content-box" style="padding-top: 15px">
-          <span style="margin-right: 15px">
-            <pl-badge
-              token
-              shape="circle"
-              outlined
-              variant="danger"
-              inset
-              offsetX="12"
-              offsetY="12"
-            >
-              <pl-button variant="primary" size="sm"> Primary </pl-button>
-              <span slot="token">10</span>
-            </pl-badge>
-          </span>
-          <span style="margin-right: 15px">
-            <pl-badge
-              token
-              shape="rounded"
-              outlined
-              variant="danger"
-              inset
-              offsetX="12"
-              offsetY="12"
-            >
-              <pl-button variant="primary" size="sm"> Primary </pl-button>
-              <span slot="token">10</span>
-            </pl-badge>
-          </span>
-          <span style="margin-right: 15px">
-            <pl-badge
-              token
-              outlined
-              variant="danger"
-              inset
-              offsetX="12"
-              offsetY="12"
-            >
-              <pl-button variant="primary" size="sm"> Primary </pl-button>
-              <span slot="token">10</span>
-            </pl-badge>
-          </span>
-          <span style="margin-right: 15px">
-            <pl-badge
-              token
-              shape="circle"
-              bordered
-              variant="danger"
-              inset
-              offsetX="12"
-              offsetY="12"
-            >
-              <pl-button variant="primary" size="sm"> Primary </pl-button>
-              <span slot="token">10</span>
-            </pl-badge>
-          </span>
-
-          <span style="margin-right: 15px">
-            <pl-badge
-              token
-              shape="rounded"
-              bordered
-              variant="yellow"
-              inset
-              offsetX="12"
-              offsetY="12"
-            >
-              <pl-button variant="primary" size="sm"> Primary </pl-button>
-              <span slot="token">10</span>
-            </pl-badge>
-          </span>
-
-          <span style="margin-right: 15px">
-            <pl-badge
-              token
-              shape="rounded"
-              bordered
-              variant="purple"
-              inset
-              offsetX="12"
-              offsetY="12"
-            >
-              <pl-button variant="primary" size="sm"> Primary </pl-button>
-              <span slot="token">10</span>
-            </pl-badge>
-          </span>
-
-          <span style="margin-right: 15px">
-            <pl-badge
-              token
-              shape="circle"
-              variant="purple"
-              bordered
-              inset
-              offsetX="12"
-              offsetY="12"
-            >
-              <pl-button variant="primary" size="sm"> Primary </pl-button>
-              <span slot="token">
-                <icon-component icon="fas fa-home" tokenIcon></icon-component>
-              </span>
-            </pl-badge>
-          </span>
-
-          <span style="margin-right: 15px">
-            <pl-badge
-              token
-              shape="circle"
-              outlined
-              bordered
-              variant="purple"
-              inset
-              offsetX="12"
-              offsetY="12"
-            >
-              <pl-button variant="primary" size="sm"> Primary </pl-button>
-              <span slot="token">
-                <icon-component icon="fas fa-home" tokenIcon></icon-component>
-              </span>
-            </pl-badge>
-          </span>
-
-          <div class="context">
-            Badge tokens (used with here, with the button component).
-          </div>
-        </div>
-
-        <div class="content-box" style="padding-top: 15px">
-          <span style="margin-right: 15px">
-            <pl-badge dot variant="purple">
-              <pl-button variant="primary" size="sm"> Primary </pl-button>
-            </pl-badge></span
-          >
-
-          <span style="margin-right: 15px">
-            <pl-badge dot variant="orange" inset offsetX="10" offsetY="10">
-              <pl-button variant="primary" shape="circle" iconBtn title="Home">
-                <icon-component icon="fas fa-home"></icon-component>
-              </pl-button> </pl-badge
-          ></span>
-
-          <span style="margin-right: 15px">
-            <pl-badge dot variant="green" inset offsetX="10" offsetY="10">
-              <pl-button shape="circle" iconBtn title="Rocket">
-                <icon-component icon="fab fa-rocketchat"></icon-component>
-              </pl-button> </pl-badge
-          ></span>
-
-          <span style="margin-right: 15px">
-            <pl-badge dot pulse variant="pink" inset offsetX="10" offsetY="10">
-              <pl-button shape="circle" iconBtn title="Home">
-                <icon-component icon="fas fa-home"></icon-component>
-              </pl-button> </pl-badge
-          ></span>
-
-          <span style="margin-right: 15px">
-            <pl-badge dot variant="orange" inset offsetX="3" offsetY="3">
-              <icon-component icon="fab fa-rocketchat"></icon-component>
-            </pl-badge>
-          </span>
-          <div class="context">
-            Badge dots are used as indicators to draw attention to a specific
-            element. Used here with the button and icon components.
-          </div>
-        </div>
-
-        <div class="content-box">
-          <span style="margin-right: 15px">
-            <pl-badge
-              token
-              shape="circle"
-              bordered
-              elevated-2
-              variant="danger"
-              inset
-            >
-              <pl-button variant="primary" size="sm"> Primary </pl-button>
-              <span slot="token">10</span>
-            </pl-badge>
-          </span>
-
-          <span style="margin-right: 15px"
-            ><pl-badge elevated-3 variant="success" size="sm">
-              Test Badge
-            </pl-badge></span
-          >
-
-          <span style="margin-right: 15px"
-            ><pl-badge
-              elevated-6
-              outlined
-              variant="primary"
-              shape="pill"
-              size="sm"
-            >
-              Test Badge
-              <pl-button text variant="primary" stripped iconBtn>
-                <icon-component
-                  icon="fas fa-exclamation-circle"
-                ></icon-component>
-              </pl-button> </pl-badge
-          ></span>
-
-          <span style="margin-right: 15px">
-            <pl-badge
-              dot
-              elevated-4
-              variant="orange"
-              inset
-              offsetX="10"
-              offsetY="10"
-            >
-              <pl-button variant="primary" shape="circle" iconBtn title="Home">
-                <icon-component icon="fas fa-home"></icon-component>
-              </pl-button> </pl-badge
-          ></span>
-
-          <div class="context">
-            Elevated badge examples (Flat by default). Elevated badges go from
-            0-24.
-          </div>
-        </div>
-      </div>
-    </div>
 
     <!-- Props -->
     <div style="margin-top: 50px">
@@ -518,6 +665,18 @@
               </td>
             </tr>
             <tr>
+              <td>inlineStyles</td>
+              <td>String</td>
+              <td></td>
+              <td>
+                When using this property, additional inline styles can be added
+                to the badge.<br />
+                <span class="example"
+                  >Ex:&#60;pl-badge inlineStyles="margin: 5px;"&#62;&#60;/pl-badge&#62;</span
+                >
+              </td>
+            </tr>
+            <tr>
               <td>inset</td>
               <td>Boolean</td>
               <td>false</td>
@@ -605,7 +764,7 @@
               <td></td>
               <td>
                 When using this property, additional inline styles can be added
-                to the button.<br />
+                to the dot or token.<br />
                 <span class="example"
                   >Ex:&#60;pl-badge styles="color: pink; padding:
                   10px;"&#62;&#60;/pl-badge&#62;</span

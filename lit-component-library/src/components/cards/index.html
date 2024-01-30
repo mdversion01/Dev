@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-  <title>Cards</title>
+  <title>Card Component</title>
   <head>
     <!-- <link
       rel="stylesheet"
@@ -23,223 +23,213 @@
     </style>
   </head>
   <body>
-    <div class="title">Card Examples</div>
-    <div class="ex-container">
-      <div class="content-box">
-        <card-component>
-          <div slot="header">Card Header</div>
-          <div slot="title">Card Title</div>
-          <div slot="text">
-            <p>
-              Example of the card's body text. Example of the card's body text.
-            </p>
-            <p>Example of the card's body text.</p>
-          </div>
-          <div slot="footer">
-            <p>Card Footer</p>
-          </div>
-        </card-component>
+    <div class="title">Card Component</div>
 
-        <div class="context">Card</div>
-      </div>
+    <div class="demo-wrapper">
+      <div class="main">
+        <section>
+          <section class="section">
+            <section class="display-box" id="db-1">
+              <section class="display-box-demo" style="display: flex; justify-content:center;">
+                <card-component>
+                  <div slot="header">Card Header</div>
+                  <div slot="title">Card Title</div>
+                  <div slot="text">
+                    <p>
+                      Example of the card's body text. Example of the card's body text.
+                    </p>
+                    <p>Example of the card's body text.</p>
+                  </div>
+                  <div slot="footer">
+                    <p>Card Footer</p>
+                  </div>
+                </card-component>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">Basic Card</div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
 
-      <div class="content-box">
-        <card-component noHeader>
-          <div slot="header">Card Header</div>
-          <div slot="title">Card Title</div>
-          <div slot="text">
-            <p>
-              Example of the card's body text. Example of the card's body text.
-            </p>
-            <p>Example of the card's body text.</p>
-          </div>
-          <div slot="footer">
-            <p>Card Footer</p>
-          </div>
-        </card-component>
+          <section class="section">
+            <section class="display-box" id="db-2">
+              <section class="display-box-demo" style="display: flex; justify-content:center;">
+                <card-component noHeader>
+                  <div slot="header">Card Header</div>
+                  <div slot="title">Card Title</div>
+                  <div slot="text">
+                    <p>
+                      Example of the card's body text. Example of the card's body text.
+                    </p>
+                    <p>Example of the card's body text.</p>
+                  </div>
+                  <div slot="footer">
+                    <p>Card Footer</p>
+                  </div>
+                </card-component>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">Card without Header</div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
 
-        <div class="context">Card without Header</div>
-      </div>
+          <section class="section">
+            <section class="display-box" id="db-3">
+              <section class="display-box-demo" style="display: flex; justify-content:center;">
+                <card-component noFooter>
+                  <div slot="header">Card Header</div>
+                  <div slot="title">Card Title</div>
+                  <div slot="text">
+                    <p>
+                      Example of the card's body text. Example of the card's body text.
+                    </p>
+                    <p>Example of the card's body text.</p>
+                  </div>
+                  <div slot="footer">
+                    <p>Card Footer</p>
+                  </div>
+                </card-component>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">Card without Footer</div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
 
-      <div class="content-box">
-        <card-component noFooter>
-          <div slot="header">Card Header</div>
-          <div slot="title">Card Title</div>
-          <div slot="text">
-            <p>
-              Example of the card's body text. Example of the card's body text.
-            </p>
-            <p>Example of the card's body text.</p>
-          </div>
-          <div slot="footer">
-            <p>Card Footer</p>
-          </div>
-        </card-component>
+          <section class="section">
+            <section class="display-box" id="db-4">
+              <section class="display-box-demo" style="display: flex; justify-content:center;">
+                <card-component noHeader noFooter>
+                  <div slot="header">Card Header</div>
+                  <div slot="title">Card Title</div>
+                  <div slot="text">
+                    <p>
+                      Example of the card's body text. Example of the card's body text.
+                    </p>
+                    <p>Example of the card's body text.</p>
+                  </div>
+                  <div slot="footer">
+                    <p>Card Footer</p>
+                  </div>
+                </card-component>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">Card without Header and Footer</div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
 
-        <div class="context">Card without Footer</div>
-      </div>
+          <section class="section">
+            <section class="display-box" id="db-5">
+              <section class="display-box-demo" style="display: flex; justify-content:center;">
+                <card-component actions>
+                  <div slot="header">Card Header</div>
+                  <div slot="title">Card Title</div>
+                  <div slot="text">
+                    <p>
+                      Example of the card's body text. Example of the card's body text.
+                    </p>
+                    <p>Example of the card's body text.</p>
+                  </div>
+                  <div slot="actions">Action Buttons or Links can go here.</div>
+                </card-component>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">Card with Action area</div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
+        </section>
 
-      <div class="content-box">
-        <card-component noHeader noFooter>
-          <div slot="header">Card Header</div>
-          <div slot="title">Card Title</div>
-          <div slot="text">
-            <p>
-              Example of the card's body text. Example of the card's body text.
-            </p>
-            <p>Example of the card's body text.</p>
-          </div>
-          <div slot="footer">
-            <p>Card Footer</p>
-          </div>
-        </card-component>
+        <section>
+          <section class="section">
+            <section class="display-box" id="db-6">
+              <section class="display-box-demo" style="display: flex; justify-content:center;">
+                <card-component img imgSrc="./FillImg.png">
+                  <div slot="header">Card Header</div>
+                  <div slot="title">Card Title</div>
+                  <div slot="text">
+                    <p>
+                      Example of the card's body text. Example of the card's body text.
+                    </p>
+                    <p>Example of the card's body text.</p>
+                  </div>
+                  <div slot="footer">
+                    <p>Card Footer</p>
+                  </div>
+                </card-component>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">Card with an Image</div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
 
-        <div class="context">Card without Header and Footer</div>
-      </div>
+          <section class="section">
+            <section class="display-box" id="db-7">
+              <section class="display-box-demo" style="display: flex; justify-content:center;">
+                <card-component img imgSrc="./FillImg.png" actions>
+                  <div slot="header">Card Header</div>
+                  <div slot="title">Card Title</div>
+                  <div slot="text">
+                    <p>
+                      Example of the card's body text. Example of the card's body text.
+                    </p>
+                    <p>Example of the card's body text.</p>
+                  </div>
+                  <div slot="actions">Action Buttons or Links can go here.</div>
+                  <div slot="footer">
+                    <p>Card Footer</p>
+                  </div>
+                </card-component>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">Card with everything</div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
 
-      <div class="content-box">
-        <card-component actions>
-          <div slot="header">Card Header</div>
-          <div slot="title">Card Title</div>
-          <div slot="text">
-            <p>
-              Example of the card's body text. Example of the card's body text.
-            </p>
-            <p>Example of the card's body text.</p>
-          </div>
-          <div slot="actions">Action Buttons or Links can go here.</div>
-        </card-component>
-
-        <div class="context">Card with Action area</div>
-      </div>
-
-      <div class="content-box">
-        <card-component img imgSrc="./FillImg.png">
-          <div slot="header">Card Header</div>
-          <div slot="title">Card Title</div>
-          <div slot="text">
-            <p>
-              Example of the card's body text. Example of the card's body text.
-            </p>
-            <p>Example of the card's body text.</p>
-          </div>
-          <div slot="footer">
-            <p>Card Footer</p>
-          </div>
-        </card-component>
-
-        <div class="context">Card with an Image</div>
-      </div>
-
-      <div class="content-box">
-        <card-component img imgSrc="./FillImg.png" actions>
-          <div slot="header">Card Header</div>
-          <div slot="title">Card Title</div>
-          <div slot="text">
-            <p>
-              Example of the card's body text. Example of the card's body text.
-            </p>
-            <p>Example of the card's body text.</p>
-          </div>
-          <div slot="actions">Action Buttons or Links can go here.</div>
-          <div slot="footer">
-            <p>Card Footer</p>
-          </div>
-        </card-component>
-
-        <div class="context">Card with everything</div>
-      </div>
-    </div>
-
-    <div class="title">Elevated Card Examples</div>
-    <div class="ex-container no-flex">
-      <div class="content-box">
-        <div style="display: flex; justify-content: space-evenly">
-          <span style="margin: 15px">
-            <card-component elevated-2>
-              <div slot="header">Card Header</div>
-              <div slot="title">Card Title</div>
-              <div slot="text">
-                <p>
-                  Example of the card's body text. Example of the card's body
-                  text.
-                </p>
-                <p>Example of the card's body text.</p>
-              </div>
-              <div slot="footer">
-                <p>Card Footer</p>
-              </div>
-            </card-component>
-          </span>
-          <span style="margin: 15px">
-            <card-component elevated-5>
-              <div slot="header">Card Header</div>
-              <div slot="title">Card Title</div>
-              <div slot="text">
-                <p>
-                  Example of the card's body text. Example of the card's body
-                  text.
-                </p>
-                <p>Example of the card's body text.</p>
-              </div>
-              <div slot="footer">
-                <p>Card Footer</p>
-              </div>
-            </card-component>
-          </span>
-          <span style="margin: 15px">
-            <card-component elevated-10>
-              <div slot="header">Card Header</div>
-              <div slot="title">Card Title</div>
-              <div slot="text">
-                <p>
-                  Example of the card's body text. Example of the card's body
-                  text.
-                </p>
-                <p>Example of the card's body text.</p>
-              </div>
-              <div slot="footer">
-                <p>Card Footer</p>
-              </div>
-            </card-component>
-          </span>
-          <span style="margin: 15px">
-            <card-component elevated-15>
-              <div slot="header">Card Header</div>
-              <div slot="title">Card Title</div>
-              <div slot="text">
-                <p>
-                  Example of the card's body text. Example of the card's body
-                  text.
-                </p>
-                <p>Example of the card's body text.</p>
-              </div>
-              <div slot="footer">
-                <p>Card Footer</p>
-              </div>
-            </card-component>
-          </span>
-          <span style="margin: 15px">
-            <card-component elevated-24>
-              <div slot="header">Card Header</div>
-              <div slot="title">Card Title</div>
-              <div slot="text">
-                <p>
-                  Example of the card's body text. Example of the card's body
-                  text.
-                </p>
-                <p>Example of the card's body text.</p>
-              </div>
-              <div slot="footer">
-                <p>Card Footer</p>
-              </div>
-            </card-component>
-          </span>
-        </div>
-        <div class="context">
-          Elevated Card Examples from l-r, elevated-2, elevated-5, elevated-10,
-          elevated-15, elevated-24
-        </div>
+          <section class="section">
+            <section class="display-box" id="db-8">
+              <section class="display-box-demo" style="display: flex; justify-content:center;">
+                <card-component elevated-10>
+                  <div slot="header">Card Header</div>
+                  <div slot="title">Card Title</div>
+                  <div slot="text">
+                    <p>
+                      Example of the card's body text. Example of the card's body
+                      text.
+                    </p>
+                    <p>Example of the card's body text.</p>
+                  </div>
+                  <div slot="footer">
+                    <p>Card Footer</p>
+                  </div>
+                </card-component>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">Elevated Card</div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
+        </section>
       </div>
     </div>
 

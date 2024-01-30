@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+  <title>Button Component</title>
   <head>
     <!-- <link
       rel="stylesheet"
@@ -19,740 +20,1236 @@
   <body>
     <!-- Buttons solid -->
 
-    <div class="title">Button Examples</div>
-    <div class="ex-container">
-      <div class="content-box">
-        <pl-button ariaLabel="Default Button"> Default Button </pl-button>
-        <div class="context">Solid default button. No specific styling.</div>
-      </div>
-      <div class="content-box">
-        <pl-button stripped> Stripped Styles </pl-button>
-        <div class="context">Stripped button. No styling other than base.</div>
-      </div>
-      <div class="content-box">
-        <pl-button textBtn default> Text Button </pl-button>
-        <div class="context">Text button with hover effects.</div>
-      </div>
-      <div class="content-box">
-        <pl-button text default> Text Only Button</pl-button>
-        <div class="context">Text button with no background hover effects.</div>
-      </div>
-      <div class="content-box">
-        <pl-button link> Link Button </pl-button>
-        <div class="context">
-          The Link button is an href styled to look and act like a button.
-        </div>
-      </div>
-      <div class="content-box">
-        <pl-button outlined> Outlined Button </pl-button>
-        <div class="context">Default button. No specific styling.</div>
-      </div>
-      <div class="content-box">
-        <pl-button iconBtn title="Home">
-          <icon-component icon="fas fa-tachometer-alt"></icon-component>
-        </pl-button>
-        <div class="context">Icon button. Default styling.</div>
-      </div>
-      <div class="content-box">
-        <pl-button outlined iconBtn title="Dashboard">
-          <icon-component icon="fas fa-tachometer-alt"></icon-component>
-        </pl-button>
-        <div class="context">Outlined Icon button. Default styling.</div>
-      </div>
-      <div class="content-box">
-        <pl-button btnIcon variant="primary" title="Dashboard">
-          <icon-component icon="fas fa-tachometer-alt"></icon-component>
-        </pl-button>
+    <div class="title">Button Component</div>
 
-        <pl-button btnIcon variant="primary" title="Igloo">
-          <svg-component ariaHidden="true" ariaLabel="Igloo">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              height="16"
-              width="18"
-              viewBox="0 0 576 512"
-              fill="currentColor"
-            >
-              <path
-                d="M320 33.9c-10.5-1.2-21.2-1.9-32-1.9-99.8 0-187.8 50.8-239.4 128H320V33.9zM96 192H30.3C11.1 230.6 0 274 0 320h96V192zM352 39.4V160h175.4C487.2 99.9 424.8 55.9 352 39.4zM480 320h96c0-46-11.1-89.4-30.3-128H480v128zm-64 64v96h128c17.7 0 32-14.3 32-32v-96H411.5c2.6 10.3 4.5 20.9 4.5 32zm32-192H128v128h49.8c22.2-38.1 63-64 110.2-64s88 25.9 110.2 64H448V192zM0 448c0 17.7 14.3 32 32 32h128v-96c0-11.1 1.9-21.7 4.5-32H0v96zm288-160c-53 0-96 43-96 96v96h192v-96c0-53-43-96-96-96z"
-              />
-            </svg>
-          </svg-component>
-        </pl-button>
-        <div class="context">Icon or SVG as a button. Default styling.</div>
+    <div class="demo-wrapper">
+      <div class="main">
+        <section>
+          <section class="section">
+            <section class="display-box" id="db-1">
+              <section class="display-box-demo" style="text-align: center">
+                <pl-button ariaLabel="Default Button">
+                  Default Button
+                </pl-button>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">
+                  Solid default button. No specific styling.
+                </div>
+              </section>
+            </section>
+          </section>
+
+          <section class="section">
+            <section class="display-box" id="db-3">
+              <section class="display-box-demo" style="text-align: center">
+                <pl-button textBtn default> Text Button </pl-button>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">
+                  Text button with hover effects.
+                </div>
+              </section>
+            </section>
+          </section>
+
+          <section class="section">
+            <section class="display-box" id="db-5">
+              <section class="display-box-demo" style="text-align: center">
+                <pl-button link> Link Button </pl-button>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">
+                  The Link button is an href styled to look and act like a
+                  button.
+                </div>
+              </section>
+            </section>
+          </section>
+
+          <section class="section">
+            <section class="display-box" id="db-7">
+              <section class="display-box-demo" style="text-align: center">
+                <pl-button iconBtn title="Home">
+                  <icon-component icon="fas fa-tachometer-alt"></icon-component>
+                </pl-button>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">
+                  Icon button. Default styling.
+                </div>
+              </section>
+            </section>
+          </section>
+
+          <section class="section">
+            <section class="display-box" id="db-9">
+              <section class="display-box-demo" style="text-align: center">
+                <pl-button btnIcon variant="primary" title="Dashboard">
+                  <icon-component icon="fas fa-tachometer-alt"></icon-component>
+                </pl-button>
+
+                <pl-button btnIcon variant="primary" title="Igloo">
+                  <svg-component ariaHidden="true" ariaLabel="Igloo">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      height="16"
+                      width="18"
+                      viewBox="0 0 576 512"
+                      fill="currentColor"
+                    >
+                      <path
+                        d="M320 33.9c-10.5-1.2-21.2-1.9-32-1.9-99.8 0-187.8 50.8-239.4 128H320V33.9zM96 192H30.3C11.1 230.6 0 274 0 320h96V192zM352 39.4V160h175.4C487.2 99.9 424.8 55.9 352 39.4zM480 320h96c0-46-11.1-89.4-30.3-128H480v128zm-64 64v96h128c17.7 0 32-14.3 32-32v-96H411.5c2.6 10.3 4.5 20.9 4.5 32zm32-192H128v128h49.8c22.2-38.1 63-64 110.2-64s88 25.9 110.2 64H448V192zM0 448c0 17.7 14.3 32 32 32h128v-96c0-11.1 1.9-21.7 4.5-32H0v96zm288-160c-53 0-96 43-96 96v96h192v-96c0-53-43-96-96-96z"
+                      />
+                    </svg>
+                  </svg-component>
+                </pl-button>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">
+                  Icon or SVG as a button. Default styling.
+                </div>
+              </section>
+            </section>
+          </section>
+        </section>
+
+        <section>
+          <section class="section">
+            <section class="display-box" id="db-2">
+              <section class="display-box-demo" style="text-align: center">
+                <pl-button stripped> Stripped Styles </pl-button>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">
+                  Stripped button. No styling other than base.
+                </div>
+              </section>
+            </section>
+          </section>
+
+          <section class="section">
+            <section class="display-box" id="db-4">
+              <section class="display-box-demo" style="text-align: center">
+                <pl-button text default> Text Only Button</pl-button>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">
+                  Text button with no background hover effects.
+                </div>
+              </section>
+            </section>
+          </section>
+
+          <section class="section">
+            <section class="display-box" id="db-6">
+              <section class="display-box-demo" style="text-align: center">
+                <pl-button outlined> Outlined Button </pl-button>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">Outlined button.</div>
+              </section>
+            </section>
+          </section>
+
+          <section class="section">
+            <section class="display-box" id="db-8">
+              <section class="display-box-demo" style="text-align: center">
+                <pl-button outlined iconBtn title="Dashboard">
+                  <icon-component icon="fas fa-tachometer-alt"></icon-component>
+                </pl-button>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">
+                  Outlined Icon button. Default styling.
+                </div>
+              </section>
+            </section>
+          </section>
+        </section>
       </div>
     </div>
 
     <div style="margin-top: 15px">
       <div class="title">Predefined button styles</div>
-      <div class="ex-container no-flex">
-        <div class="content-box">
-          <pl-button variant="primary" size="sm"> Primary </pl-button>
 
-          <pl-button variant="secondary" size="sm"> Secondary </pl-button>
-
-          <pl-button variant="tertiary" size="sm"> Tertiary </pl-button>
-
-          <pl-button variant="active-blue" size="sm"> Active </pl-button>
-
-          <pl-button variant="success" size="sm"> Success </pl-button>
-
-          <pl-button variant="danger" size="sm"> Danger </pl-button>
-
-          <pl-button variant="warning" size="sm"> Warning </pl-button>
-
-          <pl-button variant="info" size="sm"> Info </pl-button>
-
-          <pl-button variant="light" size="sm"> Light </pl-button>
-
-          <pl-button variant="dark" size="sm"> Dark </pl-button>
-
-          <div class="context">
-            Solid Buttons. Predifined button variant colors/styles - primary,
-            secondary, tertiary, active-blue, success, danger, warning, light,
-            dark
-          </div>
-        </div>
-        <div class="content-box">
-          <pl-button variant="primary" outlined size="sm"> Primary </pl-button>
-
-          <pl-button variant="secondary" outlined size="sm">
-            Secondary
-          </pl-button>
-
-          <pl-button variant="tertiary" outlined size="sm">
-            Tertiary
-          </pl-button>
-
-          <pl-button variant="success" outlined size="sm"> Success </pl-button>
-
-          <pl-button variant="danger" outlined size="sm"> Danger </pl-button>
-
-          <pl-button variant="warning" outlined size="sm"> Warning </pl-button>
-
-          <pl-button variant="info" outlined size="sm"> Info </pl-button>
-
-          <pl-button variant="light" outlined size="sm"> Light </pl-button>
-
-          <pl-button variant="dark" outlined size="sm"> Dark </pl-button>
-
-          <div class="context">Outlined button examples.</div>
-        </div>
-        <div class="content-box">
-          <pl-button textBtn size="sm"> Default </pl-button>
-
-          <pl-button textBtn variant="primary" size="sm"> Primary </pl-button>
-
-          <pl-button textBtn variant="secondary" size="sm">
-            Secondary
-          </pl-button>
-
-          <pl-button textBtn variant="tertiary" size="sm"> Tertiary </pl-button>
-
-          <pl-button textBtn variant="success" size="sm"> Success </pl-button>
-
-          <pl-button textBtn variant="danger" size="sm"> Danger </pl-button>
-
-          <pl-button textBtn variant="warning" size="sm"> Warning </pl-button>
-
-          <pl-button textBtn variant="info" size="sm"> Info </pl-button>
-
-          <pl-button textBtn variant="light" size="sm"> Light </pl-button>
-
-          <pl-button textBtn variant="dark" size="sm"> Dark </pl-button>
-          <div class="context">Text button examples.</div>
-        </div>
-        <div class="content-box">
-          <pl-button text size="sm"> Default </pl-button>
-
-          <pl-button text variant="primary" size="sm"> Primary </pl-button>
-
-          <pl-button text variant="secondary" size="sm"> Secondary </pl-button>
-
-          <pl-button text variant="tertiary" size="sm"> Tertiary </pl-button>
-
-          <pl-button text variant="success" size="sm"> Success </pl-button>
-
-          <pl-button text variant="danger" size="sm"> Danger </pl-button>
-
-          <pl-button text variant="warning" size="sm"> Warning </pl-button>
-
-          <pl-button text variant="info" size="sm"> Info </pl-button>
-
-          <pl-button text variant="light" size="sm"> Light </pl-button>
-
-          <pl-button text variant="dark" size="sm"> Dark </pl-button>
-          <div class="context">Text button examples.</div>
-        </div>
-        <div class="content-box">
-          <pl-button variant="primary" round iconBtn title="Home">
-            <icon-component icon="fas fa-tachometer-alt"></icon-component>
-          </pl-button>
-
-          <pl-button variant="secondary" round iconBtn title="Home">
-            <icon-component icon="fas fa-home"></icon-component>
-          </pl-button>
-
-          <pl-button variant="tertiary" round iconBtn title="Home">
-            <icon-component icon="fas fa-home"></icon-component>
-          </pl-button>
-
-          <pl-button variant="success" round iconBtn title="Home">
-            <icon-component icon="fas fa-home"></icon-component>
-          </pl-button>
-
-          <pl-button variant="danger" round iconBtn title="Home">
-            <icon-component icon="fas fa-home"></icon-component>
-          </pl-button>
-
-          <pl-button variant="warning" round iconBtn title="Home">
-            <icon-component icon="fas fa-home"></icon-component>
-          </pl-button>
-
-          <pl-button variant="info" round iconBtn title="Home">
-            <icon-component icon="fas fa-home"></icon-component>
-          </pl-button>
-
-          <pl-button variant="light" round iconBtn title="Home">
-            <icon-component icon="fas fa-home"></icon-component>
-          </pl-button>
-
-          <pl-button variant="dark" round iconBtn title="Home">
-            <icon-component icon="fas fa-home"></icon-component>
-          </pl-button>
-          <pl-button variant="primary" outlined round iconBtn>
-            <icon-component icon="fas fa-home"></icon-component>
-          </pl-button>
-
-          <pl-button variant="secondary" outlined round iconBtn>
-            <icon-component icon="fas fa-home"></icon-component>
-          </pl-button>
-
-          <pl-button variant="tertiary" outlined round iconBtn>
-            <icon-component icon="fas fa-home"></icon-component>
-          </pl-button>
-
-          <pl-button variant="success" outlined round iconBtn>
-            <icon-component icon="fas fa-home"></icon-component>
-          </pl-button>
-
-          <pl-button variant="danger" outlined round iconBtn>
-            <icon-component icon="fas fa-home"></icon-component>
-          </pl-button>
-
-          <pl-button variant="warning" outlined round iconBtn>
-            <icon-component icon="fas fa-home"></icon-component>
-          </pl-button>
-
-          <pl-button variant="info" outlined round iconBtn>
-            <icon-component icon="fas fa-home"></icon-component>
-          </pl-button>
-
-          <pl-button variant="light" outlined round iconBtn>
-            <icon-component icon="fas fa-home"></icon-component>
-          </pl-button>
-
-          <pl-button variant="dark" outlined round iconBtn>
-            <icon-component icon="fas fa-home"></icon-component>
-          </pl-button>
-          <div class="context">Solid and Outlined Icon button examples.</div>
-        </div>
-        <div class="content-box">
-          <div style="margin-top: 15px">
-            <pl-button variant="primary" size="sm" disabled>
-              Primary
-            </pl-button>
-
-            <pl-button variant="secondary" size="sm" disabled>
-              Secondary
-            </pl-button>
-
-            <pl-button variant="tertiary" size="sm" disabled>
-              Tertiary
-            </pl-button>
-
-            <pl-button variant="active-blue" size="sm" disabled>
-              Active
-            </pl-button>
-
-            <pl-button variant="success" size="sm" disabled>
-              Success
-            </pl-button>
-
-            <pl-button variant="danger" size="sm" disabled> Danger </pl-button>
-
-            <pl-button variant="warning" size="sm" disabled>
-              Warning
-            </pl-button>
-
-            <pl-button variant="info" size="sm" disabled> Info </pl-button>
-
-            <pl-button variant="light" size="sm" disabled> Light </pl-button>
-
-            <pl-button variant="dark" size="sm" disabled> Dark </pl-button>
-          </div>
-          <div style="margin-top: 15px">
-            <pl-button textBtn size="sm" disabled> Default </pl-button>
-
-            <pl-button textBtn variant="primary" size="sm" disabled>
-              Primary
-            </pl-button>
-
-            <pl-button textBtn variant="secondary" size="sm" disabled>
-              Secondary
-            </pl-button>
-
-            <pl-button textBtn variant="tertiary" size="sm" disabled>
-              Tertiary
-            </pl-button>
-
-            <pl-button textBtn variant="success" size="sm" disabled>
-              Success
-            </pl-button>
-
-            <pl-button textBtn variant="danger" size="sm" disabled>
-              Danger
-            </pl-button>
-
-            <pl-button textBtn variant="warning" size="sm" disabled>
-              Warning
-            </pl-button>
-
-            <pl-button textBtn variant="info" size="sm" disabled>
-              Info
-            </pl-button>
-
-            <pl-button textBtn variant="light" size="sm" disabled>
-              Light
-            </pl-button>
-
-            <pl-button textBtn variant="dark" size="sm" disabled>
-              Dark
-            </pl-button>
-          </div>
-          <div style="margin-top: 15px">
-            <pl-button variant="primary" round iconBtn title="Home" disabled>
-              <icon-component icon="fas fa-home"></icon-component>
-            </pl-button>
-
-            <pl-button variant="secondary" round iconBtn title="Home" disabled>
-              <icon-component icon="fas fa-home"></icon-component>
-            </pl-button>
-
-            <pl-button variant="tertiary" round iconBtn title="Home" disabled>
-              <icon-component icon="fas fa-home"></icon-component>
-            </pl-button>
-
-            <pl-button variant="success" round iconBtn title="Home" disabled>
-              <icon-component icon="fas fa-home"></icon-component>
-            </pl-button>
-
-            <pl-button variant="danger" round iconBtn title="Home" disabled>
-              <icon-component icon="fas fa-home"></icon-component>
-            </pl-button>
-
-            <pl-button variant="warning" round iconBtn title="Home" disabled>
-              <icon-component icon="fas fa-home"></icon-component>
-            </pl-button>
-
-            <pl-button variant="info" round iconBtn title="Home" disabled>
-              <icon-component icon="fas fa-home"></icon-component>
-            </pl-button>
-
-            <pl-button variant="light" round iconBtn title="Home" disabled>
-              <icon-component icon="fas fa-home"></icon-component>
-            </pl-button>
-
-            <pl-button variant="dark" round iconBtn title="Home" disabled>
-              <icon-component icon="fas fa-home"></icon-component>
-            </pl-button>
-          </div>
-          <div class="context">Disabled button examples.</div>
-        </div>
-        <div class="content-box">
-          <div style="margin-top: 15px">
-            <pl-button variant="primary" flat> no size </pl-button>
-
-            <pl-button variant="primary" flat size="xs"> x-small </pl-button>
-
-            <pl-button variant="primary" flat size="sm"> small </pl-button>
-
-            <pl-button variant="primary" flat> default </pl-button>
-
-            <pl-button variant="primary" flat size="lg"> large </pl-button>
-
-            <pl-button variant="primary" outlined flat> no size </pl-button>
-
-            <pl-button variant="primary" flat outlined size="xs">
-              x-small
-            </pl-button>
-
-            <pl-button variant="primary" flat outlined size="sm">
-              small
-            </pl-button>
-
-            <pl-button variant="primary" flat outlined> default </pl-button>
-
-            <pl-button variant="primary" flat outlined size="lg">
-              large
-            </pl-button>
-          </div>
-          <div style="margin-top: 15px">
-            <pl-button variant="primary" round iconBtn size="xs" title="Home">
-              <icon-component icon="fas fa-home" iconSize="xs"></icon-component>
-            </pl-button>
-
-            <pl-button variant="primary" round iconBtn size="sm" title="Home">
-              <icon-component icon="fas fa-home" iconSize="sm"></icon-component>
-            </pl-button>
-
-            <pl-button variant="primary" round iconBtn title="Home">
-              <icon-component icon="fas fa-home"></icon-component>
-            </pl-button>
-
-            <pl-button variant="primary" round iconBtn size="lg" title="Home">
-              <icon-component icon="fas fa-home" iconSize="lg"></icon-component>
-            </pl-button>
-
-            <pl-button
-              variant="primary"
-              round
-              outlined
-              iconBtn
-              size="xs"
-              title="Home"
-            >
-              <icon-component icon="fas fa-home" iconSize="xs"></icon-component>
-            </pl-button>
-
-            <pl-button
-              variant="primary"
-              round
-              outlined
-              iconBtn
-              size="sm"
-              title="Home"
-            >
-              <icon-component icon="fas fa-home" iconSize="sm"></icon-component>
-            </pl-button>
-
-            <pl-button
-              variant="primary"
-              round
-              icon="fas fa-home"
-              outlined
-              iconBtn
-              title="Home"
-            >
-              <icon-component icon="fas fa-home"></icon-component>
-            </pl-button>
-
-            <pl-button
-              variant="primary"
-              round
-              outlined
-              iconBtn
-              size="lg"
-              title="Home"
-            >
-              <icon-component icon="fas fa-home"></icon-component>
-            </pl-button>
-          </div>
-          <div class="context">Button size examples.</div>
-        </div>
-        <div class="content-box">
-          <div style="margin-top: 15px">
-            <pl-button variant="primary"> Default </pl-button>
-
-            <pl-button variant="primary" shape="square"> Square </pl-button>
-
-            <pl-button variant="primary" shape="pill"> Pill </pl-button>
-
-            <pl-button variant="primary" outlined> Default </pl-button>
-
-            <pl-button variant="primary" shape="square" outlined>
-              Square
-            </pl-button>
-
-            <pl-button variant="primary" shape="pill" outlined>
-              Pill
-            </pl-button>
-          </div>
-          <div style="margin-top: 15px">
-            <pl-button variant="primary" shape="circle" iconBtn title="Home">
-              <icon-component icon="fas fa-home"></icon-component>
-            </pl-button>
-
-            <pl-button variant="primary" shape="square" iconBtn title="Home">
-              <icon-component icon="fas fa-home"></icon-component>
-            </pl-button>
-
-            <pl-button variant="primary" iconBtn title="Home">
-              <icon-component icon="fas fa-home"></icon-component>
-            </pl-button>
-
-            <pl-button
-              variant="primary"
-              shape="circle"
-              outlined
-              iconBtn
-              title="Home"
-            >
-              <icon-component icon="fas fa-home"></icon-component>
-            </pl-button>
-
-            <pl-button
-              variant="primary"
-              shape="square"
-              outlined
-              iconBtn
-              title="Home"
-            >
-              <icon-component icon="fas fa-home"></icon-component>
-            </pl-button>
-
-            <pl-button variant="primary" iconBtn outlined title="Home">
-              <icon-component icon="fas fa-home"></icon-component>
-            </pl-button>
-          </div>
-
-          <div class="context">Button shape examples.</div>
-        </div>
-        <div style="display: flex">
-          <div class="content-box">
-            <pl-button variant="primary" ripple size="sm">
-              Ripple Effect
-            </pl-button>
-            <div class="context">Ripple effect on click.</div>
-          </div>
-          <div class="content-box">
-            <pl-button variant="primary" flat size="sm"> Flat </pl-button>
-            <pl-button variant="primary" is-elevated size="sm">
-              Is Elevated
-            </pl-button>
-
-            <pl-button variant="primary" elevated-5 size="sm">
-              Elevated 5
-            </pl-button>
-
-            <pl-button variant="primary" elevated-10 size="sm">
-              Elevated 10
-            </pl-button>
-
-            <pl-button variant="primary" elevated-15 size="sm">
-              Elevated 15
-            </pl-button>
-
-            <pl-button variant="primary" elevated-20 size="sm">
-              Elevated 20
-            </pl-button>
-
-            <pl-button variant="primary" elevated-24 size="sm">
-              Elevated 24
-            </pl-button>
-            <div class="context">
-              Flat and Elevated button examples. Elevated buttons go from 0-24.
-            </div>
-          </div>
+      <div class="demo-wrapper">
+        <div class="main">
+          <section>
+            <section class="section">
+              <section class="display-box" id="db-11">
+                <section class="display-box-demo" style="text-align: center">
+                  <pl-button variant="primary" size="sm"> Primary </pl-button>
+
+                  <pl-button variant="secondary" size="sm">
+                    Secondary
+                  </pl-button>
+
+                  <pl-button variant="tertiary" size="sm"> Tertiary </pl-button>
+
+                  <pl-button variant="active-blue" size="sm">
+                    Active
+                  </pl-button>
+
+                  <pl-button variant="success" size="sm"> Success </pl-button>
+
+                  <pl-button variant="danger" size="sm"> Danger </pl-button>
+
+                  <pl-button variant="warning" size="sm"> Warning </pl-button>
+
+                  <pl-button variant="info" size="sm"> Info </pl-button>
+
+                  <pl-button variant="light" size="sm"> Light </pl-button>
+
+                  <pl-button variant="dark" size="sm"> Dark </pl-button>
+                </section>
+                <section class="display-box-meta markdown">
+                  <div class="display-box-title">Basic Usage</div>
+                  <div class="display-box-description">
+                    Solid Buttons. Predefined button variant colors/styles -
+                    primary, secondary, tertiary, active-blue, success, danger,
+                    warning, light, dark
+                  </div>
+                </section>
+              </section>
+            </section>
+
+            <section class="section">
+              <section class="display-box" id="db-13">
+                <section class="display-box-demo" style="text-align: center">
+                  <pl-button textBtn size="sm"> Default </pl-button>
+
+                  <pl-button textBtn variant="primary" size="sm">
+                    Primary
+                  </pl-button>
+
+                  <pl-button textBtn variant="secondary" size="sm">
+                    Secondary
+                  </pl-button>
+
+                  <pl-button textBtn variant="tertiary" size="sm">
+                    Tertiary
+                  </pl-button>
+
+                  <pl-button textBtn variant="success" size="sm">
+                    Success
+                  </pl-button>
+
+                  <pl-button textBtn variant="danger" size="sm">
+                    Danger
+                  </pl-button>
+
+                  <pl-button textBtn variant="warning" size="sm">
+                    Warning
+                  </pl-button>
+
+                  <pl-button textBtn variant="info" size="sm"> Info </pl-button>
+
+                  <pl-button textBtn variant="light" size="sm">
+                    Light
+                  </pl-button>
+
+                  <pl-button textBtn variant="dark" size="sm"> Dark </pl-button>
+                </section>
+                <section class="display-box-meta markdown">
+                  <div class="display-box-title">Basic Usage</div>
+                  <div class="display-box-description">
+                    Text button examples.
+                  </div>
+                </section>
+              </section>
+            </section>
+
+            <section class="section">
+              <section class="display-box" id="db-15">
+                <section class="display-box-demo" style="text-align: center">
+                  <pl-button variant="primary" round iconBtn title="Home">
+                    <icon-component
+                      icon="fas fa-tachometer-alt"
+                    ></icon-component>
+                  </pl-button>
+
+                  <pl-button variant="secondary" round iconBtn title="Home">
+                    <icon-component icon="fas fa-home"></icon-component>
+                  </pl-button>
+
+                  <pl-button variant="tertiary" round iconBtn title="Home">
+                    <icon-component icon="fas fa-home"></icon-component>
+                  </pl-button>
+
+                  <pl-button variant="success" round iconBtn title="Home">
+                    <icon-component icon="fas fa-home"></icon-component>
+                  </pl-button>
+
+                  <pl-button variant="danger" round iconBtn title="Home">
+                    <icon-component icon="fas fa-home"></icon-component>
+                  </pl-button>
+
+                  <pl-button variant="warning" round iconBtn title="Home">
+                    <icon-component icon="fas fa-home"></icon-component>
+                  </pl-button>
+
+                  <pl-button variant="info" round iconBtn title="Home">
+                    <icon-component icon="fas fa-home"></icon-component>
+                  </pl-button>
+
+                  <pl-button variant="light" round iconBtn title="Home">
+                    <icon-component icon="fas fa-home"></icon-component>
+                  </pl-button>
+
+                  <pl-button variant="dark" round iconBtn title="Home">
+                    <icon-component icon="fas fa-home"></icon-component>
+                  </pl-button>
+                  <pl-button variant="primary" outlined round iconBtn>
+                    <icon-component icon="fas fa-home"></icon-component>
+                  </pl-button>
+
+                  <pl-button variant="secondary" outlined round iconBtn>
+                    <icon-component icon="fas fa-home"></icon-component>
+                  </pl-button>
+
+                  <pl-button variant="tertiary" outlined round iconBtn>
+                    <icon-component icon="fas fa-home"></icon-component>
+                  </pl-button>
+
+                  <pl-button variant="success" outlined round iconBtn>
+                    <icon-component icon="fas fa-home"></icon-component>
+                  </pl-button>
+
+                  <pl-button variant="danger" outlined round iconBtn>
+                    <icon-component icon="fas fa-home"></icon-component>
+                  </pl-button>
+
+                  <pl-button variant="warning" outlined round iconBtn>
+                    <icon-component icon="fas fa-home"></icon-component>
+                  </pl-button>
+
+                  <pl-button variant="info" outlined round iconBtn>
+                    <icon-component icon="fas fa-home"></icon-component>
+                  </pl-button>
+
+                  <pl-button variant="light" outlined round iconBtn>
+                    <icon-component icon="fas fa-home"></icon-component>
+                  </pl-button>
+
+                  <pl-button variant="dark" outlined round iconBtn>
+                    <icon-component icon="fas fa-home"></icon-component>
+                  </pl-button>
+                </section>
+                <section class="display-box-meta markdown">
+                  <div class="display-box-title">Basic Usage</div>
+                  <div class="display-box-description">
+                    Solid and Outlined Icon button examples.
+                  </div>
+                </section>
+              </section>
+            </section>
+
+            <section class="section">
+              <section class="display-box" id="db-17">
+                <section class="display-box-demo" style="text-align: center">
+                  <div style="margin-top: 15px">
+                    <pl-button variant="primary" flat> no size </pl-button>
+
+                    <pl-button variant="primary" flat size="xs">
+                      x-small
+                    </pl-button>
+
+                    <pl-button variant="primary" flat size="sm">
+                      small
+                    </pl-button>
+
+                    <pl-button variant="primary" flat> default </pl-button>
+
+                    <pl-button variant="primary" flat size="lg">
+                      large
+                    </pl-button>
+
+                    <pl-button variant="primary" outlined flat>
+                      no size
+                    </pl-button>
+
+                    <pl-button variant="primary" flat outlined size="xs">
+                      x-small
+                    </pl-button>
+
+                    <pl-button variant="primary" flat outlined size="sm">
+                      small
+                    </pl-button>
+
+                    <pl-button variant="primary" flat outlined>
+                      default
+                    </pl-button>
+
+                    <pl-button variant="primary" flat outlined size="lg">
+                      large
+                    </pl-button>
+                  </div>
+                  <div style="margin-top: 15px">
+                    <pl-button
+                      variant="primary"
+                      round
+                      iconBtn
+                      size="xs"
+                      title="Home"
+                    >
+                      <icon-component
+                        icon="fas fa-home"
+                        iconSize="xs"
+                      ></icon-component>
+                    </pl-button>
+
+                    <pl-button
+                      variant="primary"
+                      round
+                      iconBtn
+                      size="sm"
+                      title="Home"
+                    >
+                      <icon-component
+                        icon="fas fa-home"
+                        iconSize="sm"
+                      ></icon-component>
+                    </pl-button>
+
+                    <pl-button variant="primary" round iconBtn title="Home">
+                      <icon-component icon="fas fa-home"></icon-component>
+                    </pl-button>
+
+                    <pl-button
+                      variant="primary"
+                      round
+                      iconBtn
+                      size="lg"
+                      title="Home"
+                    >
+                      <icon-component
+                        icon="fas fa-home"
+                        iconSize="lg"
+                      ></icon-component>
+                    </pl-button>
+
+                    <pl-button
+                      variant="primary"
+                      round
+                      outlined
+                      iconBtn
+                      size="xs"
+                      title="Home"
+                    >
+                      <icon-component
+                        icon="fas fa-home"
+                        iconSize="xs"
+                      ></icon-component>
+                    </pl-button>
+
+                    <pl-button
+                      variant="primary"
+                      round
+                      outlined
+                      iconBtn
+                      size="sm"
+                      title="Home"
+                    >
+                      <icon-component
+                        icon="fas fa-home"
+                        iconSize="sm"
+                      ></icon-component>
+                    </pl-button>
+
+                    <pl-button
+                      variant="primary"
+                      round
+                      icon="fas fa-home"
+                      outlined
+                      iconBtn
+                      title="Home"
+                    >
+                      <icon-component icon="fas fa-home"></icon-component>
+                    </pl-button>
+
+                    <pl-button
+                      variant="primary"
+                      round
+                      outlined
+                      iconBtn
+                      size="lg"
+                      title="Home"
+                    >
+                      <icon-component icon="fas fa-home"></icon-component>
+                    </pl-button>
+                  </div>
+                </section>
+                <section class="display-box-meta markdown">
+                  <div class="display-box-title">Basic Usage</div>
+                  <div class="display-box-description">
+                    Button size examples.
+                  </div>
+                </section>
+              </section>
+            </section>
+
+            <section class="section">
+              <section class="display-box" id="db-19">
+                <section class="display-box-demo" style="text-align: center">
+                  <div style="margin-top: 15px">
+                    <pl-button variant="primary" ripple size="sm">
+                      Ripple Effect
+                    </pl-button>
+                  </div>
+                </section>
+                <section class="display-box-meta markdown">
+                  <div class="display-box-title">Basic Usage</div>
+                  <div class="display-box-description">
+                    Ripple effect on click.
+                  </div>
+                </section>
+              </section>
+            </section>
+          </section>
+
+          <section>
+            <section class="section">
+              <section class="display-box" id="db-10">
+                <section class="display-box-demo" style="text-align: center">
+                  <pl-button variant="primary" outlined size="sm">
+                    Primary
+                  </pl-button>
+
+                  <pl-button variant="secondary" outlined size="sm">
+                    Secondary
+                  </pl-button>
+
+                  <pl-button variant="tertiary" outlined size="sm">
+                    Tertiary
+                  </pl-button>
+
+                  <pl-button variant="success" outlined size="sm">
+                    Success
+                  </pl-button>
+
+                  <pl-button variant="danger" outlined size="sm">
+                    Danger
+                  </pl-button>
+
+                  <pl-button variant="warning" outlined size="sm">
+                    Warning
+                  </pl-button>
+
+                  <pl-button variant="info" outlined size="sm">
+                    Info
+                  </pl-button>
+
+                  <pl-button variant="light" outlined size="sm">
+                    Light
+                  </pl-button>
+
+                  <pl-button variant="dark" outlined size="sm">
+                    Dark
+                  </pl-button>
+                </section>
+                <section class="display-box-meta markdown">
+                  <div class="display-box-title">Basic Usage</div>
+                  <div class="display-box-description">
+                    Outlined button examples.
+                  </div>
+                </section>
+              </section>
+            </section>
+
+            <section class="section">
+              <section class="display-box" id="db-12">
+                <section class="display-box-demo" style="text-align: center">
+                  <pl-button text size="sm"> Default </pl-button>
+
+                  <pl-button text variant="primary" size="sm">
+                    Primary
+                  </pl-button>
+
+                  <pl-button text variant="secondary" size="sm">
+                    Secondary
+                  </pl-button>
+
+                  <pl-button text variant="tertiary" size="sm">
+                    Tertiary
+                  </pl-button>
+
+                  <pl-button text variant="success" size="sm">
+                    Success
+                  </pl-button>
+
+                  <pl-button text variant="danger" size="sm">
+                    Danger
+                  </pl-button>
+
+                  <pl-button text variant="warning" size="sm">
+                    Warning
+                  </pl-button>
+
+                  <pl-button text variant="info" size="sm"> Info </pl-button>
+
+                  <pl-button text variant="light" size="sm"> Light </pl-button>
+
+                  <pl-button text variant="dark" size="sm"> Dark </pl-button>
+                </section>
+                <section class="display-box-meta markdown">
+                  <div class="display-box-title">Basic Usage</div>
+                  <div class="display-box-description">
+                    Text as buttons examples.
+                  </div>
+                </section>
+              </section>
+            </section>
+
+            <section class="section">
+              <section class="display-box" id="db-14">
+                <section class="display-box-demo" style="text-align: center">
+                  <div style="margin-top: 15px">
+                    <pl-button variant="primary" size="sm" disabled>
+                      Primary
+                    </pl-button>
+
+                    <pl-button variant="secondary" size="sm" disabled>
+                      Secondary
+                    </pl-button>
+
+                    <pl-button variant="tertiary" size="sm" disabled>
+                      Tertiary
+                    </pl-button>
+
+                    <pl-button variant="active-blue" size="sm" disabled>
+                      Active
+                    </pl-button>
+
+                    <pl-button variant="success" size="sm" disabled>
+                      Success
+                    </pl-button>
+
+                    <pl-button variant="danger" size="sm" disabled>
+                      Danger
+                    </pl-button>
+
+                    <pl-button variant="warning" size="sm" disabled>
+                      Warning
+                    </pl-button>
+
+                    <pl-button variant="info" size="sm" disabled>
+                      Info
+                    </pl-button>
+
+                    <pl-button variant="light" size="sm" disabled>
+                      Light
+                    </pl-button>
+
+                    <pl-button variant="dark" size="sm" disabled>
+                      Dark
+                    </pl-button>
+                  </div>
+                  <div style="margin-top: 15px">
+                    <pl-button textBtn size="sm" disabled> Default </pl-button>
+
+                    <pl-button textBtn variant="primary" size="sm" disabled>
+                      Primary
+                    </pl-button>
+
+                    <pl-button textBtn variant="secondary" size="sm" disabled>
+                      Secondary
+                    </pl-button>
+
+                    <pl-button textBtn variant="tertiary" size="sm" disabled>
+                      Tertiary
+                    </pl-button>
+
+                    <pl-button textBtn variant="success" size="sm" disabled>
+                      Success
+                    </pl-button>
+
+                    <pl-button textBtn variant="danger" size="sm" disabled>
+                      Danger
+                    </pl-button>
+
+                    <pl-button textBtn variant="warning" size="sm" disabled>
+                      Warning
+                    </pl-button>
+
+                    <pl-button textBtn variant="info" size="sm" disabled>
+                      Info
+                    </pl-button>
+
+                    <pl-button textBtn variant="light" size="sm" disabled>
+                      Light
+                    </pl-button>
+
+                    <pl-button textBtn variant="dark" size="sm" disabled>
+                      Dark
+                    </pl-button>
+                  </div>
+                  <div style="margin-top: 15px">
+                    <pl-button
+                      variant="primary"
+                      round
+                      iconBtn
+                      title="Home"
+                      disabled
+                    >
+                      <icon-component icon="fas fa-home"></icon-component>
+                    </pl-button>
+
+                    <pl-button
+                      variant="secondary"
+                      round
+                      iconBtn
+                      title="Home"
+                      disabled
+                    >
+                      <icon-component icon="fas fa-home"></icon-component>
+                    </pl-button>
+
+                    <pl-button
+                      variant="tertiary"
+                      round
+                      iconBtn
+                      title="Home"
+                      disabled
+                    >
+                      <icon-component icon="fas fa-home"></icon-component>
+                    </pl-button>
+
+                    <pl-button
+                      variant="success"
+                      round
+                      iconBtn
+                      title="Home"
+                      disabled
+                    >
+                      <icon-component icon="fas fa-home"></icon-component>
+                    </pl-button>
+
+                    <pl-button
+                      variant="danger"
+                      round
+                      iconBtn
+                      title="Home"
+                      disabled
+                    >
+                      <icon-component icon="fas fa-home"></icon-component>
+                    </pl-button>
+
+                    <pl-button
+                      variant="warning"
+                      round
+                      iconBtn
+                      title="Home"
+                      disabled
+                    >
+                      <icon-component icon="fas fa-home"></icon-component>
+                    </pl-button>
+
+                    <pl-button
+                      variant="info"
+                      round
+                      iconBtn
+                      title="Home"
+                      disabled
+                    >
+                      <icon-component icon="fas fa-home"></icon-component>
+                    </pl-button>
+
+                    <pl-button
+                      variant="light"
+                      round
+                      iconBtn
+                      title="Home"
+                      disabled
+                    >
+                      <icon-component icon="fas fa-home"></icon-component>
+                    </pl-button>
+
+                    <pl-button
+                      variant="dark"
+                      round
+                      iconBtn
+                      title="Home"
+                      disabled
+                    >
+                      <icon-component icon="fas fa-home"></icon-component>
+                    </pl-button>
+                  </div>
+                </section>
+                <section class="display-box-meta markdown">
+                  <div class="display-box-title">Basic Usage</div>
+                  <div class="display-box-description">
+                    Disabled button examples.
+                  </div>
+                </section>
+              </section>
+            </section>
+
+            <section class="section">
+              <section class="display-box" id="db-16">
+                <section class="display-box-demo" style="text-align: center">
+                  <div style="margin-top: 15px">
+                    <pl-button variant="primary"> Default </pl-button>
+
+                    <pl-button variant="primary" shape="square">
+                      Square
+                    </pl-button>
+
+                    <pl-button variant="primary" shape="pill"> Pill </pl-button>
+
+                    <pl-button variant="primary" outlined> Default </pl-button>
+
+                    <pl-button variant="primary" shape="square" outlined>
+                      Square
+                    </pl-button>
+
+                    <pl-button variant="primary" shape="pill" outlined>
+                      Pill
+                    </pl-button>
+                  </div>
+                  <div style="margin-top: 15px">
+                    <pl-button
+                      variant="primary"
+                      shape="circle"
+                      iconBtn
+                      title="Home"
+                    >
+                      <icon-component icon="fas fa-home"></icon-component>
+                    </pl-button>
+
+                    <pl-button
+                      variant="primary"
+                      shape="square"
+                      iconBtn
+                      title="Home"
+                    >
+                      <icon-component icon="fas fa-home"></icon-component>
+                    </pl-button>
+
+                    <pl-button variant="primary" iconBtn title="Home">
+                      <icon-component icon="fas fa-home"></icon-component>
+                    </pl-button>
+
+                    <pl-button
+                      variant="primary"
+                      shape="circle"
+                      outlined
+                      iconBtn
+                      title="Home"
+                    >
+                      <icon-component icon="fas fa-home"></icon-component>
+                    </pl-button>
+
+                    <pl-button
+                      variant="primary"
+                      shape="square"
+                      outlined
+                      iconBtn
+                      title="Home"
+                    >
+                      <icon-component icon="fas fa-home"></icon-component>
+                    </pl-button>
+
+                    <pl-button variant="primary" iconBtn outlined title="Home">
+                      <icon-component icon="fas fa-home"></icon-component>
+                    </pl-button>
+                  </div>
+                </section>
+                <section class="display-box-meta markdown">
+                  <div class="display-box-title">Basic Usage</div>
+                  <div class="display-box-description">
+                    Button shape examples.
+                  </div>
+                </section>
+              </section>
+            </section>
+
+            <section class="section">
+              <section class="display-box" id="db-18">
+                <section class="display-box-demo" style="text-align: center">
+                  <pl-button variant="primary" flat size="sm"> Flat </pl-button>
+                  <pl-button variant="primary" is-elevated size="sm">
+                    Is Elevated
+                  </pl-button>
+
+                  <pl-button variant="primary" elevated-5 size="sm">
+                    Elevated 5
+                  </pl-button>
+
+                  <pl-button variant="primary" elevated-10 size="sm">
+                    Elevated 10
+                  </pl-button>
+
+                  <pl-button variant="primary" elevated-15 size="sm">
+                    Elevated 15
+                  </pl-button>
+
+                  <pl-button variant="primary" elevated-20 size="sm">
+                    Elevated 20
+                  </pl-button>
+
+                  <pl-button variant="primary" elevated-24 size="sm">
+                    Elevated 24
+                  </pl-button>
+                </section>
+                <section class="display-box-meta markdown">
+                  <div class="display-box-title">Basic Usage</div>
+                  <div class="display-box-description">
+                    Flat and Elevated button examples. Elevated buttons go from
+                    0-24.
+                  </div>
+                </section>
+              </section>
+            </section>
+          </section>
         </div>
       </div>
     </div>
 
     <div style="margin-top: 15px">
       <div class="title">Button Combos</div>
-      <div class="ex-container">
-        <div class="content-box">
-          <pl-button variant="primary" size="sm">
-            <icon-component
-              icon="fas fa-home"
-              iconPosition="left"
-            ></icon-component>
-            Primary
-          </pl-button>
 
-          <pl-button variant="primary" outlined size="sm">
-            <icon-component
-              icon="fas fa-home"
-              iconPosition="left"
-            ></icon-component>
-            Primary
-          </pl-button>
+      <div class="demo-wrapper">
+        <div class="main">
+          <section>
+            <section class="section">
+              <section class="display-box" id="db-21">
+                <section class="display-box-demo" style="text-align: center">
+                  <pl-button variant="primary" size="sm">
+                    <icon-component
+                      icon="fas fa-home"
+                      iconPosition="left"
+                    ></icon-component>
+                    Primary
+                  </pl-button>
 
-          <pl-button variant="primary" size="sm">
-            Primary
-            <icon-component
-              icon="fas fa-home"
-              iconPosition="right"
-            ></icon-component>
-          </pl-button>
+                  <pl-button variant="primary" outlined size="sm">
+                    <icon-component
+                      icon="fas fa-home"
+                      iconPosition="left"
+                    ></icon-component>
+                    Primary
+                  </pl-button>
 
-          <pl-button variant="primary" outlined size="sm">
-            Primary
-            <icon-component
-              icon="fas fa-home"
-              iconPosition="right"
-            ></icon-component>
-          </pl-button>
-          <div class="context">Buttons with text/icons</div>
-        </div>
+                  <pl-button variant="primary" size="sm">
+                    Primary
+                    <icon-component
+                      icon="fas fa-home"
+                      iconPosition="right"
+                    ></icon-component>
+                  </pl-button>
 
-        <div class="content-box">
-          <pl-button variant="primary" size="sm">
-            Home
-            <svg-component
-              svgMargin="right"
-              ariaHidden="true"
-              ariaLabel="Igloo"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                height="16"
-                width="18"
-                viewBox="0 0 576 512"
-                fill="currentColor"
-              >
-                <!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.-->
-                <path
-                  d="M320 33.9c-10.5-1.2-21.2-1.9-32-1.9-99.8 0-187.8 50.8-239.4 128H320V33.9zM96 192H30.3C11.1 230.6 0 274 0 320h96V192zM352 39.4V160h175.4C487.2 99.9 424.8 55.9 352 39.4zM480 320h96c0-46-11.1-89.4-30.3-128H480v128zm-64 64v96h128c17.7 0 32-14.3 32-32v-96H411.5c2.6 10.3 4.5 20.9 4.5 32zm32-192H128v128h49.8c22.2-38.1 63-64 110.2-64s88 25.9 110.2 64H448V192zM0 448c0 17.7 14.3 32 32 32h128v-96c0-11.1 1.9-21.7 4.5-32H0v96zm288-160c-53 0-96 43-96 96v96h192v-96c0-53-43-96-96-96z"
-                />
-              </svg>
-            </svg-component>
-          </pl-button>
+                  <pl-button variant="primary" outlined size="sm">
+                    Primary
+                    <icon-component
+                      icon="fas fa-home"
+                      iconPosition="right"
+                    ></icon-component>
+                  </pl-button>
+                </section>
+                <section class="display-box-meta markdown">
+                  <div class="display-box-title">Basic Usage</div>
+                  <div class="display-box-description">
+                    Buttons with text/icons
+                  </div>
+                </section>
+              </section>
+            </section>
 
-          <pl-button variant="primary" size="sm">
-            <svg-component svgMargin="left" ariaHidden="true" ariaLabel="Igloo">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                height="16"
-                width="16"
-                viewBox="0 0 512 512"
-              >
-                <!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.-->
-                <path
-                  d="M256 8C119 8 8 119.1 8 256c0 137 111 248 248 248s248-111 248-248C504 119.1 393 8 256 8zm0 110c23.2 0 42 18.8 42 42s-18.8 42-42 42-42-18.8-42-42 18.8-42 42-42zm56 254c0 6.6-5.4 12-12 12h-88c-6.6 0-12-5.4-12-12v-24c0-6.6 5.4-12 12-12h12v-64h-12c-6.6 0-12-5.4-12-12v-24c0-6.6 5.4-12 12-12h64c6.6 0 12 5.4 12 12v100h12c6.6 0 12 5.4 12 12v24z"
-                />
-              </svg>
-            </svg-component>
-            Primary
-          </pl-button>
-          <div class="context">Buttons with text/svg</div>
-        </div>
+            <section class="section">
+              <section class="display-box" id="db-25">
+                <section class="display-box-demo" style="text-align: center">
+                  <pl-button variant="primary" size="sm">
+                    Primary
+                    <pl-badge variant="light" size="sm" bdgPosition="right"
+                      >1</pl-badge
+                    >
+                  </pl-button>
+                </section>
+                <section class="display-box-meta markdown">
+                  <div class="display-box-title">Basic Usage</div>
+                  <div class="display-box-description">
+                    Buttons with text/badges
+                  </div>
+                </section>
+              </section>
+            </section>
+          </section>
 
-        <div class="content-box">
-          <pl-button variant="primary" size="sm">
-            Primary
-            <pl-badge variant="light" size="sm" bdgPosition="right">1</pl-badge>
-          </pl-button>
-          <div class="context">Buttons with text/badges</div>
+          <section>
+            <section class="section">
+              <section class="display-box" id="db-20">
+                <section class="display-box-demo" style="text-align: center">
+                  <pl-button variant="primary" size="sm">
+                    Home
+                    <svg-component
+                      svgMargin="right"
+                      ariaHidden="true"
+                      ariaLabel="Igloo"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        height="16"
+                        width="18"
+                        viewBox="0 0 576 512"
+                        fill="currentColor"
+                      >
+                        <!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.-->
+                        <path
+                          d="M320 33.9c-10.5-1.2-21.2-1.9-32-1.9-99.8 0-187.8 50.8-239.4 128H320V33.9zM96 192H30.3C11.1 230.6 0 274 0 320h96V192zM352 39.4V160h175.4C487.2 99.9 424.8 55.9 352 39.4zM480 320h96c0-46-11.1-89.4-30.3-128H480v128zm-64 64v96h128c17.7 0 32-14.3 32-32v-96H411.5c2.6 10.3 4.5 20.9 4.5 32zm32-192H128v128h49.8c22.2-38.1 63-64 110.2-64s88 25.9 110.2 64H448V192zM0 448c0 17.7 14.3 32 32 32h128v-96c0-11.1 1.9-21.7 4.5-32H0v96zm288-160c-53 0-96 43-96 96v96h192v-96c0-53-43-96-96-96z"
+                        />
+                      </svg>
+                    </svg-component>
+                  </pl-button>
+
+                  <pl-button variant="primary" size="sm">
+                    <svg-component
+                      svgMargin="left"
+                      ariaHidden="true"
+                      ariaLabel="Igloo"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        height="16"
+                        width="16"
+                        viewBox="0 0 512 512"
+                      >
+                        <!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.-->
+                        <path
+                          d="M256 8C119 8 8 119.1 8 256c0 137 111 248 248 248s248-111 248-248C504 119.1 393 8 256 8zm0 110c23.2 0 42 18.8 42 42s-18.8 42-42 42-42-18.8-42-42 18.8-42 42-42zm56 254c0 6.6-5.4 12-12 12h-88c-6.6 0-12-5.4-12-12v-24c0-6.6 5.4-12 12-12h12v-64h-12c-6.6 0-12-5.4-12-12v-24c0-6.6 5.4-12 12-12h64c6.6 0 12 5.4 12 12v100h12c6.6 0 12 5.4 12 12v24z"
+                        />
+                      </svg>
+                    </svg-component>
+                    Primary
+                  </pl-button>
+                </section>
+                <section class="display-box-meta markdown">
+                  <div class="display-box-title">Basic Usage</div>
+                  <div class="display-box-description">
+                    Buttons with text/svg
+                  </div>
+                </section>
+              </section>
+            </section>
+          </section>
         </div>
       </div>
     </div>
 
     <div style="margin-top: 15px">
       <div class="title">Button States</div>
-      <div class="ex-container">
-        <div class="content-box">
-          <pl-button variant="primary" active size="sm" pressed="false">
-            Primary
-          </pl-button>
 
-          <pl-button active size="sm" variant="active-blue" pressed="true">
-            Active
-          </pl-button>
+      <div class="demo-wrapper">
+        <div class="main">
+          <section>
+            <section class="section">
+              <section class="display-box" id="db-27">
+                <section class="display-box-demo" style="text-align: center">
+                  <pl-button variant="primary" active size="sm" pressed="false">
+                    Primary
+                  </pl-button>
 
-          <pl-button variant="secondary" size="sm" active pressed="true">
-            Button
-          </pl-button>
-          <div class="context">Active states</div>
-        </div>
+                  <pl-button
+                    active
+                    size="sm"
+                    variant="active-blue"
+                    pressed="true"
+                  >
+                    Active
+                  </pl-button>
 
-        <div class="content-box">
-          <pl-button variant="primary" link active size="sm" pressed="true">
-            Primary
-          </pl-button>
+                  <pl-button
+                    variant="secondary"
+                    size="sm"
+                    active
+                    pressed="true"
+                  >
+                    Button
+                  </pl-button>
+                </section>
+                <section class="display-box-meta markdown">
+                  <div class="display-box-title">Basic Usage</div>
+                  <div class="display-box-description">Active states</div>
+                </section>
+              </section>
+            </section>
 
-          <pl-button active link size="sm" variant="active-blue" pressed="true">
-            Active
-          </pl-button>
+            <section class="section">
+              <section class="display-box" id="db-29">
+                <section class="display-box-demo" style="text-align: center">
+                  <pl-button iconBtn title="Home">
+                    <icon-component icon="fas fa-home"></icon-component>
+                  </pl-button>
 
-          <pl-button variant="secondary" link size="sm" active pressed="true">
-            Button
-          </pl-button>
-          <div class="context">Link button active states</div>
-        </div>
-        <div class="content-box">
-          <pl-button iconBtn title="Home">
-            <icon-component icon="fas fa-home"></icon-component>
-          </pl-button>
+                  <pl-button disabled iconBtn title="Home">
+                    <icon-component icon="fas fa-home"></icon-component>
+                  </pl-button>
 
-          <pl-button disabled iconBtn title="Home">
-            <icon-component icon="fas fa-home"></icon-component>
-          </pl-button>
+                  <pl-button
+                    variant="active-blue"
+                    iconBtn
+                    title="Home"
+                    active
+                    pressed="true"
+                  >
+                    <icon-component icon="fas fa-home"></icon-component>
+                  </pl-button>
+                </section>
+                <section class="display-box-meta markdown">
+                  <div class="display-box-title">Basic Usage</div>
+                  <div class="display-box-description">
+                    Icon button active states
+                  </div>
+                </section>
+              </section>
+            </section>
+          </section>
+          <section>
+            <section class="section">
+              <section class="display-box" id="db-24">
+                <section class="display-box-demo" style="text-align: center">
+                  <pl-button
+                    variant="primary"
+                    link
+                    active
+                    size="sm"
+                    pressed="true"
+                  >
+                    Primary
+                  </pl-button>
 
-          <pl-button
-            variant="active-blue"
-            iconBtn
-            title="Home"
-            active
-            pressed="true"
-          >
-            <icon-component icon="fas fa-home"></icon-component>
-          </pl-button>
-          <div class="context">Icon button active states</div>
+                  <pl-button
+                    active
+                    link
+                    size="sm"
+                    variant="active-blue"
+                    pressed="true"
+                  >
+                    Active
+                  </pl-button>
+
+                  <pl-button
+                    variant="secondary"
+                    link
+                    size="sm"
+                    active
+                    pressed="true"
+                  >
+                    Button
+                  </pl-button>
+                </section>
+                <section class="display-box-meta markdown">
+                  <div class="display-box-title">Basic Usage</div>
+                  <div class="display-box-description">
+                    Link button active states
+                  </div>
+                </section>
+              </section>
+            </section>
+          </section>
         </div>
       </div>
     </div>
 
     <div style="margin-top: 15px">
       <div class="title">Button Group Examples</div>
-      <div class="ex-container">
-        <div class="content-box">
-          <button-group>
-            <pl-button slot="buttons" size="sm" variant="primary" groupBtn start
-              >Button 1</pl-button
-            >
-            <pl-button slot="buttons" size="sm" variant="secondary" groupBtn
-              >Button 2</pl-button
-            >
-            <pl-button slot="buttons" size="sm" variant="tertiary" groupBtn end
-              >Button 3</pl-button
-            >
-          </button-group>
-          <div class="context">Default button Group (Horizontal)</div>
-        </div>
 
-        <div class="content-box">
-          <button-group vertical>
-            <pl-button
-              slot="buttons"
-              size="sm"
-              variant="primary"
-              groupBtn
-              vertical
-              start
-              >Button 1</pl-button
-            >
-            <pl-button
-              slot="buttons"
-              size="sm"
-              variant="secondary"
-              groupBtn
-              vertical
-              >Button 2</pl-button
-            >
-            <pl-button
-              slot="buttons"
-              size="sm"
-              variant="tertiary"
-              groupBtn
-              vertical
-              end
-              >Button 3</pl-button
-            >
-          </button-group>
-          <div class="context">Default button Group (Vertical)</div>
+      <div class="demo-wrapper">
+        <div class="main">
+          <section>
+            <section class="section">
+              <section class="display-box" id="db-29">
+                <section class="display-box-demo" style="text-align: center">
+                  <button-group vertical>
+                    <pl-button
+                      slot="buttons"
+                      size="sm"
+                      variant="primary"
+                      groupBtn
+                      vertical
+                      start
+                      >Button 1</pl-button
+                    >
+                    <pl-button
+                      slot="buttons"
+                      size="sm"
+                      variant="secondary"
+                      groupBtn
+                      vertical
+                      >Button 2</pl-button
+                    >
+                    <pl-button
+                      slot="buttons"
+                      size="sm"
+                      variant="tertiary"
+                      groupBtn
+                      vertical
+                      end
+                      >Button 3</pl-button
+                    >
+                  </button-group>
+                </section>
+                <section class="display-box-meta markdown">
+                  <div class="display-box-title">Basic Usage</div>
+                  <div class="display-box-description">Default button Group (Vertical)</div>
+                </section>
+              </section>
+            </section>
+          </section>
+
+          <section>
+            <section class="section">
+              <section class="display-box" id="db-28">
+                <section class="display-box-demo" style="text-align: center">
+                  <button-group horizontal>
+                    <pl-button
+                      slot="buttons"
+                      size="sm"
+                      variant="primary"
+                      groupBtn
+                      horizontal
+                      start
+                      >Button 1</pl-button
+                    >
+                    <pl-button
+                      slot="buttons"
+                      size="sm"
+                      variant="secondary"
+                      groupBtn
+                      horizontal
+                      >Button 2</pl-button
+                    >
+                    <pl-button
+                      slot="buttons"
+                      size="sm"
+                      variant="tertiary"
+                      groupBtn
+                      horizontal
+                      end
+                      >Button 3</pl-button
+                    >
+                  </button-group>
+                </section>
+                <section class="display-box-meta markdown">
+                  <div class="display-box-title">Basic Usage</div>
+                  <div class="display-box-description">Default button Group (Horizontal)</div>
+                </section>
+              </section>
+            </section>
+          </section>
         </div>
       </div>
+
+      
     </div>
 
     <!-- Props -->

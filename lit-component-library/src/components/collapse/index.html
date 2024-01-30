@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-  <title>Collapse</title>
+  <title>Collapse Component</title>
   <head>
     <!-- <link
       rel="stylesheet"
@@ -26,79 +26,102 @@
     </style>
   </head>
   <body>
-    <div class="title">Collapse/Accordion Examples</div>
-    <div class="ex-container no-flex">
-      <div class="flex">
-        <div class="content-box">
-          <collapse-component
-            targetId="collapse-1"
-            buttonText="Toggle 1"
-            ripple
-            variant="primary"
-          >
-            <span slot="button-text">Toggle Button</span>
-            <span slot="content">This content can be collapsed</span>
-          </collapse-component>
+    <div class="title">Collapse/Accordion Component</div>
 
-          <div class="context">
-            Collapse button with the data-target attribute
-          </div>
-        </div>
-        <div class="content-box">
-          <collapse-component
-            targetId="collapse-2"
-            link
-            buttonText="Toggle 1"
-            ripple
-            variant="primary"
-          >
-            <span slot="button-text">Toggle Button</span>
-            <span slot="content">This content can be collapsed</span>
-          </collapse-component>
+    <div class="demo-wrapper">
+      <div class="main">
+        <section>
+          <section class="section">
+            <section class="display-box" id="db-1">
+              <section class="display-box-demo">
+                <collapse-component
+                targetId="collapse-1"
+                buttonText="Toggle 1"
+                ripple
+                variant="primary"
+              >
+                <span slot="button-text">Toggle Button</span>
+                <span slot="content">This content can be collapsed</span>
+              </collapse-component>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">Collapse used with a button with the data-target attribute</div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
 
-          <div class="context">
-            Collapse using a link with the href attribute.
-          </div>
-        </div>
-      </div>
-      <div class="flex">
-        <div class="content-box">
-          <collapse-component
-            targetId="collapse-1"
-            accordion
-            contentTxtSize="sm"
-          >
-            <span slot="expansion-header">Default Toggle</span>
-            <div slot="content">This content can be collapsed</div>
-          </collapse-component>
+          <section class="section">
+            <section class="display-box" id="db-2">
+              <section class="display-box-demo">
+                <collapse-component
+                targetId="collapse-2"
+                link
+                buttonText="Toggle 1"
+                ripple
+                variant="primary"
+              >
+                <span slot="button-text">Toggle Button</span>
+                <span slot="content">This content can be collapsed</span>
+              </collapse-component>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">Collapse using a link as a button with the href attribute.</div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
 
-          <collapse-component
-            targetId="collapse-2"
-            accordion
-            variant="danger"
-            contentTxtSize="sm"
-            icon="fas fa-minus, fas fa-plus"
-          >
-            <span slot="expansion-header">Using Other Icons</span>
-            <div slot="content">This content can be collapsed</div>
-          </collapse-component>
+          <section class="section">
+            <section class="display-box" id="db-3">
+              <section class="display-box-demo">
+                <collapse-component
+                targetId="collapse-1"
+                accordion
+                contentTxtSize="sm"
+              >
+                <span slot="expansion-header">Default Toggle</span>
+                <div slot="content">This content can be collapsed</div>
+              </collapse-component>
+    
+              <collapse-component
+                targetId="collapse-2"
+                accordion
+                variant="danger"
+                contentTxtSize="sm"
+                icon="fas fa-minus, fas fa-plus"
+              >
+                <span slot="expansion-header">Using Other Icons</span>
+                <div slot="content">This content can be collapsed</div>
+              </collapse-component>
+    
+              <collapse-component
+                targetId="collapse-3"
+                accordion
+                variant="info"
+                contentTxtSize="lg"
+                icon="fas fa-minus-circle, fas fa-plus-circle"
+              >
+                <span slot="expansion-header">Using Other Icons</span>
+                <p slot="content">This content can be collapsed</p>
+              </collapse-component>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">Multiple Collapse/Accordion components</div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
+        </section>
 
-          <collapse-component
-            targetId="collapse-3"
-            accordion
-            variant="info"
-            contentTxtSize="lg"
-            icon="fas fa-minus-circle, fas fa-plus-circle"
-          >
-            <span slot="expansion-header">Using Other Icons</span>
-            <p slot="content">This content can be collapsed</p>
-          </collapse-component>
-
-          <div class="context">Multiple Collapse/Accordion components</div>
-        </div>
-
-        <div class="content-box">
-          <!-- Assuming 'collapseData' is an array of objects with header and content -->
+        <section>
+          <section class="section">
+            <section class="display-box" id="db-4">
+              <section class="display-box-demo">
+               <!-- Assuming 'collapseData' is an array of objects with header and content -->
           <template id="collapse-template">
             <collapse-component
               targetId=""
@@ -114,8 +137,15 @@
           <div id="collapse-container">
             <!-- Use JavaScript to create multiple collapse components -->
           </div>
-          <div class="context">Accordion rendered with data</div>
-        </div>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">Accordion rendered with data</div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
+        </section>
       </div>
     </div>
 

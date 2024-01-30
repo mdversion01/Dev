@@ -1,11 +1,18 @@
 import { LitElement, html, css } from "lit";
 import { ifDefined } from "lit/directives/if-defined.js";
 import { layoutStyles } from "../layout-styles.js";
+import { formStyles } from "../form-styles.js";
 import { plInputFieldStyles } from "./pl-input-field-styles.js";
 import Fontawesome from "lit-fontawesome";
 
 class PlInputField extends LitElement {
-  static styles = [layoutStyles, plInputFieldStyles, Fontawesome, css``];
+  static styles = [
+    layoutStyles,
+    formStyles,
+    plInputFieldStyles,
+    Fontawesome,
+    css``,
+  ];
 
   static get properties() {
     return {
@@ -146,15 +153,13 @@ class PlInputField extends LitElement {
                   role="presentation"
                   aria-hidden="true"
                 ></div>
-               
               </div>
               ${this.validation
-              ? html`<div class="invalid-feedback">
-                  ${this.validationMessage}
-                </div>`
-              : ""}
+                ? html`<div class="invalid-feedback">
+                    ${this.validationMessage}
+                  </div>`
+                : ""}
             </div>
-            
           </div>
         </div>
       </div>
