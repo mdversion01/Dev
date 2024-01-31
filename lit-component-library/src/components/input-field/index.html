@@ -37,15 +37,15 @@
                 <form-component>
                   <input-field-component
                     label="First Name"
-                    name="input-1"
                     value=""
                     formLayout="vertical"
+                    inputId="input-1"
                   ></input-field-component>
                   <input-field-component
                     label="Last Name"
-                    name="input-2"
                     value=""
                     formLayout="vertical"
+                    inputId="input-2"
                   ></input-field-component>
                 </form-component>
               </section>
@@ -65,15 +65,15 @@
                 <form-component formLayout="horizontal">
                   <input-field-component
                     label="First Name"
-                    name="input-1"
                     value=""
                     formLayout="horizontal"
+                    inputId="input-3"
                   ></input-field-component>
                   <input-field-component
                     label="Last Name"
-                    name="input-2"
                     value=""
                     formLayout="horizontal"
+                    inputId="input-4"
                   ></input-field-component>
                 </form-component>
               </section>
@@ -93,15 +93,15 @@
                 <form-component formLayout="inline">
                   <input-field-component
                     label="First Name"
-                    name="input-1"
                     value=""
                     formLayout="inline"
+                    inputId="input-5"
                   ></input-field-component>
                   <input-field-component
                     label="Last Name"
-                    name="input-2"
                     value=""
                     formLayout="inline"
+                    inputId="input-6"
                   ></input-field-component>
                 </form-component>
               </section>
@@ -119,15 +119,15 @@
                 <form-component>
                   <input-field-component
                     label="First Name"
-                    name="input-1"
                     value=""
                     labelHidden
+                    inputId="input-7"
                   ></input-field-component>
                   <input-field-component
                     label="Last Name"
-                    name="input-2"
                     value=""
                     labelHidden
+                    inputId="input-8"
                   ></input-field-component>
                 </form-component>
               </section>
@@ -147,15 +147,15 @@
                 <form-component>
                   <input-field-component
                     label="First Name"
-                    name="input-1"
                     value=""
                     disabled
+                    inputId="input-9"
                   ></input-field-component>
                   <input-field-component
                     label="Last Name"
-                    name="input-2"
                     value=""
                     disabled
+                    inputId="input-10"
                   ></input-field-component>
                 </form-component>
               </section>
@@ -174,15 +174,15 @@
                 <form-component>
                   <input-field-component
                     label="First Name"
-                    name="input-1"
                     value=""
                     required
+                    inputId="input-11"
                   ></input-field-component>
                   <input-field-component
                     label="Last Name"
-                    name="input-2"
                     value=""
                     required
+                    inputId="input-12"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
                   ></input-field-component>
                 </form-component>
               </section>
@@ -200,14 +200,14 @@
                 <form-component>
                   <input-field-component
                     label="First Name"
-                    name="input-1"
+                    inputId="input-13"
                     value=""
                     validation
                     validationMessage="Please enter your first name."
                   ></input-field-component>
                   <input-field-component
                     label="Last Name"
-                    name="input-2"
+                    inputId="input-14"
                     value=""
                     validation
                     validationMessage="Please enter your last name."
@@ -217,7 +217,7 @@
                 <form-component formLayout="horizontal">
                   <input-field-component
                     label="First Name"
-                    name="input-1"
+                    inputId="input-15"
                     value=""
                     validation
                     validationMessage="Please enter your first name."
@@ -225,7 +225,7 @@
                   ></input-field-component>
                   <input-field-component
                     label="Last Name"
-                    name="input-2"
+                    inputId="input-16"
                     value=""
                     validation
                     validationMessage="Please enter your last name."
@@ -236,7 +236,7 @@
                 <form-component formLayout="inline">
                   <input-field-component
                     label="First Name"
-                    name="input-1"
+                    inputId="input-17"
                     value=""
                     validation
                     validationMessage="Please enter your first name."
@@ -244,7 +244,7 @@
                   ></input-field-component>
                   <input-field-component
                     label="Last Name"
-                    name="input-2"
+                    inputId="input-18"
                     value=""
                     validation
                     validationMessage="Please enter your last name."
@@ -268,20 +268,20 @@
                 <form-component>
                   <input-field-component
                     label="First Name"
-                    name="input-1"
                     value="Small input field"
                     size="sm"
+                    inputId="input-19"
                   ></input-field-component>
                   <input-field-component
                     label="Last Name"
-                    name="input-2"
-                    value="Default input field"
+                   value="Default input field"
+                    inputId="input-20"
                   ></input-field-component>
                   <input-field-component
                     label="Email Address"
-                    name="input-3"
                     value="Large input field"
                     size="lg"
+                    inputId="input-21"
                   ></input-field-component>
                 </form-component>
               </section>
@@ -330,6 +330,15 @@
               </td>
             </tr>
             <tr>
+              <td>inputId</td>
+              <td>String</td>
+              <td></td>
+              <td>
+                This is the id of the input field. When used, the id is added to
+                the input and to the label for attribute.
+              </td>
+            </tr>
+            <tr>
               <td>size</td>
               <td>String</td>
               <td>sm, lg</td>
@@ -344,7 +353,7 @@
               <td></td>
               <td>
                 This is the label for the input field. When used the label is
-                added to the aria-labelledby, for, id, and placeholder (unless
+                added to the aria-label and placeholder (unless
                 placeholder prop is used) attribute.
               </td>
             </tr>
@@ -400,7 +409,7 @@
 
     <!-- Instructions -->
     <div style="margin-top: 50px">
-      <h4>Using Component in other JavaScript Frameworks</h4>
+      <div class="title">Using Component in other JavaScript Frameworks</div>
 
       <p>
         Integrating a Lit Element component with other JavaScript frameworks
@@ -439,7 +448,7 @@
             &#60;script&#62;
             import 'lit-fontawesome';
             // Import the Lit Element component
-            import './path-to-lit-element-component/input-field-component.js';
+            import './path-to-lit-element-component/input-field.js';
             
             export default {
               // Vue component options
@@ -463,7 +472,7 @@
             import React from 'react';
             import 'lit-fontawesome';
             // Import the Lit Element component
-            import './path-to-lit-element-component/input-field-component.js';
+            import './path-to-lit-element-component/input-field.js';
 
             function YourReactComponent() {
               return (
@@ -499,7 +508,7 @@
             import { Component } from '@angular/core';
             import 'lit-fontawesome';
             // Import the Lit Element component
-            import './path-to-lit-element-component/input-field-component.js';
+            import './path-to-lit-element-component/input-field.js';
 
             @Component({
               selector: 'your-angular-component',

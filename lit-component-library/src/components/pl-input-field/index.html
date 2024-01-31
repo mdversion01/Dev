@@ -298,9 +298,9 @@
       </div>
     </div>
 
-    <!-- Props -->
-    <!-- <div style="margin-top: 50px">
-      <h2>Props</h2>
+     <!-- Props -->
+     <div style="margin-top: 50px">
+      <div class="title">Props</div>
       <div class="table-wrapper">
         <table>
           <thead>
@@ -314,86 +314,104 @@
 
           <tbody>
             <tr>
-              <td>accordion</td>
+              <td>disabled</td>
               <td>Boolean</td>
               <td>false</td>
               <td>
-                When this is true, the collapse component will look and behave
-                like an accordion.
+                When this is true, the input field is disabled and users cannot
+                interact with it.
               </td>
             </tr>
             <tr>
-              <td>contentTxtSize</td>
+              <td>formLayout</td>
+              <td>String</td>
+              <td>vertical, horizontal, inline</td>
+              <td>
+                This changes the layout of the input field. The default is
+                vertical.
+              </td>
+            </tr>
+            <tr>
+              <td>inputId</td>
               <td>String</td>
               <td></td>
               <td>
-                This property allows you to change the overall size of the text
-                (xs, sm, default, lg, xl, or xxl) that is in the content area of
-                the collapse component.
+                This is the id of the input field. When used, the id is added to
+                the input and to the label for attribute.
               </td>
             </tr>
-            <tr>
-              <td>icon</td>
-              <td>Array</td>
-              <td>["fas fa-angle-down"]</td>
+           <tr>
+              <td>label</td>
+              <td>String</td>
+              <td></td>
               <td>
-                This property uses the Font Awesome fa-angle-down(caret down)
-                icon by default. It rotates the icon 180 degrees when the
-                collapse component opens and again when it closes. You can pass in an array of two
-                icons to change the icon when the collapse component is open and
-                closed. The first icon in the array is the icon when the
-                collapse component is closed, and the second icon is the icon
-                when the collapse component is open.<br />
-                <span class="example">Ex: icon="fas fa-minus-circle, fas fa-plus-circle"</span>
+                This is the label for the input field. When used the label is
+                added to the aria-label and placeholder (unless
+                placeholder prop is used) attribute.
               </td>
             </tr>
             <tr>
-              <td>isOpen</td>
+              <td>labelHidden</td>
               <td>Boolean</td>
               <td>false</td>
               <td>
-                When true, the collapse component will be open by default.
+                This hides the label to be used by screen readers and uses it as
+                the placeholder text (unless placeholder prop is used).
               </td>
             </tr>
             <tr>
-              <td>targetId</td>
+              <td>required</td>
+              <td>Boolean</td>
+              <td>false</td>
+              <td>
+                This makes the input field required and displays an asterisk
+                next to the label.
+              </td>
+            </tr>
+            <tr>
+              <td>size</td>
+              <td>String</td>
+              <td>sm, lg</td>
+              <td>
+                This changes the size of the input field. The default is
+                default.
+              </td>
+            </tr>
+            <tr>
+              <td>type</td>
+              <td>String</td>
+              <td>text, email, password, url, tel, search, hidden, date</td>
+              <td>This is the type of input field. The default is text.</td>
+            </tr>
+            <tr>
+              <td>validation</td>
+              <td>Boolean</td>
+              <td>false</td>
+              <td>When true, this will display the input in red.</td>
+            </tr>
+            <tr>
+              <td>validationMessage</td>
               <td>String</td>
               <td></td>
               <td>
-                Providing a targetId will allow the collapse component to
-                toggle. The targetId is used by 'aria-controls',
-                'aria-labelledby', 'data-target' attributes of the button and
-                'id' of the content area.
+                This is the message that will be displayed when the input field
+                is in a validation state.
               </td>
             </tr>
             <tr>
-              <td>toggle</td>
+              <td>value</td>
               <td>String</td>
               <td></td>
-              <td>
-                To use when implementing and Accordion, when property is set to
-                'single', only one collapse component can be opened at a time.
-              </td>
-            </tr>
-            <tr>
-              <td>Other</td>
-              <td></td>
-              <td></td>
-              <td>
-                The collapse component also accepts other properties from
-                the Button component. Those properties are: block, variant,
-                size, disabled, ripple, and link, and they can be found here -
-                <a href="../button/index.html">Button API</a>
-              </td>
+              <td>This is the value of the input field.</td>
             </tr>
           </tbody>
         </table>
       </div>
-    </div> -->
+    </div>
 
     <!-- Instructions -->
-    <!-- <div style="margin-top: 50px">
-      <h4>Using Component in other JavaScript Frameworks</h4>
+    <div style="margin-top: 50px">
+      <div class="title">Using Component in other JavaScript Frameworks</div>
 
       <p>
         Integrating a Lit Element component with other JavaScript frameworks
@@ -404,78 +422,122 @@
 
       <h5>Vue.js</h5>
       <p>
-        In a Vue component, you'd use Collapse just like any other HTML
+        In a Vue component, you'd use PlInputField just like any other HTML
         element:
       </p>
       <pre>
           <code>
             &#60;template&#62;
               &#60;div&#62;
-                &#60;collapse-component targetId="collapse-1" toggle="single" :accordion="true" contentTxtSize="sm"&#62;
-                  &#60;span slot="expansion-header"&#62;Default Toggle&#60;/span&#62;
-                  &#60;div slot="content"&#62;This content can be collapsed&#60;/div&#62;
-                &#60;/collapse-component&#62;
-              &#60;/div&#62;
-            &#60;/template&#62;
+              &#60;!-- Other Vue components or HTML --&#62;
+                &#60;pl-input-field-component
+                  :disabled="false"
+                  :formLayout="'horizontal'"
+                  :size="'lg'"
+                  :label="'Your Label'"
+                  :labelHidden="false"
+                  :required="true"
+                  :search="false"
+                  :type="'text'"
+                  :validation="false"
+                  :validationMessage="'Your validation message'"
+                  :value="'Your initial value'"
+                  &#62;&#60;/pl-input-field-component&#62;
+                  &#60;!-- Other Vue components or HTML --&#62;
+                &#60;/div&#62;
+              &#60;/template&#62;
             
             &#60;script&#62;
-            import 'path_to_your_libraries/collapse.js'; // Import your Collapse component
+            import 'lit-fontawesome';
+            // Import the Lit Element component
+            import './path-to-lit-element-component/pl-input-field.js';
             
             export default {
-              // Your Vue component definition
+              // Vue component options
             };
             &#60;/script&#62;
+            
+            &#60;style&#62;
+            /* Vue-specific styles */
+            &#60;/style&#62;
+            
           </code>
         </pre>
 
       <h5>React</h5>
       <p>
-        In a React component, you'd similarly treat Collapse as a regular
-        HTML element:
+        In a React component, you'd similarly treat PlInputField as a regular HTML
+        element:
       </p>
       <pre>
           <code>
             import React from 'react';
-            import 'path_to_your_libraries/collapse.js'; // Import your Collapse component
+            import 'lit-fontawesome';
+            // Import the Lit Element component
+            import './path-to-lit-element-component/pl-input-field.js';
 
-            function App() {
+            function YourReactComponent() {
               return (
                 &#60;div&#62;
-                  &#60;collapse-component targetId="collapse-1" toggle="single" accordion={true} contentTxtSize="sm"&#62;
-                    &#60;span slot="expansion-header"&#62;Default Toggle&#60;/span&#62;
-                    &#60;div slot="content"&#62;This content can be collapsed&#60;/div&#62;
-                  &#60;/collapse-component&#62;
-                &#60;/div&#62;
+                  {/* Other React components or JSX */}
+                  &#60;pl-input-field-component
+                    disabled={false}
+                    formLayout="horizontal"
+                    size="lg"
+                    label="Your Label"
+                    labelHidden={false}
+                    required={true}
+                    search={false}
+                    type="text"
+                    validation={false}
+                    validationMessage="Your validation message"
+                    value="Your initial value"
+                    &#62;&#60;/pl-input-field-component&#62;
+                  {/* Other React components or JSX */}
+                  &#60;/div&#62;
               );
             }
 
-            export default App;
-
+            export default YourReactComponent;
           </code>
         </pre>
 
       <h5>Angular</h5>
-      <p>In Angular, you'd use Collapse as part of your Angular template:</p>
+      <p>In Angular, you'd use InputField as part of your Angular template:</p>
 
       <pre>
           <code>
-            // Import the required decorators and other necessary modules
+            import { Component } from '@angular/core';
+            import 'lit-fontawesome';
+            // Import the Lit Element component
+            import './path-to-lit-element-component/pl-input-field.js';
 
             @Component({
-              selector: 'app-root',
+              selector: 'your-angular-component',
               template: `
-                &#60;div&#62;
-                  &#60;collapse-component targetId="collapse-1" [toggle]="'single'" [accordion]="true" [contentTxtSize]="'sm'"&#62;
-                    &#60;span slot="expansion-header"&#62;Default Toggle&#60;/span&#62;
-                    &#60;div slot="content"&#62;This content can be collapsed&#60;/div&#62;
-                  &#60;/collapse-component&#62;
-                &#60;/div&#62;
-              `
+              &#60;div&#62;
+              &#60;!-- Other Angular components or HTML --&#62;
+                  &#60;pl-input-field-component
+                    [disabled]="false"
+                    [formLayout]="'horizontal'"
+                    [size]="'lg'"
+                    [label]="'Your Label'"
+                    [labelHidden]="false"
+                    [required]="true"
+                    [search]="false"
+                    [type]="'text'"
+                    [validation]="false"
+                    [validationMessage]="'Your validation message'"
+                    [value]="'Your initial value'"
+                    &#62;&#60;/pl-input-field-component&#62;
+                    &#60;!-- Other Angular components or HTML --&#62;
+                  &#60;/div&#62;
+              `,
+              styles: [/* Angular-specific styles */]
             })
-            export class AppComponent {
-              // Your Angular component logic
+            export class YourAngularComponent {
+              // Angular component logic
             }
-
           </code>
         </pre>
 
@@ -490,7 +552,7 @@
         and registered as custom elements, act like native HTML elements that
         these frameworks can understand and interact with.
       </p>
-    </div> -->
+    </div>
 
     <script src="./pl-input-field.js" type="module"></script>
     <script src="../form/form.js" type="module"></script>

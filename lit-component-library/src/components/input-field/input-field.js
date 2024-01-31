@@ -18,11 +18,12 @@ class InputField extends LitElement {
     return {
       disabled: { type: Boolean },
       formLayout: { type: String },
+      inputId: { type: String },
       size: { type: String },
       label: { type: String },
       labelHidden: { type: Boolean },
       required: { type: Boolean },
-      search: { type: Boolean },
+      // search: { type: Boolean },
       type: { type: String },
       validation: { type: Boolean },
       validationMessage: { type: String },
@@ -33,11 +34,13 @@ class InputField extends LitElement {
   constructor() {
     super();
     this.disabled = false;
+    this.inputId = "";
     this.label = "";
     this.labelHidden = false;
     this.required = false;
-    this.search = false;
-    (this.type = ""), (this.validation = false);
+    // this.search = false;
+    this.type = "", 
+    this.validation = false;
     this.validationMessage = "";
     this.value = "";
   }
@@ -68,7 +71,7 @@ class InputField extends LitElement {
     `;
   }
 
-  renderInput(ids) {
+  renderInput(ids, names) {
     return html`
       <div>
         <input
@@ -83,9 +86,9 @@ class InputField extends LitElement {
             ? this.label || this.placeholder || "Placeholder Text"
             : this.label || this.placeholder || "Placeholder Text"}"
           id=${ifDefined(ids ? ids : undefined)}
-          name=${ifDefined(ids ? ids : undefined)}
+          name=${ifDefined(names ? names : undefined)}
           value=${ifDefined(this.value ? this.value : undefined)}
-          aria-labelledby=${ifDefined(ids ? ids : undefined)}
+          aria-labelledby=${ifDefined(names ? names : undefined)}
           ?disabled=${this.disabled}
         />
         ${this.validation
@@ -98,7 +101,8 @@ class InputField extends LitElement {
   }
 
   render() {
-    const ids = this.camelCase(this.label).replace(/ /g, "");
+    const ids = this.camelCase(this.inputId).replace(/ /g, "");
+    const names = this.camelCase(this.label).replace(/ /g, "");
 
     return html`
       <div class="${this.formLayout ? ` ${this.formLayout}` : ""}">
@@ -109,10 +113,10 @@ class InputField extends LitElement {
             ? ` row inline`
             : ""}"
         >
-          ${this.renderInputLabel(ids)}
+          ${this.renderInputLabel(ids, names)}
           ${this.formLayout === "horizontal"
-            ? html`<div class="col-10">${this.renderInput(ids)}</div>`
-            : this.renderInput(ids)}
+            ? html`<div class="col-10">${this.renderInput(ids, names)}</div>`
+            : this.renderInput(ids, names)}
         </div>
       </div>
     `;

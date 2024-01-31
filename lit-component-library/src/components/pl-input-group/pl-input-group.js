@@ -23,7 +23,7 @@ class PlInputGroup extends LitElement {
       disabled: { type: Boolean },
       formLayout: { type: String },
       icon: { type: String },
-      inputSize: { type: String },
+      inputId: { type: String },
       label: { type: String },
       labelHidden: { type: Boolean },
       placeholder: { type: String },
@@ -32,6 +32,7 @@ class PlInputGroup extends LitElement {
       required: { type: Boolean },
       plumageSearch: { type: Boolean },
       size: { type: String },
+      type: { type: String },
       validation: { type: Boolean },
       validationMessage: { type: String },
       value: { type: String },
@@ -45,12 +46,14 @@ class PlInputGroup extends LitElement {
     this.disabled = false;
     this.handleDocumentClick = this.handleDocumentClick.bind(this);
     this.icon = "";
+    this.inputId = "";
     this.label = "";
     this.labelHidden = false;
     this.placeholder = "";
     this.prepend = false;
     this.prependId = "";
     this.required = false;
+    this.type = "";
     this.plumageSearch = false;
     this.validation = false;
     this.validationMessage = "";
@@ -168,11 +171,20 @@ class PlInputGroup extends LitElement {
                   </div>`
                 : ""}
               <input
-                type="text"
+                type="${this.type || "text"}"
                 class="form-control${this.validation ? " is-invalid" : ""}"
                 placeholder="${this.placeholder || this.label || ""}"
-                aria-labelledby=${ifDefined(ids ? ids : undefined)}
-                aria-describedby=${ifDefined(ids ? ids : undefined)}
+                aria-label=${ifDefined(this.label ? this.label : undefined)}
+                aria-describedby=${ifDefined(
+                  this.append && !this.prepend
+                    ? this.appendId
+                    : this.prepend && !this.append
+                    ? this.prependId
+                    : this.append && this.prepend
+                    ? undefined
+                    : undefined
+                )}
+                id=${ifDefined(ids ? ids : undefined)}
                 ?disabled=${this.disabled}
                 @focus="${this.handleInteraction}"
                 @blur="${this.handleDocumentClick}"
@@ -225,7 +237,7 @@ class PlInputGroup extends LitElement {
   renderPlumageSearchBar(ids) {
     return html`
       <div class="pl-input-group search-bar-container mb-3">
-        <div class="pl-input-group-prepend">
+        <div class="pl-input-group-prepend" id="prepend-search">
           <span class="search-bar-icon">
             <i class="fas fa-search"></i>
           </span>
@@ -234,8 +246,8 @@ class PlInputGroup extends LitElement {
           type="text"
           class="form-control search-bar"
           placeholder="${this.placeholder || "Search"}"
-          aria-label="${ids || "Search"}"
-          aria-describedby="${ids || "Search"}"
+          aria-label="${this.label || "Search"}"
+          aria-describedby="prepend-search"
           @input="${this.handleInputChange}"
         />
         ${this.value && !this.disabled
@@ -250,7 +262,7 @@ class PlInputGroup extends LitElement {
   }
 
   render() {
-    const ids = this.camelCase(this.label).replace(/ /g, "");
+    const ids = this.camelCase(this.inputId).replace(/ /g, "");
 
     if (this.plumageSearch) {
       return this.renderPlumageSearchBar(ids);

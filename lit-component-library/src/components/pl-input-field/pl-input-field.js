@@ -18,11 +18,12 @@ class PlInputField extends LitElement {
     return {
       disabled: { type: Boolean },
       formLayout: { type: String },
+      inputId: { type: String },
       size: { type: String },
       label: { type: String },
       labelHidden: { type: Boolean },
       required: { type: Boolean },
-      search: { type: Boolean },
+      // search: { type: Boolean },
       validation: { type: Boolean },
       validationMessage: { type: String },
       value: { type: String },
@@ -33,10 +34,11 @@ class PlInputField extends LitElement {
     super();
     this.disabled = false;
     this.handleDocumentClick = this.handleDocumentClick.bind(this);
+    this.inputId = "";
     this.label = "";
     this.labelHidden = false;
     this.required = false;
-    this.search = false;
+    // this.search = false;
     this.validation = false;
     this.validationMessage = "";
     this.value = "";
@@ -92,6 +94,7 @@ class PlInputField extends LitElement {
 
   render() {
     const ids = this.camelCase(this.label).replace(/ /g, "");
+    const names = this.camelCase(this.label).replace(/ /g, "");
 
     return html`
       <div class="plumage${this.formLayout ? ` ${this.formLayout}` : ""}">
@@ -120,7 +123,7 @@ class PlInputField extends LitElement {
               class="pl-input-container"
               @click="${this.handleInteraction}"
               role="presentation"
-              aria-labelledby=${ifDefined(ids ? ids : undefined)}
+              aria-labelledby=${ifDefined(names ? names : undefined)}
             >
               <input
                 type="text"
@@ -134,11 +137,11 @@ class PlInputField extends LitElement {
                   ? this.label || this.placeholder || "Placeholder Text"
                   : this.label || this.placeholder || "Placeholder Text"}"
                 id=${ifDefined(ids ? ids : undefined)}
-                name=${ifDefined(ids ? ids : undefined)}
+                name=${ifDefined(names ? names : undefined)}
                 value=${ifDefined(this.value ? this.value : undefined)}
                 @focus="${this.handleInteraction}"
                 @blur="${this.handleDocumentClick}"
-                aria-labelledby=${ifDefined(ids ? ids : undefined)}
+                aria-labelledby=${ifDefined(names ? names : undefined)}
                 ?disabled=${this.disabled}
               />
               <div

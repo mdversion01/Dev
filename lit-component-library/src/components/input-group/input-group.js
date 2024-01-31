@@ -3,7 +3,7 @@ import { ifDefined } from "lit/directives/if-defined.js";
 import { layoutStyles } from "../layout-styles.js";
 import { plInputFieldStyles } from "../pl-input-field/pl-input-field-styles.js";
 import { inputGroupStyles } from "./input-group-styles.js";
-import { formStyles } from "../form-styles.js"; 
+import { formStyles } from "../form-styles.js";
 import Fontawesome from "lit-fontawesome";
 
 class InputGroup extends LitElement {
@@ -23,6 +23,7 @@ class InputGroup extends LitElement {
       disabled: { type: Boolean },
       formLayout: { type: String },
       icon: { type: String },
+      inputId: { type: String },
       inputSize: { type: String },
       label: { type: String },
       labelHidden: { type: Boolean },
@@ -30,8 +31,9 @@ class InputGroup extends LitElement {
       prepend: { type: Boolean },
       prependId: { type: String },
       required: { type: Boolean },
-      search: { type: Boolean },
+      // search: { type: Boolean },
       size: { type: String },
+      type: { type: String },
       validation: { type: Boolean },
       validationMessage: { type: String },
       value: { type: String },
@@ -45,13 +47,15 @@ class InputGroup extends LitElement {
     this.disabled = false;
     this.handleDocumentClick = this.handleDocumentClick.bind(this);
     this.icon = "";
+    this.inputId = "";
     this.label = "";
     this.labelHidden = false;
     this.placeholder = "";
     this.prepend = false;
     this.prependId = "";
     this.required = false;
-    this.search = false;
+    // this.search = false;
+    this.type = "";
     this.validation = false;
     this.validationMessage = "";
     this.value = "";
@@ -148,9 +152,11 @@ class InputGroup extends LitElement {
                 : ""}"
             >
               ${this.prepend
-                ? html`<div class="pl-input-group-prepend${this.validation
+                ? html`<div
+                    class="pl-input-group-prepend${this.validation
                       ? " is-invalid"
-                      : ""}">
+                      : ""}"
+                  >
                     ${this.icon
                       ? html`<span class="pl-input-group-text"
                           ><i class="${this.icon}"></i
@@ -165,16 +171,27 @@ class InputGroup extends LitElement {
                   </div>`
                 : ""}
               <input
-                type="text"
+                type="${this.type || "text"}"
                 class="form-control${this.validation ? " is-invalid" : ""}"
                 placeholder="${this.placeholder || this.label || ""}"
-                aria-labelledby=${ifDefined(ids ? ids : undefined)}
-                aria-describedby=${ifDefined(ids ? ids : undefined)}
+                aria-label=${ifDefined(this.label ? this.label : undefined)}
+                aria-describedby=${ifDefined(
+                  this.append && !this.prepend
+                    ? this.appendId
+                    : this.prepend && !this.append
+                    ? this.prependId
+                    : this.append && this.prepend
+                    ? undefined
+                    : undefined
+                )}
+                id=${ifDefined(ids ? ids : undefined)}
               />
               ${this.append
-                ? html`<div class="pl-input-group-append${this.validation
+                ? html`<div
+                    class="pl-input-group-append${this.validation
                       ? " is-invalid"
-                      : ""}">
+                      : ""}"
+                  >
                     ${this.icon
                       ? html`<span class="pl-input-group-text"
                           ><i class="${this.icon}"></i
@@ -201,7 +218,7 @@ class InputGroup extends LitElement {
   }
 
   render() {
-    const ids = this.camelCase(this.label).replace(/ /g, "");
+    const ids = this.camelCase(this.inputId).replace(/ /g, "");
 
     return this.renderInputGroup(ids);
   }
