@@ -21,6 +21,7 @@ class InputGroup extends LitElement {
       append: { type: Boolean },
       appendId: { type: String },
       disabled: { type: Boolean },
+      formId: { type: String },
       formLayout: { type: String },
       icon: { type: String },
       inputId: { type: String },
@@ -31,7 +32,6 @@ class InputGroup extends LitElement {
       prepend: { type: Boolean },
       prependId: { type: String },
       required: { type: Boolean },
-      // search: { type: Boolean },
       size: { type: String },
       type: { type: String },
       validation: { type: Boolean },
@@ -45,7 +45,7 @@ class InputGroup extends LitElement {
     this.append = false;
     this.appendId = "";
     this.disabled = false;
-    this.handleDocumentClick = this.handleDocumentClick.bind(this);
+    this.formId = "";
     this.icon = "";
     this.inputId = "";
     this.label = "";
@@ -54,7 +54,6 @@ class InputGroup extends LitElement {
     this.prepend = false;
     this.prependId = "";
     this.required = false;
-    // this.search = false;
     this.type = "";
     this.validation = false;
     this.validationMessage = "";
@@ -63,40 +62,45 @@ class InputGroup extends LitElement {
 
   connectedCallback() {
     super.connectedCallback();
-    document.addEventListener("click", this.handleDocumentClick);
+
+    // Access the formId and formLayout properties from the closest form-component
+    const formComponent = this.closest("form-component");
+
+    if (formComponent) {
+      this.formId = formComponent.formId || "";
+      this.formLayout = formComponent.formLayout || "";
+      console.log("formId: ", this.formId);
+      console.log("formLayout: ", this.formLayout);
+    }
   }
 
-  disconnectedCallback() {
-    super.disconnectedCallback();
-    document.removeEventListener("click", this.handleDocumentClick);
-  }
+  updated(changedProperties) {
+    super.updated(changedProperties);
 
-  handleInteraction(event) {
-    // Stop the event from propagating to the document click handler
-    event.stopPropagation();
-
-    const bFocusDiv = this.shadowRoot.querySelector(".b-focus");
-    const isInputFocused =
-      event.target === this.shadowRoot.querySelector("input");
-
-    if (bFocusDiv) {
-      if (isInputFocused) {
-        // Handle input focus
-        bFocusDiv.style.width = "100%";
-        bFocusDiv.style.left = "0";
-      } else {
-        // Handle input blur
-        bFocusDiv.style.width = "0";
-        bFocusDiv.style.left = "50%";
+    if (changedProperties.has("formId")) {
+      const input = this.shadowRoot.querySelector("input");
+      if (input) {
+        // Check if formId is not a symbol before setting the attribute
+        if (typeof this.formId !== "symbol") {
+          input.setAttribute("form", this.formId);
+        } else {
+          input.removeAttribute("form"); // Remove the form attribute if formId is a symbol
+        }
       }
     }
   }
 
-  handleDocumentClick() {
-    const bFocusDiv = this.shadowRoot.querySelector(".b-focus");
-    if (bFocusDiv) {
-      bFocusDiv.style.width = "0";
-      bFocusDiv.style.left = "50%";
+  handleInput(event) {
+    const formId = this.formId;
+
+    // Set the form attribute using event delegation
+    if (formId !== undefined && typeof formId !== "symbol") {
+      const form = event.target.form || document.getElementById(formId);
+      if (form) {
+        event.target.form = form;
+      }
+    } else {
+      event.target.form = null;
     }
   }
 
@@ -109,19 +113,7 @@ class InputGroup extends LitElement {
       .replace(/\s+/g, "");
   }
 
-  handleInputChange(event) {
-    this.value = event.target.value;
-  }
-
-  clearInput() {
-    this.value = ""; // Update the reactive property
-    const inputElement = this.shadowRoot.querySelector(".search-bar");
-    if (inputElement) {
-      inputElement.value = ""; // Clear the input element directly
-    }
-  }
-
-  renderInputGroup(ids) {
+  renderInputGroup(ids, names) {
     return html`
       <div class=${ifDefined(this.formLayout ? this.formLayout : undefined)}>
         <div class="form-group form-input-group-basic row ${this.formLayout}">
@@ -173,7 +165,12 @@ class InputGroup extends LitElement {
               <input
                 type="${this.type || "text"}"
                 class="form-control${this.validation ? " is-invalid" : ""}"
-                placeholder="${this.placeholder || this.label || ""}"
+                placeholder="${this.labelHidden
+                  ? this.label || this.placeholder || "Placeholder Text"
+                  : this.label || this.placeholder || "Placeholder Text"}"
+                id=${ifDefined(ids ? ids : undefined)}
+                name=${ifDefined(names ? names : undefined)}
+                value=${ifDefined(this.value ? this.value : undefined)}
                 aria-label=${ifDefined(this.label ? this.label : undefined)}
                 aria-describedby=${ifDefined(
                   this.append && !this.prepend
@@ -184,7 +181,7 @@ class InputGroup extends LitElement {
                     ? undefined
                     : undefined
                 )}
-                id=${ifDefined(ids ? ids : undefined)}
+                @input=${this.handleInput}
               />
               ${this.append
                 ? html`<div
@@ -219,8 +216,9 @@ class InputGroup extends LitElement {
 
   render() {
     const ids = this.camelCase(this.inputId).replace(/ /g, "");
+    const names = this.camelCase(this.label).replace(/ /g, "");
 
-    return this.renderInputGroup(ids);
+    return this.renderInputGroup(ids, names);
   }
 
   _getClassNames() {

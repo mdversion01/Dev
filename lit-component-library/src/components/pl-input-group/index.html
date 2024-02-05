@@ -34,14 +34,13 @@
           <section class="section">
             <section class="display-box" id="db-1">
               <section class="display-box-demo">
-                <form-component>
+                <!-- <form-component> -->
                   <pl-input-group-component
                     label="Username"
                     name="input-1"
                     value=""
                     prepend
                     prependId="prepend-1"
-                    formLayout="vertical"
                     ><span slot="prepend">@</span></pl-input-group-component
                   >
 
@@ -51,10 +50,9 @@
                     value=""
                     append
                     appendId="append-1"
-                    formLayout="vertical"
                     ><span slot="append">@</span></pl-input-group-component
                   >
-                </form-component>
+                <!-- </form-component> -->
               </section>
               <section class="display-box-meta markdown">
                 <div class="display-box-title">Basic Usage</div>
@@ -74,7 +72,7 @@
                     label="Username"
                     name="input-1"
                     value=""
-                    formLayout="horizontal"
+                    slot="input"
                     prepend
                     prependId="prepend-1"
                   >
@@ -84,7 +82,7 @@
                     label="Username"
                     name="input-1"
                     value=""
-                    formLayout="horizontal"
+                    slot="input"
                     append
                     appendId="append-1"
                   >
@@ -110,7 +108,7 @@
                     label="Username"
                     name="input-1"
                     value=""
-                    formLayout="inline"
+                    slot="input"
                     prepend
                     prependId="prepend-1"
                     ><span slot="prepend">@</span></pl-input-group-component
@@ -120,7 +118,7 @@
                     label="Password"
                     name="input-2"
                     value=""
-                    formLayout="inline"
+                    slot="input"
                     icon="fas fa-unlock"
                     prepend
                     prependId="prepend-2"
@@ -145,6 +143,7 @@
                     label="Username"
                     name="input-1"
                     value=""
+                    slot="input"
                     labelHidden
                     prepend
                     prependId="prepend-1"
@@ -156,6 +155,7 @@
                     label="Username"
                     name="input-1"
                     value=""
+                    slot="input"
                     labelHidden
                     append
                     appendId="append-1"
@@ -182,6 +182,7 @@
                     label="Username"
                     name="input-1"
                     value=""
+                    slot="input"
                     labelHidden
                     append
                     appendId="append-1"
@@ -211,6 +212,7 @@
                     label="Username"
                     name="input-1"
                     value=""
+                    slot="input"
                     labelHidden
                     prepend
                     prependId="prepend-1"
@@ -223,6 +225,7 @@
                     label="Username"
                     name="input-1"
                     value=""
+                    slot="input"
                     labelHidden
                     append
                     appendId="append-1"
@@ -251,6 +254,7 @@
                     label="Username"
                     name="input-1"
                     value=""
+                    slot="input"
                     prepend
                     prependId="prepend-1"
                     required
@@ -262,6 +266,7 @@
                     label="Username"
                     name="input-1"
                     value=""
+                    slot="input"
                     append
                     appendId="append-1"
                     required
@@ -288,6 +293,7 @@
                     label="Username"
                     name="input-1"
                     value=""
+                    slot="input"
                     prepend
                     prependId="prepend-1"
                     required
@@ -301,6 +307,7 @@
                     label="Username"
                     name="input-1"
                     value=""
+                    slot="input"
                     append
                     appendId="append-1"
                     required
@@ -316,9 +323,9 @@
                     label="Username"
                     name="input-1"
                     value=""
+                    slot="input"
                     prepend
                     prependId="prepend-1"
-                    formLayout="horizontal"
                     required
                     validation
                     validationMessage="Please enter your Username."
@@ -330,9 +337,9 @@
                     label="Username"
                     name="input-1"
                     value=""
+                    slot="input"
                     append
                     appendId="append-1"
-                    formLayout="horizontal"
                     required
                     validation
                     validationMessage="Please enter your Username."
@@ -346,7 +353,7 @@
                     label="Username"
                     name="input-1"
                     value=""
-                    formLayout="inline"
+                    slot="input"
                     append
                     appendId="append-1"
                     required
@@ -358,7 +365,7 @@
                     label="Password"
                     name="input-2"
                     value=""
-                    formLayout="inline"
+                    slot="input"
                     icon="fas fa-unlock"
                     append
                     appendId="append-2"
@@ -381,7 +388,7 @@
           <section class="section">
             <section class="display-box" id="db-9">
               <section class="display-box-demo">
-                <form-component>
+                <!-- <form-component> -->
                   <pl-input-group-component
                     label="Username"
                     name="input-1"
@@ -419,7 +426,7 @@
                   >
                     <span slot="prepend">@</span>
                   </pl-input-group-component>
-                </form-component>
+                <!-- </form-component> -->
               </section>
               <section class="display-box-meta markdown">
                 <div class="display-box-title">Basic Usage</div>
@@ -436,6 +443,7 @@
                   <pl-input-group-component
                     label="Search"
                     name="search"
+                    slot="input"
                     value=""
                     plumageSearch
                   ></pl-input-group-component>
@@ -497,10 +505,14 @@
             <tr>
               <td>formLayout</td>
               <td>String</td>
-              <td>vertical, horizontal, inline</td>
+              <td>horizontal, inline</td>
               <td>
-                This changes the layout of the input field. The default is
-                vertical.
+                This changes the layout of the input group field. The default is
+                vertical. If input group component is used inside a form component,
+                then formLayout prop of form component will be applied to input group
+                component and therefore it does not have to be added to the
+                input group component. Also, remember to import your components in the
+                correct order.
               </td>
             </tr>
             <tr>
@@ -519,7 +531,7 @@
               <td></td>
               <td>
                 This is the id of the input field. When used, the id is added to
-                the input and to the label for attribute.
+                the input and to the label's 'for' attribute.
               </td>
             </tr>
             <tr>
@@ -618,6 +630,34 @@
         </table>
       </div>
     </div>
+
+    <!-- Slots -->
+    <div style="margin-top: 50px">
+      <div class="title">Slots</div>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Slot</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td>input</td>
+              <td>
+                This is the slot for the input field. It is used when using
+                inside a form component.<br />
+                Add <span class="example">slot="input"</span> to the input field
+                component.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
 
     <!-- Instructions -->
     <div style="margin-top: 50px">
@@ -781,9 +821,9 @@
       </p>
     </div>
 
-    <script src="./pl-input-group.js" type="module"></script>
+    
     <script src="../form/form.js" type="module"></script>
-
+<script src="./pl-input-group.js" type="module"></script>
     <!-- <script src="../../../node_modules/bootstrap/dist/js/bootstrap.js"></script> -->
   </body>
 </html>

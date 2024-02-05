@@ -34,20 +34,18 @@
           <section class="section">
             <section class="display-box" id="db-1">
               <section class="display-box-demo">
-                <form-component>
-                  <input-field-component
-                    label="First Name"
-                    value=""
-                    formLayout="vertical"
-                    inputId="input-1"
-                  ></input-field-component>
-                  <input-field-component
-                    label="Last Name"
-                    value=""
-                    formLayout="vertical"
-                    inputId="input-2"
-                  ></input-field-component>
-                </form-component>
+                <input-field-component
+                  label="First Name"
+                  value=""
+                  inputId="input-1"
+                  formLayout="vertical"
+                ></input-field-component>
+                <input-field-component
+                  label="Last Name"
+                  value=""
+                  inputId="input-2"
+                  formLayout="vertical"
+                ></input-field-component>
               </section>
               <section class="display-box-meta markdown">
                 <div class="display-box-title">Basic Usage</div>
@@ -65,15 +63,15 @@
                 <form-component formLayout="horizontal">
                   <input-field-component
                     label="First Name"
-                    value=""
-                    formLayout="horizontal"
-                    inputId="input-3"
+                    id="first-name"
+                    name="first-name"
+                    slot="input"
                   ></input-field-component>
                   <input-field-component
                     label="Last Name"
                     value=""
-                    formLayout="horizontal"
                     inputId="input-4"
+                    slot="input"
                   ></input-field-component>
                 </form-component>
               </section>
@@ -94,14 +92,14 @@
                   <input-field-component
                     label="First Name"
                     value=""
-                    formLayout="inline"
                     inputId="input-5"
+                    slot="input"
                   ></input-field-component>
                   <input-field-component
                     label="Last Name"
                     value=""
-                    formLayout="inline"
                     inputId="input-6"
+                    slot="input"
                   ></input-field-component>
                 </form-component>
               </section>
@@ -122,12 +120,14 @@
                     value=""
                     labelHidden
                     inputId="input-7"
+                    slot="input"
                   ></input-field-component>
                   <input-field-component
                     label="Last Name"
                     value=""
                     labelHidden
                     inputId="input-8"
+                    slot="input"
                   ></input-field-component>
                 </form-component>
               </section>
@@ -150,12 +150,14 @@
                     value=""
                     disabled
                     inputId="input-9"
+                    slot="input"
                   ></input-field-component>
                   <input-field-component
                     label="Last Name"
                     value=""
                     disabled
                     inputId="input-10"
+                    slot="input"
                   ></input-field-component>
                 </form-component>
               </section>
@@ -177,12 +179,14 @@
                     value=""
                     required
                     inputId="input-11"
+                    slot="input"
                   ></input-field-component>
                   <input-field-component
                     label="Last Name"
                     value=""
                     required
-                    inputId="input-12"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
+                    inputId="input-12"
+                    slot="input"
                   ></input-field-component>
                 </form-component>
               </section>
@@ -201,6 +205,7 @@
                   <input-field-component
                     label="First Name"
                     inputId="input-13"
+                    slot="input"
                     value=""
                     validation
                     validationMessage="Please enter your first name."
@@ -208,6 +213,7 @@
                   <input-field-component
                     label="Last Name"
                     inputId="input-14"
+                    slot="input"
                     value=""
                     validation
                     validationMessage="Please enter your last name."
@@ -218,18 +224,18 @@
                   <input-field-component
                     label="First Name"
                     inputId="input-15"
+                    slot="input"
                     value=""
                     validation
                     validationMessage="Please enter your first name."
-                    formLayout="horizontal"
                   ></input-field-component>
                   <input-field-component
                     label="Last Name"
                     inputId="input-16"
+                    slot="input"
                     value=""
                     validation
                     validationMessage="Please enter your last name."
-                    formLayout="horizontal"
                   ></input-field-component>
                 </form-component>
                 <hr />
@@ -237,18 +243,18 @@
                   <input-field-component
                     label="First Name"
                     inputId="input-17"
+                    slot="input"
                     value=""
                     validation
                     validationMessage="Please enter your first name."
-                    formLayout="inline"
                   ></input-field-component>
                   <input-field-component
                     label="Last Name"
                     inputId="input-18"
+                    slot="input"
                     value=""
                     validation
                     validationMessage="Please enter your last name."
-                    formLayout="inline"
                   ></input-field-component>
                 </form-component>
               </section>
@@ -265,25 +271,25 @@
           <section class="section">
             <section class="display-box" id="db-6">
               <section class="display-box-demo">
-                <form-component>
-                  <input-field-component
-                    label="First Name"
-                    value="Small input field"
-                    size="sm"
-                    inputId="input-19"
-                  ></input-field-component>
-                  <input-field-component
-                    label="Last Name"
-                   value="Default input field"
-                    inputId="input-20"
-                  ></input-field-component>
-                  <input-field-component
-                    label="Email Address"
-                    value="Large input field"
-                    size="lg"
-                    inputId="input-21"
-                  ></input-field-component>
-                </form-component>
+                <!-- <form-component> -->
+                <input-field-component
+                  label="First Name"
+                  value="Small input field"
+                  size="sm"
+                  inputId="input-19"
+                ></input-field-component>
+                <input-field-component
+                  label="Last Name"
+                  value="Default input field"
+                  inputId="input-20"
+                ></input-field-component>
+                <input-field-component
+                  label="Email Address"
+                  value="Large input field"
+                  size="lg"
+                  inputId="input-21"
+                ></input-field-component>
+                <!-- </form-component> -->
               </section>
               <section class="display-box-meta markdown">
                 <div class="display-box-title">Basic Usage</div>
@@ -323,10 +329,14 @@
             <tr>
               <td>formLayout</td>
               <td>String</td>
-              <td>vertical, horizontal, inline</td>
+              <td>horizontal, inline</td>
               <td>
                 This changes the layout of the input field. The default is
-                vertical.
+                vertical. If input component is used inside a form component,
+                then formLayout prop of form component will be applied to input
+                component and therefore it does not have to be added to the
+                input component. Also, remember to import your components in the
+                correct order.
               </td>
             </tr>
             <tr>
@@ -335,7 +345,7 @@
               <td></td>
               <td>
                 This is the id of the input field. When used, the id is added to
-                the input and to the label for attribute.
+                the input and to the label's 'for' attribute.
               </td>
             </tr>
             <tr>
@@ -353,8 +363,8 @@
               <td></td>
               <td>
                 This is the label for the input field. When used the label is
-                added to the aria-label and placeholder (unless
-                placeholder prop is used) attribute.
+                added to the aria-label and placeholder (unless placeholder prop
+                is used) attribute.
               </td>
             </tr>
             <tr>
@@ -401,6 +411,33 @@
               <td>String</td>
               <td></td>
               <td>This is the value of the input field.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Slots -->
+    <div style="margin-top: 50px">
+      <div class="title">Slots</div>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Slot</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td>input</td>
+              <td>
+                This is the slot for the input field. It is used when using
+                inside a form component.<br />
+                Add <span class="example">slot="input"</span> to the input field
+                component.
+              </td>
             </tr>
           </tbody>
         </table>
@@ -552,8 +589,8 @@
       </p>
     </div>
 
-    <script src="./input-field.js" type="module"></script>
     <script src="../form/form.js" type="module"></script>
+    <script src="./input-field.js" type="module"></script>
 
     <!-- <script src="../../../node_modules/bootstrap/dist/js/bootstrap.js"></script> -->
   </body>

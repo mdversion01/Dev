@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-  <title>Form</title>
+  <title>Checkbox/Radio Input Component</title>
   <head>
     <!-- <link
       rel="stylesheet"
@@ -26,7 +26,7 @@
     </style>
   </head>
   <body>
-    <div class="title">Form Wrapper Component</div>
+    <div class="title">Checkbox/Radio Input Component</div>
 
     <div class="demo-wrapper">
       <div class="main">
@@ -34,93 +34,70 @@
           <section class="section">
             <section class="display-box" id="db-1">
               <section class="display-box-demo">
-                <form-component>
-                  <input-field-component
-                    label="First Name"
-                    id="first-name"
-                    name="first-name"
-                    slot="input"
-                  ></input-field-component>
-                </form-component>
+                <!-- <form-component> -->
+                <checkbox-radio-input-component
+                  checkbox
+                  inputId="cbx-1"
+                  labelTxt="Checkbox Option 1"
+                ></checkbox-radio-input-component>
+
+                <checkbox-radio-input-component
+                  checkbox
+                  inputId="cbx-2"
+                  labelTxt="Checkbox Option 2 (Disabled)"
+                  disabled
+                ></checkbox-radio-input-component>
+                <!-- </form-component> -->
+
+                <hr />
+
+                <checkbox-radio-input-component
+                checkbox
+                inline
+                inputId="cbx-1"
+                labelTxt="Checkbox Option 1"
+              ></checkbox-radio-input-component>
+
+              <checkbox-radio-input-component
+                checkbox
+                inline
+                inputId="cbx-2"
+                labelTxt="Checkbox Option 2 (Disabled)"
+                disabled
+              ></checkbox-radio-input-component>
               </section>
               <section class="display-box-meta markdown">
                 <div class="display-box-title">Basic Usage</div>
-                <div class="display-box-description">Form wrapper.</div>
+                <div class="display-box-description">Single Checkbox components - Disabled and Vertical and Inline layout</div>
                 <div class=""></div>
               </section>
             </section>
           </section>
 
-          <section class="section">
-            <section class="display-box" id="db-1">
-              <section class="display-box-demo">
-                <form-component fieldset>
-                  <input-field-component
-                    label="First Name"
-                    id="first-name"
-                    name="first-name"
-                    slot="input"
-                  ></input-field-component>
-                </form-component>
-              </section>
-              <section class="display-box-meta markdown">
-                <div class="display-box-title">Basic Usage</div>
-                <div class="display-box-description">
-                  Form wrapper with Fieldset without a Legend.
-                </div>
-                <div class=""></div>
-              </section>
-            </section>
-          </section>
-
-          <section class="section">
-            <section class="display-box" id="db-1">
-              <section class="display-box-demo">
-                <form-component fieldset legend legendPosition="right">
-                  <input-field-component
-                    label="First Name"
-                    id="first-name"
-                    name="first-name"
-                    slot="input"
-                  ></input-field-component>
-                </form-component>
-              </section>
-              <section class="display-box-meta markdown">
-                <div class="display-box-title">Basic Usage</div>
-                <div class="display-box-description">
-                  Form wrapper with Fieldset legend right.
-                </div>
-                <div class=""></div>
-              </section>
-            </section>
-          </section>
-
-          <section class="section">
-            <section class="display-box" id="db-1">
-              <section class="display-box-demo">
-                <form-component
-                  fieldset
-                  legend
-                  legendTxt="This is the Legend"
-                  legendPosition="left"
-                  outsideOfForm
-                  formId="form-1"
-                >
-                  <input-field-component
-                    label="First Name"
-                    id="first-name"
-                    name="first-name"
-                    slot="input"
-                  ></input-field-component>
-                </form-component>
-              </section>
-              <section class="display-box-meta markdown">
-                <div class="display-box-title">Basic Usage</div>
-                <div class="display-box-description">
-                  Form wrapper for fields outside of the main form with
-                  Fieldset.
-                </div>
-                <div class=""></div>
+          <section>
+            <section class="section">
+              <section class="display-box" id="db-1">
+                <section class="display-box-demo">
+                  <!-- <form-component> -->
+                  <checkbox-radio-input-component
+                    radioGroup
+                    name="radio-group"
+                    id="dynamic-radio-group"
+                  ></checkbox-radio-input-component>
+                   <hr />     
+                  <checkbox-radio-input-component
+                    inline
+                    radioGroup
+                    name="radio-group2"
+                    id="dynamic-radio-group2"
+                  ></checkbox-radio-input-component>
+                  <!-- </form-component> -->
+                </section>
+                <section class="display-box-meta markdown">
+                  <div class="display-box-title">Basic Usage</div>
+                  <div class="display-box-description">Radio Group - Disabled and Vertical and Inline layout</div>
+                  <div class=""></div>
+                </section>
               </section>
             </section>
           </section>
@@ -130,111 +107,45 @@
           <section class="section">
             <section class="display-box" id="db-1">
               <section class="display-box-demo">
-                <form-component formId="form-2">
-                  <input-field-component
-                    label="First Name"
-                    id="first-name"
-                    name="first-name"
-                    slot="input"
-                  ></input-field-component>
-                </form-component>
+                <!-- <form-component> -->
+                <checkbox-radio-input-component
+                  radio
+                  inputId="radio-1"
+                  name="radios"
+                  labelTxt="Single Radio Option"
+                ></checkbox-radio-input-component>
 
-                <form-component outsideOfForm formId="form-2">
-                  <input-field-component
-                    label="Address"
-                    id="address"
-                    name="address"
-                    slot="input"
-                  ></input-field-component>
-                </form-component>
+                <checkbox-radio-input-component
+                  radio
+                  inputId="radio-2"
+                  name="radios"
+                  labelTxt="Radio Option (Disabled)"
+                  disabled
+                ></checkbox-radio-input-component>
+
+                <hr />
+
+                <checkbox-radio-input-component
+                  radio
+                  inline
+                  inputId="radio-1"
+                  name="radios"
+                  labelTxt="Single Radio Option"
+                ></checkbox-radio-input-component>
+
+                <checkbox-radio-input-component
+                  radio
+                  inline
+                  inputId="radio-2"
+                  name="radios"
+                  labelTxt="Radio Option (Disabled)"
+                  disabled
+                ></checkbox-radio-input-component>
+                <!-- </form-component> -->
               </section>
               <section class="display-box-meta markdown">
                 <div class="display-box-title">Basic Usage</div>
-                <div class="display-box-description">
-                  Form wrapper for fields outside of the main form.
-                </div>
-                <div class=""></div>
-              </section>
-            </section>
-          </section>
-
-          <section class="section">
-            <section class="display-box" id="db-1">
-              <section class="display-box-demo">
-                <form-component fieldset legend formLayout="horizontal">
-                  <input-field-component
-                    label="First Name"
-                    id="first-name"
-                    name="first-name"
-                    slot="input"
-                  ></input-field-component>
-
-                  <input-field-component
-                    label="Last Name"
-                    id="lname"
-                    name="lname"
-                    slot="input"
-                  ></input-field-component>
-                </form-component>
-              </section>
-              <section class="display-box-meta markdown">
-                <div class="display-box-title">Basic Usage</div>
-                <div class="display-box-description">
-                  Form wrapper with Fieldset.
-                </div>
-                <div class=""></div>
-              </section>
-            </section>
-          </section>
-
-          <section class="section">
-            <section class="display-box" id="db-1">
-              <section class="display-box-demo">
-                <form-component fieldset legend legendPosition="center">
-                  <input-field-component
-                    label="First Name"
-                    id="first-name"
-                    name="first-name"
-                    slot="input"
-                  ></input-field-component>
-                </form-component>
-              </section>
-              <section class="display-box-meta markdown">
-                <div class="display-box-title">Basic Usage</div>
-                <div class="display-box-description">
-                  Form wrapper with Fieldset legend center.
-                </div>
-                <div class=""></div>
-              </section>
-            </section>
-          </section>
-
-          <section class="section">
-            <section class="display-box" id="db-1">
-              <section class="display-box-demo">
-                <form-component
-                  fieldset
-                  legend
-                  legendTxt="This is the Legend"
-                  legendPosition="left"
-                  bcolor="green"
-                  bwidth="2"
-                  bradius="0"
-                  bstyle="dotted"
-                >
-                  <input-field-component
-                    label="First Name"
-                    id="first-name"
-                    name="first-name"
-                    slot="input"
-                  ></input-field-component>
-                </form-component>
-              </section>
-              <section class="display-box-meta markdown">
-                <div class="display-box-title">Basic Usage</div>
-                <div class="display-box-description">
-                  Changing default border styles inline for the Fieldset.
-                </div>
+                <div class="display-box-description">Single Radio - Disabled and Vertical and Inline layout</div>
                 <div class=""></div>
               </section>
             </section>
@@ -244,7 +155,7 @@
     </div>
 
     <!-- Props -->
-    <div style="margin-top: 50px">
+    <!-- <div style="margin-top: 50px">
       <div class="title">Props</div>
       <div class="table-wrapper">
         <table>
@@ -390,10 +301,10 @@
           </tbody>
         </table>
       </div>
-    </div>
+    </div> -->
 
     <!-- Instructions -->
-    <div style="margin-top: 50px">
+    <!-- <div style="margin-top: 50px">
       <div class="title">Using Component in other JavaScript Frameworks</div>
 
       <p>
@@ -533,10 +444,74 @@
         and registered as custom elements, act like native HTML elements that
         these frameworks can understand and interact with.
       </p>
-    </div>
+    </div> -->
 
-    <script src="./form.js" type="module"></script>
-    <script src="../input-field/input-field.js" type="module"></script>
+    <!-- <script src="../form/form.js" type="module"></script> -->
+    <script type="module">
+      import "./checkbox-radio-input.js";
+
+      document.addEventListener("DOMContentLoaded", () => {
+        // Dynamically set radio group options
+        const dynamicRadioGroup = document.getElementById(
+          "dynamic-radio-group"
+        );
+        if (dynamicRadioGroup) {
+          dynamicRadioGroup.radioGroupOptions = [
+            {
+              value: "option1",
+              labelTxt: "Default radio",
+              inputId: "radio-1",
+              disabled: false,
+              checked: true,
+            },
+            {
+              value: "option2",
+              labelTxt: "Second radio",
+              inputId: "radio-2",
+              disabled: false,
+            },
+            {
+              value: "option3",
+              labelTxt: "Disabled radio",
+              inputId: "radio-3",
+              disabled: true,
+            },
+            // Add more options as needed
+          ];
+        }
+      });
+
+      document.addEventListener("DOMContentLoaded", () => {
+        // Dynamically set radio group options
+        const dynamicRadioGroup2 = document.getElementById(
+          "dynamic-radio-group2"
+        );
+        if (dynamicRadioGroup2) {
+          dynamicRadioGroup2.radioGroupOptions = [
+            {
+              value: "option1",
+              labelTxt: "Default radio",
+              inputId: "radio-1",
+              disabled: false,
+              checked: true,
+            },
+            {
+              value: "option2",
+              labelTxt: "Second radio",
+              inputId: "radio-2",
+              disabled: false,
+            },
+            {
+              value: "option3",
+              labelTxt: "Disabled radio",
+              inputId: "radio-3",
+              disabled: true,
+            },
+            // Add more options as needed
+          ];
+        }
+      });
+    </script>
 
     <!-- <script src="../../../node_modules/bootstrap/dist/js/bootstrap.js"></script> -->
   </body>

@@ -37,20 +37,18 @@
           <section class="section">
             <section class="display-box" id="db-1">
               <section class="display-box-demo">
-                <form-component>
+                <!-- <form-component> -->
                   <pl-input-field-component
                     label="First Name"
                     name="input-1"
                     value=""
-                    formLayout="vertical"
                   ></pl-input-field-component>
                   <pl-input-field-component
                     label="Last Name"
                     name="input-2"
                     value=""
-                    formLayout="vertical"
                   ></pl-input-field-component>
-                </form-component>
+                <!-- </form-component> -->
               </section>
               <section class="display-box-meta markdown">
                 <div class="display-box-title">Basic Usage</div>
@@ -70,13 +68,13 @@
                     label="First Name"
                     name="input-1"
                     value=""
-                    formLayout="horizontal"
+                    slot="input"
                   ></pl-input-field-component>
                   <pl-input-field-component
                     label="Last Name"
                     name="input-2"
                     value=""
-                    formLayout="horizontal"
+                    slot="input"
                   ></pl-input-field-component>
                 </form-component>
               </section>
@@ -98,13 +96,13 @@
                     label="First Name"
                     name="input-1"
                     value=""
-                    formLayout="inline"
+                    slot="input"
                   ></pl-input-field-component>
                   <pl-input-field-component
                     label="Last Name"
                     name="input-2"
                     value=""
-                    formLayout="inline"
+                    slot="input"
                   ></pl-input-field-component>
                 </form-component>
               </section>
@@ -126,12 +124,14 @@
                     name="input-1"
                     value=""
                     labelHidden
+                    slot="input"
                   ></pl-input-field-component>
                   <pl-input-field-component
                     label="Last Name"
                     name="input-2"
                     value=""
                     labelHidden
+                    slot="input"
                   ></pl-input-field-component>
                 </form-component>
               </section>
@@ -153,12 +153,14 @@
                     name="input-1"
                     value=""
                     disabled
+                    slot="input"
                   ></pl-input-field-component>
                   <pl-input-field-component
                     label="Last Name"
                     name="input-2"
                     value=""
                     disabled
+                    slot="input"
                   ></pl-input-field-component>
                 </form-component>
               </section>
@@ -181,12 +183,14 @@
                     name="input-1"
                     value=""
                     required
+                    slot="input"
                   ></pl-input-field-component>
                   <pl-input-field-component
                     label="Last Name"
                     name="input-2"
                     value=""
                     required
+                    slot="input"
                   ></pl-input-field-component>
                 </form-component>
               </section>
@@ -206,6 +210,7 @@
                     label="First Name"
                     name="input-1"
                     value=""
+                    slot="input"
                     validation
                     validationMessage="Please enter your first name."
                   ></pl-input-field-component>
@@ -213,6 +218,7 @@
                     label="Last Name"
                     name="input-2"
                     value=""
+                    slot="input"
                     validation
                     validationMessage="Please enter your last name."
                   ></pl-input-field-component>
@@ -223,17 +229,17 @@
                     label="First Name"
                     name="input-1"
                     value=""
+                    slot="input"
                     validation
                     validationMessage="Please enter your first name."
-                    formLayout="horizontal"
                   ></pl-input-field-component>
                   <pl-input-field-component
                     label="Last Name"
                     name="input-2"
                     value=""
+                    slot="input"
                     validation
                     validationMessage="Please enter your last name."
-                    formLayout="horizontal"
                   ></pl-input-field-component>
                 </form-component>
                 <hr />
@@ -242,7 +248,7 @@
                     label="First Name"
                     name="input-1"
                     value=""
-                    formLayout="inline"
+                    slot="input"
                     validation
                     validationMessage="Please enter your first name."
                   ></pl-input-field-component>
@@ -250,7 +256,7 @@
                     label="Last Name"
                     name="input-2"
                     value=""
-                    formLayout="inline"
+                    slot="input"
                     validation
                     validationMessage="Please enter your last name."
                   ></pl-input-field-component>
@@ -267,7 +273,7 @@
           <section class="section">
             <section class="display-box" id="db-8">
               <section class="display-box-demo">
-                <form-component>
+                <!-- <form-component> -->
                   <pl-input-field-component
                     label="First Name"
                     name="input-1"
@@ -285,7 +291,7 @@
                     value="Large input field"
                     size="lg"
                   ></pl-input-field-component>
-                </form-component>
+                <!-- </form-component> -->
               </section>
               <section class="display-box-meta markdown">
                 <div class="display-box-title">Basic Usage</div>
@@ -325,10 +331,14 @@
             <tr>
               <td>formLayout</td>
               <td>String</td>
-              <td>vertical, horizontal, inline</td>
+              <td>horizontal, inline</td>
               <td>
                 This changes the layout of the input field. The default is
-                vertical.
+                vertical. If input component is used inside a form component,
+                then formLayout prop of form component will be applied to input
+                component and therefore it does not have to be added to the
+                input component. Also, remember to import your components in the
+                correct order.
               </td>
             </tr>
             <tr>
@@ -337,7 +347,7 @@
               <td></td>
               <td>
                 This is the id of the input field. When used, the id is added to
-                the input and to the label for attribute.
+                the input and to the label's 'for' attribute.
               </td>
             </tr>
            <tr>
@@ -408,6 +418,34 @@
         </table>
       </div>
     </div>
+
+    <!-- Slots -->
+    <div style="margin-top: 50px">
+      <div class="title">Slots</div>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Slot</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td>input</td>
+              <td>
+                This is the slot for the input field. It is used when using
+                inside a form component.<br />
+                Add <span class="example">slot="input"</span> to the input field
+                component.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
 
     <!-- Instructions -->
     <div style="margin-top: 50px">
@@ -554,9 +592,9 @@
       </p>
     </div>
 
-    <script src="./pl-input-field.js" type="module"></script>
+    
     <script src="../form/form.js" type="module"></script>
-
+    <script src="./pl-input-field.js" type="module"></script>
     <!-- <script src="../../../node_modules/bootstrap/dist/js/bootstrap.js"></script> -->
   </body>
 </html>

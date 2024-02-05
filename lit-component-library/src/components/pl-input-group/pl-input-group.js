@@ -21,6 +21,7 @@ class PlInputGroup extends LitElement {
       append: { type: Boolean },
       appendId: { type: String },
       disabled: { type: Boolean },
+      formId: { type: String },
       formLayout: { type: String },
       icon: { type: String },
       inputId: { type: String },
@@ -44,6 +45,7 @@ class PlInputGroup extends LitElement {
     this.append = false;
     this.appendId = "";
     this.disabled = false;
+    this.formId = "";
     this.handleDocumentClick = this.handleDocumentClick.bind(this);
     this.icon = "";
     this.inputId = "";
@@ -99,6 +101,50 @@ class PlInputGroup extends LitElement {
     }
   }
 
+  connectedCallback() {
+    super.connectedCallback();
+
+    // Access the formId and formLayout properties from the closest form-component
+    const formComponent = this.closest("form-component");
+
+    if (formComponent) {
+      this.formId = formComponent.formId || "";
+      this.formLayout = formComponent.formLayout || "";
+      console.log("formId: ", this.formId);
+      console.log("formLayout: ", this.formLayout);
+    }
+  }
+
+  updated(changedProperties) {
+    super.updated(changedProperties);
+
+    if (changedProperties.has("formId")) {
+      const input = this.shadowRoot.querySelector("input");
+      if (input) {
+        // Check if formId is not a symbol before setting the attribute
+        if (typeof this.formId !== "symbol") {
+          input.setAttribute("form", this.formId);
+        } else {
+          input.removeAttribute("form"); // Remove the form attribute if formId is a symbol
+        }
+      }
+    }
+  }
+
+  handleInput(event) {
+    const formId = this.formId;
+
+    // Set the form attribute using event delegation
+    if (formId !== undefined && typeof formId !== "symbol") {
+      const form = event.target.form || document.getElementById(formId);
+      if (form) {
+        event.target.form = form;
+      }
+    } else {
+      event.target.form = null;
+    }
+  }
+
   camelCase(str) {
     // Using replace method with regEx
     return str
@@ -120,7 +166,7 @@ class PlInputGroup extends LitElement {
     }
   }
 
-  renderInputGroup(ids) {
+  renderInputGroup(ids, names) {
     return html`
       <div class="plumage${this.formLayout ? ` ${this.formLayout}` : ""}">
         <div class="form-group form-pl-input-group row">
@@ -173,7 +219,12 @@ class PlInputGroup extends LitElement {
               <input
                 type="${this.type || "text"}"
                 class="form-control${this.validation ? " is-invalid" : ""}"
-                placeholder="${this.placeholder || this.label || ""}"
+                placeholder="${this.labelHidden
+                  ? this.label || this.placeholder || "Placeholder Text"
+                  : this.label || this.placeholder || "Placeholder Text"}"
+                id=${ifDefined(ids ? ids : undefined)}
+                name=${ifDefined(names ? names : undefined)}
+                value=${ifDefined(this.value ? this.value : undefined)}
                 aria-label=${ifDefined(this.label ? this.label : undefined)}
                 aria-describedby=${ifDefined(
                   this.append && !this.prepend
@@ -184,10 +235,10 @@ class PlInputGroup extends LitElement {
                     ? undefined
                     : undefined
                 )}
-                id=${ifDefined(ids ? ids : undefined)}
                 ?disabled=${this.disabled}
                 @focus="${this.handleInteraction}"
                 @blur="${this.handleDocumentClick}"
+                @input=${this.handleInput}
               />
               ${this.append
                 ? html`<div
@@ -234,7 +285,7 @@ class PlInputGroup extends LitElement {
     `;
   }
 
-  renderPlumageSearchBar(ids) {
+  renderPlumageSearchBar(ids, names) {
     return html`
       <div class="pl-input-group search-bar-container mb-3">
         <div class="pl-input-group-prepend" id="prepend-search">
@@ -246,6 +297,9 @@ class PlInputGroup extends LitElement {
           type="text"
           class="form-control search-bar"
           placeholder="${this.placeholder || "Search"}"
+          id=${ifDefined(ids ? ids : undefined)}
+          name=${ifDefined(names ? names : undefined)}
+          value=${ifDefined(this.value ? this.value : undefined)}
           aria-label="${this.label || "Search"}"
           aria-describedby="prepend-search"
           @input="${this.handleInputChange}"
@@ -263,11 +317,12 @@ class PlInputGroup extends LitElement {
 
   render() {
     const ids = this.camelCase(this.inputId).replace(/ /g, "");
+    const names = this.camelCase(this.label).replace(/ /g, "");
 
     if (this.plumageSearch) {
-      return this.renderPlumageSearchBar(ids);
+      return this.renderPlumageSearchBar(ids, names);
     } else {
-      return this.renderInputGroup(ids);
+      return this.renderInputGroup(ids, names);
     }
   }
 

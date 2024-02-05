@@ -17,6 +17,7 @@ class PlInputField extends LitElement {
   static get properties() {
     return {
       disabled: { type: Boolean },
+      formId: { type: String },
       formLayout: { type: String },
       inputId: { type: String },
       size: { type: String },
@@ -33,6 +34,7 @@ class PlInputField extends LitElement {
   constructor() {
     super();
     this.disabled = false;
+    this.formId = "";
     this.handleDocumentClick = this.handleDocumentClick.bind(this);
     this.inputId = "";
     this.label = "";
@@ -44,6 +46,7 @@ class PlInputField extends LitElement {
     this.value = "";
   }
 
+ 
   connectedCallback() {
     super.connectedCallback();
     document.addEventListener("click", this.handleDocumentClick);
@@ -75,11 +78,56 @@ class PlInputField extends LitElement {
     }
   }
 
+  connectedCallback() {
+    super.connectedCallback();
+  
+    // Access the formId and formLayout properties from the closest form-component
+    const formComponent = this.closest("form-component");
+  
+    if (formComponent) {
+      this.formId = formComponent.formId || "";
+      this.formLayout = formComponent.formLayout || "";
+      console.log("formId: ", this.formId);
+      console.log("formLayout: ", this.formLayout);
+    }
+  }   
+
+  updated(changedProperties) {
+    super.updated(changedProperties);
+  
+    if (changedProperties.has('formId')) {
+      const input = this.shadowRoot.querySelector('input');
+      if (input) {
+        // Check if formId is not a symbol before setting the attribute
+        if (typeof this.formId !== 'symbol') {
+          input.setAttribute('form', this.formId);
+        } else {
+          input.removeAttribute('form'); // Remove the form attribute if formId is a symbol
+        }
+      }
+    }
+  }
+
+
   handleDocumentClick() {
     const bFocusDiv = this.shadowRoot.querySelector(".b-focus");
     if (bFocusDiv) {
       bFocusDiv.style.width = "0";
       bFocusDiv.style.left = "50%";
+    }
+  }
+
+  handleInput(event) {
+    const formId = this.formId;
+  
+    // Set the form attribute using event delegation
+    if (formId !== undefined && typeof formId !== 'symbol') {
+      const form = event.target.form || document.getElementById(formId);
+      if (form) {
+        event.target.form = form;
+      }
+    } else {
+      event.target.form = null;
     }
   }
 
@@ -93,7 +141,7 @@ class PlInputField extends LitElement {
   }
 
   render() {
-    const ids = this.camelCase(this.label).replace(/ /g, "");
+    const ids = this.camelCase(this.inputId).replace(/ /g, "");
     const names = this.camelCase(this.label).replace(/ /g, "");
 
     return html`
@@ -126,7 +174,7 @@ class PlInputField extends LitElement {
               aria-labelledby=${ifDefined(names ? names : undefined)}
             >
               <input
-                type="text"
+              type="${this.type || "text"}"
                 class="form-control${this.validation ? " is-invalid" : ""}${this
                   .size === "sm"
                   ? " pl-input-sm"
@@ -139,10 +187,11 @@ class PlInputField extends LitElement {
                 id=${ifDefined(ids ? ids : undefined)}
                 name=${ifDefined(names ? names : undefined)}
                 value=${ifDefined(this.value ? this.value : undefined)}
-                @focus="${this.handleInteraction}"
-                @blur="${this.handleDocumentClick}"
                 aria-labelledby=${ifDefined(names ? names : undefined)}
                 ?disabled=${this.disabled}
+                @focus="${this.handleInteraction}"
+                @blur="${this.handleDocumentClick}"
+                @input=${this.handleInput}
               />
               <div
                 class="b-underline${this.validation ? " invalid" : ""}"

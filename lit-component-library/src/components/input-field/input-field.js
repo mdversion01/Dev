@@ -18,12 +18,12 @@ class InputField extends LitElement {
     return {
       disabled: { type: Boolean },
       formLayout: { type: String },
+      formId: { type: String },
       inputId: { type: String },
       size: { type: String },
       label: { type: String },
       labelHidden: { type: Boolean },
       required: { type: Boolean },
-      // search: { type: Boolean },
       type: { type: String },
       validation: { type: Boolean },
       validationMessage: { type: String },
@@ -34,19 +34,48 @@ class InputField extends LitElement {
   constructor() {
     super();
     this.disabled = false;
+    this.formId = "";
     this.inputId = "";
     this.label = "";
     this.labelHidden = false;
     this.required = false;
-    // this.search = false;
-    this.type = "", 
+    this.type = "";
     this.validation = false;
     this.validationMessage = "";
     this.value = "";
   }
 
+  connectedCallback() {
+    super.connectedCallback();
+
+    // Access the formId and formLayout properties from the closest form-component
+    const formComponent = this.closest("form-component");
+
+    if (formComponent) {
+      this.formId = formComponent.formId || "";
+      this.formLayout = formComponent.formLayout || "";
+      console.log("formId: ", this.formId);
+      console.log("formLayout: ", this.formLayout);
+    }
+  }
+
+  updated(changedProperties) {
+    super.updated(changedProperties);
+
+    if (changedProperties.has("formId")) {
+      const input = this.shadowRoot.querySelector("input");
+      if (input) {
+        // Check if formId is not a symbol before setting the attribute
+        if (typeof this.formId !== "symbol") {
+          input.setAttribute("form", this.formId);
+        } else {
+          input.removeAttribute("form"); // Remove the form attribute if formId is a symbol
+        }
+      }
+    }
+  }
+
   camelCase(str) {
-    // Using replace method with regEx
     return str
       .replace(/(?:^\w|[A-Z]|\b\w)/g, function (word, index) {
         return index == 0 ? word.toLowerCase() : word.toUpperCase();
@@ -90,6 +119,7 @@ class InputField extends LitElement {
           value=${ifDefined(this.value ? this.value : undefined)}
           aria-labelledby=${ifDefined(names ? names : undefined)}
           ?disabled=${this.disabled}
+          @input=${ifDefined(this.handleInput ? this.handleInput : undefined)}
         />
         ${this.validation
           ? html`<div class="invalid-feedback form-text">
@@ -98,6 +128,20 @@ class InputField extends LitElement {
           : ""}
       </div>
     `;
+  }
+
+  handleInput(event) {
+    const formId = this.formId;
+
+    // Set the form attribute using event delegation
+    if (formId !== undefined && typeof formId !== "symbol") {
+      const form = event.target.form || document.getElementById(formId);
+      if (form) {
+        event.target.form = form;
+      }
+    } else {
+      event.target.form = null;
+    }
   }
 
   render() {
