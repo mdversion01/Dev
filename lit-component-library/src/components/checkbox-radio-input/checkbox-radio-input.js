@@ -31,16 +31,7 @@ class CheckboxRadioInput extends LitElement {
       validation: { type: Boolean },
       validationMessage: { type: String },
       value: { type: String },
-      // inline: { type: Boolean },
-
       formLayout: { type: String },
-      //   outsideOfForm: { type: Boolean },
-      //   // styling properties
-      //   bcolor: { type: String },
-      //   bradius: { type: Number },
-      //   bstyle: { type: String },
-      //   bwidth: { type: Number },
-      //   styles: { type: String },
     };
   }
 
@@ -55,20 +46,10 @@ class CheckboxRadioInput extends LitElement {
     this.name = "";
     this.radio = false;
     this.radioGroup = false;
-    // this.radioGroupOptions = [];
     this.selectedValue = "";
     this.validation = false;
     this.validationMessage = "";
     this.value = "";
-    // this.inline = false;
-
-    // this.outsideOfForm = false;
-    // styling properties
-    // this.bcolor = "";
-    // this.bradius = "";
-    // this.bstyle = "";
-    // this.bwidth = "";
-    // this.styles = "";
   }
 
   camelCase(str) {
@@ -259,11 +240,6 @@ class CheckboxRadioInput extends LitElement {
       this.requestUpdate();
     }
   }
-
-  // connectedCallback() {
-  //   super.connectedCallback();
-  //   console.log("Connected to the DOM");
-  // }
 
   render() {
     const ids = this.camelCase(this.inputId).replace(/ /g, "");

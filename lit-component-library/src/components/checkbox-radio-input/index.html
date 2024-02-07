@@ -156,41 +156,41 @@
             <section class="display-box" id="db-1">
               <section class="display-box-demo">
                 <form-component>
-                <checkbox-radio-input-component
-                  radio
-                  inputId="radio-1"
-                  name="radios"
-                  labelTxt="Single Radio Option"
-                  slot="formField"
-                ></checkbox-radio-input-component>
+                  <checkbox-radio-input-component
+                    radio
+                    inputId="radio-1"
+                    name="radios"
+                    labelTxt="Single Radio Option"
+                    slot="formField"
+                  ></checkbox-radio-input-component>
 
-                <checkbox-radio-input-component
-                  radio
-                  inputId="radio-2"
-                  name="radios"
-                  labelTxt="Radio Option (Disabled)"
-                  disabled
-                  slot="formField"
-                ></checkbox-radio-input-component>
+                  <checkbox-radio-input-component
+                    radio
+                    inputId="radio-2"
+                    name="radios"
+                    labelTxt="Radio Option (Disabled)"
+                    disabled
+                    slot="formField"
+                  ></checkbox-radio-input-component>
                 </form-component>
                 <hr />
                 <form-component formLayout="inline">
-                <checkbox-radio-input-component
-                  radio
-                 inputId="radio-1"
-                  name="radios"
-                  labelTxt="Single Radio Option"
-                  slot="formField"
-                ></checkbox-radio-input-component>
+                  <checkbox-radio-input-component
+                    radio
+                    inputId="radio-1"
+                    name="radios"
+                    labelTxt="Single Radio Option"
+                    slot="formField"
+                  ></checkbox-radio-input-component>
 
-                <checkbox-radio-input-component
-                  radio
-                  inputId="radio-2"
-                  name="radios"
-                  labelTxt="Radio Option (Disabled)"
-                  disabled
-                  slot="formField"
-                ></checkbox-radio-input-component>
+                  <checkbox-radio-input-component
+                    radio
+                    inputId="radio-2"
+                    name="radios"
+                    labelTxt="Radio Option (Disabled)"
+                    disabled
+                    slot="formField"
+                  ></checkbox-radio-input-component>
                 </form-component>
               </section>
               <section class="display-box-meta markdown">
@@ -257,7 +257,7 @@
     </div>
 
     <!-- Props -->
-    <!-- <div style="margin-top: 50px">
+    <div style="margin-top: 50px">
       <div class="title">Props</div>
       <div class="table-wrapper">
         <table>
@@ -272,141 +272,203 @@
 
           <tbody>
             <tr>
-              <td>action</td>
-              <td>String</td>
-              <td></td>
-              <td>
-                This property is used to specify the URL where to send the form
-                data when the form is submitted. If this property is not set,
-                the form will be sent to the current page.
-              </td>
-            </tr>
-            <tr>
-              <td>fieldset</td>
+              <td>checked</td>
               <td>Boolean</td>
               <td></td>
               <td>
-                When true, the form will be wrapped in a fieldset element. This
-                property is used to group related elements in a form.
+                If true, the checkbox or radio button is checked. If false, it
+                is unchecked.
+              </td>
+            </tr>
+            <tr>
+              <td>checkbox</td>
+              <td>Boolean</td>
+              <td></td>
+              <td>
+                If true, the component is a checkbox, if not, nothing is
+                displayed or passed in as a prop.
+              </td>
+            </tr>
+            <tr>
+              <td>disabled</td>
+              <td>Boolean</td>
+              <td></td>
+              <td>
+                If true, the checkbox or radio button is disabled. If false, it
+                is enabled.
               </td>
             </tr>
             <tr>
               <td>formLayout</td>
               <td>String</td>
-              <td>horizontal, inline</td>
+              <td></td>
               <td>
-                When use in the form component, it passes the layout setting
-                from the parent to child component(s) within the &lt;form&gt;
-                tag. The default is vertical.
+                Used in the form component to set the layout of the checkbox or
+                radio button. Vertical is the default layout if not used, and
+                inline is the other option.
               </td>
             </tr>
             <tr>
-              <td>formId</td>
+              <td>inputId</td>
               <td>String</td>
               <td></td>
               <td>
-                This property is used to specify the id of the form. It is used
-                to link the form with an input.
+                The id of the checkbox or radio button. This is used to
+                associate the label with the input.
               </td>
             </tr>
             <tr>
-              <td>legend</td>
+              <td>labelTxt</td>
+              <td>String</td>
+              <td></td>
+              <td>
+                The text of the label that is displayed next to the checkbox or
+                radio button.
+              </td>
+            </tr>
+            <tr>
+              <td>name</td>
+              <td>String</td>
+              <td></td>
+              <td>
+                The name of the radio group. This is used to group radio buttons
+                together so that only one can be selected at a time.
+              </td>
+            </tr>
+            <tr>
+              <td>noLabel</td>
               <td>Boolean</td>
-              <td>false</td>
-              <td>
-                When true, this property is used to provide a caption for the
-                fieldset element.
-              </td>
-            </tr>
-            <tr>
-              <td>legendPosition</td>
-              <td>String</td>
-              <td>center, right</td>
-              <td>
-                This property is used to specify the position of the legend
-                element. The default is left.
-              </td>
-            </tr>
-            <tr>
-              <td>legendTxt</td>
-              <td>String</td>
               <td></td>
               <td>
-                This property is used to specify the text of the legend element.
+                If true, the label is not displayed. If false, the label is
+                displayed.
               </td>
             </tr>
             <tr>
-              <td>method</td>
-              <td>String</td>
-              <td></td>
-              <td>
-                This property is used to specify the HTTP method to use when
-                sending the form data. The default is get.
-              </td>
-            </tr>
-            <tr>
-              <td>outsideOfForm</td>
+              <td>radio</td>
               <td>Boolean</td>
-              <td>false</td>
+              <td></td>
               <td>
-                When true, this property is used to specify that the input
-                element is outside of the form. Uses the formId property to link
-                the input to the form.
+                If true, the component is a radio button, if not, nothing is
+                displayed or passed in as a prop.
               </td>
             </tr>
             <tr>
-              <td>bcolor</td>
+              <td>radioGroup</td>
+              <td>Boolean</td>
+              <td></td>
+              <td>
+                If true, the component is a radio group, if not, nothing is
+                displayed or passed in as a prop.
+              </td>
+            </tr>
+            <tr>
+              <td>radioGroupOptions</td>
+              <td>Array</td>
+              <td></td>
+              <td>
+                An array of objects that define the options for the radio group.
+                Each object should have the following properties:
+                <ul>
+                  <li>value: The value of the radio button</li>
+                  <li>
+                    labelTxt: The text of the label that is displayed next to
+                    the radio button
+                  </li>
+                  <li>
+                    inputId: The id of the radio button. This is used to
+                    associate the label with the input
+                  </li>
+                  <li>
+                    disabled: If true, the radio button is disabled. If false,
+                    it is enabled
+                  </li>
+                  <li>
+                    checked: If true, the radio button is checked. If false, it
+                    is unchecked
+                  </li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <td>size</td>
               <td>String</td>
               <td></td>
               <td>
-                This property is used to specify the color of the border. The
-                default is #CCCCCC. It is added as an inline style.
+                The size of the checkbox or radio button. Possible values are
+                "sm" for small and "md" for medium, when not used the size is
+                default.
               </td>
             </tr>
             <tr>
-              <td>bradius</td>
-              <td>Number</td>
-              <td></td>
-              <td>
-                This property is used to specify the radius of the border. Use a
-                number to set, increments are defaulted to pixels. The default
-                is 5. It is added as an inline style.
-              </td>
-            </tr>
-            <tr>
-              <td>bstyle</td>
+              <td>selectedValue</td>
               <td>String</td>
               <td></td>
               <td>
-                This property is used to specify the style of the border. The
-                default is solid. It is added as an inline style.
+                The value of the selected radio button in the radio group.
               </td>
             </tr>
             <tr>
-              <td>bwidth</td>
-              <td>Number</td>
+              <td>validation</td>
+              <td>Boolean</td>
               <td></td>
               <td>
-                This property is used to specify the width of the border. The
-                default is 1. It is added as an inline style.
+                If true, the component is validated. If false, it is not
+                validated.
               </td>
             </tr>
             <tr>
-              <td>styles</td>
+              <td>validationMessage</td>
               <td>String</td>
               <td></td>
               <td>
-                This property is used to specify the styles of the form. It is
-                added as an inline style.
+                The validation message that is displayed when the component is
+                invalid.
+              </td>
+            </tr>
+            <tr>
+              <td>value</td>
+              <td>String</td>
+              <td></td>
+              <td>
+                The value of the checkbox or radio button. This is the value
+                that is sent to the server when the form is submitted.
               </td>
             </tr>
           </tbody>
         </table>
       </div>
-    </div> -->
+    </div>
+
+    <!-- Slots -->
+    <div style="margin-top: 50px">
+      <div class="title">Slots</div>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Slot</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td>formField</td>
+              <td>
+                This is the slot for form fields. It is used when using inside a
+                form component.<br />
+                Add <span class="example">slot="formField"</span> to the input
+                field component.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
 
     <!-- Instructions -->
-    <!-- <div style="margin-top: 50px">
+    <div style="margin-top: 50px">
       <div class="title">Using Component in other JavaScript Frameworks</div>
 
       <p>
@@ -418,120 +480,121 @@
 
       <h5>Vue.js</h5>
       <p>
-        In a Vue component, you'd use Form just like any other HTML
+        In a Vue component, you'd use the component just like any other HTML
         element:
       </p>
       <pre>
           <code>
             &#60;template&#62;
-              &#60;div&#62;
-              &#60;!-- Include the Lit Element Form component as a Vue component --&#62;
-              &#60;lit-element-form
-                    :action="yourVueDataProperty"
-                    :fieldset="yourVueDataProperty"
-                    :form-layout="yourVueDataProperty"
-                    :form-id="yourVueDataProperty"
-                    :legend="yourVueDataProperty"
-                    :legend-position="yourVueDataProperty"
-                    :legend-txt="yourVueDataProperty"
-                    :method="yourVueDataProperty"
-                    :outside-of-form="yourVueDataProperty"
-                    :bcolor="yourVueDataProperty"
-                    :bradius="yourVueDataProperty"
-                    :bstyle="yourVueDataProperty"
-                    :bwidth="yourVueDataProperty"
-                    :styles="yourVueDataProperty"
-                  >
-                  &#60;!-- Your Vue.js content goes here --&#62;
-                  &#60;/lit-element-form&#62;
-                  &#60;/div&#62;
-                  &#60;/template&#62;
-              
-                  &#60;script&#62;
-              // Import the Lit Element Form component
-              import 'lit-element-form'; // Replace with the correct path to your Lit Element Form component
-              
-              export default {
-                data() {
-                  return {
-                    // Define your Vue.js data properties
-                    yourVueDataProperty: 'value',
-                  };
-                },
-                // Other Vue.js component options and lifecycle hooks go here
-              };
-              </script>
-              
+            &#60;div ref="container"&#62;&#60;/div&#62;
+            &#60;/template&#62;
+
+            &#60;script&#62;
+            // Import your Lit Element Checkbox and Radio component
+            import 'path-to-your-checkbox-radio-input-component'; // Update the path
+
+            export default {
+              props: ['inputId', 'labelTxt', 'checkbox', 'radio'],
+              mounted() {
+                const element = document.createElement('checkbox-radio-input-component');
+                element.inputId = this.inputId;
+                element.labelTxt = this.labelTxt;
+                element.checkbox = this.checkbox;
+                element.radio = this.radio;
+
+                this.$refs.container.appendChild(element);
+              },
+            };
+            &#60;/script&#62;
+
+            &#60;style scoped&#62;
+            /* Add any scoped styles if needed */
+            &#60;/style&#62;
           </code>
         </pre>
 
       <h5>React</h5>
       <p>
-        In a React component, you'd similarly treat Form as a regular
+        In a React component, you'd similarly treat the component as a regular
         HTML element:
       </p>
       <pre>
           <code>
-            import React from 'react';
-            import 'lit-element-form'; // Replace with the correct path to your Lit Element Form component
-
-            function YourReactComponent() {
-              return (
-                &#60;div &#62;
-                  {/* Include the Lit Element Form component as a React component */}
-                  &#60;lit-element-form
-                    action={yourReactDataProperty}
-                    fieldset={yourReactDataProperty}
-                    formLayout={yourReactDataProperty}
-                    formId={yourReactDataProperty}
-                    legend={yourReactDataProperty}
-                    legendPosition={yourReactDataProperty}
-                    legendTxt={yourReactDataProperty}
-                    method={yourReactDataProperty}
-                    outsideOfForm={yourReactDataProperty}
-                    bcolor={yourReactDataProperty}
-                    bradius={yourReactDataProperty}
-                    bstyle={yourReactDataProperty}
-                    bwidth={yourReactDataProperty}
-                    styles={yourReactDataProperty}
-                  &#62;
-                    {/* Your React content goes here */}
-                    &#60;/lit-element-form &#62;
-                    &#60;/div&#62;
-              );
-            }
-
-            export default YourReactComponent;
-
+            // LitElementWrapper.jsx
+            import React, { useRef, useEffect } from 'react';
+            
+            // Import your Lit Element Checkbox and Radio component
+            import 'path-to-your-checkbox-radio-input-component'; // Update the path
+            
+            const LitElementWrapper = ({ inputId, labelTxt, checkbox, radio }) => {
+              const containerRef = useRef();
+            
+              useEffect(() => {
+                const element = document.createElement('checkbox-radio-input-component');
+                element.inputId = inputId;
+                element.labelTxt = labelTxt;
+                element.checkbox = checkbox;
+                element.radio = radio;
+            
+                containerRef.current.appendChild(element);
+              }, [inputId, labelTxt, checkbox, radio]);
+            
+              return &#60;div ref={containerRef}&#62;&#60;/div&#62;;
+            };
+            
+            export default LitElementWrapper;
+            
           </code>
         </pre>
 
       <h5>Angular</h5>
-      <p>In Angular, you'd use Form as part of your Angular template:</p>
+      <p>In Angular, you'd use this component as part of your Angular template:</p>
 
       <pre>
           <code>
-            import { Component } from '@angular/core';
-            import 'path-to-lit-element-form'; // Replace with the correct path
-            
-            @Component({
-              selector: 'app-your-angular-component',
-              template: `
-              &#60;div&#62;
-              &#60;!-- Use the LitElementForm custom element in your Angular template --&#62;
-              &#60;lit-element-form
-                    [action]="yourAngularDataProperty"
-                    [fieldset]="yourAngularDataProperty"
-                    &#60;!-- Other bindings go here --&#62;
-                  >
-                  &#60;!-- Your Angular content goes here --&#62;
-                  &#60;/lit-element-form&#62;
-                  &#60;/div&#62;
-              `,
-            })
-            export class YourAngularComponent {
-              // Define your Angular component logic here
+            // LitElementWrapper.component.ts
+            import { Component, ElementRef, Input, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
+
+            // Import your Lit Element Checkbox and Radio component
+            import 'path-to-your-checkbox-radio-input-component'; // Update the path
+
+            declare global {
+              interface Window {
+                LitElement: any; // Adjust the type based on the LitElement class
+              }
             }
+
+            @Component({
+              selector: 'app-lit-element-wrapper',
+              template: '&#60;div #container&#62;&#60;/div&#62;',
+            })
+            export class LitElementWrapperComponent implements OnInit, OnDestroy {
+              @Input() inputId: string;
+              @Input() labelTxt: string;
+              @Input() checkbox: boolean;
+              @Input() radio: boolean;
+
+              @ViewChild('container', { static: true }) containerRef: ElementRef;
+
+              private litElement: any; // Adjust the type based on the LitElement class
+
+              constructor(private renderer: Renderer2) {}
+
+              ngOnInit(): void {
+                this.litElement = document.createElement('checkbox-radio-input-component');
+                this.litElement.inputId = this.inputId;
+                this.litElement.labelTxt = this.labelTxt;
+                this.litElement.checkbox = this.checkbox;
+                this.litElement.radio = this.radio;
+
+                this.renderer.appendChild(this.containerRef.nativeElement, this.litElement);
+              }
+
+              ngOnDestroy(): void {
+                // Clean up, remove event listeners, etc.
+              }
+            }
+
           </code>
         </pre>
 
@@ -546,7 +609,7 @@
         and registered as custom elements, act like native HTML elements that
         these frameworks can understand and interact with.
       </p>
-    </div> -->
+    </div>
 
     <script src="../form/form.js" type="module"></script>
     <script src="../input-field/input-field.js" type="module"></script>
@@ -597,7 +660,6 @@
               inputId: "radio-1",
               disabled: false,
               checked: true,
-             
             },
             {
               value: "option2",
