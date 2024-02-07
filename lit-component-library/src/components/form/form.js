@@ -1,7 +1,7 @@
 import { LitElement, html, css } from "lit";
 import { ifDefined } from "lit/directives/if-defined.js";
 import { layoutStyles } from "../layout-styles.js";
-import { formStyles } from "./form-component-styles.js";
+import { formStyles } from "../form-styles.js";
 import Fontawesome from "lit-fontawesome";
 
 class Form extends LitElement {
@@ -48,7 +48,7 @@ class Form extends LitElement {
       ${this.outsideOfForm
         ? html`
             <div form=${ifDefined(this.formId ? this.formId : undefined)}>
-              <slot name="input" .formLayout="${this.formLayout}"></slot>
+              <slot name="formField" .formLayout="${this.formLayout}"></slot>
             </div>
           `
         : html`
@@ -64,7 +64,7 @@ class Form extends LitElement {
               id=${ifDefined(this.id ? this.id : undefined)}
               method=${ifDefined(this.method ? this.method : undefined)}
             >
-              <slot name="input" .formLayout="${this.formLayout}"></slot>
+              <slot name="formField" .formLayout="${this.formLayout}"></slot>
             </form>
           `}
     `;
@@ -80,7 +80,7 @@ class Form extends LitElement {
                     ${this.legendTxt || "Add Title Here"}
                   </legend>`
                 : ""}
-              <slot name="input" .formLayout="${this.formLayout}"></slot>
+              <slot name="formField" .formLayout="${this.formLayout}"></slot>
             </fieldset>
           `
         : html`
@@ -102,7 +102,7 @@ class Form extends LitElement {
                       ${this.legendTxt || "Add Title Here"}
                     </legend>`
                   : ""}
-                <slot name="input" .formLayout="${this.formLayout}"></slot>
+                <slot name="formField" .formLayout="${this.formLayout}"></slot>
               </fieldset>
             </form>
           `}

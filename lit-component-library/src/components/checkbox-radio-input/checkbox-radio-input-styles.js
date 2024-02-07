@@ -1,35 +1,17 @@
 import { css } from "lit";
 
 export const checkboxRadioStyles = css`
-  button,
-  input,
-  optgroup,
-  select,
-  textarea {
-    margin: 0;
-    font-family: inherit;
-    font-size: inherit;
-    line-height: inherit;
-  }
-
-  button,
-  input {
-    overflow: visible;
-  }
-
-  input[type="checkbox"],
-  input[type="radio"] {
-    box-sizing: border-box;
-    padding: 0;
-  }
-
-  .position-static {
-    position: static !important;
-  }
-
   label {
     display: inline-block;
     margin-bottom: 0.5rem;
+  }
+
+  .form-group {
+    padding: 2px 15px;
+  }
+
+  .form-group {
+    margin-bottom: 0;
   }
 
   .form-check {
@@ -52,11 +34,20 @@ export const checkboxRadioStyles = css`
     margin-bottom: 0;
   }
 
+  .form-check-label.small {
+    font-size: 12px;
+  }
+
+  .form-check-label.med {
+    font-size: 14px;
+  }
+
   .form-check-inline {
     display: inline-flex;
     align-items: center;
     padding-left: 0;
     margin-right: 0.75rem;
+    height: 100%;
   }
 
   .form-check-inline .form-check-input {
@@ -83,6 +74,22 @@ export const checkboxRadioStyles = css`
     width: 100%;
   }
 
+  .form-group.form-check-inline {
+    margin-right: 0;
+  }
+
+  .form-group.form-check-inline:first-child {
+    padding-left: 15px;
+  }
+
+  .form-group.form-check-inline .form-check {
+    padding-left: 0;
+  }
+
+  .form-group.form-check-inline .form-check-input {
+    margin-right: 0;
+  }
+
   input:disabled {
     cursor: default;
     background-color: -internal-light-dark(
@@ -104,6 +111,28 @@ export const checkboxRadioStyles = css`
 
   .form-check-input:disabled ~ .form-check-label {
     color: #6c757d;
+  }
+
+  .invalid-feedback {
+    color: #e34850;
+    /* display: none; */
+    margin-top: 0.25rem;
+    font-size: 0.75rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .form-check-inline.was-validated + .invalid-feedback {
+    padding: 0 0 0 30px;
+    margin-top: -4px;
+  }
+
+  .invalid {
+    color: #e34850;
+  }
+
+  .form-check-input.is-invalid ~ .form-check-label,
+  .was-validated .form-check-input:invalid ~ .form-check-label {
+    color: #dc3545;
   }
 
   // Kick in the inline

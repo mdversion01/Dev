@@ -39,8 +39,23 @@
                     label="First Name"
                     id="first-name"
                     name="first-name"
-                    slot="input"
+                    slot="formField"
                   ></input-field-component>
+
+                  <checkbox-radio-input-component
+                    checkbox
+                    inputId="cbx-1"
+                    labelTxt="Checkbox Option 1"
+                    slot="formField"
+                  ></checkbox-radio-input-component>
+
+                  <checkbox-radio-input-component
+                    checkbox
+                    inputId="cbx-2"
+                    labelTxt="Checkbox Option 2 (Disabled)"
+                    disabled
+                    slot="formField"
+                  ></checkbox-radio-input-component>
                 </form-component>
               </section>
               <section class="display-box-meta markdown">
@@ -59,7 +74,7 @@
                     label="First Name"
                     id="first-name"
                     name="first-name"
-                    slot="input"
+                    slot="formField"
                   ></input-field-component>
                 </form-component>
               </section>
@@ -81,7 +96,7 @@
                     label="First Name"
                     id="first-name"
                     name="first-name"
-                    slot="input"
+                    slot="formField"
                   ></input-field-component>
                 </form-component>
               </section>
@@ -110,7 +125,7 @@
                     label="First Name"
                     id="first-name"
                     name="first-name"
-                    slot="input"
+                    slot="formField"
                   ></input-field-component>
                 </form-component>
               </section>
@@ -135,7 +150,7 @@
                     label="First Name"
                     id="first-name"
                     name="first-name"
-                    slot="input"
+                    slot="formField"
                   ></input-field-component>
                 </form-component>
 
@@ -144,7 +159,7 @@
                     label="Address"
                     id="address"
                     name="address"
-                    slot="input"
+                    slot="formField"
                   ></input-field-component>
                 </form-component>
               </section>
@@ -166,14 +181,14 @@
                     label="First Name"
                     id="first-name"
                     name="first-name"
-                    slot="input"
+                    slot="formField"
                   ></input-field-component>
 
                   <input-field-component
                     label="Last Name"
                     id="lname"
                     name="lname"
-                    slot="input"
+                    slot="formField"
                   ></input-field-component>
                 </form-component>
               </section>
@@ -195,7 +210,7 @@
                     label="First Name"
                     id="first-name"
                     name="first-name"
-                    slot="input"
+                    slot="formField"
                   ></input-field-component>
                 </form-component>
               </section>
@@ -226,7 +241,7 @@
                     label="First Name"
                     id="first-name"
                     name="first-name"
-                    slot="input"
+                    slot="formField"
                   ></input-field-component>
                 </form-component>
               </section>
@@ -537,6 +552,7 @@
 
     <script src="./form.js" type="module"></script>
     <script src="../input-field/input-field.js" type="module"></script>
+    <script src="../checkbox-radio-input/checkbox-radio-input.js" type="module"></script>
 
     <!-- <script src="../../../node_modules/bootstrap/dist/js/bootstrap.js"></script> -->
   </body>

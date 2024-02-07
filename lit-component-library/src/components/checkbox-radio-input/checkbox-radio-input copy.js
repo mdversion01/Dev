@@ -1,18 +1,11 @@
 import { LitElement, html, css } from "lit";
 import { ifDefined } from "lit/directives/if-defined.js";
 import { layoutStyles } from "../layout-styles.js";
-import { formStyles } from "../form-styles.js";
 import { checkboxRadioStyles } from "./checkbox-radio-input-styles.js";
 import Fontawesome from "lit-fontawesome";
 
 class CheckboxRadioInput extends LitElement {
-  static styles = [
-    layoutStyles,
-    formStyles,
-    checkboxRadioStyles,
-    Fontawesome,
-    css``,
-  ];
+  static styles = [layoutStyles, checkboxRadioStyles, Fontawesome, css``];
 
   static get properties() {
     return {
@@ -26,14 +19,13 @@ class CheckboxRadioInput extends LitElement {
       radio: { type: Boolean },
       radioGroup: { type: Boolean },
       radioGroupOptions: { type: Array },
-      size: { type: String },
       selectedValue: { type: String },
       validation: { type: Boolean },
       validationMessage: { type: String },
       value: { type: String },
-      // inline: { type: Boolean },
+      inline: { type: Boolean },
 
-      formLayout: { type: String },
+      //   formLayout: { type: String },
       //   outsideOfForm: { type: Boolean },
       //   // styling properties
       //   bcolor: { type: String },
@@ -60,7 +52,7 @@ class CheckboxRadioInput extends LitElement {
     this.validation = false;
     this.validationMessage = "";
     this.value = "";
-    // this.inline = false;
+    this.inline = false;
 
     // this.outsideOfForm = false;
     // styling properties
@@ -94,24 +86,9 @@ class CheckboxRadioInput extends LitElement {
     this.validation = false;
   }
 
-  connectedCallback() {
-    super.connectedCallback();
-
-    // Access the formId and formLayout properties from the closest form-component
-    const formComponent = this.closest("form-component");
-
-    if (formComponent) {
-      this.formLayout = formComponent.formLayout || "";
-    }
-  }
-
   renderCheckbox(ids, names) {
     return html`
-      <div
-        class="form-group${this.formLayout === "inline"
-          ? " form-check-inline"
-          : ""}${this.validation ? " was-validated" : ""}"
-      >
+      <div class="form-group${this.inline ? " form-check-inline" : ""}${this.validation ? " was-validated" : ""}">
         <div class="form-check">
           <input
             class="form-check-input"
@@ -126,31 +103,25 @@ class CheckboxRadioInput extends LitElement {
           ${this.noLabel
             ? ""
             : html`<label
-                class="form-check-label${this.size === "sm"
-                  ? " small"
-                  : this.size === "md"
-                  ? " med"
-                  : ""}"
+                class="form-check-label"
                 for=${ifDefined(ids ? ids : undefined)}
                 >${this.labelTxt}</label
               >`}
-          ${this.validation
-            ? html`<div class="invalid-feedback form-text">
-                ${this.validationMessage}
-              </div>`
-            : ""}
+
+              ${this.validation
+          ? html`<div class="invalid-feedback form-text">
+              ${this.validationMessage}
+            </div>`
+          : ""}
         </div>
+       
       </div>
     `;
   }
 
   renderRadio(ids, names) {
     return html`
-      <div
-        class="form-group${this.formLayout === "inline"
-          ? " form-check-inline"
-          : ""}${this.validation ? " was-validated" : ""}"
-      >
+      <div class="form-group${this.inline ? " form-check-inline" : ""}${this.validation ? " was-validated" : ""}">
         <div class="form-check">
           <input
             class="form-check-input"
@@ -167,20 +138,17 @@ class CheckboxRadioInput extends LitElement {
           ${this.noLabel
             ? ""
             : html`<label
-                class="form-check-label${this.size === "sm"
-                  ? " small"
-                  : this.size === "md"
-                  ? " med"
-                  : ""}"
+                class="form-check-label"
                 for=${ifDefined(ids ? ids : undefined)}
                 >${this.labelTxt}</label
               >`}
-          ${this.validation
-            ? html`<div class="invalid-feedback form-text">
-                ${this.validationMessage}
-              </div>`
-            : ""}
+              ${this.validation
+          ? html`<div class="invalid-feedback form-text">
+              ${this.validationMessage}
+            </div>`
+          : ""}
         </div>
+        
       </div>
     `;
   }
@@ -190,12 +158,10 @@ class CheckboxRadioInput extends LitElement {
       ${this.radioGroupOptions
         ? this.radioGroupOptions.map(
             (option) => html`
-              <div
-                class="form-group${this.formLayout === "inline"
-                  ? " form-check-inline"
-                  : ""}${this.validation ? " was-validated" : ""}"
-              >
-                <div class="form-check">
+              <div class="form-group${this.inline ? " form-check-inline" : ""}${this.validation ? " was-validated" : ""}">
+                <div
+                  class="form-check"
+                >
                   <input
                     class="form-check-input${this.noLabel
                       ? " position-static"
@@ -219,26 +185,22 @@ class CheckboxRadioInput extends LitElement {
                   ${this.noLabel
                     ? ""
                     : html`<label
-                        class="form-check-label${this.size === "sm"
-                          ? " small"
-                          : this.size === "md"
-                          ? " med"
-                          : ""}"
+                        class="form-check-label"
                         for=${ifDefined(
                           option.inputId ? option.inputId : undefined
                         )}
                         >${option.labelTxt}</label
                       >`}
                 </div>
+                ${this.validation
+                  ? html`<div class="invalid-feedback form-text">
+                      ${this.validationMessage}
+                    </div>`
+                  : ""}
               </div>
             `
           )
         : html``}
-      ${this.validation
-        ? html`<div class="invalid-feedback form-text">
-            ${this.validationMessage}
-          </div>`
-        : ""}
     `;
   }
 
@@ -246,7 +208,6 @@ class CheckboxRadioInput extends LitElement {
     const target = event.target;
     if (target.checked) {
       this.selectedValue = target.value;
-      this.validation = false;
       this.dispatchEvent(
         new CustomEvent("value-changed", { detail: this.selectedValue })
       );
@@ -260,14 +221,15 @@ class CheckboxRadioInput extends LitElement {
     }
   }
 
-  // connectedCallback() {
-  //   super.connectedCallback();
-  //   console.log("Connected to the DOM");
-  // }
+  connectedCallback() {
+    super.connectedCallback();
+    console.log("Connected to the DOM");
+  }
 
   render() {
     const ids = this.camelCase(this.inputId).replace(/ /g, "");
     const names = this.camelCase(this.name).replace(/ /g, "");
+    //console.log("ids2: ", ids, names, this.radioGroupOptions, this.labelTxt);
 
     if (this.checkbox) {
       return html`${this.renderCheckbox(ids, names)}`;

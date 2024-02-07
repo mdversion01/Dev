@@ -87,8 +87,6 @@ class PlInputField extends LitElement {
     if (formComponent) {
       this.formId = formComponent.formId || "";
       this.formLayout = formComponent.formLayout || "";
-      console.log("formId: ", this.formId);
-      console.log("formLayout: ", this.formLayout);
     }
   }   
 
@@ -96,7 +94,7 @@ class PlInputField extends LitElement {
     super.updated(changedProperties);
   
     if (changedProperties.has('formId')) {
-      const input = this.shadowRoot.querySelector('input');
+      const input = this.shadowRoot.querySelector('formField');
       if (input) {
         // Check if formId is not a symbol before setting the attribute
         if (typeof this.formId !== 'symbol') {

@@ -34,70 +34,118 @@
           <section class="section">
             <section class="display-box" id="db-1">
               <section class="display-box-demo">
-                <!-- <form-component> -->
-                <checkbox-radio-input-component
-                  checkbox
-                  inputId="cbx-1"
-                  labelTxt="Checkbox Option 1"
-                ></checkbox-radio-input-component>
+                <form-component>
+                  <checkbox-radio-input-component
+                    checkbox
+                    inputId="cbx-1"
+                    labelTxt="Checkbox Option 1"
+                    slot="formField"
+                  ></checkbox-radio-input-component>
 
-                <checkbox-radio-input-component
-                  checkbox
-                  inputId="cbx-2"
-                  labelTxt="Checkbox Option 2 (Disabled)"
-                  disabled
-                ></checkbox-radio-input-component>
-                <!-- </form-component> -->
+                  <checkbox-radio-input-component
+                    checkbox
+                    inputId="cbx-2"
+                    labelTxt="Checkbox Option 2 (Disabled)"
+                    disabled
+                    slot="formField"
+                  ></checkbox-radio-input-component>
+                </form-component>
 
                 <hr />
+                <form-component formLayout="inline" formId="form-1">
+                  <checkbox-radio-input-component
+                    checkbox
+                    inputId="cbx-1"
+                    labelTxt="Checkbox Option 1"
+                    slot="formField"
+                  ></checkbox-radio-input-component>
 
-                <checkbox-radio-input-component
-                checkbox
-                inline
-                inputId="cbx-1"
-                labelTxt="Checkbox Option 1"
-              ></checkbox-radio-input-component>
-
-              <checkbox-radio-input-component
-                checkbox
-                inline
-                inputId="cbx-2"
-                labelTxt="Checkbox Option 2 (Disabled)"
-                disabled
-              ></checkbox-radio-input-component>
+                  <checkbox-radio-input-component
+                    checkbox
+                    inputId="cbx-2"
+                    labelTxt="Checkbox Option 2 (Disabled)"
+                    disabled
+                    slot="formField"
+                  ></checkbox-radio-input-component>
+                </form-component>
               </section>
               <section class="display-box-meta markdown">
                 <div class="display-box-title">Basic Usage</div>
-                <div class="display-box-description">Single Checkbox components - Disabled and Vertical and Inline layout</div>
+                <div class="display-box-description">
+                  Single Checkbox components - Disabled and Vertical and Inline
+                  layout
+                </div>
                 <div class=""></div>
               </section>
             </section>
           </section>
 
-          <section>
-            <section class="section">
-              <section class="display-box" id="db-1">
-                <section class="display-box-demo">
-                  <!-- <form-component> -->
+          <section class="section">
+            <section class="display-box" id="db-1">
+              <section class="display-box-demo">
+                <form-component>
                   <checkbox-radio-input-component
                     radioGroup
                     name="radio-group"
                     id="dynamic-radio-group"
+                    slot="formField"
                   ></checkbox-radio-input-component>
-                   <hr />     
+                </form-component>
+                <hr />
+                <form-component formLayout="inline">
                   <checkbox-radio-input-component
                     inline
                     radioGroup
                     name="radio-group2"
                     id="dynamic-radio-group2"
+                    slot="formField"
                   ></checkbox-radio-input-component>
-                  <!-- </form-component> -->
-                </section>
-                <section class="display-box-meta markdown">
-                  <div class="display-box-title">Basic Usage</div>
-                  <div class="display-box-description">Radio Group - Disabled and Vertical and Inline layout</div>
-                  <div class=""></div>
-                </section>
+                </form-component>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">
+                  Radio Group - Disabled and Vertical and Inline layout
+                </div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
+
+          <section class="section">
+            <section class="display-box" id="db-1">
+              <section class="display-box-demo">
+                <form-component>
+                  <checkbox-radio-input-component
+                    checkbox
+                    inputId="cbx-1"
+                    labelTxt="Small Label"
+                    slot="formField"
+                    size="sm"
+                  ></checkbox-radio-input-component>
+
+                  <checkbox-radio-input-component
+                    checkbox
+                    inputId="cbx-1"
+                    labelTxt="Medium Label"
+                    slot="formField"
+                    size="md"
+                  ></checkbox-radio-input-component>
+
+                  <checkbox-radio-input-component
+                    checkbox
+                    inputId="cbx-1"
+                    labelTxt="Default Label"
+                    slot="formField"
+                  ></checkbox-radio-input-component>
+                </form-component>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">
+                  Label sizes - Small(sm), Medium(md), and Default
+                </div>
+                <div class=""></div>
               </section>
             </section>
           </section>
@@ -107,12 +155,13 @@
           <section class="section">
             <section class="display-box" id="db-1">
               <section class="display-box-demo">
-                <!-- <form-component> -->
+                <form-component>
                 <checkbox-radio-input-component
                   radio
                   inputId="radio-1"
                   name="radios"
                   labelTxt="Single Radio Option"
+                  slot="formField"
                 ></checkbox-radio-input-component>
 
                 <checkbox-radio-input-component
@@ -121,31 +170,84 @@
                   name="radios"
                   labelTxt="Radio Option (Disabled)"
                   disabled
+                  slot="formField"
                 ></checkbox-radio-input-component>
+                </form-component>
+                <hr />
+                <form-component formLayout="inline">
+                <checkbox-radio-input-component
+                  radio
+                 inputId="radio-1"
+                  name="radios"
+                  labelTxt="Single Radio Option"
+                  slot="formField"
+                ></checkbox-radio-input-component>
+
+                <checkbox-radio-input-component
+                  radio
+                  inputId="radio-2"
+                  name="radios"
+                  labelTxt="Radio Option (Disabled)"
+                  disabled
+                  slot="formField"
+                ></checkbox-radio-input-component>
+                </form-component>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">
+                  Single Radio components - Disabled and Vertical and Inline
+                  layout
+                </div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
+
+          <section class="section">
+            <section class="display-box" id="db-1">
+              <section class="display-box-demo">
+                <!-- <form-component> -->
+                <checkbox-radio-input-component
+                  checkbox
+                  inputId="cbx-1"
+                  labelTxt="Checkbox Option 1"
+                  validation
+                  validationMessage="This is a validation message"
+                ></checkbox-radio-input-component>
+                <!-- </form-component> -->
 
                 <hr />
 
                 <checkbox-radio-input-component
                   radio
-                  inline
                   inputId="radio-1"
                   name="radios"
                   labelTxt="Single Radio Option"
+                  validation
+                  validationMessage="This is a validation message"
                 ></checkbox-radio-input-component>
 
-                <checkbox-radio-input-component
-                  radio
-                  inline
-                  inputId="radio-2"
-                  name="radios"
-                  labelTxt="Radio Option (Disabled)"
-                  disabled
-                ></checkbox-radio-input-component>
-                <!-- </form-component> -->
+                <hr />
+
+                <form-component formLayout="inline">
+                  <checkbox-radio-input-component
+                    inline
+                    radioGroup
+                    name="radio-group2"
+                    id="dynamic-radio-group3"
+                    slot="formField"
+                    size="md"
+                    validation
+                    validationMessage="Select one of the options"
+                  ></checkbox-radio-input-component>
+                </form-component>
               </section>
               <section class="display-box-meta markdown">
                 <div class="display-box-title">Basic Usage</div>
-                <div class="display-box-description">Single Radio - Disabled and Vertical and Inline layout</div>
+                <div class="display-box-description">
+                  Validation - Checkbox and Radio components
+                </div>
                 <div class=""></div>
               </section>
             </section>
@@ -446,7 +548,8 @@
       </p>
     </div> -->
 
-    <!-- <script src="../form/form.js" type="module"></script> -->
+    <script src="../form/form.js" type="module"></script>
+    <script src="../input-field/input-field.js" type="module"></script>
     <script type="module">
       import "./checkbox-radio-input.js";
 
@@ -494,6 +597,7 @@
               inputId: "radio-1",
               disabled: false,
               checked: true,
+             
             },
             {
               value: "option2",
@@ -506,6 +610,34 @@
               labelTxt: "Disabled radio",
               inputId: "radio-3",
               disabled: true,
+            },
+            // Add more options as needed
+          ];
+        }
+      });
+
+      document.addEventListener("DOMContentLoaded", () => {
+        // Dynamically set radio group options
+        const dynamicRadioGroup3 = document.getElementById(
+          "dynamic-radio-group3"
+        );
+        if (dynamicRadioGroup3) {
+          dynamicRadioGroup3.radioGroupOptions = [
+            {
+              value: "option1",
+              labelTxt: "Radio Group Option 1",
+              inputId: "radio-1",
+              disabled: false,
+              required: true,
+              validation: true,
+            },
+            {
+              value: "option2",
+              labelTxt: "Radio Group Option 2",
+              inputId: "radio-2",
+              disabled: false,
+              required: true,
+              validation: true,
             },
             // Add more options as needed
           ];

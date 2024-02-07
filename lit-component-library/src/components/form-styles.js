@@ -1,13 +1,13 @@
 import { css } from "lit";
 
 export const formStyles = css`
-*,
-::after,
-::before {
-  box-sizing: border-box;
-}
+  *,
+  ::after,
+  ::before {
+    box-sizing: border-box;
+  }
 
-.sr-only {
+  .sr-only {
     position: absolute;
     width: 1px;
     height: 1px;
@@ -48,6 +48,33 @@ export const formStyles = css`
     overflow: visible;
   }
 
+  form {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+  }
+
+  legend {
+    padding: 0 10px;
+  }
+
+  legend.left {
+    text-align: left;
+  }
+
+  legend.right {
+    text-align: right;
+  }
+
+  legend.center {
+    text-align: center;
+  }
+
+  fieldset {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+
   input {
     font-family: inherit;
     font-size: inherit;
@@ -57,6 +84,16 @@ export const formStyles = css`
 
   input {
     overflow: visible;
+  }
+
+  input[type="checkbox"],
+  input[type="radio"] {
+    box-sizing: border-box;
+    padding: 0;
+  }
+
+  .position-static {
+    position: static !important;
   }
 
   .form-group {
@@ -126,5 +163,4 @@ export const formStyles = css`
     line-height: 50%;
     padding: 0 0.5rem 0 0.5rem;
   } */
-
 `;
