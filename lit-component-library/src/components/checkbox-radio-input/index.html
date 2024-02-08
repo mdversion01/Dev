@@ -85,78 +85,6 @@
               <section class="display-box-demo">
                 <form-component>
                   <checkbox-radio-input-component
-                    radioGroup
-                    name="radio-group"
-                    id="dynamic-radio-group"
-                    slot="formField"
-                  ></checkbox-radio-input-component>
-                </form-component>
-                <hr />
-                <form-component formLayout="inline">
-                  <checkbox-radio-input-component
-                    inline
-                    radioGroup
-                    name="radio-group2"
-                    id="dynamic-radio-group2"
-                    slot="formField"
-                  ></checkbox-radio-input-component>
-                </form-component>
-              </section>
-              <section class="display-box-meta markdown">
-                <div class="display-box-title">Basic Usage</div>
-                <div class="display-box-description">
-                  Radio Group - Disabled and Vertical and Inline layout
-                </div>
-                <div class=""></div>
-              </section>
-            </section>
-          </section>
-
-          <section class="section">
-            <section class="display-box" id="db-1">
-              <section class="display-box-demo">
-                <form-component>
-                  <checkbox-radio-input-component
-                    checkbox
-                    inputId="cbx-1"
-                    labelTxt="Small Label"
-                    slot="formField"
-                    size="sm"
-                  ></checkbox-radio-input-component>
-
-                  <checkbox-radio-input-component
-                    checkbox
-                    inputId="cbx-1"
-                    labelTxt="Medium Label"
-                    slot="formField"
-                    size="md"
-                  ></checkbox-radio-input-component>
-
-                  <checkbox-radio-input-component
-                    checkbox
-                    inputId="cbx-1"
-                    labelTxt="Default Label"
-                    slot="formField"
-                  ></checkbox-radio-input-component>
-                </form-component>
-              </section>
-              <section class="display-box-meta markdown">
-                <div class="display-box-title">Basic Usage</div>
-                <div class="display-box-description">
-                  Label sizes - Small(sm), Medium(md), and Default
-                </div>
-                <div class=""></div>
-              </section>
-            </section>
-          </section>
-        </section>
-
-        <section>
-          <section class="section">
-            <section class="display-box" id="db-1">
-              <section class="display-box-demo">
-                <form-component>
-                  <checkbox-radio-input-component
                     radio
                     inputId="radio-1"
                     name="radios"
@@ -207,35 +135,290 @@
           <section class="section">
             <section class="display-box" id="db-1">
               <section class="display-box-demo">
-                <!-- <form-component> -->
-                <checkbox-radio-input-component
-                  checkbox
-                  inputId="cbx-1"
-                  labelTxt="Checkbox Option 1"
-                  validation
-                  validationMessage="This is a validation message"
-                ></checkbox-radio-input-component>
-                <!-- </form-component> -->
+                <form-component>
+                  <checkbox-radio-input-component
+                    radioGroup
+                    name="radio-group"
+                    id="dynamic-radio-group"
+                    slot="formField"
+                  ></checkbox-radio-input-component>
+                </form-component>
+                <hr />
+                <form-component formLayout="inline">
+                  <checkbox-radio-input-component
+                    radioGroup
+                    name="radio-group2"
+                    id="dynamic-radio-group2"
+                    slot="formField"
+                  ></checkbox-radio-input-component>
+                </form-component>
 
                 <hr />
 
-                <checkbox-radio-input-component
-                  radio
-                  inputId="radio-1"
-                  name="radios"
-                  labelTxt="Single Radio Option"
-                  validation
-                  validationMessage="This is a validation message"
-                ></checkbox-radio-input-component>
+                <form-component>
+                  <checkbox-radio-input-component
+                    customRadioGroup
+                    name="radio-group2"
+                    id="dynamic-radio-group-custom"
+                    slot="formField"
+                  ></checkbox-radio-input-component>
+                </form-component>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">
+                  Radio Group - Disabled, Custom, Vertical, and Inline layout
+                </div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
+
+          <section class="section">
+            <section class="display-box" id="db-1">
+              <section class="display-box-demo">
+                <form-component>
+                  <div slot="formField" style="display: flex">
+                    <div style="flex: 1 1 auto">
+                      <checkbox-radio-input-component
+                        checkbox
+                        inputId="cbx-1"
+                        labelTxt="Small Label"
+                        slot="formField"
+                        size="sm"
+                      ></checkbox-radio-input-component>
+
+                      <checkbox-radio-input-component
+                        checkbox
+                        inputId="cbx-1"
+                        labelTxt="Medium Label"
+                        slot="formField"
+                        size="md"
+                      ></checkbox-radio-input-component>
+
+                      <checkbox-radio-input-component
+                        checkbox
+                        inputId="cbx-1"
+                        labelTxt="Default Label"
+                        slot="formField"
+                      ></checkbox-radio-input-component>
+                    </div>
+                    <div style="flex: 1 1 auto">
+                      <checkbox-radio-input-component
+                        customCheckbox
+                        inputId="cbx-1"
+                        labelTxt="Small Label"
+                        slot="formField"
+                        size="sm"
+                      ></checkbox-radio-input-component>
+
+                      <checkbox-radio-input-component
+                        customCheckbox
+                        inputId="cbx-1"
+                        labelTxt="Medium Label"
+                        slot="formField"
+                        size="md"
+                      ></checkbox-radio-input-component>
+
+                      <checkbox-radio-input-component
+                        customCheckbox
+                        inputId="cbx-1"
+                        labelTxt="Default Label"
+                        slot="formField"
+                      ></checkbox-radio-input-component>
+                    </div>
+                  </div>
+                </form-component>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">
+                  Label sizes - Small(sm), Medium(md), and Default
+                </div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
+        </section>
+
+        <section>
+          <section class="section">
+            <section class="display-box" id="db-1">
+              <section class="display-box-demo">
+                <form-component>
+                  <checkbox-radio-input-component
+                    customCheckbox
+                    inputId="cbx-1"
+                    labelTxt="Custom Checkbox Option 1"
+                    slot="formField"
+                  ></checkbox-radio-input-component>
+
+                  <checkbox-radio-input-component
+                    customCheckbox
+                    inputId="cbx-2"
+                    labelTxt="Custom Checkbox Option 2 (Disabled)"
+                    disabled
+                    slot="formField"
+                  ></checkbox-radio-input-component>
+                </form-component>
+
+                <hr />
+                <form-component formLayout="inline" formId="form-1">
+                  <checkbox-radio-input-component
+                    customCheckbox
+                    inputId="cbx-1"
+                    labelTxt="Checkbox Option 1"
+                    slot="formField"
+                  ></checkbox-radio-input-component>
+
+                  <checkbox-radio-input-component
+                    customCheckbox
+                    inputId="cbx-2"
+                    labelTxt="Checkbox Option 2 (Disabled)"
+                    disabled
+                    slot="formField"
+                  ></checkbox-radio-input-component>
+                </form-component>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">
+                  Custom Checkbox components - Disabled and Vertical and Inline
+                  layout
+                </div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
+
+          <section class="section">
+            <section class="display-box" id="db-1">
+              <section class="display-box-demo">
+                <form-component>
+                  <checkbox-radio-input-component
+                    customRadio
+                    inputId="cbx-1"
+                    labelTxt="Custom Checkbox Option 1"
+                    name="customRadios"
+                    slot="formField"
+                  ></checkbox-radio-input-component>
+
+                  <checkbox-radio-input-component
+                    customRadio
+                    inputId="cbx-2"
+                    labelTxt="Custom Checkbox Option 2 (Disabled)"
+                    disabled
+                    slot="formField"
+                  ></checkbox-radio-input-component>
+                </form-component>
+
+                <hr />
+                <form-component formLayout="inline" formId="form-1">
+                  <checkbox-radio-input-component
+                    customRadio
+                    inputId="cbx-1"
+                    name="customRadios2"
+                    labelTxt="Checkbox Option 1"
+                    slot="formField"
+                  ></checkbox-radio-input-component>
+
+                  <checkbox-radio-input-component
+                    customRadio
+                    inputId="cbx-2"
+                    name="customRadios2"
+                    labelTxt="Checkbox Option 2 (Disabled)"
+                    disabled
+                    slot="formField"
+                  ></checkbox-radio-input-component>
+                </form-component>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">
+                  Custom Radio components - Disabled and Vertical and Inline
+                  layout
+                </div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
+
+          <section class="section">
+            <section class="display-box" id="db-1">
+              <section class="display-box-demo">
+                <form-component>
+                  <div slot="formField" style="display: flex">
+                    <div style="flex: 1 1 auto">
+                      <checkbox-radio-input-component
+                        checkbox
+                        inputId="cbx-1"
+                        labelTxt="Checkbox Option"
+                        slot="formField"
+                        validation
+                        validationMessage="This is a validation message"
+                      ></checkbox-radio-input-component>
+                    </div>
+                    <div style="flex: 1 1 auto">
+                      <checkbox-radio-input-component
+                        customCheckbox
+                        inputId="cbx-1"
+                        labelTxt="Custom Checkbox Option"
+                        slot="formField"
+                        validation
+                        validationMessage="This is a validation message"
+                      ></checkbox-radio-input-component>
+                    </div>
+                  </div>
+                </form-component>
+
+                <hr />
+                <form-component>
+                  <div slot="formField" style="display: flex">
+                    <div style="flex: 1 1 auto">
+                      <checkbox-radio-input-component
+                        radio
+                        inputId="radio-1"
+                        name="radios"
+                        labelTxt="Single Radio Option"
+                        slot="formField"
+                        validation
+                        validationMessage="This is a validation message"
+                      ></checkbox-radio-input-component>
+                    </div>
+                    <div style="flex: 1 1 auto">
+                      <checkbox-radio-input-component
+                        customRadio
+                        inputId="cbx-1"
+                        name="customRadios2"
+                        labelTxt="Custom Radio Option "
+                        slot="formField"
+                        validation
+                        validationMessage="This is a validation message"
+                      ></checkbox-radio-input-component>
+                    </div>
+                  </div>
+                </form-component>
+                <hr />
+
+                <form-component formLayout="inline">
+                  <checkbox-radio-input-component
+                    radioGroup
+                    name="radio-group2"
+                    id="dynamic-radio-group3"
+                    slot="formField"
+                    size="md"
+                    validation
+                    validationMessage="Select one of the options"
+                  ></checkbox-radio-input-component>
+                </form-component>
 
                 <hr />
 
                 <form-component formLayout="inline">
                   <checkbox-radio-input-component
-                    inline
-                    radioGroup
-                    name="radio-group2"
-                    id="dynamic-radio-group3"
+                    customRadioGroup
+                    name="radio-group4"
+                    id="dynamic-radio-group4"
                     slot="formField"
                     size="md"
                     validation
@@ -286,6 +469,33 @@
               <td></td>
               <td>
                 If true, the component is a checkbox, if not, nothing is
+                displayed or passed in as a prop.
+              </td>
+            </tr>
+            <tr>
+              <td>customCheckbox</td>
+              <td>Boolean</td>
+              <td></td>
+              <td>
+                If true, the component is a custom checkbox, if not, nothing is
+                displayed or passed in as a prop.
+              </td>
+            </tr>
+            <tr>
+              <td>customRadio</td>
+              <td>Boolean</td>
+              <td></td>
+              <td>
+                If true, the component is a custom radio, if not, nothing is
+                displayed or passed in as a prop.
+              </td>
+            </tr>
+            <tr>
+              <td>customRadioRadio</td>
+              <td>Boolean</td>
+              <td></td>
+              <td>
+                If true, the component is a custom radio group, if not, nothing is
                 displayed or passed in as a prop.
               </td>
             </tr>
@@ -456,10 +666,9 @@
             <tr>
               <td>formField</td>
               <td>
-                This is the slot for form fields. It is used when using inside a
-                form component.<br />
-                Add <span class="example">slot="formField"</span> to the input
-                field component.
+                This is the slot for form fields. It is used for displaying content or content in the
+                form component or the form components (inputs, checkboxes, radios, etc).<br />
+                Add <span class="example">slot="formField"</span> to the form component and/or to the form components.
               </td>
             </tr>
           </tbody>
@@ -548,7 +757,9 @@
         </pre>
 
       <h5>Angular</h5>
-      <p>In Angular, you'd use this component as part of your Angular template:</p>
+      <p>
+        In Angular, you'd use this component as part of your Angular template:
+      </p>
 
       <pre>
           <code>
@@ -685,6 +896,62 @@
         );
         if (dynamicRadioGroup3) {
           dynamicRadioGroup3.radioGroupOptions = [
+            {
+              value: "option1",
+              labelTxt: "Radio Group Option 1",
+              inputId: "radio-1",
+              disabled: false,
+              required: true,
+              validation: true,
+            },
+            {
+              value: "option2",
+              labelTxt: "Radio Group Option 2",
+              inputId: "radio-2",
+              disabled: false,
+              required: true,
+              validation: true,
+            },
+            // Add more options as needed
+          ];
+        }
+      });
+
+      document.addEventListener("DOMContentLoaded", () => {
+        // Dynamically set radio group options
+        const dynamicRadioGroup4 = document.getElementById(
+          "dynamic-radio-group4"
+        );
+        if (dynamicRadioGroup4) {
+          dynamicRadioGroup4.radioGroupOptions = [
+            {
+              value: "option1",
+              labelTxt: "Custom Radio Group Option 1",
+              inputId: "radio-1",
+              disabled: false,
+              required: true,
+              validation: true,
+            },
+            {
+              value: "option2",
+              labelTxt: "Custom Radio Group Option 2",
+              inputId: "radio-2",
+              disabled: false,
+              required: true,
+              validation: true,
+            },
+            // Add more options as needed
+          ];
+        }
+      });
+
+      document.addEventListener("DOMContentLoaded", () => {
+        // Dynamically set radio group options
+        const dynamicRadioGroupCustom = document.getElementById(
+          "dynamic-radio-group-custom"
+        );
+        if (dynamicRadioGroupCustom) {
+          dynamicRadioGroupCustom.radioGroupOptions = [
             {
               value: "option1",
               labelTxt: "Radio Group Option 1",
