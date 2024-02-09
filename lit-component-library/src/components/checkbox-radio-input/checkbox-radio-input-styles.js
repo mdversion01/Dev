@@ -129,7 +129,7 @@ export const checkboxRadioStyles = css`
 
   .custom-control-input {
     position: absolute;
-    z-index: -1; // Put the input behind the label so it doesn't overlay text
+    z-index: -1;
     opacity: 0;
   }
 
@@ -140,7 +140,6 @@ export const checkboxRadioStyles = css`
   }
 
   .custom-control-input:focus ~ .custom-control-label::before {
-    // the mixin is not used here to make sure there is feedback
     box-shadow: 0 0 0 1px #fff, 0 0 0 0.2rem rgb(0 123 255 / 25%);
     content: "";
   }

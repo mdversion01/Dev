@@ -111,10 +111,13 @@ class CheckboxRadioInput extends LitElement {
             value=${ifDefined(this.value)}
             id=${ifDefined(ids ? ids : undefined)}
             aria-label=${ifDefined(!this.label ? this.labelTxt : undefined)}
+            aria-checked=${ifDefined(this.checked ? this.checked : undefined)}
             ?checked=${this.checked}
             ?disabled=${this.disabled}
             ?required=${this.validation}
             @change="${this.handleInputChange}"
+            tabindex="0"
+            aria-invalid=${ifDefined(this.validation ? "true" : undefined)}
           />
           ${this.noLabel
             ? ""
@@ -150,11 +153,14 @@ class CheckboxRadioInput extends LitElement {
             class="custom-control-input"
             id=${ifDefined(ids ? ids : undefined)}
             aria-label=${ifDefined(!this.label ? this.labelTxt : undefined)}
+            aria-checked=${ifDefined(this.checked ? this.checked : undefined)}
             ?checked=${this.checked}
             ?disabled=${this.disabled}
             ?required=${this.validation}
             @change="${this.handleInputChange}"
             value=${ifDefined(this.value)}
+            tabindex="0"
+            aria-invalid=${ifDefined(this.validation ? "true" : undefined)}
           />
           ${this.noLabel
             ? ""

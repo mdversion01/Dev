@@ -36,9 +36,9 @@
               <section class="display-box-demo">
                 <form-component>
                   <input-field-component
-                    label="First Name"
-                    id="first-name"
-                    name="first-name"
+                    label="Input Field"
+                    id="input1"
+                    name="input1"
                     slot="formField"
                   ></input-field-component>
 
@@ -49,13 +49,13 @@
                     slot="formField"
                   ></checkbox-radio-input-component>
 
-                  <checkbox-radio-input-component
-                    checkbox
-                    inputId="cbx-2"
-                    labelTxt="Checkbox Option 2 (Disabled)"
-                    disabled
+                  <select-field-component
+                    label="Select Field"
+                    inputId="input-1"
+                    formLayout="vertical"
+                    id="selections"
                     slot="formField"
-                  ></checkbox-radio-input-component>
+                  ></select-field-component>
                 </form-component>
               </section>
               <section class="display-box-meta markdown">
@@ -420,8 +420,7 @@
 
       <h5>Vue.js</h5>
       <p>
-        In a Vue component, you'd use Form just like any other HTML
-        element:
+        In a Vue component, you'd use Form just like any other HTML element:
       </p>
       <pre>
           <code>
@@ -469,8 +468,8 @@
 
       <h5>React</h5>
       <p>
-        In a React component, you'd similarly treat Form as a regular
-        HTML element:
+        In a React component, you'd similarly treat Form as a regular HTML
+        element:
       </p>
       <pre>
           <code>
@@ -552,7 +551,48 @@
 
     <script src="./form.js" type="module"></script>
     <script src="../input-field/input-field.js" type="module"></script>
-    <script src="../checkbox-radio-input/checkbox-radio-input.js" type="module"></script>
+    <script
+      src="../checkbox-radio-input/checkbox-radio-input.js"
+      type="module"
+    ></script>
+    <script src="../select-field/select-field.js" type="module"></script>
+
+    <script type="module">
+       document.addEventListener("DOMContentLoaded", () => {
+        // Dynamically selectable options
+        const selections = document.getElementById("selections");
+        if (selections) {
+          selections.options = [
+            { value: "", name: "Select an option", selected: true },
+            {
+              value: "option1",
+              name: "Select option 1",
+            },
+            {
+              value: "option2",
+              name: "Select option 2",
+            },
+            {
+              value: "option3",
+              name: "Select option 3",
+            },
+            {
+              value: "option4",
+              name: "Select option 4",
+            },
+            {
+              value: "option5",
+              name: "Select option 5",
+            },
+            {
+              value: "option6",
+              name: "Select option 6",
+            },
+            // Add more options as needed
+          ];
+        }
+      });
+     </script>
 
     <!-- <script src="../../../node_modules/bootstrap/dist/js/bootstrap.js"></script> -->
   </body>
