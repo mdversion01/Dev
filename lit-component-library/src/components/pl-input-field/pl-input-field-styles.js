@@ -1,9 +1,6 @@
 import { css } from "lit";
 
 export const plInputFieldStyles = css`
-
-  
-
   .pl-input-container {
     position: relative;
     text-align: left;

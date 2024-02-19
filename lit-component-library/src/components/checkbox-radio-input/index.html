@@ -495,8 +495,8 @@
               <td>Boolean</td>
               <td></td>
               <td>
-                If true, the component is a custom radio group, if not, nothing is
-                displayed or passed in as a prop.
+                If true, the component is a custom radio group, if not, nothing
+                is displayed or passed in as a prop.
               </td>
             </tr>
             <tr>
@@ -666,9 +666,11 @@
             <tr>
               <td>formField</td>
               <td>
-                This is the slot for form fields. It is used for displaying content or content in the
-                form component or the form components (inputs, checkboxes, radios, etc).<br />
-                Add <span class="example">slot="formField"</span> to the form component and/or to the form components.
+                This is the slot for form fields. It is used for displaying
+                content or content in the form component or the form components
+                (inputs, checkboxes, radios, etc).<br />
+                Add <span class="example">slot="formField"</span> to the form
+                component and/or to the form components.
               </td>
             </tr>
           </tbody>
@@ -689,130 +691,184 @@
 
       <h5>Vue.js</h5>
       <p>
-        In a Vue component, you'd use the component just like any other HTML
+        To use the Lit Element component in Vue, you can use the
+        'vue-custom-element' library to register the Lit Element as a custom
         element:
+      </p>
+      <p>Install the vue-custom-element library:</p>
+      <pre>
+        <code>
+          // bash
+          npm install vue-custom-element
+        </code>
+      </pre>
+      <p>
+        In your Vue component file, use the following code and in your Vue
+        template, use the 'checkbox-radio-input-vue' custom element:
       </p>
       <pre>
           <code>
+            // javascript
+
             &#60;template&#62;
-            &#60;div ref="container"&#62;&#60;/div&#62;
+              &#60;div&#62;
+                &#60;!-- Other Vue components or HTML --&#62;
+                &#60;checkbox-radio-input-vue 
+                  :checked="true" 
+                  :label-txt="'Checkbox Label'"
+                &#62;&#60;/checkbox-radio-input-vue&#62;
+
+                &#60;!-- Other Vue components or HTML --&#62;
+              &#60;/div&#62;
             &#60;/template&#62;
-
+            
             &#60;script&#62;
-            // Import your Lit Element Checkbox and Radio component
-            import 'path-to-your-checkbox-radio-input-component'; // Update the path
-
-            export default {
-              props: ['inputId', 'labelTxt', 'checkbox', 'radio'],
-              mounted() {
-                const element = document.createElement('checkbox-radio-input-component');
-                element.inputId = this.inputId;
-                element.labelTxt = this.labelTxt;
-                element.checkbox = this.checkbox;
-                element.radio = this.radio;
-
-                this.$refs.container.appendChild(element);
-              },
-            };
+              import Vue from 'vue';
+              import vueCustomElement from 'vue-custom-element';
+              import 'path/to/checkbox-radio-input-component'; // Adjust the path
+              
+              Vue.use(vueCustomElement);
+              
+              Vue.customElement('checkbox-radio-input-vue', {
+                props: ['checked', 'checkbox', 'customCheckbox', 'customRadio', 'customRadioGroup', 'disabled', 'inputId', 'noLabel', 'labelTxt', 'name', 'radio', 'radioGroup', 'radioGroupOptions', 'size', 'selectedValue', 'validation', 'validationMessage', 'value', 'formLayout'],
+                template: '&#60;checkbox-radio-input-component v-bind="$props"&#62;&#60;/checkbox-radio-input-component&#62;',
+              });
             &#60;/script&#62;
-
-            &#60;style scoped&#62;
-            /* Add any scoped styles if needed */
+            
+            &#60;style&#62;
+            /* Vue-specific styles */
             &#60;/style&#62;
+            
           </code>
         </pre>
 
       <h5>React</h5>
       <p>
-        In a React component, you'd similarly treat the component as a regular
-        HTML element:
+        To use the Lit Element component in React, you can create a wrapper
+        component and use the 'react-custom-element' library:
+      </p>
+
+      <p>Install the react-custom-element library:</p>
+      <pre>
+        <code>
+          // bash
+          npm install react-custom-element
+        </code>
+      </pre>
+      <p>Create a wrapper component:</p>
+      <pre>
+          <code>
+            // jsx
+
+            import React from 'react';
+            import { reactify } from 'react-custom-element';
+            import 'path/to/checkbox-radio-input-component'; // Adjust the path
+
+            const CheckboxRadioInputReact = reactify('checkbox-radio-input-react');
+
+            const CheckboxRadioInputWrapper = (props) => (
+              &#60;CheckboxRadioInputReact {...props} /&#62;
+            );
+
+            export default CheckboxRadioInputWrapper;
+          </code>
+        </pre>
+      <p>
+        In your React component, use the 'CheckboxRadioInputWrapper' component:
       </p>
       <pre>
           <code>
-            // LitElementWrapper.jsx
-            import React, { useRef, useEffect } from 'react';
-            
-            // Import your Lit Element Checkbox and Radio component
-            import 'path-to-your-checkbox-radio-input-component'; // Update the path
-            
-            const LitElementWrapper = ({ inputId, labelTxt, checkbox, radio }) => {
-              const containerRef = useRef();
-            
-              useEffect(() => {
-                const element = document.createElement('checkbox-radio-input-component');
-                element.inputId = inputId;
-                element.labelTxt = labelTxt;
-                element.checkbox = checkbox;
-                element.radio = radio;
-            
-                containerRef.current.appendChild(element);
-              }, [inputId, labelTxt, checkbox, radio]);
-            
-              return &#60;div ref={containerRef}&#62;&#60;/div&#62;;
+            // jsx
+
+            import React from 'react';
+            import CheckboxRadioInputWrapper from './CheckboxRadioInputWrapper'; // Adjust the path
+
+            const YourReactComponent = () => {
+              return (
+                &#60;div&#62;
+                  &#60;CheckboxRadioInputWrapper checked={true} labelTxt="Checkbox Label" /&#62;
+                &#60;/div&#62;
+              );
             };
-            
-            export default LitElementWrapper;
-            
+
+            export default YourReactComponent;
           </code>
         </pre>
 
       <h5>Angular</h5>
       <p>
-        In Angular, you'd use this component as part of your Angular template:
+        To use the Lit Element component in Angular, you can create a wrapper
+        component and use Angular's 'createCustomElement' function:
       </p>
+      <p>Install the @angular/elements library:</p>
+      <pre>
+        <code>
+          // bash
+          npm install @angular/elements
+        </code>
+      </pre>
 
+      <p>Create an Angular wrapper component:</p>
       <pre>
           <code>
-            // LitElementWrapper.component.ts
-            import { Component, ElementRef, Input, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
-
-            // Import your Lit Element Checkbox and Radio component
-            import 'path-to-your-checkbox-radio-input-component'; // Update the path
-
-            declare global {
-              interface Window {
-                LitElement: any; // Adjust the type based on the LitElement class
-              }
-            }
-
+            // typescript 
+            
+            import { Component, Input, OnInit, OnDestroy, ElementRef, NgZone } from '@angular/core';
+            import { createCustomElement } from '@angular/elements';
+            
+            declare var ng: any;
+            
             @Component({
-              selector: 'app-lit-element-wrapper',
-              template: '&#60;div #container&#62;&#60;/div&#62;',
+              selector: 'app-checkbox-radio-input-angular',
+              template: '&#60;checkbox-radio-input-component [checked]="checked" [label-txt]="labelTxt"&#62;&#60;/checkbox-radio-input-component&#62;',
             })
-            export class LitElementWrapperComponent implements OnInit, OnDestroy {
-              @Input() inputId: string;
+            export class CheckboxRadioInputAngularComponent implements OnInit, OnDestroy {
+              @Input() checked: boolean;
               @Input() labelTxt: string;
-              @Input() checkbox: boolean;
-              @Input() radio: boolean;
-
-              @ViewChild('container', { static: true }) containerRef: ElementRef;
-
-              private litElement: any; // Adjust the type based on the LitElement class
-
-              constructor(private renderer: Renderer2) {}
-
-              ngOnInit(): void {
-                this.litElement = document.createElement('checkbox-radio-input-component');
-                this.litElement.inputId = this.inputId;
-                this.litElement.labelTxt = this.labelTxt;
-                this.litElement.checkbox = this.checkbox;
-                this.litElement.radio = this.radio;
-
-                this.renderer.appendChild(this.containerRef.nativeElement, this.litElement);
+            
+              constructor(private el: ElementRef, private ngZone: NgZone) {}
+            
+              ngOnInit() {
+                const element = createCustomElement(CheckboxRadioInputAngularComponent, { injector: this.el.injector });
+                customElements.define('checkbox-radio-input-angular', element);
+                ng['zone'].run(() => {
+                  customElements.define('checkbox-radio-input-angular', element);
+                });
               }
-
-              ngOnDestroy(): void {
-                // Clean up, remove event listeners, etc.
+            
+              ngOnDestroy() {
+                customElements.get('checkbox-radio-input-angular')?.remove();
               }
+            }            
+          </code>
+        </pre>
+
+      <p>In your Angular module, declare the wrapper component:</p>
+      <pre>
+          <code>
+            // typescript 
+
+            import { NgModule } from '@angular/core';
+            import { BrowserModule } from '@angular/platform-browser';
+            import { FormsModule } from '@angular/forms';
+            import { CheckboxRadioInputAngularComponent } from './checkbox-radio-input-angular.component'; // Adjust the path
+
+            @NgModule({
+              declarations: [CheckboxRadioInputAngularComponent],
+              imports: [BrowserModule, FormsModule],
+              entryComponents: [CheckboxRadioInputAngularComponent],
+            })
+            export class AppModule {
+              ngDoBootstrap() {}
             }
-
           </code>
         </pre>
 
       <p>
-        These examples assume that you've configured your framework project to
-        work with web components and that you've imported the Lit Element
-        component correctly. Adjust import paths accordingly.
+        Remember to adjust the paths and imports based on your project
+        structure. These examples demonstrate how to create wrapper components
+        for each framework to use your Lit Element 'CheckboxRadioInput'
+        component.
       </p>
 
       <p>
