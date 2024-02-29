@@ -34,12 +34,20 @@
           <section class="section">
             <section class="display-box" id="db-1">
               <section class="display-box-demo">
-                <dropdown-component id=""></dropdown-component>
+                <dropdown-component id="dditems"></dropdown-component>
+
+                <dropdown-component id="ddMenu" menuIcon></dropdown-component>
+
+                <dropdown-component
+                  id="ddMenu"
+                  menuIcon
+                  gearIcon
+                ></dropdown-component>
               </section>
               <section class="display-box-meta markdown">
                 <div class="display-box-title">Basic Usage</div>
                 <div class="display-box-description">
-                  Vertical layout Input Field
+                  Default Dropdown Menu Button
                 </div>
                 <div class=""></div>
               </section>
@@ -49,12 +57,15 @@
           <section class="section">
             <section class="display-box" id="db-1">
               <section class="display-box-demo">
-                <dropdown-component id="dditems"></dropdown-component>
+                <dropdown-component
+                  id="dditemsDivider"
+                  buttonText="Dropdown with divided menu"
+                ></dropdown-component>
               </section>
               <section class="display-box-meta markdown">
                 <div class="display-box-title">Basic Usage</div>
                 <div class="display-box-description">
-                  Vertical layout Input Field
+                  Dropdown Menu with divided menu items
                 </div>
                 <div class=""></div>
               </section>
@@ -62,7 +73,317 @@
           </section>
         </section>
 
-        <section></section>
+        <section>
+          <section class="section">
+            <section class="display-box" id="db-1">
+              <section class="display-box-demo">
+                <dropdown-component id="" disabled></dropdown-component>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">
+                  Disabled Dropdown Menu Button
+                </div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
+
+          <section class="section">
+            <section class="display-box" id="db-1">
+              <section class="display-box-demo">
+                <dropdown-component
+                  id="dditemsSubMenu"
+                  buttonText="Dropdown with Submenu"
+                ></dropdown-component>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">
+                  Dropdown Menu with Submenu
+                </div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
+        </section>
+      </div>
+    </div>
+
+    <div class="title">Predefined button styles</div>
+    <div style="margin-top: 15px">
+      <div class="demo-wrapper">
+        <div class="main">
+          <section>
+            <section class="section">
+              <section class="display-box" id="db-1">
+                <section class="display-box-demo">
+                  <dropdown-component
+                    id="dditems2"
+                    buttonText="Dropdown"
+                    variant="primary"
+                    size="sm"
+                    outlined
+                    styles="margin-bottom: 10px;"
+                  ></dropdown-component>
+
+                  <dropdown-component
+                    id="dditems"
+                    buttonText="Dropdown"
+                    variant="secondary"
+                    size="sm"
+                    outlined
+                    styles="margin-bottom: 10px;"
+                  ></dropdown-component>
+
+                  <dropdown-component
+                    id="dditems"
+                    buttonText="Dropdown"
+                    variant="tertiary"
+                    size="sm"
+                    outlined
+                    styles="margin-bottom: 10px;"
+                  ></dropdown-component>
+
+                  <dropdown-component
+                    id="dditems"
+                    buttonText="Dropdown"
+                    variant="active"
+                    size="sm"
+                    outlined
+                    styles="margin-bottom: 10px;"
+                  ></dropdown-component>
+
+                  <dropdown-component
+                    id="dditems"
+                    buttonText="Dropdown"
+                    variant="success"
+                    size="sm"
+                    outlined
+                    styles="margin-bottom: 10px;"
+                  ></dropdown-component>
+
+                  <dropdown-component
+                    id="dditems"
+                    buttonText="Dropdown"
+                    variant="danger"
+                    size="sm"
+                    outlined
+                    styles="margin-bottom: 10px;"
+                  ></dropdown-component>
+
+                  <dropdown-component
+                    id="dditems"
+                    buttonText="Dropdown"
+                    variant="warning"
+                    size="sm"
+                    outlined
+                    styles="margin-bottom: 10px;"
+                  ></dropdown-component>
+
+                  <dropdown-component
+                    id="dditems"
+                    buttonText="Dropdown"
+                    variant="info"
+                    size="sm"
+                    outlined
+                    styles="margin-bottom: 10px;"
+                  ></dropdown-component>
+
+                  <dropdown-component
+                    id="dditems"
+                    buttonText="Dropdown"
+                    variant="light"
+                    size="sm"
+                    outlined
+                    styles="margin-bottom: 10px;"
+                  ></dropdown-component>
+
+                  <dropdown-component
+                    id="dditems"
+                    buttonText="Dropdown"
+                    variant="dark"
+                    size="sm"
+                    outlined
+                    styles="margin-bottom: 10px;"
+                  ></dropdown-component>
+                </section>
+                <section class="display-box-meta markdown">
+                  <div class="display-box-title">Basic Usage</div>
+                  <div class="display-box-description">
+                    Outlined button examples. Predefined dropdown menu button
+                    variant colors/styles - primary, secondary, tertiary,
+                    active-blue, success, danger, warning, light, dark
+                  </div>
+                  <div class=""></div>
+                </section>
+              </section>
+            </section>
+
+            <section class="section">
+              <section class="display-box" id="db-1">
+                <section class="display-box-demo">
+                  <dropdown-component
+                    id="dditemsSm"
+                    size="sm"
+                    buttonText="Small Dropdown"
+                    styles="margin-bottom: 10px;"
+                  ></dropdown-component>
+
+                  <dropdown-component
+                    id="dditemsDefault"
+                    buttonText="Default Dropdown"
+                    styles="margin-bottom: 10px;"
+                  ></dropdown-component>
+
+                  <dropdown-component
+                    id="dditemsLg"
+                    size="lg"
+                    buttonText="Large Dropdown"
+                    styles="margin-bottom: 10px;"
+                  ></dropdown-component>
+                </section>
+                <section class="display-box-meta markdown">
+                  <div class="display-box-title">Basic Usage</div>
+                  <div class="display-box-description">
+                    Dropdown Menu Button Sizes (sm, lg)
+                  </div>
+                  <div class=""></div>
+                </section>
+              </section>
+            </section>
+          </section>
+
+          <section>
+            <section class="section">
+              <section class="display-box" id="db-1">
+                <section class="display-box-demo">
+                  <dropdown-component
+                    id="dditems1"
+                    buttonText="Dropdown"
+                    variant="primary"
+                    size="sm"
+                    styles="margin-bottom: 10px;"
+                  ></dropdown-component>
+
+                  <dropdown-component
+                    id="dditems"
+                    buttonText="Dropdown"
+                    variant="secondary"
+                    size="sm"
+                    styles="margin-bottom: 10px;"
+                  ></dropdown-component>
+
+                  <dropdown-component
+                    id="dditems"
+                    buttonText="Dropdown"
+                    variant="tertiary"
+                    size="sm"
+                    styles="margin-bottom: 10px;"
+                  ></dropdown-component>
+
+                  <dropdown-component
+                    id="dditems"
+                    buttonText="Dropdown"
+                    variant="active"
+                    size="sm"
+                    styles="margin-bottom: 10px;"
+                  ></dropdown-component>
+
+                  <dropdown-component
+                    id="dditems"
+                    buttonText="Dropdown"
+                    variant="success"
+                    size="sm"
+                    styles="margin-bottom: 10px;"
+                  ></dropdown-component>
+
+                  <dropdown-component
+                    id="dditems"
+                    buttonText="Dropdown"
+                    variant="danger"
+                    size="sm"
+                    styles="margin-bottom: 10px;"
+                  ></dropdown-component>
+
+                  <dropdown-component
+                    id="dditems"
+                    buttonText="Dropdown"
+                    variant="warning"
+                    size="sm"
+                    styles="margin-bottom: 10px;"
+                  ></dropdown-component>
+
+                  <dropdown-component
+                    id="dditems"
+                    buttonText="Dropdown"
+                    variant="info"
+                    size="sm"
+                    styles="margin-bottom: 10px;"
+                  ></dropdown-component>
+
+                  <dropdown-component
+                    id="dditems"
+                    buttonText="Dropdown"
+                    variant="light"
+                    size="sm"
+                    styles="margin-bottom: 10px;"
+                  ></dropdown-component>
+
+                  <dropdown-component
+                    id="dditems"
+                    buttonText="Dropdown"
+                    variant="dark"
+                    size="sm"
+                    styles="margin-bottom: 10px;"
+                  ></dropdown-component>
+                </section>
+                <section class="display-box-meta markdown">
+                  <div class="display-box-title">Basic Usage</div>
+                  <div class="display-box-description">
+                    Solid Buttons. Predefined dropdown menu button variant
+                    colors/styles - primary, secondary, tertiary, active-blue,
+                    success, danger, warning, light, dark
+                  </div>
+                  <div class=""></div>
+                </section>
+              </section>
+            </section>
+
+            <section class="section">
+              <section class="display-box" id="db-1">
+                <section class="display-box-demo">
+                  <dropdown-component
+                    id="dditems"
+                    buttonText="Default Dropdown"
+                    styles="margin-bottom: 10px;"
+                  ></dropdown-component>
+
+                  <dropdown-component
+                    id="dditems"
+                    shape="square"
+                    buttonText="Square Dropdown"
+                    styles="margin-bottom: 10px;"
+                  ></dropdown-component>
+
+                  <dropdown-component
+                    id="dditems"
+                    shape="pill"
+                    buttonText="Pill Dropdown"
+                    styles="margin-bottom: 10px;"
+                  ></dropdown-component>
+                </section>
+                <section class="display-box-meta markdown">
+                  <div class="display-box-title">Basic Usage</div>
+                  <div class="display-box-description">
+                    Dropdown Menu Button Shapes (default, square, pill)
+                  </div>
+                  <div class=""></div>
+                </section>
+              </section>
+            </section>
+          </section>
+        </div>
       </div>
     </div>
 
@@ -365,6 +686,109 @@
             { name: "Another Action", path: "#" },
             { name: "Something else here", path: "#" },
             // Add more items as needed
+          ];
+        }
+
+        // Dynamically selectable options
+        const ddMenu = document.getElementById("ddMenu");
+        if (ddMenu) {
+          ddMenu.items = [
+            { name: "Action", path: "#" },
+            { name: "Another Action", path: "#" },
+            { name: "Something else here", path: "#" },
+            // Add more items as needed
+          ];
+        }
+
+        // Dynamically selectable options
+        const dditems1 = document.getElementById("dditems1");
+        if (dditems1) {
+          dditems1.items = [
+            { name: "Action", path: "#" },
+            { name: "Another Action", path: "#" },
+            { name: "Something else here", path: "#" },
+            // Add more items as needed
+          ];
+        }
+
+        // Dynamically selectable options
+        const dditems2 = document.getElementById("dditems2");
+        if (dditems2) {
+          dditems2.items = [
+            { name: "Action", path: "#" },
+            { name: "Another Action", path: "#" },
+            { name: "Something else here", path: "#" },
+            // Add more items as needed
+          ];
+        }
+
+        // Dynamically selectable options
+        const dditemsSm = document.getElementById("dditemsSm");
+        if (dditemsSm) {
+          dditemsSm.items = [
+            { name: "Action", path: "#" },
+            { name: "Another Action", path: "#" },
+            { name: "Something else here", path: "#" },
+            // Add more items as needed
+          ];
+        }
+
+        // Dynamically selectable options
+        const dditemsDefault = document.getElementById("dditemsDefault");
+        if (dditemsDefault) {
+          dditemsDefault.items = [
+            { name: "Action", path: "#" },
+            { name: "Another Action", path: "#" },
+            { name: "Something else here", path: "#" },
+            // Add more items as needed
+          ];
+        }
+
+        // Dynamically selectable options
+        const dditemsLg = document.getElementById("dditemsLg");
+        if (dditemsLg) {
+          dditemsLg.items = [
+            { name: "Action", path: "#" },
+            { name: "Another Action", path: "#" },
+            { name: "Something else here", path: "#" },
+            // Add more items as needed
+          ];
+        }
+
+        // Dynamically selectable options
+        const dditemsDivider = document.getElementById("dditemsDivider");
+        if (dditemsDivider) {
+          dditemsDivider.items = [
+            { name: "Action", path: "#", isDivider: false },
+            { name: "Another Action", path: "#", isDivider: false },
+            { name: "Something else here", path: "#", isDivider: false },
+            { isDivider: true },
+            { name: "Something New", path: "#", isDivider: false },
+            // Add more items as needed
+          ];
+        }
+
+        // Dynamically selectable options
+        const dditemsSubMenu = document.getElementById("dditemsSubMenu");
+        if (dditemsSubMenu) {
+          dditemsSubMenu.items = [
+            { name: "Item 1", path: "#" },
+            { isDivider: true },
+            {
+              name: "Item 2",
+              path: "#",
+              submenu: [
+                { name: "Subitem 1", path: "#" },
+                { name: "Subitem 2", path: "#" },
+                { isDivider: true },
+                { name: "Subitem 3", path: "#" },
+              ],
+            },
+            { name: "Item 3", path: "#" },
+            { name: "Item 4", path: "#" },
+            { isDivider: true },
+            { name: "Item 5", path: "#" },
+            // ... other items
           ];
         }
       });
