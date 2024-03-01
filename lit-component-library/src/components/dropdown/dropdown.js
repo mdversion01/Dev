@@ -230,101 +230,7 @@ class Dropdown extends LitElement {
     }
   }
 
-  createSubmenuPopper(submenuAnchor, submenu) {
-    console.log("Submenu Popper created for:", submenuAnchor);
-
-    // Use Popper.js to create a new Popper instance for the submenu
-    if (this.submenuPopper) {
-      this.submenuPopper.destroy();
-    }
-
-    this.submenuPopper = new Popper(submenuAnchor, submenu, {
-      placement: "right-start", // Adjust the placement as needed
-    });
-  }
-
-  // renderDropdownMenu(caretRightIcon) {
-  //   return html`
-  //     <div
-  //       class="dropdown-menu ${this.showDropdown ? "show" : ""} ${this.shape}"
-  //       aria-labelledby="${this.id}"
-  //       role="listbox"
-  //     >
-  //       ${this.items
-  //         ? this.items.map(
-  //             (item, index) =>
-  //               html`
-  //                 ${item.isDivider
-  //                   ? html`<div class="dropdown-divider"></div>`
-  //                   : item.submenu
-  //                   ? html`
-  //                       <div
-  //                         class="dropdown-submenu dropdown-submenu-${index}"
-  //                         @mouseenter="${() => this.handleSubmenuEnter(index)}"
-  //                         @mouseleave="${() => this.handleSubmenuLeave()}"
-  //                       >
-  //                         <a
-  //                           class="dropdown-item ${this
-  //                             .size} dropdown-submenu-toggle dropdown-submenu-${index}"
-  //                           href="${item.path}"
-  //                           role="option"
-  //                           tabindex="${this.showDropdown ? "0" : "-1"}"
-  //                         >
-  //                           ${item.name}
-  //                           <div class="caret-right">${caretRightIcon}</div>
-  //                         </a>
-  //                         <div
-  //                           class="dropdown-menu dropdown-submenu-${index}"
-  //                           role="listbox"
-  //                           style="${ifDefined(
-  //                             this.styles ? this.styles : undefined
-  //                           )}"
-  //                         >
-  //                           ${item.submenu.map(
-  //                             (subitem, subIndex) =>
-  //                               html`
-  //                                 ${subitem.isDivider
-  //                                   ? html`<div class="dropdown-divider"></div>`
-  //                                   : html`
-  //                                       <a
-  //                                         class="dropdown-item ${this.size}"
-  //                                         href="${subitem.path}"
-  //                                         @click="${() =>
-  //                                           this.handleItemClick(
-  //                                             subIndex,
-  //                                             index
-  //                                           )}"
-  //                                         role="option"
-  //                                         tabindex="${this.showDropdown
-  //                                           ? "0"
-  //                                           : "-1"}"
-  //                                       >
-  //                                         ${subitem.name}
-  //                                       </a>
-  //                                     `}
-  //                               `
-  //                           )}
-  //                         </div>
-  //                       </div>
-  //                     `
-  //                   : html`
-  //                       <a
-  //                         class="dropdown-item ${this.size}"
-  //                         href="${item.path}"
-  //                         @click="${() => this.handleItemClick(index)}"
-  //                         role="option"
-  //                         tabindex="${this.showDropdown ? "0" : "-1"}"
-  //                         @mouseenter="${() => this.handleItemHover(index)}"
-  //                       >
-  //                         ${item.name}
-  //                       </a>
-  //                     `}
-  //               `
-  //           )
-  //         : html``}
-  //     </div>
-  //   `;
-  // }
+  
 
   renderDropdownMenu(caretRightIcon) {
     return html`
@@ -461,36 +367,6 @@ class Dropdown extends LitElement {
   closeSubmenu(index) {
     this.toggleSubmenu(index, false);
   }
-
-  // toggleSubmenu(index, open) {
-  //   const submenu = this.shadowRoot.querySelector(
-  //     `.dropdown-submenu-${index} .dropdown-menu`
-  //   );
-
-  //   console.log('Submenu:', submenu);
-
-  //   if (submenu) {
-  //     if (open) {
-  //       submenu.classList.add("show");
-  //       // const submenuAnchor = this.shadowRoot.querySelector(
-  //       //   `.dropdown-submenu-${index} .dropdown-submenu-toggle`
-  //       // );
-  //       const submenuAnchor = this.shadowRoot.querySelector(`#submenu-toggle-${index}`);
-  //       this.createSubmenuPopper(submenuAnchor, submenu);
-  //       if (submenuAnchor) {
-  //         // Recreate Popper for the submenu using submenuAnchor
-  //         this.createSubmenuPopper(submenuAnchor, submenu);
-  //       }
-  //     } else {
-  //       submenu.classList.remove("show");
-  //       // Destroy Popper when submenu is closed
-  //       if (this.submenuPopper) {
-  //         this.submenuPopper.destroy();
-  //         this.submenuPopper = null;
-  //       }
-  //     }
-  //   }
-  // }
 
   handleOutsideClick(event) {
     const isOutsideMainDropdown = !this.contains(event.target);
@@ -634,35 +510,65 @@ class Dropdown extends LitElement {
         case "ArrowDown":
         case "Tab":
           event.preventDefault();
-          this.focusNextItem(dropdownItems);
+          if (this.inSubmenu) {
+            // Navigate down within the submenu
+            const nextSubmenuItem = this.getNextSubmenuItem();
+            if (nextSubmenuItem) {
+              nextSubmenuItem.focus();
+            }
+          } else {
+            // Navigate down within the main menu
+            // Add your logic to navigate down within the main menu
+            event.preventDefault();
+            this.focusNextItem(dropdownItems);
+          }
           break;
         case "ArrowUp":
           event.preventDefault();
-          this.focusPreviousItem(dropdownItems);
-          break;
-          case "ArrowRight":
-            console.log("ArrowRight pressed");
-            event.preventDefault();
-            const submenuIndex = this.focusedIndex + 1;
-            console.log("Submenu Index:", submenuIndex);
-            const submenuAnchorSelector = `.dropdown-submenu-${submenuIndex} .dropdown-submenu-toggle`;
-            console.log('Submenu Anchor Selector', submenuAnchorSelector);
-            const submenuAnchor = this.shadowRoot.querySelector(submenuAnchorSelector);
-            console.log('Submenu Anchor:', submenuAnchor);
-            
-            const submenuSelector = `.dropdown-submenu-${submenuIndex} .dropdown-menu`;
-            console.log('Submenu Selector:', submenuSelector);
-            const submenu = this.shadowRoot.querySelector(submenuSelector);
-            console.log('Submenu:', submenu);
-          
-            this.createSubmenuPopper(submenuAnchor, submenu);
-            if (submenuAnchor && submenuAnchor.submenu) {
-              this.showSubmenu(submenuAnchor);
+          if (this.inSubmenu) {
+            // Navigate up within the submenu
+            const previousSubmenuItem = this.getPreviousSubmenuItem();
+            if (previousSubmenuItem) {
+              previousSubmenuItem.focus();
             }
-            break;
+          } else {
+            // Navigate up within the main menu
+            event.preventDefault();
+            this.focusPreviousItem(dropdownItems);
+          }
+          break;
+        case "ArrowRight":
+          event.preventDefault();
+          const submenuIndex = this.focusedIndex + 1;
+        
+          const submenuAnchorSelector = `.dropdown-submenu-${submenuIndex} .dropdown-submenu-toggle`;
+          const submenuAnchor = this.shadowRoot.querySelector(submenuAnchorSelector);
+        
+          const submenuSelector = `.dropdown-submenu-${submenuIndex} .dropdown-menu`;
+          const submenu = this.shadowRoot.querySelector(submenuSelector);
+          
+          if (submenu) {
+            // Open the submenu
+            this.createSubmenuPopper(submenuAnchor, submenu);
+            this.toggleSubmenu(true);
+        
+            // Add focused-item class to the first item in the submenu after a delay
+            setTimeout(() => {
+              const firstSubmenuItem = submenu.querySelector(".dropdown-item");
+              if (firstSubmenuItem) {
+                firstSubmenuItem.classList.add("focused-item");
+              }
+            }, 50); // Adjust the delay as needed
+          }
+          break;
         case "ArrowLeft":
           event.preventDefault();
-          this.closeOrToggleSubmenu();
+         // this.closeOrToggleSubmenu();
+          this.focusPreviousItem(dropdownItems);
+          if (this.inSubmenu) {
+            // Close the submenu
+            this.toggleSubmenu(false);
+          }
           break;
         case "Tab":
           event.preventDefault();
@@ -681,6 +587,46 @@ class Dropdown extends LitElement {
 
       this.updateFocusedItemClass(dropdownItems);
     }
+  }
+
+  getNextSubmenuItem() {
+    // Get the currently focused submenu item
+    const focusedSubmenuItem = document.activeElement;
+
+    // Check if there is a submenu and it has items
+    if (focusedSubmenuItem && focusedSubmenuItem.submenu) {
+      // Get all submenu items within the current submenu
+      const submenuItems =
+        focusedSubmenuItem.submenu.querySelectorAll(".dropdown-item");
+
+      // Find the index of the focused item
+      const focusedIndex = Array.from(submenuItems).indexOf(focusedSubmenuItem);
+
+      // Return the next submenu item or null if it's the last item
+      return submenuItems[focusedIndex + 1] || null;
+    }
+
+    return null;
+  }
+
+  getPreviousSubmenuItem() {
+    // Get the currently focused submenu item
+    const focusedSubmenuItem = document.activeElement;
+
+    // Check if there is a submenu and it has items
+    if (focusedSubmenuItem && focusedSubmenuItem.submenu) {
+      // Get all submenu items within the current submenu
+      const submenuItems =
+        focusedSubmenuItem.submenu.querySelectorAll(".dropdown-item");
+
+      // Find the index of the focused item
+      const focusedIndex = Array.from(submenuItems).indexOf(focusedSubmenuItem);
+
+      // Return the previous submenu item or null if it's the first item
+      return submenuItems[focusedIndex - 1] || null;
+    }
+
+    return null;
   }
 
   focusNextVisibleItem(dropdownItems) {
@@ -771,18 +717,47 @@ class Dropdown extends LitElement {
     }
   }
 
+  // createSubmenuPopper(submenuAnchor, submenu) {
+  //   console.log("Submenu Popper created for:", submenuAnchor);
+
+  //   // Use Popper.js to create a new Popper instance for the submenu
+  //   if (this.submenuPopper) {
+  //     this.submenuPopper.destroy();
+  //   }
+
+  //   this.submenuPopper = new Popper(submenuAnchor, submenu, {
+  //     placement: "right-start", // Adjust the placement as needed
+  //   });
+  // }
+
   createSubmenuPopper(submenuAnchor, submenu) {
+
+    // Use Popper.js to create a new Popper instance for the submenu
+    if (this.submenuPopper) {
+      this.submenuPopper.destroy();
+    }
+
     // Ensure both submenuAnchor and submenu are valid elements
     if (submenuAnchor && submenu && typeof Popper === "function") {
+      // Remove focused-item class from the previous submenu anchor
+      if (this.previousSubmenuAnchor) {
+        this.previousSubmenuAnchor.classList.remove("focused-item");
+      }
+  
       // Use Popper.js to create a new Popper instance for the submenu
       // You may need to adjust the placement and other options based on your needs
-      console.log("Creating Popper:", submenuAnchor, submenu);
       this.submenuPopper = new Popper(submenuAnchor, submenu, {
         placement: "right-start",
       });
-
+  
       // Add the 'show' class to the submenu
-      submenu.classList.add('show');
+      submenu.classList.add("show");
+  
+      // Remove focused-item class from submenuAnchor after a short delay
+      setTimeout(() => {
+        submenuAnchor.classList.remove("focused-item");
+      }, 50); // Adjust the delay as needed
+  
     } else {
       console.error(
         "Invalid submenuAnchor or submenu. Popper cannot be created.",
@@ -802,7 +777,7 @@ class Dropdown extends LitElement {
       if (open) {
         submenu.classList.add("show");
         // Recreate Popper for the submenu
-        this.createSubmenuPopper(submenu, submenu.previousElementSibling);
+        this.createSubmenuPopper(submenu.previousElementSibling, submenu);
       } else {
         submenu.classList.remove("show");
         // Destroy Popper when submenu is closed
