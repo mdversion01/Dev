@@ -5,12 +5,23 @@ import { layoutStyles } from "../layout-styles.js";
 import { formStyles } from "../form-styles.js";
 import { buttonStyles } from "../button/button-styles.js";
 import { dropdownStyles } from "./dropdown-styles.js";
-import { constructClassAttribute, getButtonTypeClass, getButtonShape } from "../utilities/sharedButtonUtils.js";
+import {
+  constructClassAttribute,
+  getButtonTypeClass,
+  getButtonShape,
+} from "../utilities/sharedButtonUtils.js";
 import Popper from "popper.js";
 import "../icon/icon.js";
 
 class Dropdown extends LitElement {
-  static styles = [robotoFont, layoutStyles, buttonStyles, dropdownStyles, formStyles, css``];
+  static styles = [
+    robotoFont,
+    layoutStyles,
+    buttonStyles,
+    dropdownStyles,
+    formStyles,
+    css``,
+  ];
 
   static get properties() {
     return {
@@ -474,6 +485,9 @@ class Dropdown extends LitElement {
       }
     }
 
+    const dropdownItems = this.shadowRoot.querySelectorAll(".dropdown-item:not(.disabled):not(.hidden)");
+    const submenuTriggers = this.shadowRoot.querySelectorAll(".dropdown-submenu-toggle");
+
     switch (event.key) {
       case "ArrowDown":
         event.preventDefault(); // Prevent the screen from scrolling
@@ -493,9 +507,14 @@ class Dropdown extends LitElement {
           this.toggleSubmenuVisibilityAndPopper(index, true);
         }
         break;
-      case "ArrowLeft":
-        event.preventDefault();
-        break;
+        case "ArrowLeft":
+          event.preventDefault();
+          const activeSubmenu = [...submenuTriggers].find(trigger => this.isSubmenuOpen(trigger.dataset.index));
+          if (activeSubmenu) {
+            this.closeSubmenu(activeSubmenu.dataset.index);
+            activeSubmenu.focus(); // Focus back to the submenu trigger
+          }
+          break;
       case "Tab":
         event.preventDefault();
         newIndex = this.getNextFocusableItemIndex(this.focusedIndex, 1, items);
@@ -771,11 +790,15 @@ class Dropdown extends LitElement {
   }
 
   // Add this method to close the submenu
-  closeSubmenu(index = null) {
-    const idx = index !== null ? index : this.focusedIndex;
-    if (idx !== -1) {
-      this.toggleSubmenu(idx, false);
-      // Additional cleanup if needed
+  closeSubmenu(index) {
+    const submenu = this.shadowRoot.querySelector(`.dropdown-menu.dropdown-submenu-${index}`);
+    if (submenu && submenu.classList.contains("show")) {
+      submenu.classList.remove("show");
+      // Destroy Popper for the submenu, if applicable
+      if (this.submenuPopper) {
+        this.submenuPopper.destroy();
+        this.submenuPopper = null;
+      }
     }
   }
 
