@@ -173,6 +173,17 @@ class Dropdown extends LitElement {
     }
   }
 
+  isSubmenuOpen(index) {
+    if (index && !isNaN(index)) {
+      const submenuSelector = `.dropdown-menu.dropdown-submenu-${index}`;
+      const submenu = this.shadowRoot.querySelector(submenuSelector);
+      return submenu && submenu.classList.contains("show");
+    } else {
+      console.error(`Invalid index value for isSubmenuOpen: ${index}`);
+      return false; // Assume submenu is not open if index is invalid
+    }
+  }
+
   attachSubmenuEventListeners() {
     const submenuAnchors = this.shadowRoot.querySelectorAll(
       ".dropdown-submenu .dropdown-submenu-toggle"
@@ -230,8 +241,6 @@ class Dropdown extends LitElement {
     }
   }
 
-  
-
   renderDropdownMenu(caretRightIcon) {
     return html`
       <div
@@ -255,7 +264,7 @@ class Dropdown extends LitElement {
                           <a
                             class="dropdown-item ${this
                               .size} dropdown-submenu-toggle dropdown-submenu-${index}"
-                            href="${item.path}"
+                            data-index="${index}"
                             role="option"
                             tabindex="${this.showDropdown ? "0" : "-1"}"
                             id="submenu-toggle-${index}"
@@ -288,10 +297,8 @@ class Dropdown extends LitElement {
   renderSubmenu(submenuItems, parentIndex) {
     return html`
       <div
-        class="dropdown-menu dropdown-submenu-${parentIndex} ${this
-          .focusedIndex === parentIndex && this.showDropdown
-          ? "show"
-          : ""}"
+        class="dropdown-menu dropdown-submenu-${parentIndex}"
+        data-index="${parentIndex}"
         role="listbox"
         style="${ifDefined(this.styles ? this.styles : undefined)}"
       >
@@ -303,8 +310,7 @@ class Dropdown extends LitElement {
                 : html`
                     <a
                       class="dropdown-item ${this.size}"
-                      href="${subitem.path}"
-                      @click="${() =>
+                     @click="${() =>
                         this.handleItemClick(subIndex, parentIndex)}"
                       role="option"
                       tabindex="${this.showDropdown ? "0" : "-1"}"
@@ -501,91 +507,130 @@ class Dropdown extends LitElement {
 
   // Modify the handleKeyPress method
   handleKeyPress(event) {
-    // let openSubmenu = false;
+    if (!this.showDropdown) return;
 
-    if (this.showDropdown) {
-      const dropdownItems = this.shadowRoot.querySelectorAll(".dropdown-item");
+    // Assuming .dropdown-item:not(.disabled):not(.hidden) accurately represents focusable items
+    const items = this.shadowRoot.querySelectorAll(
+      ".dropdown-item:not(.disabled):not(.hidden)"
+    );
+    let newIndex = this.focusedIndex;
 
-      switch (event.key) {
-        case "ArrowDown":
-        case "Tab":
-          event.preventDefault();
-          if (this.inSubmenu) {
-            // Navigate down within the submenu
-            const nextSubmenuItem = this.getNextSubmenuItem();
-            if (nextSubmenuItem) {
-              nextSubmenuItem.focus();
+    // Define isSubmenuTrigger here by checking if the currently focused element is a submenu trigger
+    // const isSubmenuTrigger =
+    //   document.activeElement &&
+    //   document.activeElement.classList.contains("dropdown-submenu-toggle");
+    // if (isSubmenuTrigger) {
+    //   const index = event.target.dataset.index; // Accessing data-index from the event target
+    //   // Now you have 'index', which you can use to identify the submenu
+    // }
+    const isSubmenuTrigger = event.target.classList.contains('dropdown-submenu-toggle');
+    if (isSubmenuTrigger && event.key === "ArrowRight") {
+        event.preventDefault();
+        const index = parseInt(event.target.dataset.index, 10); // Convert to integer
+        console.log("Submenu trigger index:", index);
+        if (!isNaN(index)) {
+            if (!this.isSubmenuOpen(index)) {
+                this.showSubmenu(index); // Assuming you adapt showSubmenu to work with index
             }
-          } else {
-            // Navigate down within the main menu
-            // Add your logic to navigate down within the main menu
-            event.preventDefault();
-            this.focusNextItem(dropdownItems);
-          }
-          break;
-        case "ArrowUp":
+        } else {
+            console.error("Invalid index or index not found on submenu trigger.");
+        }
+    }
+
+    switch (event.key) {
+      case "ArrowDown":
+        event.preventDefault(); // Prevent the screen from scrolling
+        newIndex = this.getNextFocusableItemIndex(this.focusedIndex, 1, items);
+        this.focusItemAtIndex(newIndex, items);
+        break;
+      case "ArrowUp":
+        event.preventDefault(); // Prevent the screen from scrolling
+        newIndex = this.getNextFocusableItemIndex(this.focusedIndex, -1, items);
+        this.focusItemAtIndex(newIndex, items);
+        break;
+      case "ArrowRight":
+        // Implement submenu opening logic
+        if (isSubmenuTrigger) {
           event.preventDefault();
-          if (this.inSubmenu) {
-            // Navigate up within the submenu
-            const previousSubmenuItem = this.getPreviousSubmenuItem();
-            if (previousSubmenuItem) {
-              previousSubmenuItem.focus();
-            }
-          } else {
-            // Navigate up within the main menu
-            event.preventDefault();
-            this.focusPreviousItem(dropdownItems);
-          }
-          break;
-        case "ArrowRight":
-          event.preventDefault();
-          const submenuIndex = this.focusedIndex + 1;
-        
-          const submenuAnchorSelector = `.dropdown-submenu-${submenuIndex} .dropdown-submenu-toggle`;
-          const submenuAnchor = this.shadowRoot.querySelector(submenuAnchorSelector);
-        
-          const submenuSelector = `.dropdown-submenu-${submenuIndex} .dropdown-menu`;
-          const submenu = this.shadowRoot.querySelector(submenuSelector);
-          
-          if (submenu) {
-            // Open the submenu
-            this.createSubmenuPopper(submenuAnchor, submenu);
-            this.toggleSubmenu(true);
-        
-            // Add focused-item class to the first item in the submenu after a delay
-            setTimeout(() => {
-              const firstSubmenuItem = submenu.querySelector(".dropdown-item");
-              if (firstSubmenuItem) {
-                firstSubmenuItem.classList.add("focused-item");
-              }
-            }, 50); // Adjust the delay as needed
-          }
-          break;
-        case "ArrowLeft":
-          event.preventDefault();
-         // this.closeOrToggleSubmenu();
-          this.focusPreviousItem(dropdownItems);
-          if (this.inSubmenu) {
-            // Close the submenu
-            this.toggleSubmenu(false);
-          }
-          break;
-        case "Tab":
-          event.preventDefault();
-          this.focusNextVisibleItem(dropdownItems);
-          break;
-        case "Enter":
-          if (this.focusedIndex !== -1) {
-            this.handleItemClick(this.focusedIndex);
-          }
-          break;
-        case "Escape":
-          this.showDropdown = false;
-          this.focusedIndex = -1;
-          break;
+          // Ensure toggleSubmenuVisibilityAndPopper is correctly defined and called
+          // const index = parseInt(this.shadowRoot.activeElement.dataset.index);
+          // this.toggleSubmenuVisibilityAndPopper(index, true);
+          const index = document.activeElement.dataset.index;
+          this.toggleSubmenuVisibilityAndPopper(index, true);
+        }
+        break;
+      case "ArrowLeft":
+        event.preventDefault();
+        // this.closeOrToggleSubmenu();
+        this.focusPreviousItem(dropdownItems);
+        if (this.inSubmenu) {
+          // Close the submenu
+          this.toggleSubmenu(false);
+        }
+        break;
+      case "Tab":
+        event.preventDefault();
+        this.focusNextVisibleItem(dropdownItems);
+        break;
+      case "Enter":
+        if (this.focusedIndex !== -1) {
+          this.handleItemClick(this.focusedIndex);
+        }
+        break;
+      case "Escape":
+        this.showDropdown = false;
+        this.focusedIndex = -1;
+        break;
+    }
+  }
+
+  focusItemAtIndex(index, items) {
+    if (index >= 0 && index < items.length) {
+      items[index].focus();
+      this.focusedIndex = index;
+    }
+  }
+
+  getNextFocusableItemIndex(currentIndex, direction, items) {
+    let nextIndex = currentIndex + direction;
+    const itemCount = items.length;
+
+    // Loop to find the next focusable item index
+    while (nextIndex >= 0 && nextIndex < itemCount) {
+      if (
+        !items[nextIndex].hasAttribute("disabled") &&
+        !items[nextIndex].classList.contains("hidden")
+      ) {
+        return nextIndex;
       }
+      nextIndex += direction;
+    }
+    // If no focusable item is found, return the current index
+    return currentIndex;
+  }
 
-      this.updateFocusedItemClass(dropdownItems);
+  toggleSubmenuVisibilityAndPopper(index, shouldShow) {
+    if (index && !isNaN(index)) {
+      // Ensure 'index' is a valid number
+      const submenuAnchor = this.shadowRoot.querySelector(
+        `.dropdown-item[data-index="${index}"]`
+      );
+      const submenu = this.shadowRoot.querySelector(
+        `.dropdown-menu.dropdown-submenu-${index}`
+      );
+
+      if (submenu && shouldShow) {
+        submenu.classList.add("show");
+        this.createSubmenuPopper(submenuAnchor, submenu);
+      } else if (submenu && !shouldShow) {
+        submenu.classList.remove("show");
+        if (this.submenuPopper) {
+          this.submenuPopper.destroy();
+          this.submenuPopper = null;
+        }
+      }
+    } else {
+      console.error(`Invalid index value: ${index}`);
     }
   }
 
@@ -718,55 +763,58 @@ class Dropdown extends LitElement {
   }
 
   // createSubmenuPopper(submenuAnchor, submenu) {
-  //   console.log("Submenu Popper created for:", submenuAnchor);
 
   //   // Use Popper.js to create a new Popper instance for the submenu
   //   if (this.submenuPopper) {
   //     this.submenuPopper.destroy();
   //   }
 
-  //   this.submenuPopper = new Popper(submenuAnchor, submenu, {
-  //     placement: "right-start", // Adjust the placement as needed
-  //   });
+  //   // Ensure both submenuAnchor and submenu are valid elements
+  //   if (submenuAnchor && submenu && typeof Popper === "function") {
+  //     // Remove focused-item class from the previous submenu anchor
+  //     if (this.previousSubmenuAnchor) {
+  //       this.previousSubmenuAnchor.classList.remove("focused-item");
+  //     }
+
+  //     // Use Popper.js to create a new Popper instance for the submenu
+  //     // You may need to adjust the placement and other options based on your needs
+  //     this.submenuPopper = new Popper(submenuAnchor, submenu, {
+  //       placement: "right-start",
+  //     });
+
+  //     // Add the 'show' class to the submenu
+  //     submenu.classList.add("show");
+
+  //     // Remove focused-item class from submenuAnchor after a short delay
+  //     setTimeout(() => {
+  //       submenuAnchor.classList.remove("focused-item");
+  //     }, 50); // Adjust the delay as needed
+
+  //   } else {
+  //     console.error(
+  //       "Invalid submenuAnchor or submenu. Popper cannot be created.",
+  //       submenuAnchor,
+  //       submenu
+  //     );
+  //   }
   // }
 
   createSubmenuPopper(submenuAnchor, submenu) {
-
-    // Use Popper.js to create a new Popper instance for the submenu
     if (this.submenuPopper) {
       this.submenuPopper.destroy();
     }
-
-    // Ensure both submenuAnchor and submenu are valid elements
-    if (submenuAnchor && submenu && typeof Popper === "function") {
-      // Remove focused-item class from the previous submenu anchor
-      if (this.previousSubmenuAnchor) {
-        this.previousSubmenuAnchor.classList.remove("focused-item");
-      }
-  
-      // Use Popper.js to create a new Popper instance for the submenu
-      // You may need to adjust the placement and other options based on your needs
-      this.submenuPopper = new Popper(submenuAnchor, submenu, {
-        placement: "right-start",
-      });
-  
-      // Add the 'show' class to the submenu
-      submenu.classList.add("show");
-  
-      // Remove focused-item class from submenuAnchor after a short delay
-      setTimeout(() => {
-        submenuAnchor.classList.remove("focused-item");
-      }, 50); // Adjust the delay as needed
-  
-    } else {
-      console.error(
-        "Invalid submenuAnchor or submenu. Popper cannot be created.",
-        submenuAnchor,
-        submenu
-      );
-    }
+    this.submenuPopper = new Popper(submenuAnchor, submenu, {
+      placement: "right-start",
+      modifiers: [
+        {
+          name: "offset",
+          options: {
+            offset: [0, 10],
+          },
+        },
+      ],
+    });
   }
-  
 
   toggleSubmenu(open) {
     const submenu = this.shadowRoot.querySelector(
