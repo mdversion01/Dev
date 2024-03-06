@@ -191,8 +191,7 @@ export const dropdownStyles = css`
   }
 
   /* Add a new class to the focused item in JavaScript */
-  .focused-item,
-  :focus-visible {
+  .dropdown-item:focus-visible {
     background-color: #f8f9fa;
     color: #16181b;
     outline: 1px solid #007bff;

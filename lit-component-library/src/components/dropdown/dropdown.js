@@ -5,23 +5,12 @@ import { layoutStyles } from "../layout-styles.js";
 import { formStyles } from "../form-styles.js";
 import { buttonStyles } from "../button/button-styles.js";
 import { dropdownStyles } from "./dropdown-styles.js";
-import {
-  constructClassAttribute,
-  getButtonTypeClass,
-  getButtonShape,
-} from "../utilities/sharedButtonUtils.js";
+import { constructClassAttribute, getButtonTypeClass, getButtonShape } from "../utilities/sharedButtonUtils.js";
 import Popper from "popper.js";
 import "../icon/icon.js";
 
 class Dropdown extends LitElement {
-  static styles = [
-    robotoFont,
-    layoutStyles,
-    buttonStyles,
-    dropdownStyles,
-    formStyles,
-    css``,
-  ];
+  static styles = [robotoFont, layoutStyles, buttonStyles, dropdownStyles, formStyles, css``];
 
   static get properties() {
     return {
@@ -47,12 +36,12 @@ class Dropdown extends LitElement {
 
   constructor() {
     super();
+    // Initialize default properties
     this.block = false;
     this.buttonText = "Dropdown button";
     this.disabled = false;
     this.dotsIcon = false;
     this.gearIcon = false;
-    this.groupBtn = false;
     this.id = "";
     this.menuIcon = false;
     this.outlined = false;
@@ -69,10 +58,11 @@ class Dropdown extends LitElement {
     this.handleKeyPress = this.handleKeyPress.bind(this);
     this.handleItemClick = this.handleItemClick.bind(this);
 
-    // Initialize Popper
+    // Popper instance for dropdown positioning
     this.popper = null;
   }
 
+  // Lifecycle callbacks
   connectedCallback() {
     super.connectedCallback();
     document.addEventListener("click", this.handleOutsideClick);
@@ -310,7 +300,7 @@ class Dropdown extends LitElement {
                 : html`
                     <a
                       class="dropdown-item ${this.size}"
-                     @click="${() =>
+                      @click="${() =>
                         this.handleItemClick(subIndex, parentIndex)}"
                       role="option"
                       tabindex="${this.showDropdown ? "0" : "-1"}"
@@ -329,49 +319,9 @@ class Dropdown extends LitElement {
     this.updatePopper(); // Update Popper on submenu hover
   }
 
-  handleSubmenuLeave(index) {
-    const submenuToggle = this.shadowRoot.querySelector(
-      `.dropdown-submenu-${index} .dropdown-submenu-toggle`
-    );
-
-    if (submenuToggle) {
-      submenuToggle.classList.remove("focused-item");
-    }
-
-    // Close submenu on leave
-    this.closeSubmenu(index);
-
-    // Destroy submenu Popper
-    this.destroySubmenuPopper(index);
-  }
-
-  destroySubmenuPopper(index) {
-    const submenuAnchor = this.shadowRoot.querySelector(
-      `.dropdown-submenu-${index} .dropdown-submenu-toggle`
-    );
-    const submenu = this.shadowRoot.querySelector(
-      `.dropdown-submenu-${index} .dropdown-menu`
-    );
-
-    if (submenuAnchor && submenu) {
-      if (submenuAnchor && submenu) {
-        // Use Popper.js to destroy the submenu Popper instance
-        const submenuPopper = this.getSubmenuPopper(submenuAnchor);
-        if (submenuPopper) {
-          submenuPopper.destroy();
-          submenuPopper = null;
-        }
-      }
-    }
-  }
-
   getSubmenuPopper(submenuAnchor) {
     // Use Popper.js to retrieve the existing submenu Popper instance
     return submenuAnchor._popper;
-  }
-
-  closeSubmenu(index) {
-    this.toggleSubmenu(index, false);
   }
 
   handleOutsideClick(event) {
@@ -379,12 +329,6 @@ class Dropdown extends LitElement {
     const isOutsideSubmenu = !event.target.closest(".dropdown-submenu");
 
     if (isOutsideMainDropdown && isOutsideSubmenu) {
-      const focusedItems = this.shadowRoot.querySelectorAll(".focused-item");
-
-      focusedItems.forEach((item) => {
-        item.classList.remove("focused-item");
-      });
-
       this.showDropdown = false;
       this.focusedIndex = -1;
 
@@ -509,32 +453,25 @@ class Dropdown extends LitElement {
   handleKeyPress(event) {
     if (!this.showDropdown) return;
 
-    // Assuming .dropdown-item:not(.disabled):not(.hidden) accurately represents focusable items
     const items = this.shadowRoot.querySelectorAll(
       ".dropdown-item:not(.disabled):not(.hidden)"
     );
     let newIndex = this.focusedIndex;
 
-    // Define isSubmenuTrigger here by checking if the currently focused element is a submenu trigger
-    // const isSubmenuTrigger =
-    //   document.activeElement &&
-    //   document.activeElement.classList.contains("dropdown-submenu-toggle");
-    // if (isSubmenuTrigger) {
-    //   const index = event.target.dataset.index; // Accessing data-index from the event target
-    //   // Now you have 'index', which you can use to identify the submenu
-    // }
-    const isSubmenuTrigger = event.target.classList.contains('dropdown-submenu-toggle');
+    const isSubmenuTrigger = event.target.classList.contains(
+      "dropdown-submenu-toggle"
+    );
     if (isSubmenuTrigger && event.key === "ArrowRight") {
-        event.preventDefault();
-        const index = parseInt(event.target.dataset.index, 10); // Convert to integer
-        console.log("Submenu trigger index:", index);
-        if (!isNaN(index)) {
-            if (!this.isSubmenuOpen(index)) {
-                this.showSubmenu(index); // Assuming you adapt showSubmenu to work with index
-            }
-        } else {
-            console.error("Invalid index or index not found on submenu trigger.");
+      event.preventDefault();
+      const index = parseInt(event.target.dataset.index, 10); // Convert to integer
+      console.log("Submenu trigger index:", index);
+      if (!isNaN(index)) {
+        if (!this.isSubmenuOpen(index)) {
+          this.showSubmenu(index); // Assuming you adapt showSubmenu to work with index
         }
+      } else {
+        console.error("Invalid index or index not found on submenu trigger.");
+      }
     }
 
     switch (event.key) {
@@ -552,25 +489,17 @@ class Dropdown extends LitElement {
         // Implement submenu opening logic
         if (isSubmenuTrigger) {
           event.preventDefault();
-          // Ensure toggleSubmenuVisibilityAndPopper is correctly defined and called
-          // const index = parseInt(this.shadowRoot.activeElement.dataset.index);
-          // this.toggleSubmenuVisibilityAndPopper(index, true);
           const index = document.activeElement.dataset.index;
           this.toggleSubmenuVisibilityAndPopper(index, true);
         }
         break;
       case "ArrowLeft":
         event.preventDefault();
-        // this.closeOrToggleSubmenu();
-        this.focusPreviousItem(dropdownItems);
-        if (this.inSubmenu) {
-          // Close the submenu
-          this.toggleSubmenu(false);
-        }
         break;
       case "Tab":
         event.preventDefault();
-        this.focusNextVisibleItem(dropdownItems);
+        newIndex = this.getNextFocusableItemIndex(this.focusedIndex, 1, items);
+        this.focusItemAtIndex(newIndex, items);
         break;
       case "Enter":
         if (this.focusedIndex !== -1) {
@@ -739,12 +668,6 @@ class Dropdown extends LitElement {
     this.focusedIndex = newIndex;
   }
 
-  updateFocusedItemClass(dropdownItems) {
-    dropdownItems.forEach((item, index) => {
-      item.classList.toggle("focused-item", index === this.focusedIndex);
-    });
-  }
-
   closeOrToggleSubmenu() {
     if (this.focusedIndex !== -1 && this.items[this.focusedIndex]?.submenu) {
       const submenu = this.shadowRoot.querySelector(
@@ -761,43 +684,6 @@ class Dropdown extends LitElement {
       }
     }
   }
-
-  // createSubmenuPopper(submenuAnchor, submenu) {
-
-  //   // Use Popper.js to create a new Popper instance for the submenu
-  //   if (this.submenuPopper) {
-  //     this.submenuPopper.destroy();
-  //   }
-
-  //   // Ensure both submenuAnchor and submenu are valid elements
-  //   if (submenuAnchor && submenu && typeof Popper === "function") {
-  //     // Remove focused-item class from the previous submenu anchor
-  //     if (this.previousSubmenuAnchor) {
-  //       this.previousSubmenuAnchor.classList.remove("focused-item");
-  //     }
-
-  //     // Use Popper.js to create a new Popper instance for the submenu
-  //     // You may need to adjust the placement and other options based on your needs
-  //     this.submenuPopper = new Popper(submenuAnchor, submenu, {
-  //       placement: "right-start",
-  //     });
-
-  //     // Add the 'show' class to the submenu
-  //     submenu.classList.add("show");
-
-  //     // Remove focused-item class from submenuAnchor after a short delay
-  //     setTimeout(() => {
-  //       submenuAnchor.classList.remove("focused-item");
-  //     }, 50); // Adjust the delay as needed
-
-  //   } else {
-  //     console.error(
-  //       "Invalid submenuAnchor or submenu. Popper cannot be created.",
-  //       submenuAnchor,
-  //       submenu
-  //     );
-  //   }
-  // }
 
   createSubmenuPopper(submenuAnchor, submenu) {
     if (this.submenuPopper) {
@@ -856,10 +742,6 @@ class Dropdown extends LitElement {
       `.dropdown-submenu-${this.focusedIndex} .dropdown-submenu-toggle`
     );
 
-    if (submenuToggle) {
-      submenuToggle.classList.remove("focused-item");
-    }
-
     // Close submenu on leave
     this.closeSubmenu();
 
@@ -868,18 +750,32 @@ class Dropdown extends LitElement {
   }
 
   // Add this method to destroy the submenu Popper
-  destroySubmenuPopper() {
-    if (this.submenuPopper) {
-      this.submenuPopper.destroy();
-      this.submenuPopper = null;
+  destroySubmenuPopper(index) {
+    const submenuAnchor = this.shadowRoot.querySelector(
+      `.dropdown-submenu-${index} .dropdown-submenu-toggle`
+    );
+    const submenu = this.shadowRoot.querySelector(
+      `.dropdown-submenu-${index} .dropdown-menu`
+    );
+
+    if (submenuAnchor && submenu) {
+      if (submenuAnchor && submenu) {
+        // Use Popper.js to destroy the submenu Popper instance
+        const submenuPopper = this.getSubmenuPopper(submenuAnchor);
+        if (submenuPopper) {
+          submenuPopper.destroy();
+          submenuPopper = null;
+        }
+      }
     }
   }
 
   // Add this method to close the submenu
-  closeSubmenu() {
-    if (this.focusedIndex !== -1) {
-      this.toggleSubmenu(false);
-      this.destroySubmenuPopper(); // Destroy submenu Popper
+  closeSubmenu(index = null) {
+    const idx = index !== null ? index : this.focusedIndex;
+    if (idx !== -1) {
+      this.toggleSubmenu(idx, false);
+      // Additional cleanup if needed
     }
   }
 
