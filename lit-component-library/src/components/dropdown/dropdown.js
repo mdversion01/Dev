@@ -162,18 +162,6 @@ class Dropdown extends LitElement {
     `;
   }
 
-  updated(changedProperties) {
-    super.updated(changedProperties);
-
-    // Check if items or showDropdown property has changed
-    if (
-      changedProperties.has("items") ||
-      changedProperties.has("showDropdown")
-    ) {
-      this.attachSubmenuEventListeners();
-    }
-  }
-
   isSubmenuOpen(index) {
     if (index && !isNaN(index)) {
       const submenuSelector = `.dropdown-menu.dropdown-submenu-${index}`;
@@ -206,17 +194,6 @@ class Dropdown extends LitElement {
       submenu.classList.add("show");
       // Recreate Popper for the submenu
       this.createSubmenuPopper(submenuAnchor, submenu);
-    }
-  }
-
-  hideSubmenu(submenu) {
-    if (submenu) {
-      submenu.classList.remove("show");
-      // Destroy Popper when submenu is closed
-      if (this.submenuPopper) {
-        this.submenuPopper.destroy();
-        this.submenuPopper = null;
-      }
     }
   }
 
@@ -276,7 +253,7 @@ class Dropdown extends LitElement {
   renderSubmenu(submenuItems, parentIndex) {
     return html`
       <div
-        class="dropdown-menu dropdown-submenu-${parentIndex}"
+        class="dropdown-menu sub dropdown-submenu-${parentIndex}"
         data-index="${parentIndex}"
         role="listbox"
         style="${ifDefined(this.styles ? this.styles : undefined)}"
@@ -306,11 +283,6 @@ class Dropdown extends LitElement {
   handleSubmenuEnter(index) {
     this.focusedIndex = index;
     this.updatePopper(); // Update Popper on submenu hover
-  }
-
-  getSubmenuPopper(submenuAnchor) {
-    // Use Popper.js to retrieve the existing submenu Popper instance
-    return submenuAnchor._popper;
   }
 
   handleOutsideClick(event) {
@@ -471,13 +443,12 @@ class Dropdown extends LitElement {
 
     switch (event.key) {
       case "ArrowDown":
-        case "Tab":
+      case "Tab":
         event.preventDefault(); // Prevent the screen from scrolling
         newIndex = this.getNextFocusableItemIndex(this.focusedIndex, 1, items);
         this.focusItemAtIndex(newIndex, items);
         break;
       case "ArrowUp":
-        case "Tab":
         event.preventDefault(); // Prevent the screen from scrolling
         newIndex = this.getNextFocusableItemIndex(this.focusedIndex, -1, items);
         this.focusItemAtIndex(newIndex, items);
@@ -512,17 +483,26 @@ class Dropdown extends LitElement {
         }
         break;
       case "Escape":
-        this.showDropdown = false;
-        this.closeAllSubmenus(); // Close all submenus and destroy their poppers
-        this.focusedIndex = -1;
-        this.updatePopper(); // Optionally update the main popper if needed
-        break;
+        event.preventDefault(); // Prevent the default action for the Escape key
+      this.showDropdown = false; // Close the main dropdown menu
+      this.closeAllSubmenus(); // Close all submenus and reset them
+      this.focusedIndex = -1; // Reset the focus index
+      
+      // Destroy the main Popper instance if it exists
+      if (this.popper) {
+        this.popper.destroy();
+        this.popper = null;
+      }
+
+      // Optionally, you can focus the dropdown toggle button after closing
+      this.blurButton(); // or another method to focus the button
+      break;
     }
 
     // Ensure newIndex is correctly set for focus management
     if (newIndex !== this.focusedIndex) {
       this.focusItemAtIndex(newIndex, items);
-  }
+    }
   }
 
   focusItemAtIndex(index, items) {
@@ -568,128 +548,6 @@ class Dropdown extends LitElement {
     }
   }
 
-  getNextSubmenuItem() {
-    // Get the currently focused submenu item
-    const focusedSubmenuItem = document.activeElement;
-
-    // Check if there is a submenu and it has items
-    if (focusedSubmenuItem && focusedSubmenuItem.submenu) {
-      // Get all submenu items within the current submenu
-      const submenuItems =
-        focusedSubmenuItem.submenu.querySelectorAll(".dropdown-item");
-
-      // Find the index of the focused item
-      const focusedIndex = Array.from(submenuItems).indexOf(focusedSubmenuItem);
-
-      // Return the next submenu item or null if it's the last item
-      return submenuItems[focusedIndex + 1] || null;
-    }
-
-    return null;
-  }
-
-  getPreviousSubmenuItem() {
-    // Get the currently focused submenu item
-    const focusedSubmenuItem = document.activeElement;
-
-    // Check if there is a submenu and it has items
-    if (focusedSubmenuItem && focusedSubmenuItem.submenu) {
-      // Get all submenu items within the current submenu
-      const submenuItems =
-        focusedSubmenuItem.submenu.querySelectorAll(".dropdown-item");
-
-      // Find the index of the focused item
-      const focusedIndex = Array.from(submenuItems).indexOf(focusedSubmenuItem);
-
-      // Return the previous submenu item or null if it's the first item
-      return submenuItems[focusedIndex - 1] || null;
-    }
-
-    return null;
-  }
-
-  focusNextVisibleItem(dropdownItems) {
-    let newIndex = (this.focusedIndex + 1) % dropdownItems.length;
-
-    // Skip over hidden or disabled items
-    while (
-      dropdownItems[newIndex].classList.contains("hidden") ||
-      dropdownItems[newIndex].disabled
-    ) {
-      newIndex = (newIndex + 1) % dropdownItems.length;
-    }
-
-    this.focusedIndex = newIndex;
-  }
-
-  focusPreviousVisibleItem(dropdownItems) {
-    let newIndex =
-      (this.focusedIndex - 1 + dropdownItems.length) % dropdownItems.length;
-
-    // Skip over hidden or disabled items
-    while (
-      dropdownItems[newIndex].classList.contains("hidden") ||
-      dropdownItems[newIndex].disabled
-    ) {
-      newIndex = (newIndex - 1 + dropdownItems.length) % dropdownItems.length;
-    }
-
-    this.focusedIndex = newIndex;
-  }
-
-  focusNextItem(dropdownItems) {
-    const itemCount = dropdownItems.length;
-    let newIndex = (this.focusedIndex + 1) % itemCount;
-
-    // Increment index to skip over submenu items or hidden items
-    while (
-      dropdownItems[newIndex] &&
-      (dropdownItems[newIndex].classList.contains("submenu-item") ||
-        !dropdownItems[newIndex]
-          .closest(".dropdown-menu")
-          .classList.contains("show"))
-    ) {
-      newIndex = (newIndex + 1) % itemCount;
-    }
-
-    this.focusedIndex = newIndex;
-  }
-
-  focusPreviousItem(dropdownItems) {
-    const itemCount = dropdownItems.length;
-    let newIndex = (this.focusedIndex - 1 + itemCount) % itemCount;
-
-    // Decrement index to skip over submenu items or hidden items
-    while (
-      dropdownItems[newIndex] &&
-      (dropdownItems[newIndex].classList.contains("submenu-item") ||
-        !dropdownItems[newIndex]
-          .closest(".dropdown-menu")
-          .classList.contains("show"))
-    ) {
-      newIndex = (newIndex - 1 + itemCount) % itemCount;
-    }
-
-    this.focusedIndex = newIndex;
-  }
-
-  closeOrToggleSubmenu() {
-    if (this.focusedIndex !== -1 && this.items[this.focusedIndex]?.submenu) {
-      const submenu = this.shadowRoot.querySelector(
-        `.dropdown-submenu-${this.focusedIndex} .dropdown-menu`
-      );
-
-      if (submenu) {
-        const isSubmenuOpen = submenu.classList.contains("show");
-        if (isSubmenuOpen) {
-          this.closeSubmenu();
-        } else {
-          this.openSubmenu();
-        }
-      }
-    }
-  }
-
   createSubmenuPopper(submenuAnchor, submenu) {
     if (submenu._popper) submenu._popper.destroy();
 
@@ -727,20 +585,6 @@ class Dropdown extends LitElement {
     }
   }
 
-  // Add this method to find the parent submenu index
-  findParentSubmenuIndex(index) {
-    const currentItem = this.items[index];
-
-    if (currentItem && currentItem.isSubmenu) {
-      const parentItem = this.items.find((item) =>
-        item.submenu.includes(currentItem)
-      );
-      return parentItem ? this.items.indexOf(parentItem) : -1;
-    }
-
-    return -1;
-  }
-
   handleSubmenuLeave(index) {
     // Close submenu on leave
     this.closeSubmenu(index);
@@ -775,18 +619,20 @@ class Dropdown extends LitElement {
   }
 
   closeAllSubmenus() {
-    const submenus = this.shadowRoot.querySelectorAll(".dropdown-menu.dropdown-submenu");
-    submenus.forEach((submenu, index) => {
-        submenu.classList.remove("show");
-        this.destroySubmenuPopper(index); // Assume this method properly destroys the popper for the submenu
+   const submenus = this.shadowRoot.querySelectorAll(`.dropdown-menu.sub`);
+    submenus.forEach((submenu) => {
+      // Remove the 'show' class to hide the submenu
+      submenu.classList.remove("show");
+  
+      // Reset inline styles that may have been set by Popper.js
+      submenu.removeAttribute("style");
+  
+      // Check if this submenu has an associated Popper instance and destroy it
+      if (submenu._popper) {
+        submenu._popper.destroy();
+        submenu._popper = null; // Clear the reference to the destroyed Popper instance
+      }
     });
-}
-
-  focusButton() {
-    const button = this.shadowRoot.querySelector(".dropdown-toggle");
-    if (button) {
-      button.focus();
-    }
   }
 
   handleItemClick(index) {
@@ -797,15 +643,6 @@ class Dropdown extends LitElement {
     if (this.popper) {
       this.popper.destroy();
       this.popper = null;
-    }
-  }
-
-  focusFirstMenuItem() {
-    if (this.focusedIndex === -1 && this.showDropdown) {
-      const dropdownItems = this.shadowRoot.querySelectorAll(".dropdown-item");
-      if (dropdownItems.length > 0) {
-        dropdownItems[0].focus();
-      }
     }
   }
 }
