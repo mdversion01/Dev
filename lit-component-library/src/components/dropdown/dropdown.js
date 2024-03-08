@@ -1,6 +1,5 @@
 import { LitElement, html, css } from "lit";
 import { ifDefined } from "lit/directives/if-defined.js";
-import { robotoFont } from "../../styles/Roboto/roboto-font.js";
 import { layoutStyles } from "../layout-styles.js";
 import { formStyles } from "../form-styles.js";
 import { buttonStyles } from "../button/button-styles.js";
@@ -13,9 +12,16 @@ import {
 import Popper from "popper.js";
 import "../icon/icon.js";
 
+function generateUUID() {
+  return "xx-4x-yx-yy".replace(/[xy]/g, function (c) {
+    var r = (Math.random() * 16) | 0,
+      v = c === "x" ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  });
+}
+
 class Dropdown extends LitElement {
   static styles = [
-    robotoFont,
     layoutStyles,
     buttonStyles,
     dropdownStyles,
@@ -71,6 +77,8 @@ class Dropdown extends LitElement {
 
     // Popper instance for dropdown positioning
     this.popper = null;
+
+    this.instanceId = `dropdown-${generateUUID()}`;
   }
 
   // Lifecycle callbacks
@@ -113,7 +121,8 @@ class Dropdown extends LitElement {
     return html`
       <button
         class="dropdown-toggle ${classAttribute}"
-        id="dropdownButton-${this.id}"
+        id="${this.instanceId}-toggle"
+        aria-controls="${this.instanceId}-menu"
         aria-label="${this.buttonText}"
         aria-haspopup="true"
         aria-expanded="${this.showDropdown ? "true" : "false"}"
@@ -146,7 +155,8 @@ class Dropdown extends LitElement {
         class="dropdown-toggle ${classAttribute}${this.menuIcon
           ? " icon-menu"
           : ""}"
-        id="dropdownButton-${this.id}"
+        id="${this.instanceId}-toggle"
+        aria-controls="${this.instanceId}-menu"
         aria-label="${this.buttonText}"
         aria-haspopup="true"
         aria-expanded="${this.showDropdown ? "true" : "false"}"
@@ -166,7 +176,6 @@ class Dropdown extends LitElement {
       const submenu = this.shadowRoot.querySelector(submenuSelector);
       return submenu && submenu.classList.contains("show");
     } else {
-      console.error(`Invalid index value for isSubmenuOpen: ${index}`);
       return false; // Assume submenu is not open if index is invalid
     }
   }
@@ -200,7 +209,8 @@ class Dropdown extends LitElement {
     return html`
       <div
         class="dropdown-menu ${this.showDropdown ? "show" : ""} ${this.shape}"
-        aria-labelledby="dropdownButton-${this.id}"
+        id="${this.instanceId}-menu"
+        aria-labelledby="${this.instanceId}-toggle"
         role="menu"
       >
         ${this.items
@@ -226,7 +236,9 @@ class Dropdown extends LitElement {
                             tabindex="${this.showDropdown ? "0" : "-1"}"
                             id="submenuToggle-${index}"
                             aria-haspopup="true"
-                            aria-expanded="${this.isSubmenuOpen(index) ? 'true' : 'false'}"
+                            aria-expanded="${this.isSubmenuOpen(index)
+                              ? "true"
+                              : "false"}"
                           >
                             ${item.name}
                             <div class="caret-right">${caretRightIcon}</div>
@@ -260,7 +272,7 @@ class Dropdown extends LitElement {
         data-index="${parentIndex}"
         role="menu"
         style="${ifDefined(this.styles ? this.styles : undefined)}"
-        aria-labelledby="submenuToggle-${index}"
+        aria-labelledby="submenuToggle-${parentIndex}"
       >
         ${submenuItems.map(
           (subitem, subIndex) =>
@@ -388,7 +400,7 @@ class Dropdown extends LitElement {
     `;
 
     return html`
-      <div class="dropdown">
+      <div class="dropdown" id="${this.instanceId}">
         ${this.menuIcon
           ? this.renderMenuIconDropdown(classAttribute, dotsIcon, gearIcon)
           : this.renderBasicDropdown(classAttribute)}
@@ -728,7 +740,6 @@ class Dropdown extends LitElement {
 
   // Add this method to close the submenu
   closeSubmenu(submenuIndex) {
-    console.log("Closing submenu", submenuIndex);
     const submenu = this.shadowRoot.querySelector(
       `.dropdown-menu.sub.dropdown-submenu-${submenuIndex}`
     );
