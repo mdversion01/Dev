@@ -197,4 +197,10 @@ export const dropdownStyles = css`
     outline: 1px solid #007bff;
     /* tabindex: 0; */
   }
+
+  .hidden {
+    display: none;
+    visibility: hidden;
+  }
+
 `;
