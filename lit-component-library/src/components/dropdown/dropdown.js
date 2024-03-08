@@ -113,8 +113,7 @@ class Dropdown extends LitElement {
     return html`
       <button
         class="dropdown-toggle ${classAttribute}"
-        type="button"
-        id="${this.id}"
+        id="dropdownButton-${this.id}"
         aria-label="${this.buttonText}"
         aria-haspopup="true"
         aria-expanded="${this.showDropdown ? "true" : "false"}"
@@ -147,8 +146,7 @@ class Dropdown extends LitElement {
         class="dropdown-toggle ${classAttribute}${this.menuIcon
           ? " icon-menu"
           : ""}"
-        type="button"
-        id="${this.id}"
+        id="dropdownButton-${this.id}"
         aria-label="${this.buttonText}"
         aria-haspopup="true"
         aria-expanded="${this.showDropdown ? "true" : "false"}"
@@ -202,8 +200,8 @@ class Dropdown extends LitElement {
     return html`
       <div
         class="dropdown-menu ${this.showDropdown ? "show" : ""} ${this.shape}"
-        aria-labelledby="${this.id}"
-        role="listbox"
+        aria-labelledby="dropdownButton-${this.id}"
+        role="menu"
       >
         ${this.items
           ? this.items.map(
@@ -215,6 +213,8 @@ class Dropdown extends LitElement {
                     ? html`
                         <div
                           class="dropdown-submenu dropdown-submenu-${index}"
+                          aria-labelledby="submenuToggle-${index}"
+                          role="menu"
                           @mouseenter="${() => this.handleSubmenuEnter(index)}"
                           @mouseleave="${() => this.handleSubmenuLeave(index)}"
                         >
@@ -224,7 +224,9 @@ class Dropdown extends LitElement {
                             data-index="${index}"
                             role="option"
                             tabindex="${this.showDropdown ? "0" : "-1"}"
-                            id="submenu-toggle-${index}"
+                            id="submenuToggle-${index}"
+                            aria-haspopup="true"
+                            aria-expanded="${this.isSubmenuOpen(index) ? 'true' : 'false'}"
                           >
                             ${item.name}
                             <div class="caret-right">${caretRightIcon}</div>
@@ -256,8 +258,9 @@ class Dropdown extends LitElement {
       <div
         class="dropdown-menu sub dropdown-submenu-${parentIndex} hidden"
         data-index="${parentIndex}"
-        role="listbox"
+        role="menu"
         style="${ifDefined(this.styles ? this.styles : undefined)}"
+        aria-labelledby="submenuToggle-${index}"
       >
         ${submenuItems.map(
           (subitem, subIndex) =>
