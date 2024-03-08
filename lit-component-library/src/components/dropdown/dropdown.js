@@ -477,12 +477,6 @@ class Dropdown extends LitElement {
         break;
     }
 
-    // Set focus to the new item if newIndex is valid
-    // if (newIndex >= 0 && newIndex < items.length) {
-    //   items[newIndex].focus();
-    //   this.focusedIndex = newIndex;
-    // }
-
     if (newIndex >= 0 && newIndex < items.length) {
       items[newIndex].focus();
       this.focusedIndex = items.indexOf(items[newIndex]); // Update focusedIndex based on visible items
@@ -522,11 +516,17 @@ class Dropdown extends LitElement {
     this.closeAllSubmenus();
     this.focusedIndex = -1;
     if (this.popper) {
-      this.popper.destroy();
-      this.popper = null;
+        this.popper.destroy();
+        this.popper = null;
     }
-    this.blurButton();
-  }
+
+    // Set focus back to the toggle button
+    const toggleButton = this.shadowRoot.querySelector(".dropdown-toggle");
+    if (toggleButton) {
+        toggleButton.focus();
+    }
+}
+
 
   // Utility method to find the next focusable item index outside the current submenu
   getNextFocusableItemIndexOutsideSubmenu(currentSubmenuIndex, items) {
@@ -600,26 +600,6 @@ class Dropdown extends LitElement {
     // If no focusable item is found, return the current index
     return currentIndex;
   }
-
-  // toggleSubmenuVisibilityAndPopper(index, shouldShow) {
-  //   const submenu = this.shadowRoot.querySelector(
-  //     `.dropdown-menu.dropdown-submenu-${index}`
-  //   );
-  //   if (!submenu) return;
-
-  //   if (shouldShow) {
-  //     submenu.classList.add("show");
-  //     submenu.classList.remove("hidden");
-  //     this.createSubmenuPopper(submenu.previousElementSibling, submenu);
-  //   } else {
-  //     submenu.classList.remove("show");
-  //     submenu.classList.add("hidden");
-  //     if (submenu._popper) {
-  //       submenu._popper.destroy();
-  //       submenu._popper = null;
-  //     }
-  //   }
-  // }
 
   toggleSubmenuVisibilityAndPopper(index, shouldShow) {
     const submenu = this.shadowRoot.querySelector(`.dropdown-menu.dropdown-submenu-${index}`);
