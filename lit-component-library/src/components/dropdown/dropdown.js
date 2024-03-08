@@ -77,6 +77,7 @@ class Dropdown extends LitElement {
 
     // Popper instance for dropdown positioning
     this.popper = null;
+    this.updatePopper = this.updatePopper.bind(this); // Bind updatePopper here
 
     this.instanceId = `dropdown-${generateUUID()}`;
   }
@@ -86,17 +87,21 @@ class Dropdown extends LitElement {
     super.connectedCallback();
     document.addEventListener("click", this.handleOutsideClick);
     document.addEventListener("keydown", this.handleKeyPress);
+    window.addEventListener("scroll", this.updatePopper, true);
+    window.addEventListener("resize", this.updatePopper);
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
     document.removeEventListener("click", this.handleOutsideClick);
     document.removeEventListener("keydown", this.handleKeyPress);
+    window.removeEventListener("scroll", this.updatePopper, true);
+    window.removeEventListener("resize", this.updatePopper);
   }
 
   createPopper() {
-    const button = this.shadowRoot.querySelector("#dropdown-toggle");
-    const menu = this.shadowRoot.querySelector("#dropdown-menu");
+    const button = this.shadowRoot.querySelector(`#${this.instanceId}-toggle`);
+    const menu = this.shadowRoot.querySelector(`#${this.instanceId}-menu`);
 
     if (!button || !menu) {
       return;
@@ -341,6 +346,7 @@ class Dropdown extends LitElement {
   }
 
   render() {
+    this.updatePopper(); // Update Popper on render
     // Declare classAttribute before using it
     let classAttribute = "";
 
@@ -354,8 +360,6 @@ class Dropdown extends LitElement {
       size: getButtonTypeClass(this.iconBtn, this.size),
       shape: getButtonShape(this.shape),
     });
-
-    this.updatePopper(); // Update Popper on render
 
     const dotsIcon = html`
       <svg
@@ -532,6 +536,10 @@ class Dropdown extends LitElement {
       case "ArrowLeft":
         this.handleArrowLeft();
         break;
+        case "Escape":
+          // Close the dropdown
+          this.handleEscape();
+          break;
       default:
         // Handle other keys (e.g., Escape or ArrowLeft for closing submenu) if needed
         return; // Exit the function for keys we're not handling here
