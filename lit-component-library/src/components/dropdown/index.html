@@ -57,11 +57,19 @@
           <section class="section">
             <section class="display-box" id="db-1">
               <section class="display-box-demo">
-                <dropdown-component
-                  alignMenuRight
-                  id="dditemsDivider"
-                  buttonText="Dropdown with divided menu"
-                ></dropdown-component>
+                <div style="margin: 0 5px 10px">
+                  <dropdown-component
+                    id="dditemsDivider"
+                    buttonText="DD with divided menu"
+                  ></dropdown-component>
+                </div>
+                <div style="margin: 0 5px 10px">
+                  <dropdown-component
+                    alignMenuLeft
+                    id="dditemsDividerLeft"
+                    buttonText="DD with divided menu aligned left"
+                  ></dropdown-component>
+                </div>
               </section>
               <section class="display-box-meta markdown">
                 <div class="display-box-title">Basic Usage</div>
@@ -93,16 +101,19 @@
           <section class="section">
             <section class="display-box" id="db-1">
               <section class="display-box-demo">
-                <dropdown-component
-                  id="dditemsSubMenu"
-                  buttonText="DD w/ Submenu aligned right"
-                ></dropdown-component>
-
-                <dropdown-component
-                  alignMenuLeft
-                  id="dditemsSubMenuLeft"
-                  buttonText="DD w/ Submenu aligned left"
-                ></dropdown-component>
+                <div style="margin: 0 5px 10px">
+                  <dropdown-component
+                    id="dditemsSubMenu"
+                    buttonText="DD w/ Submenu aligned right"
+                  ></dropdown-component>
+                </div>
+                <div style="margin: 0 5px 10px">
+                  <dropdown-component
+                    alignMenuLeft
+                    id="dditemsSubMenuLeft"
+                    buttonText="DD w/ Submenu aligned left"
+                  ></dropdown-component>
+                </div>
               </section>
               <section class="display-box-meta markdown">
                 <div class="display-box-title">Basic Usage</div>
@@ -792,6 +803,20 @@
         }
 
         // Dynamically selectable options
+        const dditemsDividerLeft =
+          document.getElementById("dditemsDividerLeft");
+        if (dditemsDividerLeft) {
+          dditemsDividerLeft.items = [
+            { name: "Action", path: "#", isDivider: false },
+            { name: "Another Action", path: "#", isDivider: false },
+            { name: "Something else here", path: "#", isDivider: false },
+            { isDivider: true },
+            { name: "Something New", path: "#", isDivider: false },
+            // Add more items as needed
+          ];
+        }
+
+        // Dynamically selectable options
         const dditemsSubMenu = document.getElementById("dditemsSubMenu");
         if (dditemsSubMenu) {
           dditemsSubMenu.items = [
@@ -824,7 +849,8 @@
         }
 
         // Dynamically selectable options
-        const dditemsSubMenuLeft = document.getElementById("dditemsSubMenuLeft");
+        const dditemsSubMenuLeft =
+          document.getElementById("dditemsSubMenuLeft");
         if (dditemsSubMenuLeft) {
           dditemsSubMenuLeft.items = [
             { name: "Item 1", path: "#" },

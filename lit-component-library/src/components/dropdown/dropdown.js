@@ -263,7 +263,6 @@ class Dropdown extends LitElement {
                           @mouseenter="${() => this.handleSubmenuEnter(index)}"
                           @mouseleave="${() => this.handleSubmenuLeave(index)}"
                         >
-                        ${this.alignMenuLeft ? html`<div class="caret-right">${caretRightIcon}</div>` : ''}
                           <a
                             class="dropdown-item ${this
                               .size} dropdown-submenu-toggle dropdown-submenu-${index}"
@@ -276,8 +275,17 @@ class Dropdown extends LitElement {
                               ? "true"
                               : "false"}"
                           >
+                            ${this.alignMenuLeft
+                              ? html`<div class="caret-right">
+                                  ${caretRightIcon}
+                                </div>`
+                              : ""}
                             ${item.name}
-                            ${this.alignMenuLeft ? '' : html`<div class="caret-right">${caretRightIcon}</div>`}
+                            ${this.alignMenuLeft
+                              ? ""
+                              : html`<div class="caret-right">
+                                  ${caretRightIcon}
+                                </div>`}
                           </a>
                           ${this.renderSubmenu(item.submenu, index)}
                         </div>
@@ -733,7 +741,7 @@ class Dropdown extends LitElement {
 
     // Set the placement based on the main dropdown's alignment
     const placement = isMainDropdownRightAligned ? "left-start" : "right-start";
-    const submenuOffset = isMainDropdownRightAligned ? [0, 14] : [0, 0];
+    const submenuOffset = isMainDropdownRightAligned ? [0, 0] : [0, 0];
 
     submenu._popper = createPopper(submenuAnchor, submenu, {
       placement: placement,

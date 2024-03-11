@@ -206,10 +206,6 @@ export const dropdownStyles = css`
     text-align: right;
   }
 
-  .dropdown-menu-right .dropdown-submenu-toggle.dropdown-item {
-    justify-content: flex-end;
-  }
-  
   /* Add a new class to the focused item in JavaScript */
   .dropdown-item:focus-visible {
     background-color: #f8f9fa;
