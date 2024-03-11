@@ -58,6 +58,7 @@
             <section class="display-box" id="db-1">
               <section class="display-box-demo">
                 <dropdown-component
+                  alignMenuRight
                   id="dditemsDivider"
                   buttonText="Dropdown with divided menu"
                 ></dropdown-component>
@@ -94,7 +95,13 @@
               <section class="display-box-demo">
                 <dropdown-component
                   id="dditemsSubMenu"
-                  buttonText="Dropdown with Submenu"
+                  buttonText="DD w/ Submenu aligned right"
+                ></dropdown-component>
+
+                <dropdown-component
+                  alignMenuLeft
+                  id="dditemsSubMenuLeft"
+                  buttonText="DD w/ Submenu aligned left"
                 ></dropdown-component>
               </section>
               <section class="display-box-meta markdown">
@@ -788,6 +795,38 @@
         const dditemsSubMenu = document.getElementById("dditemsSubMenu");
         if (dditemsSubMenu) {
           dditemsSubMenu.items = [
+            { name: "Item 1", path: "#" },
+            // { isDivider: true },
+            {
+              name: "Item 2",
+              path: "#",
+              submenu: [
+                { name: "Subitem 1", path: "#" },
+                { name: "Subitem 2", path: "#" },
+                { isDivider: true },
+                { name: "Subitem 3", path: "#" },
+              ],
+            },
+            { name: "Item 3", path: "#" },
+            { name: "Item 4", path: "#" },
+            // { isDivider: true },
+            {
+              name: "Item 5",
+              path: "#",
+              submenu: [
+                { name: "Subitem 1", path: "#" },
+                { name: "Subitem 2", path: "#" },
+                { name: "Subitem 3", path: "#" },
+              ],
+            },
+            // ... other items
+          ];
+        }
+
+        // Dynamically selectable options
+        const dditemsSubMenuLeft = document.getElementById("dditemsSubMenuLeft");
+        if (dditemsSubMenuLeft) {
+          dditemsSubMenuLeft.items = [
             { name: "Item 1", path: "#" },
             // { isDivider: true },
             {

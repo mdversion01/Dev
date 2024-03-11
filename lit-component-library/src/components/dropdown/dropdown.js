@@ -9,7 +9,8 @@ import {
   getButtonTypeClass,
   getButtonShape,
 } from "../utilities/sharedButtonUtils.js";
-import Popper from "popper.js";
+// import Popper from "popper.js";
+import { createPopper } from "@popperjs/core";
 import "../icon/icon.js";
 
 function generateUUID() {
@@ -31,6 +32,7 @@ class Dropdown extends LitElement {
 
   static get properties() {
     return {
+      alignMenuLeft: { type: Boolean },
       block: { type: Boolean },
       buttonText: { type: String },
       disabled: { type: Boolean },
@@ -54,6 +56,7 @@ class Dropdown extends LitElement {
   constructor() {
     super();
     // Initialize default properties
+    this.alignMenuLeft = false;
     this.block = false;
     this.buttonText = "Dropdown button";
     this.disabled = false;
@@ -99,6 +102,12 @@ class Dropdown extends LitElement {
     window.removeEventListener("resize", this.updatePopper);
   }
 
+  updated(changedProperties) {
+    if (changedProperties.has("alignRight") && this.showDropdown) {
+      this.createPopper(); // Recreate the Popper with the new alignment
+    }
+  }
+
   createPopper() {
     const button = this.shadowRoot.querySelector(`#${this.instanceId}-toggle`);
     const menu = this.shadowRoot.querySelector(`#${this.instanceId}-menu`);
@@ -107,12 +116,32 @@ class Dropdown extends LitElement {
       return;
     }
 
+    // Check if the dropdown-menu-right class is present
+    const placement = menu.classList.contains("dropdown-menu-right")
+      ? "bottom-end"
+      : "bottom-start";
+
     if (this.popper) {
       this.popper.destroy();
     }
 
-    this.popper = new Popper(button, menu, {
-      placement: "bottom-start",
+    // Dynamically set the placement based on the class presence
+    this.popper = createPopper(button, menu, {
+      placement: placement,
+      modifiers: [
+        {
+          name: "offset",
+          options: {
+            offset: [0, 0], // Adjust this offset as needed
+          },
+        },
+        {
+          name: "preventOverflow",
+          options: {
+            boundary: "viewport",
+          },
+        },
+      ],
     });
   }
 
@@ -213,7 +242,8 @@ class Dropdown extends LitElement {
   renderDropdownMenu(caretRightIcon) {
     return html`
       <div
-        class="dropdown-menu ${this.showDropdown ? "show" : ""} ${this.shape}"
+        class="dropdown-menu${this.showDropdown ? " show" : ""} ${this
+          .shape}${this.alignMenuLeft ? " dropdown-menu-right" : ""}"
         id="${this.instanceId}-menu"
         aria-labelledby="${this.instanceId}-toggle"
         role="menu"
@@ -233,6 +263,7 @@ class Dropdown extends LitElement {
                           @mouseenter="${() => this.handleSubmenuEnter(index)}"
                           @mouseleave="${() => this.handleSubmenuLeave(index)}"
                         >
+                        ${this.alignMenuLeft ? html`<div class="caret-right">${caretRightIcon}</div>` : ''}
                           <a
                             class="dropdown-item ${this
                               .size} dropdown-submenu-toggle dropdown-submenu-${index}"
@@ -246,7 +277,7 @@ class Dropdown extends LitElement {
                               : "false"}"
                           >
                             ${item.name}
-                            <div class="caret-right">${caretRightIcon}</div>
+                            ${this.alignMenuLeft ? '' : html`<div class="caret-right">${caretRightIcon}</div>`}
                           </a>
                           ${this.renderSubmenu(item.submenu, index)}
                         </div>
@@ -273,7 +304,10 @@ class Dropdown extends LitElement {
   renderSubmenu(submenuItems, parentIndex) {
     return html`
       <div
-        class="dropdown-menu sub dropdown-submenu-${parentIndex} hidden"
+        class="dropdown-menu sub dropdown-submenu-${parentIndex} hidden ${this
+          .alignMenuLeft
+          ? " dropdown-menu-right"
+          : ""}"
         data-index="${parentIndex}"
         role="menu"
         style="${ifDefined(this.styles ? this.styles : undefined)}"
@@ -536,10 +570,10 @@ class Dropdown extends LitElement {
       case "ArrowLeft":
         this.handleArrowLeft();
         break;
-        case "Escape":
-          // Close the dropdown
-          this.handleEscape();
-          break;
+      case "Escape":
+        // Close the dropdown
+        this.handleEscape();
+        break;
       default:
         // Handle other keys (e.g., Escape or ArrowLeft for closing submenu) if needed
         return; // Exit the function for keys we're not handling here
@@ -690,15 +724,30 @@ class Dropdown extends LitElement {
   }
 
   createSubmenuPopper(submenuAnchor, submenu) {
-    if (submenu._popper) submenu._popper.destroy();
+    if (submenu._popper) {
+      submenu._popper.destroy();
+    }
 
-    submenu._popper = new Popper(submenuAnchor, submenu, {
-      placement: "right-start",
+    // Determine the main menu's alignment to decide on the submenu's placement
+    const isMainDropdownRightAligned = this.alignMenuLeft; // or check the class directly if not using a property
+
+    // Set the placement based on the main dropdown's alignment
+    const placement = isMainDropdownRightAligned ? "left-start" : "right-start";
+    const submenuOffset = isMainDropdownRightAligned ? [0, 14] : [0, 0];
+
+    submenu._popper = createPopper(submenuAnchor, submenu, {
+      placement: placement,
       modifiers: [
         {
           name: "offset",
           options: {
-            offset: [0, 10],
+            offset: submenuOffset, // Adjust this offset as needed
+          },
+        },
+        {
+          name: "preventOverflow",
+          options: {
+            boundary: "viewport",
           },
         },
       ],

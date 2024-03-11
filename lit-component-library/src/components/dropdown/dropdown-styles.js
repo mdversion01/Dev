@@ -190,6 +190,26 @@ export const dropdownStyles = css`
     margin: 2px 0 -2px 4px;
   }
 
+  .dropdown-menu-right .dropdown-submenu {
+    display: flex;
+    align-items: center;
+  }
+
+  .dropdown-menu-right .caret-right {
+    width: 0.35rem;
+    justify-content: flex-start;
+    margin: -2px 4px 2px 4px;
+    transform: rotate(180deg);
+  }
+
+  .dropdown-menu-right .dropdown-item {
+    text-align: right;
+  }
+
+  .dropdown-menu-right .dropdown-submenu-toggle.dropdown-item {
+    justify-content: flex-end;
+  }
+  
   /* Add a new class to the focused item in JavaScript */
   .dropdown-item:focus-visible {
     background-color: #f8f9fa;
@@ -202,5 +222,4 @@ export const dropdownStyles = css`
     display: none;
     visibility: hidden;
   }
-
 `;
