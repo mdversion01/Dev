@@ -32,7 +32,7 @@ class Dropdown extends LitElement {
 
   static get properties() {
     return {
-      alignMenuLeft: { type: Boolean },
+      alignMenuRight: { type: Boolean },
       block: { type: Boolean },
       buttonText: { type: String },
       disabled: { type: Boolean },
@@ -40,7 +40,7 @@ class Dropdown extends LitElement {
       gearIcon: { type: Boolean },
       id: { type: String },
       items: { type: Array },
-      menuIcon: { type: Boolean },
+      iconDropDown: { type: Boolean },
       outlined: { type: Boolean },
       pressed: { type: Boolean },
       ripple: { type: Boolean },
@@ -56,14 +56,14 @@ class Dropdown extends LitElement {
   constructor() {
     super();
     // Initialize default properties
-    this.alignMenuLeft = false;
+    this.alignMenuRight = false;
     this.block = false;
-    this.buttonText = "Dropdown button";
+    this.buttonText = "Dropdown";
     this.disabled = false;
     this.dotsIcon = false;
     this.gearIcon = false;
     this.id = "";
-    this.menuIcon = false;
+    this.iconDropDown = false;
     this.outlined = false;
     this.pressed = false;
     this.ripple = false;
@@ -186,7 +186,7 @@ class Dropdown extends LitElement {
   renderMenuIconDropdown(classAttribute, dotsIcon, gearIcon) {
     return html`
       <button
-        class="dropdown-toggle ${classAttribute}${this.menuIcon
+        class="dropdown-toggle ${classAttribute}${this.iconDropDown
           ? " icon-menu"
           : ""}"
         id="${this.instanceId}-toggle"
@@ -243,7 +243,7 @@ class Dropdown extends LitElement {
     return html`
       <div
         class="dropdown-menu${this.showDropdown ? " show" : ""} ${this
-          .shape}${this.alignMenuLeft ? " dropdown-menu-right" : ""}"
+          .shape}${this.alignMenuRight ? " dropdown-menu-right" : ""}"
         id="${this.instanceId}-menu"
         aria-labelledby="${this.instanceId}-toggle"
         role="menu"
@@ -275,13 +275,13 @@ class Dropdown extends LitElement {
                               ? "true"
                               : "false"}"
                           >
-                            ${this.alignMenuLeft
+                            ${this.alignMenuRight
                               ? html`<div class="caret-right">
                                   ${caretRightIcon}
                                 </div>`
                               : ""}
                             ${item.name}
-                            ${this.alignMenuLeft
+                            ${this.alignMenuRight
                               ? ""
                               : html`<div class="caret-right">
                                   ${caretRightIcon}
@@ -313,7 +313,7 @@ class Dropdown extends LitElement {
     return html`
       <div
         class="dropdown-menu sub dropdown-submenu-${parentIndex} hidden ${this
-          .alignMenuLeft
+          .alignMenuRight
           ? " dropdown-menu-right"
           : ""}"
         data-index="${parentIndex}"
@@ -447,7 +447,7 @@ class Dropdown extends LitElement {
 
     return html`
       <div class="dropdown" id="${this.instanceId}">
-        ${this.menuIcon
+        ${this.iconDropDown
           ? this.renderMenuIconDropdown(classAttribute, dotsIcon, gearIcon)
           : this.renderBasicDropdown(classAttribute)}
         ${this.renderDropdownMenu(caretRightIcon)}
@@ -737,7 +737,7 @@ class Dropdown extends LitElement {
     }
 
     // Determine the main menu's alignment to decide on the submenu's placement
-    const isMainDropdownRightAligned = this.alignMenuLeft; // or check the class directly if not using a property
+    const isMainDropdownRightAligned = this.alignMenuRight; // or check the class directly if not using a property
 
     // Set the placement based on the main dropdown's alignment
     const placement = isMainDropdownRightAligned ? "left-start" : "right-start";
