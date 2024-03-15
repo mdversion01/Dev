@@ -1,7 +1,6 @@
 import { css } from "lit";
 
 export const inputGroupStyles = css`
-  
   .pl-input-group {
     position: relative;
     display: flex;
@@ -46,18 +45,58 @@ export const inputGroupStyles = css`
     min-height: 38px;
   }
 
+  .pl-input-group-btn {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 0.375rem 0.75rem;
+    margin-bottom: 0;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    text-align: center;
+    white-space: nowrap;
+    //border: 1px solid #ced4da;
+    border-top: 1px solid #ced4da;
+    border-bottom: 1px solid #ced4da;
+    border-right: none;
+    border-left: none;
+    border-radius: 0.25rem;
+    background-color: transparent;
+    min-height: 38px;
+  }
+
+  .pl-input-group > .pl-input-group-append:not(:last-child) > .pl-input-group-text {
+    border-left: none;
+    border-right: none;
+  }
+
+  .pl-input-group
+    > .pl-input-group-append:last-child > .pl-input-group-btn {
+    border-right: 1px solid #ced4da;
+    border-left: none;
+  }
+
+
   .pl-input-group
     > .pl-input-group-append:last-child
     > .pl-btn:not(:last-child):not(.dropdown-toggle),
   .pl-input-group
     > .pl-input-group-append:last-child
     > .pl-input-group-text:not(:last-child),
+  .pl-input-group
+    > .pl-input-group-append:last-child
+    > .pl-input-group-btn:not(:last-child),
   .pl-input-group > .pl-input-group-append:not(:last-child) > .pl-btn,
   .pl-input-group
     > .pl-input-group-append:not(:last-child)
     > .pl-input-group-text,
+  .pl-input-group
+    > .pl-input-group-append:not(:last-child)
+    > .pl-input-group-btn,
   .pl-input-group > .pl-input-group-prepend > .pl-btn,
-  .pl-input-group > .pl-input-group-prepend > .pl-input-group-text {
+  .pl-input-group > .pl-input-group-prepend > .pl-input-group-text,
+  .pl-input-group > .pl-input-group-prepend > .pl-input-group-btn {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
   }
@@ -180,5 +219,4 @@ export const inputGroupStyles = css`
   .invalid {
     color: rgb(227, 72, 80);
   }
-
 `;

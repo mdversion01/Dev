@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html>
+  <title>Autocomplete Input Component</title>
+  <head>
+    <!-- <link
+      rel="stylesheet"
+      href="../../../node_modules/bootstrap/dist/css/bootstrap.css"
+    /> -->
+    <!-- <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    /> -->
+    <link
+      rel="stylesheet"
+      href="../../../node_modules/lit-fontawesome/css/font.css"
+    />
+    <link rel="stylesheet" href="../../styles/components.css" />
+
+    <style>
+      .content-box {
+        flex: 1 1 auto;
+      }
+      .flex {
+        display: flex;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="title">Autocomplete Input Component</div>
+
+    <div class="demo-wrapper">
+      <div class="main">
+        <section>
+          <section class="section">
+            <section class="display-box" id="db-1">
+              <section class="display-box-demo">
+                <autocomplete-input
+                  label="Autocomplete Input"
+                  inputId="aci1"
+                  id="aci1"
+                  clearBtn
+                ></autocomplete-input>
+
+                <autocomplete-input
+                  label="Autocomplete Input"
+                  inputId="aci1"
+                  id="aci1"
+                  formlayout="horizontal"
+                ></autocomplete-input>
+
+                <autocomplete-input
+                  label="Autocomplete Input"
+                  inputId="aci1"
+                  id="aci1"
+                  formlayout="inline"
+                ></autocomplete-input>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">
+                  Default Autocomplete Input
+                </div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
+
+          <!-- <section class="section">
+            <section class="display-box" id="db-1">
+              <section class="display-box-demo">
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">Text</div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section> -->
+        </section>
+
+        <section>
+          <section class="section">
+            <section class="display-box" id="db-1">
+              <section class="display-box-demo">
+                <autocomplete-input
+                label="Autocomplete Multi-Select Input"
+                inputId="aci2"
+                id="aci2"
+                multiselect
+                clearBtn
+              ></autocomplete-input>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">Text</div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
+
+          <!-- <section class="section">
+            <section class="display-box" id="db-1">
+              <section class="display-box-demo"></section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">Text</div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section> -->
+        </section>
+      </div>
+    </div>
+
+    <!-- Props -->
+    <!-- <div style="margin-top: 50px">
+      <div class="title">Props</div>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Property</th>
+              <th>Type</th>
+              <th>Default</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td>alignMenuRight</td>
+              <td>Boolean</td>
+              <td>false</td>
+              <td>
+                When true, aligns the dropdown menu to the right of the button
+              </td>
+            </tr>
+            <tr>
+              <td>block</td>
+              <td>Boolean</td>
+              <td>false</td>
+              <td>
+                When true, the dropdown menu will take up the full width of its
+                parent
+              </td>
+            </tr>
+            <tr>
+              <td>buttonText</td>
+              <td>String</td>
+              <td></td>
+              <td>
+                The text to display on the dropdown button. If not provided, the
+                default text will be "Dropdown".
+              </td>
+            </tr>
+            <tr>
+              <td>disabled</td>
+              <td>Boolean</td>
+              <td>false</td>
+              <td>
+                When true, the dropdown button will be disabled and the dropdown
+                menu will not be displayed.
+              </td>
+            </tr>
+            <tr>
+              <td>dotsIcon</td>
+              <td>Boolean</td>
+              <td>false</td>
+              <td>
+                When true, the button will display the dots icon only. The
+                'buttonText' prop provides the 'aria-label' text for
+                accessibility. This is typically used for dropdown buttons that
+                are part of a menu.
+              </td>
+            </tr>
+            <tr>
+              <td>gearIcon</td>
+              <td>Boolean</td>
+              <td>false</td>
+              <td>
+                When true, the button will display the gear icon only. The
+                'buttonText' prop provides the 'aria-label' text for
+                accessibility. This is typically used for dropdown buttons that
+                are part of a menu.
+              </td>
+            </tr>
+            <tr>
+              <td>iconDropDown</td>
+              <td>Boolean</td>
+              <td>false</td>
+              <td>
+                When true, the button will display an icon button only, the
+                'dotsIcon' or the 'gearIcon' props can be used. The 'buttonText'
+                prop provides the 'aria-label' text for accessibility. This is
+                typically used for dropdown buttons that are part of a menu.
+              </td>
+            </tr>
+            <tr>
+              <td>id</td>
+              <td>String</td>
+              <td></td>
+              <td>
+                The unique identifier for the dropdown component. If not
+                provided, a unique id will be generated.
+              </td>
+            </tr>
+            <tr>
+              <td>items</td>
+              <td>Array</td>
+              <td></td>
+              <td>
+                An array of objects representing the items in the dropdown menu.
+                Each object should have a 'name' property and an optional 'path'
+                property. If the 'path' property is not provided, the item will
+                not be clickable and will be rendered as a disabled item. If the
+                'isDivider' property is true, the item will be rendered as a
+                divider. Adding a 'submenu' property to an item will render the
+                item as a submenu item. The 'submenu' property should be an
+                array of objects representing the submenu items.
+              </td>
+            </tr>
+            <tr>
+              <td>outlined</td>
+              <td>Boolean</td>
+              <td>false</td>
+              <td>
+                When true, the button will be rendered with an outlined style.
+              </td>
+            </tr>
+            <tr>
+              <td>pressed</td>
+              <td>Boolean</td>
+              <td>false</td>
+              <td>
+                When true, the button will be rendered with a pressed style.
+              </td>
+            </tr>
+            <tr>
+              <td>ripple</td>
+              <td>Boolean</td>
+              <td>false</td>
+              <td>
+                When true, the button will be rendered with a ripple effect.
+              </td>
+            </tr>
+            <tr>
+              <td>showDropdown</td>
+              <td>Boolean</td>
+              <td>false</td>
+              <td>
+                When true, the dropdown menu will be displayed. This prop is
+                typically used to control the visibility of the dropdown menu
+                from outside the component.
+              </td>
+            </tr>
+            <tr>
+              <td>shape</td>
+              <td>String</td>
+              <td></td>
+              <td>
+                The shape of the button. Possible values are 'default',
+                'square', and 'pill'.
+              </td>
+            </tr>
+            <tr>
+              <td>size</td>
+              <td>String</td>
+              <td></td>
+              <td>
+                The size of the button. Possible values are 'sm', 'lg', and
+                'default'.
+              </td>
+            </tr>
+            <tr>
+              <td>styles</td>
+              <td>String</td>
+              <td></td>
+              <td>
+                Custom styles to apply to the dropdown button. The value should
+                be a string of CSS styles.
+              </td>
+            </tr>
+            <tr>
+              <td>focusedIndex</td>
+              <td>Number</td>
+              <td></td>
+              <td>
+                The index of the item in the dropdown menu that should receive
+                focus when the menu is opened. This prop is typically used to
+                control the focus of the dropdown menu from outside the
+                component.
+              </td>
+            </tr>
+            <tr>
+              <td>variant</td>
+              <td>String</td>
+              <td></td>
+              <td>
+                The variant of the button. Possible values are 'primary',
+                'secondary', 'tertiary', 'active', 'success', 'danger',
+                'warning', 'info', 'light', and 'dark'.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div> -->
+
+    <!-- Instructions -->
+    <!-- <div style="margin-top: 50px">
+      <div class="title">Using Component in other JavaScript Frameworks</div>
+
+      <p>
+        Integrating a Lit Element component with other JavaScript frameworks
+        like Vue, React, and Angular involves creating a wrapper component in
+        each framework to encapsulate and use the Lit Element component. Here
+        are examples for each framework:
+      </p>
+
+      <h5>Vue.js</h5>
+      <p>
+        Vue has good support for Web Components. In a Vue component, you'd use
+        Dropdown just like any other HTML element:
+      </p>
+      <pre>
+          <code>
+            &#60;template&#62;
+            &#60;div&#62;
+            &#60;dropdown-component button-text="Click me!" id="example-dropdown"&#62;&#60;/dropdown-component&#62;
+            &#60;/div&#62;
+            &#60;/template&#62;
+          
+            &#60;script&#62;
+          import 'path/to/your/dropdown-component';
+          
+          export default {
+            name: 'App'
+          }
+          &#60;/script&#62;
+          </code>
+        </pre>
+
+      <h5>React</h5>
+      <p>
+        React's JSX doesn't natively listen to changes in non-standard
+        properties or events on a web component. For properties, you might need
+        to use refs to interact with your component imperatively. In a React
+        component, you'd similarly treat Dropdown as a regular HTML element:
+      </p>
+      <pre>
+          <code>
+            import React, { useEffect, useRef } from 'react';
+            import 'path/to/your/dropdown-component';
+            
+            function App() {
+              const dropdownRef = useRef(null);
+            
+              useEffect(() => {
+                if(dropdownRef.current) {
+                  dropdownRef.current.buttonText = 'Click me!';
+                  dropdownRef.current.id = 'example-dropdown';
+                  // Add any event listeners if needed
+                }
+              }, []);
+            
+              return (
+                &#60;dropdown-component ref={dropdownRef}&#62;&#60;/dropdown-component&#62;
+              );
+            }
+            
+            export default App;
+            
+          </code>
+        </pre>
+
+      <h5>Angular</h5>
+      <p>
+        Angular has built-in support for custom elements through Angular
+        Elements. To use your Web Component, you might need to add it to the
+        schemas array in your module to avoid Angular's template checks. In
+        Angular, you'd use Dropdown as part of your Angular template:
+      </p>
+
+      <pre>
+          <code>
+            import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+            import { BrowserModule } from '@angular/platform-browser';
+            import { AppComponent } from './app.component';
+
+            // Import the custom element somewhere in your app
+            import 'path/to/your/dropdown-component';
+
+            @NgModule({
+              declarations: [
+                AppComponent
+              ],
+              imports: [
+                BrowserModule
+              ],
+              providers: [],
+              bootstrap: [AppComponent],
+              schemas: [CUSTOM_ELEMENTS_SCHEMA] // Add this line
+            })
+            export class AppModule { }
+          </code>
+        </pre>
+      <p>Then you can use it directly in your Angular component's HTML:</p>
+      <pre>
+        <code>
+          &#60;dropdown-component buttonText="Click me!" id="example-dropdown"&#62;&#60;/dropdown-component&#62;
+        </code>
+      </pre>
+      <p>
+        These examples assume that you've configured your framework project to
+        work with web components and that you've imported the Lit Element
+        component correctly. Adjust import paths accordingly.
+      </p>
+
+      <p>
+        Remember, for Angular and React, to ensure that any custom events your
+        component fires are properly handled, you might need to add event
+        listeners manually using refs in React or ViewChild in Angular, since
+        handling custom events directly in the template (React) or template
+        (Angular) might not work as expected without some additional setup.
+      </p>
+
+      <h5>Note</h5>
+      <p>
+        Make sure the custom element (dropdown-component) definition is loaded
+        before you try to use it in your app. This often means importing the
+        component script in your main entry file or using a module bundler like
+        Webpack to include it as part of your build process.
+      </p>
+
+      <p>
+        The interoperability is possible because Web Components, once defined
+        and registered as custom elements, act like native HTML elements that
+        these frameworks can understand and interact with.
+      </p>
+    </div> -->
+
+    <script src="../form/form.js" type="module"></script>
+    <script src="./autocomplete-input.js" type="module"></script>
+    <script type="module">
+      document.addEventListener("DOMContentLoaded", function () {
+        // Define mock options for the first autocomplete input
+        const aciOptions1 = ["Apple", "Banana", "Orange", "Mango"];
+        // Get the first autocomplete input element
+        const aci1 = document.getElementById("aci1");
+        // Set the options property of the first autocomplete input element to the mock data
+        aci1.options = aciOptions1;
+
+        // Define mock options for the first autocomplete input
+        const aciOptions2 = ["Apple", "Banana", "Orange", "Mango"];
+        // Get the first autocomplete input element
+        const aci2 = document.getElementById("aci2");
+        // Set the options property of the first autocomplete input element to the mock data
+        aci2.options = aciOptions2;
+      });
+    </script>
+
+    <!-- <script src="../../../node_modules/bootstrap/dist/js/bootstrap.js"></script> -->
+  </body>
+</html>
