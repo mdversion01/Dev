@@ -31,6 +31,8 @@ class AutocompleteInput extends LitElement {
     addIcon: { type: String },
     clearBtn: { type: Boolean },
     clearIcon: { type: String },
+    error: { type: Boolean },
+    errorMessage: { type: String },
     size: { type: String },
     label: { type: String },
     labelHidden: { type: Boolean },
@@ -41,6 +43,7 @@ class AutocompleteInput extends LitElement {
     validationMessage: { type: String },
     options: { type: Array },
     focusedOptionIndex: { type: Number }, // New property to track focused option
+    selectedItems: { type: Array },
   };
 
   constructor() {
@@ -48,6 +51,8 @@ class AutocompleteInput extends LitElement {
     this.addBtn = false;
     this.addIcon = "";
     this.disabled = false;
+    this.error = false;
+    this.errorMessage = "";
     this.formLayout = "";
     this.formId = "";
     this.inputId = "";
@@ -67,6 +72,8 @@ class AutocompleteInput extends LitElement {
 
     this.focusedOptionIndex = -1; // -1 means no option is focused
     this.selectedOptionIndex = -1; // Initialize selectedOptionIndex
+
+    this.selectedItems = [];
   }
 
   camelCase(str) {
@@ -127,6 +134,17 @@ class AutocompleteInput extends LitElement {
       // Handle input events for filtering options
       this.inputValue = event.target.value;
       this.filterOptions();
+    
+      // Update validation only if it's explicitly being used.
+      if (this.required || this.validation) {
+        this.validation = false;
+      }
+    
+      // Reset error state on input change.
+      this.error = false;
+      this.errorMessage = "";
+    
+      this.requestUpdate();
     }
   }
 
@@ -140,11 +158,25 @@ class AutocompleteInput extends LitElement {
   }
 
   handleSelectOption(option) {
-    this.inputValue = option;
+    if (this.multiselect) {
+      if (this.selectedItems.includes(option)) {
+        // Set error for duplicate selection in multi-select mode
+        this.error = true;
+        this.errorMessage = 'This item has already been selected.';
+      } else {
+        // Add item to selectedItems array if not already included
+        this.selectedItems.push(option);
+        this.error = false; // Clear previous error state
+      }
+      this.inputValue = ""; // Clear input field for further entries
+    } else {
+      // For non-multiselect, directly assign the selected option
+      this.inputValue = option;
+    }
+  
     this.filteredOptions = [];
-    this.focusedOptionIndex = -1; // Reset focus when option is selected
-    this.selectedOptionIndex = -1; // Reset selectedOptionIndex
-    this.requestUpdate(); // Ensure the component re-renders without the dropdown
+    this.focusedOptionIndex = -1;
+    this.requestUpdate();
   }
 
   filterOptions() {
@@ -165,7 +197,28 @@ class AutocompleteInput extends LitElement {
     this.filteredOptions = []; // Close the dropdown
     this.focusedOptionIndex = -1; // Remove focus from any dropdown option
     this.selectedOptionIndex = -1; // Reset selectedOptionIndex
-    this.requestUpdate(); // Trigger re-render to apply changes
+    // Clear selected items if multiselect is enabled
+    if (this.multiselect) {
+      this.selectedItems = [];
+    }
+
+     // Only reset validation if it's explicitly being used.
+  if (this.required || this.validation) {
+    this.validation = true;
+  }
+
+  // Reset error state
+  this.error = false;
+  this.errorMessage = "";
+
+  this.requestUpdate();
+  }
+
+  removeItem(itemToRemove) {
+    this.selectedItems = this.selectedItems.filter(
+      (item) => item !== itemToRemove
+    );
+    this.requestUpdate();
   }
 
   renderInputLabel(ids) {
@@ -210,7 +263,11 @@ class AutocompleteInput extends LitElement {
             ?disabled=${this.disabled}
           />
           ${this.clearBtn && this.inputValue.length > 0
-            ? html` <div class="pl-input-group-append">
+            ? html` <div
+                class="pl-input-group-append${this.validation
+                  ? " is-invalid"
+                  : ""}"
+              >
                 <button
                   class="pl-input-group-btn clear"
                   role="button"
@@ -235,63 +292,97 @@ class AutocompleteInput extends LitElement {
               </div>`
             : ""}
         </div>
+        ${this.validation
+          ? html`<div class="invalid-feedback">${this.validationMessage}</div>`
+          : ""}
       </div>
     `;
   }
 
+  renderSelectedItems() {
+    return this.selectedItems.map(
+      (item) => html`
+        <span class="badge">
+          <span>${item}</span>
+          <button
+            @click=${() => this.removeItem(item)}
+            data-tag="${item}"
+            role="button"
+            class="remove-btn"
+            title="Remove Tag"
+            aria-label="Remove Tag"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+              <path
+                d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM175 175c9.4-9.4 24.6-9.4 33.9 0l47 47 47-47c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9l-47 47 47 47c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0l-47-47-47 47c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l47-47-47-47c-9.4-9.4-9.4-24.6 0-33.9z"
+              />
+            </svg>
+          </button>
+        </span>
+      `
+    );
+  }
+
   renderMultiInput(ids, names) {
     return html`
-      <div>
-        <div class="ac-multi-select-container">
-        <div class="pl-input-group">
-          <input
-            class="form-control${this.addBtn ||
-            (this.clearBtn && this.inputValue.length > 0)
-              ? " ac-form-control"
-              : ""}${this.validation ? " is-invalid" : ""}${this.size === "sm"
-              ? " basic-input-sm"
-              : this.size === "lg"
-              ? " basic-input-lg"
-              : ""}"
-            type="text"
-            placeholder="${this.labelHidden
-              ? this.label || this.placeholder || "Placeholder Text"
-              : this.label || this.placeholder || "Placeholder Text"}"
-            id=${ifDefined(ids ? ids : undefined)}
-            name=${ifDefined(names ? names : undefined)}
-            @input=${this.handleInput}
-            @keydown=${(e) => this.handleKeydown(e)}
-            .value=${this.inputValue}
-            ?disabled=${this.disabled}
-          />
-          ${this.clearBtn && this.inputValue.length > 0
-            ? html` <div class="pl-input-group-append">
-                <button
-                  class="pl-input-group-btn clear"
-                  role="button"
-                  aria-label="Clear input"
-                  title="Clear input"
-                  @click=${this.clearInput}
-                >
-                  <i class="${this.clearIcon || "fas fa-times"}"></i>
-                </button>
-              </div>`
-            : ""}
-          ${this.addBtn
-            ? html` <div class="pl-input-group-append">
-                <button
-                  class="pl-input-group-btn add"
-                  role="button"
-                  aria-label="Add selected item"
-                  title="Add selected item"
-                >
-                  <i class="${this.addIcon || "fas fa-plus"}"></i>
-                </button>
-              </div>`
-            : ""}
-        </div>
+    <div class="ac-multi-select-container">
+        <div class="ac-selected-items">${this.renderSelectedItems()}</div>
+        
+        <div class="ac-input-container">
+          <div class="ac-input-group">
+            <input
+              class="form-control${this.addBtn ||
+              (this.clearBtn && this.inputValue.length > 0)
+                ? " ac-form-control"
+                : ""}${this.validation ? " is-invalid" : ""}${this.size === "sm"
+                ? " basic-input-sm"
+                : this.size === "lg"
+                ? " basic-input-lg"
+                : ""}"
+              type="text"
+              placeholder="${this.labelHidden
+                ? this.label || this.placeholder || "Placeholder Text"
+                : this.label || this.placeholder || "Placeholder Text"}"
+              id=${ifDefined(ids ? ids : undefined)}
+              name=${ifDefined(names ? names : undefined)}
+              @input=${this.handleInput}
+              @keydown=${(e) => this.handleKeydown(e)}
+              .value=${this.inputValue}
+              ?disabled=${this.disabled}
+            />
+            ${this.clearBtn &&
+            (this.inputValue.length > 0 || this.selectedItems.length > 0)
+              ? html` <div class="pl-input-group-append">
+                  <button
+                    class="pl-input-group-btn clear"
+                    role="button"
+                    aria-label="Clear input"
+                    title="Clear input"
+                    @click=${this.clearInput}
+                  >
+                    <i class="${this.clearIcon || "fas fa-times"}"></i>
+                  </button>
+                </div>`
+              : ""}
+            ${this.addBtn
+              ? html` <div class="pl-input-group-append">
+                  <button
+                    class="pl-input-group-btn add"
+                    role="button"
+                    aria-label="Add selected item"
+                    title="Add selected item"
+                  >
+                    <i class="${this.addIcon || "fas fa-plus"}"></i>
+                  </button>
+                </div>`
+              : ""}
+          </div>
         </div>
       </div>
+      ${this.error ? html`<div class="error-message">${this.errorMessage}</div>` : ''}
+        ${this.validation
+          ? html`<div class="invalid-feedback">${this.validationMessage}</div>`
+          : ""}
     `;
   }
 
@@ -365,8 +456,7 @@ class AutocompleteInput extends LitElement {
             ? ` row`
             : this.formLayout === "inline"
             ? ` row inline`
-            : ""}
-            ${this.multiselect ? "ac-combobox-container" : ""}"
+            : ""}${this.multiselect ? " ac-combobox-container" : ""}"
         >
           ${this.label ? this.renderInputLabel(ids) : ""}
           ${this.multiselect

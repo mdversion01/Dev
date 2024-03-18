@@ -69,13 +69,86 @@ export const autocompleteInputStyles = css`
     width: 100%;
   }
 
-  .ac-multi-select-container .form-control {
-    border: none;
-    padding: 0.375rem 0.75rem;
+  .ac-selected-items {
+    display: flex;
+    flex-wrap: wrap;
   }
 
-  .ac-multi-select-container .pl-input-group .pl-input-group-append .pl-input-group-btn {
+  .ac-multi-select-container .pl-input-group-append .pl-input-group-btn {
     border: none;
+  }
+
+  .ac-input-container {
+    display: flex;
+    flex: 1 1 auto;
+  }
+
+  .ac-input-container .ac-input-group {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    width: 100%;
+  }
+
+  .ac-input-container .ac-input-group .form-control {
+    border: none;
+    display: flex !important;
+    flex: 1 1 200px;
+    padding: 0.375rem 0.75rem;
+    width: 200px;
+  }
+
+  .error-message {
+    color: red;
+    margin-top: 4px;
+    font-size: 11px;
+  }
+
+  .badge {
+    align-items: center;
+    background-color: transparent !important;
+    border: 1px solid #8e8e8e !important;
+    border-radius: 1rem;
+    color: #000000;
+    display: flex;
+    font-size: 0.75rem;
+    height: 30px;
+    justify-content: center;
+    margin: 0.25rem;
+    padding: 0.35rem 0.5rem;
+    position: relative;
+  }
+
+  .badge span {
+    cursor: pointer;
+    margin-right: 0.5rem;
+    margin-top: -0.1rem;
+  }
+
+  .badge .remove-btn {
+    background-color: transparent;
+    border: none;
+    border-radius: 25%;
+    margin: 0;
+    padding: 0;
+    height: 16px;
+    width: 16px;
+  }
+
+  .badge .remove-btn svg {
+    cursor: pointer;
+    fill: #666666;
+    height: 1rem;
+    position: relative;
+    width: 1rem;
+    z-index: 1;
+  }
+
+  .badge .remove-btn:hover svg,
+  .badge .remove-btn:focus svg {
+    fill: #ff5d6d;
+    outline: none;
   }
 
   .pl-input-group-append {
@@ -95,6 +168,11 @@ export const autocompleteInputStyles = css`
   .pl-input-group-append .pl-input-group-btn.clear:focus-visible {
     color: #b80000;
     outline: 1px solid #b80000;
+  }
+
+  .pl-input-group-append.is-invalid > .pl-input-group-btn.clear {
+    color: rgb(227, 72, 80);
+    border-color: rgb(227, 72, 80);
   }
 
   .pl-input-group-append .pl-input-group-btn.add:hover {
