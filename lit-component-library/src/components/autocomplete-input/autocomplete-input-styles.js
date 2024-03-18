@@ -14,12 +14,13 @@ export const autocompleteInputStyles = css`
   }
   .autocomplete-dropdown {
     position: absolute;
-    width: 300px;
+    min-width: 150px;
+    max-width: 300px;
     max-height: 200px;
     overflow-y: auto;
     background-color: #fff;
     border: 1px solid #ccc;
-    border-top: none;
+    margin-top: 1px;
     z-index: 1000;
   }
 

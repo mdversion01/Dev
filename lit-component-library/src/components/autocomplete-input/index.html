@@ -44,16 +44,18 @@
                 <autocomplete-input
                   label="Autocomplete Input"
                   inputId="aci1"
-                  id="aci1"
-                  formlayout="horizontal"
+                  id="aciA"
+                  formLayout="horizontal"
                   size="sm"
+                  clearBtn
                 ></autocomplete-input>
 
                 <autocomplete-input
                   label="Autocomplete Input"
                   inputId="aci1"
-                  id="aci1"
-                  formlayout="inline"
+                  id="aciB"
+                  formLayout="inline"
+                  clearBtn
                 ></autocomplete-input>
               </section>
               <section class="display-box-meta markdown">
@@ -90,6 +92,25 @@
                 multiselect
                 clearBtn
               ></autocomplete-input>
+
+              <autocomplete-input
+                  label="Autocomplete Input"
+                  inputId="aci1"
+                  id="aciC"
+                  formLayout="horizontal"
+                  multiselect
+                  size="sm"
+                  clearBtn
+                ></autocomplete-input>
+
+                <autocomplete-input
+                  label="Autocomplete Input"
+                  inputId="aci1"
+                  id="aciD"
+                  formLayout="inline"
+                  multiselect
+                  clearBtn
+                ></autocomplete-input>
               </section>
               <section class="display-box-meta markdown">
                 <div class="display-box-title">Basic Usage</div>
@@ -451,12 +472,43 @@
         // Set the options property of the first autocomplete input element to the mock data
         aci1.options = aciOptions1;
 
+        
+        // Define mock options for the first autocomplete input
+        const aciOptionsA = ["Apple", "Apparatus", "Apple Pie", "Applegate", "Banana", "Orange", "Mango"];
+        // Get the first autocomplete input element
+        const aciA = document.getElementById("aciA");
+        // Set the options property of the first autocomplete input element to the mock data
+        aciA.options = aciOptionsA;
+
+       
+        // Define mock options for the first autocomplete input
+        const aciOptionsB = ["Apple", "Apparatus", "Apple Pie", "Applegate", "Banana", "Orange", "Mango"];
+        // Get the first autocomplete input element
+        const aciB = document.getElementById("aciB");
+        // Set the options property of the first autocomplete input element to the mock data
+        aciB.options = aciOptionsB;
+
         // Define mock options for the first autocomplete input
         const aciOptions2 = ["Apple", "Banana", "Orange", "Mango", "Plum", "Peach", "Pear", "Pineapple", "Pomegranate", "Strawberry"];
         // Get the first autocomplete input element
         const aci2 = document.getElementById("aci2");
         // Set the options property of the first autocomplete input element to the mock data
         aci2.options = aciOptions2;
+
+        // Define mock options for the first autocomplete input
+        const aciOptionsC = ["Apple", "Apparatus", "Apple Pie", "Applegate", "Banana", "Orange", "Mango"];
+        // Get the first autocomplete input element
+        const aciC = document.getElementById("aciC");
+        // Set the options property of the first autocomplete input element to the mock data
+        aciC.options = aciOptionsC;
+
+       
+        // Define mock options for the first autocomplete input
+        const aciOptionsD = ["Apple", "Apparatus", "Apple Pie", "Applegate", "Banana", "Orange", "Mango"];
+        // Get the first autocomplete input element
+        const aciD = document.getElementById("aciD");
+        // Set the options property of the first autocomplete input element to the mock data
+        aciD.options = aciOptionsD;
       });
     </script>
 

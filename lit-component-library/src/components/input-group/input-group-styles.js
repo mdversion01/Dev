@@ -49,7 +49,7 @@ export const inputGroupStyles = css`
     display: flex;
     align-items: center;
     cursor: pointer;
-    padding: 0.375rem 0.75rem;
+    padding: 0.275rem 0.75rem;
     margin-bottom: 0;
     font-size: 1rem;
     font-weight: 400;
@@ -63,7 +63,7 @@ export const inputGroupStyles = css`
     border-left: none;
     border-radius: 0.25rem;
     background-color: transparent;
-    min-height: 38px;
+    min-height: 28px;
   }
 
   .pl-input-group > .pl-input-group-append:not(:last-child) > .pl-input-group-text {

@@ -134,16 +134,16 @@ class AutocompleteInput extends LitElement {
       // Handle input events for filtering options
       this.inputValue = event.target.value;
       this.filterOptions();
-    
+
       // Update validation only if it's explicitly being used.
       if (this.required || this.validation) {
         this.validation = false;
       }
-    
+
       // Reset error state on input change.
       this.error = false;
       this.errorMessage = "";
-    
+
       this.requestUpdate();
     }
   }
@@ -162,7 +162,7 @@ class AutocompleteInput extends LitElement {
       if (this.selectedItems.includes(option)) {
         // Set error for duplicate selection in multi-select mode
         this.error = true;
-        this.errorMessage = 'This item has already been selected.';
+        this.errorMessage = "This item has already been selected.";
       } else {
         // Add item to selectedItems array if not already included
         this.selectedItems.push(option);
@@ -173,7 +173,7 @@ class AutocompleteInput extends LitElement {
       // For non-multiselect, directly assign the selected option
       this.inputValue = option;
     }
-  
+
     this.filteredOptions = [];
     this.focusedOptionIndex = -1;
     this.requestUpdate();
@@ -202,16 +202,16 @@ class AutocompleteInput extends LitElement {
       this.selectedItems = [];
     }
 
-     // Only reset validation if it's explicitly being used.
-  if (this.required || this.validation) {
-    this.validation = true;
-  }
+    // Only reset validation if it's explicitly being used.
+    if (this.required || this.validation) {
+      this.validation = true;
+    }
 
-  // Reset error state
-  this.error = false;
-  this.errorMessage = "";
+    // Reset error state
+    this.error = false;
+    this.errorMessage = "";
 
-  this.requestUpdate();
+    this.requestUpdate();
   }
 
   removeItem(itemToRemove) {
@@ -240,62 +240,62 @@ class AutocompleteInput extends LitElement {
 
   renderInput(ids, names) {
     return html`
-      <div>
-        <div class="pl-input-group">
-          <input
-            class="form-control${this.addBtn ||
-            (this.clearBtn && this.inputValue.length > 0)
-              ? " ac-form-control"
-              : ""}${this.validation ? " is-invalid" : ""}${this.size === "sm"
-              ? " basic-input-sm"
-              : this.size === "lg"
-              ? " basic-input-lg"
-              : ""}"
-            type="text"
-            placeholder="${this.labelHidden
-              ? this.label || this.placeholder || "Placeholder Text"
-              : this.label || this.placeholder || "Placeholder Text"}"
-            id=${ifDefined(ids ? ids : undefined)}
-            name=${ifDefined(names ? names : undefined)}
-            @input=${this.handleInput}
-            @keydown=${(e) => this.handleKeydown(e)}
-            .value=${this.inputValue}
-            ?disabled=${this.disabled}
-          />
-          ${this.clearBtn && this.inputValue.length > 0
-            ? html` <div
-                class="pl-input-group-append${this.validation
-                  ? " is-invalid"
-                  : ""}"
+      <!-- <div> -->
+      <div class="pl-input-group">
+        <input
+          class="form-control${this.addBtn ||
+          (this.clearBtn && this.inputValue.length > 0)
+            ? " ac-form-control"
+            : ""}${this.validation ? " is-invalid" : ""}${this.size === "sm"
+            ? " basic-input-sm"
+            : this.size === "lg"
+            ? " basic-input-lg"
+            : ""}"
+          type="text"
+          placeholder="${this.labelHidden
+            ? this.label || this.placeholder || "Placeholder Text"
+            : this.label || this.placeholder || "Placeholder Text"}"
+          id=${ifDefined(ids ? ids : undefined)}
+          name=${ifDefined(names ? names : undefined)}
+          @input=${this.handleInput}
+          @keydown=${(e) => this.handleKeydown(e)}
+          .value=${this.inputValue}
+          ?disabled=${this.disabled}
+        />
+        ${this.clearBtn && this.inputValue.length > 0
+          ? html` <div
+              class="pl-input-group-append${this.validation
+                ? " is-invalid"
+                : ""}"
+            >
+              <button
+                class="pl-input-group-btn clear"
+                role="button"
+                aria-label="Clear input"
+                title="Clear input"
+                @click=${this.clearInput}
               >
-                <button
-                  class="pl-input-group-btn clear"
-                  role="button"
-                  aria-label="Clear input"
-                  title="Clear input"
-                  @click=${this.clearInput}
-                >
-                  <i class="${this.clearIcon || "fas fa-times"}"></i>
-                </button>
-              </div>`
-            : ""}
-          ${this.addBtn
-            ? html` <div class="pl-input-group-append">
-                <button
-                  class="pl-input-group-btn add"
-                  role="button"
-                  aria-label="Add selected item"
-                  title="Add selected item"
-                >
-                  <i class="${this.addIcon || "fas fa-plus"}"></i>
-                </button>
-              </div>`
-            : ""}
-        </div>
-        ${this.validation
-          ? html`<div class="invalid-feedback">${this.validationMessage}</div>`
+                <i class="${this.clearIcon || "fas fa-times"}"></i>
+              </button>
+            </div>`
+          : ""}
+        ${this.addBtn
+          ? html` <div class="pl-input-group-append">
+              <button
+                class="pl-input-group-btn add"
+                role="button"
+                aria-label="Add selected item"
+                title="Add selected item"
+              >
+                <i class="${this.addIcon || "fas fa-plus"}"></i>
+              </button>
+            </div>`
           : ""}
       </div>
+      ${this.validation
+        ? html`<div class="invalid-feedback">${this.validationMessage}</div>`
+        : ""}
+      <!-- </div> -->
     `;
   }
 
@@ -325,9 +325,9 @@ class AutocompleteInput extends LitElement {
 
   renderMultiInput(ids, names) {
     return html`
-    <div class="ac-multi-select-container">
+      <div class="ac-multi-select-container">
         <div class="ac-selected-items">${this.renderSelectedItems()}</div>
-        
+
         <div class="ac-input-container">
           <div class="ac-input-group">
             <input
@@ -379,10 +379,12 @@ class AutocompleteInput extends LitElement {
           </div>
         </div>
       </div>
-      ${this.error ? html`<div class="error-message">${this.errorMessage}</div>` : ''}
-        ${this.validation
-          ? html`<div class="invalid-feedback">${this.validationMessage}</div>`
-          : ""}
+      ${this.error
+        ? html`<div class="error-message">${this.errorMessage}</div>`
+        : ""}
+      ${this.validation
+        ? html`<div class="invalid-feedback">${this.validationMessage}</div>`
+        : ""}
     `;
   }
 
@@ -460,15 +462,26 @@ class AutocompleteInput extends LitElement {
         >
           ${this.label ? this.renderInputLabel(ids) : ""}
           ${this.multiselect
-            ? this.formLayout === "horizontal"
-              ? html`
-                  <div class="col-10">${this.renderMultiInput(ids, names)}</div>
-                `
-              : this.renderMultiInput(ids, names)
+            ? html`<div
+                class="${this.formLayout === "horizontal" ? "col-10" : ""}"
+              >
+                ${this.renderMultiInput(ids, names)} ${this.renderDropdown()}
+              </div>`
             : this.formLayout === "horizontal"
-            ? html` <div class="col-10">${this.renderInput(ids, names)}</div> `
-            : this.renderInput(ids, names)}
-          ${this.renderDropdown()}
+            ? html`<div class="col-10">
+                ${this.renderInput(ids, names)} ${this.renderDropdown()}
+              </div>`
+            : this.formLayout === "inline"
+            ? html`<div>
+                ${this.multiselect
+                  ? this.renderMultiInput(ids, names)
+                  : this.renderInput(ids, names)}
+                ${this.renderDropdown()}
+              </div>`
+            : html`${this.multiselect
+                ? this.renderMultiInput(ids, names)
+                : this.renderInput(ids, names)}
+              ${this.renderDropdown()}`}
         </div>
       </div>
     `;
