@@ -127,11 +127,22 @@ class AutocompleteInput extends LitElement {
           break;
         case "Enter":
           // Select the focused option
-          if (this.focusedOptionIndex !== -1) {
-            this.handleSelectOption(
-              this.filteredOptions[this.focusedOptionIndex]
-            );
-            this.focusedOptionIndex = -1; // Reset focus
+          if (this.multiSelect) {
+            console.log("multiSelect");
+            if (this.focusedOptionIndex !== -1) {
+              this.handleMultiSelectOption(
+                this.filteredOptions[this.focusedOptionIndex]
+              );
+              this.focusedOptionIndex = -1; // Reset focus
+            }
+          } else {
+            console.log("not multiSelect");
+            if (this.focusedOptionIndex !== -1) {
+              this.handleSelectOption(
+                this.filteredOptions[this.focusedOptionIndex]
+              );
+              this.focusedOptionIndex = -1; // Reset focus
+            }
           }
           break;
         // Handle other keys as necessary
@@ -161,7 +172,39 @@ class AutocompleteInput extends LitElement {
       this.focusedOptionIndex = newIndex;
       this.requestUpdate();
     }
+
+    this.ensureOptionInView(newIndex);
   }
+
+  async navigateMultiOptions(direction) {
+    let newIndex = this.focusedOptionIndex + direction;
+    const optionsCount = this.filteredOptions.length;
+
+    if (newIndex < 0) {
+      newIndex = optionsCount - 1;
+    } else if (newIndex >= optionsCount) {
+      newIndex = 0;
+    }
+
+    this.focusedOptionIndex = newIndex;
+
+    // Await the completion of any updates to ensure DOM is in final state
+    await this.updateComplete;
+
+    this.ensureOptionInView(newIndex);
+  }
+
+  // Helper method to ensure the selected item is scrolled into view
+  ensureOptionInView(index) {
+    const items = this.shadowRoot.querySelectorAll('.autocomplete-dropdown-item');
+    if (index >= 0 && index < items.length) {
+        const item = items[index];
+        item.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+
+        // Optional: if you also want to set focus, ensure item is focusable
+        // item.focus();
+    }
+}
 
   handleSelectOption(option) {
     if (this.multipleSelections) {
@@ -182,8 +225,34 @@ class AutocompleteInput extends LitElement {
 
     this.filteredOptions = [];
     this.focusedOptionIndex = -1;
+    this.selectedOptionIndex = -1; // Ensure no option appears as 'key-selected'
     this.requestUpdate();
   }
+
+  handleMultiSelectOption(option) {
+    // Toggle selection for the option in multi-select mode
+    const optionIndex = this.selectedItems.indexOf(option);
+    if (optionIndex > -1) {
+      // If already selected, remove from selection
+      this.selectedItems.splice(optionIndex, 1);
+    } else {
+      // If not selected, add to selection
+      this.selectedItems.push(option);
+    }
+    // Keep the focusedOptionIndex unchanged to stay at the current scroll position
+    // Only update the dropdown list to reflect the current selection state
+    //this.filteredOptions = [...this.filteredOptions];
+    // Force update to reflect changes in the selection
+    this.selectedItems = [...this.selectedItems];
+    // No need to reset focusedOptionIndex here as we want to maintain position
+    this.requestUpdate();
+  }
+
+  async updateComplete() {
+    await super.updateComplete;
+    // Ensure the previously focused item is visible
+    this.ensureOptionInView(this.focusedOptionIndex);
+}
 
   filterOptions() {
     if (this.inputValue.length > 0) {
@@ -207,20 +276,20 @@ class AutocompleteInput extends LitElement {
     this.selectedOptionIndex = -1;
     // Clear selections in multiSelect mode or if multipleSelections is enabled
     if (this.multiSelect || this.multipleSelections) {
-        this.multiSelectedOptions.clear();
-        // Also clear selectedItems to remove selections from the UI
-        this.selectedItems = [];
+      this.multiSelectedOptions.clear();
+      // Also clear selectedItems to remove selections from the UI
+      this.selectedItems = [];
     }
     // Reset validation, if used
     if (this.required || this.validation) {
-        this.validation = true;
+      this.validation = true;
     }
     // Reset error state
     this.error = false;
     this.errorMessage = "";
     // Trigger a UI update
     this.requestUpdate();
-}
+  }
 
   removeItem(itemToRemove) {
     this.selectedItems = this.selectedItems.filter(
@@ -248,50 +317,50 @@ class AutocompleteInput extends LitElement {
 
   renderInput(ids, names) {
     return html`
-      <!-- <div> -->
-      <div class="pl-input-group">
-        <input
-          class="form-control${this.addBtn ||
-          (this.clearBtn && this.inputValue.length > 0)
-            ? " ac-form-control"
-            : ""}${this.validation ? " is-invalid" : ""}${this.size === "sm"
-            ? " basic-input-sm"
-            : this.size === "lg"
-            ? " basic-input-lg"
-            : ""}"
-          type="text"
-          placeholder="${this.labelHidden
-            ? this.label || this.placeholder || "Placeholder Text"
-            : this.label || this.placeholder || "Placeholder Text"}"
-          id=${ifDefined(ids ? ids : undefined)}
-          name=${ifDefined(names ? names : undefined)}
-          @input=${this.handleInput}
-          @keydown=${(e) => this.handleKeydown(e)}
-          .value=${this.inputValue}
-          ?disabled=${this.disabled}
-        />
-        ${this.clearBtn && this.inputValue.length > 0
-          ? html` <div
-              class="pl-input-group-append${this.validation
-                ? " is-invalid"
-                : ""}"
-            >
-              <button
-                class="pl-input-group-btn clear"
-                role="button"
-                aria-label="Clear input"
-                title="Clear input"
-                @click=${this.clearInput}
+      <div>
+        <div class="pl-input-group">
+          <input
+            class="form-control${this.addBtn ||
+            (this.clearBtn && this.inputValue.length > 0)
+              ? " ac-form-control"
+              : ""}${this.validation ? " is-invalid" : ""}${this.size === "sm"
+              ? " basic-input-sm"
+              : this.size === "lg"
+              ? " basic-input-lg"
+              : ""}"
+            type="text"
+            placeholder="${this.labelHidden
+              ? this.label || this.placeholder || "Placeholder Text"
+              : this.label || this.placeholder || "Placeholder Text"}"
+            id=${ifDefined(ids ? ids : undefined)}
+            name=${ifDefined(names ? names : undefined)}
+            @input=${this.handleInput}
+            @keydown=${(e) => this.handleKeydown(e)}
+            .value=${this.inputValue}
+            ?disabled=${this.disabled}
+          />
+          ${this.clearBtn && this.inputValue.length > 0
+            ? html` <div
+                class="pl-input-group-append${this.validation
+                  ? " is-invalid"
+                  : ""}"
               >
-                <i class="${this.clearIcon || "fas fa-times"}"></i>
-              </button>
-            </div>`
+                <button
+                  class="pl-input-group-btn clear"
+                  role="button"
+                  aria-label="Clear input"
+                  title="Clear input"
+                  @click=${this.clearInput}
+                >
+                  <i class="${this.clearIcon || "fas fa-times"}"></i>
+                </button>
+              </div>`
+            : ""}
+        </div>
+        ${this.validation
+          ? html`<div class="invalid-feedback">${this.validationMessage}</div>`
           : ""}
       </div>
-      ${this.validation
-        ? html`<div class="invalid-feedback">${this.validationMessage}</div>`
-        : ""}
-      <!-- </div> -->
     `;
   }
 
@@ -342,7 +411,9 @@ class AutocompleteInput extends LitElement {
               id=${ifDefined(ids ? ids : undefined)}
               name=${ifDefined(names ? names : undefined)}
               @input=${this.handleInput}
-              @keydown=${(e) => this.handleKeydown(e)}
+              @keydown=${this.multiSelect
+                ? (e) => this.handleMultiKeydown(e)
+                : (e) => this.handleKeydown(e)}
               .value=${this.inputValue}
               ?disabled=${this.disabled}
             />
@@ -381,9 +452,11 @@ class AutocompleteInput extends LitElement {
           ${this.filteredOptions.map(
             (option, index) => html`
               <li
-                class=${`autocomplete-dropdown-item ${
-                  index === this.focusedOptionIndex ? "focused" : ""
-                }${index === this.selectedOptionIndex ? "key-selected" : ""}`}
+                class=${`autocomplete-dropdown-item${
+                  this.size === "sm" ? " sm" : this.size === "lg" ? " lg" : ""
+                }${index === this.focusedOptionIndex ? " focused" : ""}${
+                  index === this.selectedOptionIndex ? " key-selected" : ""
+                }`}
                 @click=${() => this.handleSelectOption(option)}
                 @keydown=${(e) => this.handleOptionKeydown(e, index)}
                 tabindex="-1"
@@ -401,31 +474,38 @@ class AutocompleteInput extends LitElement {
   renderMultiSelectDropdown() {
     if (this.filteredOptions.length === 0) return null;
     return html`
-      <!-- <div class="autocomplete-dropdown-container"> -->
-        <div class="autocomplete-dropdown">
-          <ul role="listbox" tabindex="-1">
-            ${this.filteredOptions.map(option => html`
+      <div class="autocomplete-dropdown">
+        <ul role="listbox" tabindex="-1">
+          ${this.filteredOptions.map(
+            (option, index) => html`
               <li
-                class=${`autocomplete-dropdown-item ${this.selectedItems.includes(option) ? "key-selected" : ""}`}
-                @click=${() => this.handleClickOption(option)}
+                class=${`autocomplete-dropdown-item ${
+                  this.size === "sm" ? " sm" : this.size === "lg" ? " lg" : ""
+                } ${
+                  this.selectedItems.includes(option) ? " key-selected" : ""
+                } ${this.focusedOptionIndex === index ? " focused" : ""}`}
+                @click=${() => this.handleClickMultiOption(option)}
+                @keydown=${(e) => this.handleMultiOptionKeydown(e, index)}
                 tabindex="0"
                 role="option"
-                aria-selected=${this.selectedItems.includes(option) ? "true" : "false"}
+                aria-selected=${this.selectedItems.includes(option)
+                  ? "true"
+                  : "false"}
               >
                 ${option}
               </li>
-            `)}
-          </ul>
-        </div>
-      <!-- </div> -->
+            `
+          )}
+        </ul>
+      </div>
     `;
   }
-  
+
   handleClickOption(option) {
     // Check if the option is already selected
     if (this.selectedItems.includes(option)) {
       // Option is already selected, remove it from selectedItems
-      this.selectedItems = this.selectedItems.filter(item => item !== option);
+      this.selectedItems = this.selectedItems.filter((item) => item !== option);
     } else {
       // Option is not selected, add it to selectedItems
       this.selectedItems.push(option);
@@ -434,7 +514,7 @@ class AutocompleteInput extends LitElement {
     this.inputValue = "";
     this.requestUpdate(); // Reflect changes in the UI
   }
-  
+
   handleAddSelectedItems() {
     // Add the selected items from the Set to the selectedItems array
     this.multiSelectedOptions.forEach((option) => {
@@ -453,6 +533,35 @@ class AutocompleteInput extends LitElement {
       this.handleSelectOption(this.filteredOptions[index]);
       // Additional logic for handling Enter on a dropdown item if necessary
     }
+  }
+
+  handleMultiOptionKeydown(e, index) {
+    e.preventDefault();
+    switch (e.key) {
+      case "Enter":
+        this.toggleMultiSelectItem(
+          this.filteredOptions[this.focusedOptionIndex]
+        );
+        break;
+      case "ArrowUp":
+      case "ArrowDown":
+        const direction = e.key === "ArrowDown" ? 1 : -1;
+        this.navigateMultiOptions(direction);
+        break;
+      // Include other necessary cases, if any.
+    }
+  }
+
+  toggleMultiSelectItem(option) {
+    const index = this.selectedItems.indexOf(option);
+    if (index > -1) {
+      this.selectedItems.splice(index, 1);
+    } else {
+      this.selectedItems.push(option);
+    }
+    // Use LitElement's way to force update arrays or objects
+    this.selectedItems = [...this.selectedItems];
+    this.requestUpdate("selectedItems");
   }
 
   handleKeydown(event) {
@@ -480,10 +589,53 @@ class AutocompleteInput extends LitElement {
     }
   }
 
+  handleMultiKeydown(event) {
+    switch (event.key) {
+      case "ArrowDown":
+        event.preventDefault(); // Prevent cursor movement
+        this.navigateOptions(1); // Navigate down
+        break;
+      case "ArrowUp":
+        event.preventDefault(); // Prevent cursor movement
+        this.navigateOptions(-1); // Navigate up
+        break;
+      case "Enter":
+        event.preventDefault();
+        if (this.multiSelect && this.focusedOptionIndex !== -1) {
+          // For multi-select mode, use the specific multi-select handler
+          this.handleMultiSelectOption(
+            this.filteredOptions[this.focusedOptionIndex]
+          );
+          this.focusedOptionIndex = -1; // Reset focused option
+        } else if (!this.multiSelect && this.focusedOptionIndex !== -1) {
+          // For single-select mode, use the generic select handler
+          this.handleSelectOption(
+            this.filteredOptions[this.focusedOptionIndex]
+          );
+          this.focusedOptionIndex = -1; // Reset focused option
+        }
+        this.requestUpdate();
+        break;
+      // Add other case handlers as needed
+    }
+  }
+
+  handleClickMultiOption(option) {
+    const index = this.selectedItems.indexOf(option);
+    if (index >= 0) {
+      this.selectedItems.splice(index, 1);
+    } else {
+      this.selectedItems.push(option);
+    }
+    // Force update for selectedItems changes
+    this.selectedItems = [...this.selectedItems];
+    this.requestUpdate();
+  }
+
   render() {
     const ids = this.camelCase(this.inputId).replace(/ /g, "");
     const names = this.camelCase(this.label).replace(/ /g, "");
-  
+
     return html`
       <div class="${this.formLayout ? ` ${this.formLayout}` : ""}">
         <div
@@ -494,35 +646,43 @@ class AutocompleteInput extends LitElement {
             : ""}${this.multiSelect ? " ac-combobox-container" : ""}"
         >
           ${this.label ? this.renderInputLabel(ids) : ""}
-          ${this.multiSelect ? html`<div class="${this.formLayout === "horizontal" ? "col-10" : ""}" >
-                  ${this.renderMultipleSelections(ids, names)}
-                  ${this.renderMultiSelectDropdown()}
-                </div>`
-              : this.renderMultipleSelections(ids, names)? html`<div class="${this.formLayout === "horizontal" ? "col-10" : ""}" >
-                  ${this.renderMultipleSelections(ids, names)}
-                  ${this.renderDropdown()}
-                </div>`  
-              : this.formLayout === "horizontal" ? html`<div class="col-10">
-                  ${this.renderInput(ids, names)} ${this.renderDropdown()}
-                </div>`
-              : this.formLayout === "inline" ? html`<div>
-                  ${this.multiSelect
-                    ? this.renderMultipleSelections(ids, names)
-                    : this.multipleSelections ? this.renderMultipleSelections(ids, names)
-                    : this.renderInput(ids, names)}
-                  ${this.renderDropdown()}
-                </div>`
-              : html`${this.multiSelect
+          ${this.multiSelect
+            ? html`<div
+                class="${this.formLayout === "horizontal" ? "col-10" : ""}"
+              >
+                ${this.renderMultipleSelections(ids, names)}
+                ${this.renderMultiSelectDropdown()}
+              </div>`
+            : this.renderMultipleSelections(ids, names)
+            ? html`<div
+                class="${this.formLayout === "horizontal" ? "col-10" : ""}"
+              >
+                ${this.renderMultipleSelections(ids, names)}
+                ${this.renderDropdown()}
+              </div>`
+            : this.formLayout === "horizontal"
+            ? html`<div class="col-10">
+                ${this.renderInput(ids, names)} ${this.renderDropdown()}
+              </div>`
+            : this.formLayout === "inline"
+            ? html`<div>
+                ${this.multiSelect
                   ? this.renderMultipleSelections(ids, names)
-                  : this.multipleSelections ? this.renderMultipleSelections(ids, names) 
+                  : this.multipleSelections
+                  ? this.renderMultipleSelections(ids, names)
                   : this.renderInput(ids, names)}
-                ${this.renderDropdown()}`
-          }
+                ${this.renderDropdown()}
+              </div>`
+            : html`${this.multiSelect
+                ? this.renderMultipleSelections(ids, names)
+                : this.multipleSelections
+                ? this.renderMultipleSelections(ids, names)
+                : this.renderInput(ids, names)}
+              ${this.renderDropdown()}`}
         </div>
       </div>
     `;
   }
-  
 }
 
 customElements.define("autocomplete-input", AutocompleteInput);

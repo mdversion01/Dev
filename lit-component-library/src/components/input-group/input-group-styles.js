@@ -12,6 +12,7 @@ export const inputGroupStyles = css`
   .pl-input-group-append,
   .pl-input-group-prepend {
     display: flex;
+    height: 100%;
   }
 
   .pl-input-group-prepend {

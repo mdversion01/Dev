@@ -13,15 +13,11 @@ export const plInputGroupStyles = css`
   .pl-input-group-append,
   .pl-input-group-prepend {
     display: flex;
+    height: 100%;
   }
 
   .pl-input-group-prepend {
     margin-right: -1px;
-  }
-
-  .pl-input-group-append,
-  .pl-input-group-prepend {
-    display: flex;
   }
 
   .pl-input-group-append {
