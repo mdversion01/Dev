@@ -226,15 +226,8 @@ class PlInputGroup extends LitElement {
                 name=${ifDefined(names ? names : undefined)}
                 value=${ifDefined(this.value ? this.value : undefined)}
                 aria-label=${ifDefined(this.label ? this.label : undefined)}
-                aria-describedby=${ifDefined(
-                  this.append && !this.prepend
-                    ? this.appendId
-                    : this.prepend && !this.append
-                    ? this.prependId
-                    : this.append && this.prepend
-                    ? undefined
-                    : undefined
-                )}
+                aria-labelledby=${ifDefined(names ? names : undefined)}
+                aria-describedby=${ifDefined(this.validation ? "validationMessage" : undefined)}
                 ?disabled=${this.disabled}
                 @focus="${this.handleInteraction}"
                 @blur="${this.handleDocumentClick}"

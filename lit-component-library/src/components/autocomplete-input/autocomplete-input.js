@@ -78,6 +78,8 @@ class AutocompleteInput extends LitElement {
     this.selectedItems = [];
 
     this.multiSelectedOptions = new Set(); // Track selected options in multi-select dropdown
+
+    this.dropdownScrollTop = 0; // Track the dropdown scroll position
   }
 
   camelCase(str) {
@@ -196,15 +198,17 @@ class AutocompleteInput extends LitElement {
 
   // Helper method to ensure the selected item is scrolled into view
   ensureOptionInView(index) {
-    const items = this.shadowRoot.querySelectorAll('.autocomplete-dropdown-item');
+    const items = this.shadowRoot.querySelectorAll(
+      ".autocomplete-dropdown-item"
+    );
     if (index >= 0 && index < items.length) {
-        const item = items[index];
-        item.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+      const item = items[index];
+      item.scrollIntoView({ block: "nearest", behavior: "smooth" });
 
-        // Optional: if you also want to set focus, ensure item is focusable
-        // item.focus();
+      // Optional: if you also want to set focus, ensure item is focusable
+      // item.focus();
     }
-}
+  }
 
   handleSelectOption(option) {
     if (this.multipleSelections) {
@@ -230,29 +234,43 @@ class AutocompleteInput extends LitElement {
   }
 
   handleMultiSelectOption(option) {
-    // Toggle selection for the option in multi-select mode
     const optionIndex = this.selectedItems.indexOf(option);
     if (optionIndex > -1) {
-      // If already selected, remove from selection
       this.selectedItems.splice(optionIndex, 1);
     } else {
-      // If not selected, add to selection
       this.selectedItems.push(option);
     }
-    // Keep the focusedOptionIndex unchanged to stay at the current scroll position
-    // Only update the dropdown list to reflect the current selection state
-    //this.filteredOptions = [...this.filteredOptions];
-    // Force update to reflect changes in the selection
+    
+    // Update selected items
     this.selectedItems = [...this.selectedItems];
-    // No need to reset focusedOptionIndex here as we want to maintain position
-    this.requestUpdate();
+    // Manually request an update and then adjust the dropdown scroll
+    this.requestUpdate().then(() => {
+      this.adjustDropdownScroll();
+    });
+  }
+
+  adjustDropdownScroll() {
+    const dropdown = this.shadowRoot.querySelector('.autocomplete-dropdown');
+    if (dropdown) {
+      // Restore the saved scroll position
+      dropdown.scrollTop = this.dropdownScrollTop;
+    }
+  }
+
+  // When rendering the dropdown, save the current scroll position
+  updated(changedProps) {
+    super.updated(changedProps);
+    const dropdown = this.shadowRoot.querySelector('.autocomplete-dropdown');
+    if (dropdown) {
+      this.dropdownScrollTop = dropdown.scrollTop;
+    }
   }
 
   async updateComplete() {
     await super.updateComplete;
     // Ensure the previously focused item is visible
     this.ensureOptionInView(this.focusedOptionIndex);
-}
+  }
 
   filterOptions() {
     if (this.inputValue.length > 0) {
@@ -320,6 +338,9 @@ class AutocompleteInput extends LitElement {
       <div>
         <div class="pl-input-group">
           <input
+            aria-label="${ifDefined(this.labelHidden ? names : undefined)}"
+            aria-labelledby=${ifDefined(names ? names : undefined)}
+            aria-describedby=${ifDefined(this.validation ? "validationMessage" : undefined)}
             class="form-control${this.addBtn ||
             (this.clearBtn && this.inputValue.length > 0)
               ? " ac-form-control"
@@ -396,6 +417,9 @@ class AutocompleteInput extends LitElement {
         <div class="ac-input-container">
           <div class="ac-input-group">
             <input
+            aria-label="${ifDefined(this.labelHidden ? names : undefined)}"
+            aria-labelledby=${ifDefined(names ? names : undefined)}
+            aria-describedby=${ifDefined(this.validation ? this.validationMessage : this.error ? this.errorMessage : undefined)}
               class="form-control${this.addBtn ||
               (this.clearBtn && this.inputValue.length > 0)
                 ? " ac-form-control"
@@ -585,6 +609,11 @@ class AutocompleteInput extends LitElement {
           this.requestUpdate();
         }
         break;
+        case "Esc":
+        case "Escape":
+      event.preventDefault();
+      this.closeDropdown();
+      break;
       // Optionally handle other keys
     }
   }
@@ -616,8 +645,19 @@ class AutocompleteInput extends LitElement {
         }
         this.requestUpdate();
         break;
+        case "Esc":
+        case "Escape":
+      event.preventDefault();
+      this.closeDropdown();
+      break;
       // Add other case handlers as needed
     }
+  }
+
+  closeDropdown() {
+    this.filteredOptions = [];
+    this.focusedOptionIndex = -1;
+    this.requestUpdate();
   }
 
   handleClickMultiOption(option) {

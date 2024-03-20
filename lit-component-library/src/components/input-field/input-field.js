@@ -115,9 +115,11 @@ class InputField extends LitElement {
           id=${ifDefined(ids ? ids : undefined)}
           name=${ifDefined(names ? names : undefined)}
           value=${ifDefined(this.value ? this.value : undefined)}
+          aria-label="${ifDefined(this.labelHidden ? names : undefined)}"
           aria-labelledby=${ifDefined(names ? names : undefined)}
+          aria-describedby=${ifDefined(this.validation ? "validationMessage" : undefined)}
           ?disabled=${this.disabled}
-          @input=${ifDefined(this.handleInput ? this.handleInput : undefined)}
+            @input=${this.handleInput ? this.handleInput : undefined}
         />
         ${this.validation
           ? html`<div class="invalid-feedback form-text">

@@ -169,16 +169,9 @@ class InputGroup extends LitElement {
                 id=${ifDefined(ids ? ids : undefined)}
                 name=${ifDefined(names ? names : undefined)}
                 value=${ifDefined(this.value ? this.value : undefined)}
-                aria-label=${ifDefined(this.label ? this.label : undefined)}
-                aria-describedby=${ifDefined(
-                  this.append && !this.prepend
-                    ? this.appendId
-                    : this.prepend && !this.append
-                    ? this.prependId
-                    : this.append && this.prepend
-                    ? undefined
-                    : undefined
-                )}
+                aria-label=${ifDefined(names ? names : undefined)}
+                aria-labelledby=${ifDefined(names ? names : undefined)}
+                aria-describedby=${ifDefined(this.validation ? "validationMessage" : undefined)}
                 @input=${this.handleInput}
               />
               ${this.append
