@@ -185,7 +185,9 @@ class PlInputField extends LitElement {
                 id=${ifDefined(ids ? ids : undefined)}
                 name=${ifDefined(names ? names : undefined)}
                 value=${ifDefined(this.value ? this.value : undefined)}
+                aria-label=${ifDefined(this.labelHidden ? names : undefined)}
                 aria-labelledby=${ifDefined(names ? names : undefined)}
+                aria-describedby=${ifDefined(this.validation ? "validationMessage" : undefined)}
                 ?disabled=${this.disabled}
                 @focus="${this.handleInteraction}"
                 @blur="${this.handleDocumentClick}"

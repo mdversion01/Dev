@@ -118,10 +118,12 @@ class SelectField extends LitElement {
             : ""}"
           ?multiple=${this.multiple}
           ?disabled=${this.disabled}
+          aria-label=${ifDefined(names ? names : undefined)}
           aria-labelledby=${ifDefined(ids ? ids : undefined)}
+          aria-describedby=${ifDefined(this.validation ? "validationMessage" : undefined)}
           ?required=${this.required}
-          ?aria-invalid=${this.validation}
-          ?aria-multiselectable=${this.multiple}
+          aria-invalid=${this.validation}
+          aria-multiselectable=${this.multiple}
           role=${this.multiple ? "listbox" : "combobox"}
         >
           ${this.options

@@ -14,12 +14,13 @@ export const autocompleteInputStyles = css`
   }
   .autocomplete-dropdown {
     position: absolute;
-    width: 300px;
+    min-width: 150px;
+    max-width: 300px;
     max-height: 200px;
     overflow-y: auto;
     background-color: #fff;
     border: 1px solid #ccc;
-    border-top: none;
+    margin-top: 1px;
     z-index: 1000;
   }
 
@@ -49,6 +50,11 @@ export const autocompleteInputStyles = css`
 
   .autocomplete-dropdown-item.key-selected {
     background-color: #5a5a5a;
+    color: #fff;
+  }
+
+  .autocomplete-dropdown-item.key-selected.focused {
+    background-color: #3a3a3a;
     color: #fff;
   }
 
@@ -97,6 +103,14 @@ export const autocompleteInputStyles = css`
     flex: 1 1 200px;
     padding: 0.375rem 0.75rem;
     width: 200px;
+  }
+
+  .autocomplete-dropdown-item.sm {
+    font-size: 0.75rem;
+  }
+
+  .autocomplete-dropdown-item.lg {
+    font-size: 1.2rem
   }
 
   .error-message {
@@ -152,6 +166,7 @@ export const autocompleteInputStyles = css`
   }
 
   .pl-input-group-append {
+    height: 100%;
     position: relative;
     z-index: 5;
   }
