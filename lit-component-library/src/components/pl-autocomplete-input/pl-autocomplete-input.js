@@ -113,6 +113,7 @@ class PlAutocompleteInput extends LitElement {
         // Clear selections only if desired. If not, remove the next line.
         this.multiSelectedOptions.clear();
       }
+      this.clearInputField();
       this.requestUpdate();
     }
   }
@@ -305,6 +306,13 @@ class PlAutocompleteInput extends LitElement {
     this.error = false;
     this.errorMessage = "";
     // Trigger a UI update
+    this.requestUpdate();
+  }
+
+  clearInputField() {
+    // Only clear the input field
+    this.inputValue = "";
+    // Trigger a UI update to reflect the cleared input field
     this.requestUpdate();
   }
 
@@ -674,6 +682,7 @@ class PlAutocompleteInput extends LitElement {
       case "Esc":
       case "Escape":
         event.preventDefault();
+        this.clearInputField();
         this.closeDropdown();
         break;
       // Optionally handle other keys
@@ -725,6 +734,7 @@ class PlAutocompleteInput extends LitElement {
       case "Esc":
       case "Escape":
         event.preventDefault();
+        this.clearInputField();
         this.closeDropdown();
         break;
       // Add other case handlers as needed
