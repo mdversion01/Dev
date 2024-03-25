@@ -38,6 +38,7 @@ class AutocompleteInput extends LitElement {
     labelHidden: { type: Boolean },
     multiSelect: { type: Boolean },
     multipleSelections: { type: Boolean },
+    placeholder: { type: String },
     required: { type: Boolean },
     type: { type: String },
     validation: { type: Boolean },
@@ -61,6 +62,7 @@ class AutocompleteInput extends LitElement {
     this.labelHidden = false;
     this.multiSelect = false;
     this.multipleSelections = false;
+    this.placeholder = "";
     this.size = "";
     this.clearBtn = false;
     this.clearIcon = "";
