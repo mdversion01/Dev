@@ -34,19 +34,6 @@ export const plInputFieldStyles = css`
     position: relative;
   }
 
-  label .required {
-    color: rgb(227, 72, 80);
-    font-size: 1.2rem;
-    position: absolute;
-    top: -4px;
-  }
-
-  .horizontal label .required,
-  .inline label .required {
-    top: 8px;
-    right: 2px;
-  }
-
   .horizontal .form-group .form-control-label.invalid,
   .inline .form-group .form-control-label.invalid {
     position: relative;
@@ -69,7 +56,8 @@ export const plInputFieldStyles = css`
     border-radius: 0;
     color: #383838;
     display: block;
-    font-size: 0.8333rem;
+    // font-size: 0.8333rem;
+    font-size: 1rem;
     font-weight: 400;
     line-height: 1.2;
     /* height: calc(1.2em + 0.75rem); */
@@ -194,7 +182,8 @@ export const plInputFieldStyles = css`
     color: #e34850;
   }
 
-  .pl-input-container > .pl-input-sm {
+  .pl-input-container > .pl-input-sm,
+  .pl-input-sm {
     padding: 0.25rem 0.5rem;
     font-size: 0.75rem;
     line-height: 1.5;
@@ -202,7 +191,8 @@ export const plInputFieldStyles = css`
     min-height: 0px;
   }
 
-  .pl-input-container > .pl-input-lg {
+  .pl-input-container > .pl-input-lg,
+  .pl-input-lg {
     padding: 0.5rem 0.5rem;
     font-size: 1.125rem;
     line-height: 1.5;

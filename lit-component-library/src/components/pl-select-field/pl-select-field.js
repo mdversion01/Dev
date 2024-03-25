@@ -87,7 +87,7 @@ class PlSelectField extends LitElement {
     // Handle focus logic here
     this.handleInteraction(event);
   }
-  
+
   handleBlur(event) {
     // Handle blur logic here
     this.handleDocumentClick();
@@ -131,9 +131,9 @@ class PlSelectField extends LitElement {
 
   handleInput(event) {
     const formId = this.formId;
-  
+
     // Set the form attribute using event delegation
-    if (formId !== undefined && typeof formId !== 'symbol') {
+    if (formId !== undefined && typeof formId !== "symbol") {
       const form = event.target.form || document.getElementById(formId);
       if (form) {
         event.target.form = form;
@@ -154,16 +154,16 @@ class PlSelectField extends LitElement {
   renderSelectLabel(ids) {
     return html`
       <label
-        class="form-control-label${this.labelHidden ? " sr-only" : ""}${this
-          .formLayout === "horizontal"
+        class="form-control-label${this.required ? " required" : ""}${this
+          .labelHidden
+          ? " sr-only"
+          : ""}${this.formLayout === "horizontal"
           ? " col-2 no-padding col-form-label"
           : ""}${this.validation ? " invalid" : ""}"
         for=${ifDefined(ids ? ids : undefined)}
         >${this.formLayout === "horizontal" || this.formLayout === "inline"
           ? `${this.label}:`
-          : `${this.label}`}${this.required
-          ? html`<span class="required">*</span>`
-          : ""}</label
+          : `${this.label}`}</label
       >
     `;
   }
@@ -191,7 +191,9 @@ class PlSelectField extends LitElement {
           ?disabled=${this.disabled}
           aria-label=${ifDefined(names ? names : undefined)}
           aria-labelledby=${ifDefined(ids ? ids : undefined)}
-          aria-describedby=${ifDefined(this.validation ? "validationMessage" : undefined)}
+          aria-describedby=${ifDefined(
+            this.validation ? "validationMessage" : undefined
+          )}
           ?required=${this.required}
           aria-invalid=${this.validation}
           aria-multiselectable=${this.multiple}
@@ -200,7 +202,7 @@ class PlSelectField extends LitElement {
           @blur="${this.handleBlur}"
           @input=${this.handleInput}
         >
-        ${this.options
+          ${this.options
             ? this.options.map(
                 (option) =>
                   html`<option
@@ -218,8 +220,7 @@ class PlSelectField extends LitElement {
           role="presentation"
         >
           <div
-            class="b-focus${this.disabled ? " disabled" : ""}${this
-              .validation
+            class="b-focus${this.disabled ? " disabled" : ""}${this.validation
               ? " invalid"
               : ""}"
             role="presentation"
@@ -241,22 +242,20 @@ class PlSelectField extends LitElement {
 
     return html`
       <div class="plumage${this.formLayout ? ` ${this.formLayout}` : ""}">
-        <!-- <div class="${this.formLayout ? ` ${this.formLayout}` : ""}"> -->
-          <div
-            class="form-group row${this.formLayout === "horizontal"
-              ? ``
-              : this.formLayout === "inline"
-              ? ` inline`
-              : ""}"
-          >
-            ${this.renderSelectLabel(ids, names)}
-            ${this.formLayout === "horizontal"
-              ? html`<div class="col-10">
-                  ${this.renderSelectField(ids, names)}
-                </div>`
-              : this.renderSelectField(ids, names)}
-          </div>
-        <!-- </div> -->
+        <div
+          class="form-group row${this.formLayout === "horizontal"
+            ? ``
+            : this.formLayout === "inline"
+            ? ` inline`
+            : ""}"
+        >
+          ${this.renderSelectLabel(ids, names)}
+          ${this.formLayout === "horizontal"
+            ? html`<div class="col-10">
+                ${this.renderSelectField(ids, names)}
+              </div>`
+            : this.renderSelectField(ids, names)}
+        </div>
       </div>
     `;
   }

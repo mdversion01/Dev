@@ -61,19 +61,6 @@ export const plSelectFieldStyles = css`
     position: relative;
   }
 
-  label .required {
-    color: rgb(227, 72, 80);
-    font-size: 1.2rem;
-    position: absolute;
-    top: -4px;
-  }
-
-  .horizontal label .required,
-  .inline label .required {
-    top: 8px;
-    right: 2px;
-  }
-
   .horizontal .form-group .form-control-label.invalid,
   .inline .form-group .form-control-label.invalid {
     position: relative;

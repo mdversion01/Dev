@@ -65,6 +65,7 @@ export const inputGroupStyles = css`
     border-radius: 0.25rem;
     background-color: transparent;
     min-height: 28px;
+    height: 100%;
   }
 
   .pl-input-group > .pl-input-group-append:not(:last-child) > .pl-input-group-text {

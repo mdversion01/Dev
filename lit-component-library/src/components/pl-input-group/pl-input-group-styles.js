@@ -1,7 +1,6 @@
 import { css } from "lit";
 
 export const plInputGroupStyles = css`
-
   .pl-input-group {
     position: relative;
     display: flex;
@@ -39,7 +38,25 @@ export const plInputGroupStyles = css`
     min-height: 38px;
   }
 
-  .pl-input-group > .form-control {
+  .pl-input-group-btn {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 0.275rem 0.75rem;
+    margin-bottom: 0;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    text-align: center;
+    white-space: nowrap;
+    border: none;
+    border-radius: 0;
+    background-color: transparent;
+    min-height: 28px;
+    height: 100%;
+  }
+
+  /* .pl-input-group > .form-control {
     background-color: transparent;
     background-clip: padding-box;
     border: 0 solid rgb(202, 202, 202);
@@ -53,7 +70,7 @@ export const plInputGroupStyles = css`
     transition: border-color 0.15s ease-in-out 0s,
       box-shadow 0.15s ease-in-out 0s;
     width: calc(100% - 15px);
-  }
+  } */
 
   .pl-input-group > .custom-file,
   .pl-input-group > .custom-select,
@@ -140,7 +157,7 @@ export const plInputGroupStyles = css`
 
   .pl-input-group .form-control:invalid,
   .pl-input-group .form-control.is-invalid {
-    background-position: right calc(-1.75em + 1.5rem) center;
+    background-position: right calc(-1.5em + 1.5rem) center;
   }
 
   .pl-input-group-prepend.is-invalid > .pl-input-group-text,
@@ -197,5 +214,4 @@ export const plInputGroupStyles = css`
     line-height: 50%;
     padding: 0 0.5rem 0 0.5rem;
   }
-
 `;

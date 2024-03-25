@@ -32,6 +32,15 @@ export const formStyles = css`
     clip-path: none;
   }
 
+  .required:after {
+    content: "*";
+    color: #e34850;
+    margin-left: 5px;
+    /* margin-left: -10px; */
+    margin-left: 2px;
+    margin-top: -2px;
+  }
+
   button,
   input,
   optgroup,

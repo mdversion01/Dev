@@ -5,6 +5,8 @@ export const layoutStyles = css`
     font-size: 16px;
   }
 
+  .pr-3 { padding-right: 0.75rem; }
+
   .container {
     width: 100%;
     padding-right: 15px;

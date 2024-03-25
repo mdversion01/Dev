@@ -91,16 +91,16 @@ class SelectField extends LitElement {
   renderSelectLabel(ids) {
     return html`
       <label
-        class="form-control-label${this.labelHidden ? " sr-only" : ""}${this
-          .formLayout === "horizontal"
+        class="form-control-label${this.required ? " required" : ""}${this
+          .labelHidden
+          ? " sr-only"
+          : ""}${this.formLayout === "horizontal"
           ? " col-2 no-padding col-form-label"
           : ""}${this.validation ? " invalid" : ""}"
         for=${ifDefined(ids ? ids : undefined)}
         >${this.formLayout === "horizontal" || this.formLayout === "inline"
           ? `${this.label}:`
-          : `${this.label}`}${this.required
-          ? html`<span class="required">*</span>`
-          : ""}</label
+          : `${this.label}`}</label
       >
     `;
   }
@@ -110,8 +110,11 @@ class SelectField extends LitElement {
       <div>
         <select
           id=${ifDefined(ids ? ids : undefined)}
-          class="${this.custom ? "custom-select" : "form-select"} form-control${this.validation ? " is-invalid" : ""}${this
-            .size === "sm"
+          class="${this.custom
+            ? "custom-select"
+            : "form-select"} form-control${this.validation
+            ? " is-invalid"
+            : ""}${this.size === "sm"
             ? " select-sm"
             : this.size === "lg"
             ? " select-lg"
@@ -120,7 +123,9 @@ class SelectField extends LitElement {
           ?disabled=${this.disabled}
           aria-label=${ifDefined(names ? names : undefined)}
           aria-labelledby=${ifDefined(ids ? ids : undefined)}
-          aria-describedby=${ifDefined(this.validation ? "validationMessage" : undefined)}
+          aria-describedby=${ifDefined(
+            this.validation ? "validationMessage" : undefined
+          )}
           ?required=${this.required}
           aria-invalid=${this.validation}
           aria-multiselectable=${this.multiple}
@@ -147,8 +152,6 @@ class SelectField extends LitElement {
       </div>
     `;
   }
-  
-  
 
   render() {
     const ids = this.camelCase(this.selectFieldId).replace(/ /g, "");

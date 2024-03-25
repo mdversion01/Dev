@@ -169,19 +169,26 @@ class PlInputGroup extends LitElement {
   renderInputGroup(ids, names) {
     return html`
       <div class="plumage${this.formLayout ? ` ${this.formLayout}` : ""}">
-        <div class="form-group form-pl-input-group row">
+        <div
+          class="form-group form-pl-input-group${this.formLayout ===
+          "horizontal"
+            ? ` row`
+            : this.formLayout === "inline"
+            ? ` row inline`
+            : ""}"
+        >
           <label
-            class="form-control-label${this.labelHidden ? " sr-only" : ""}${this
-              .formLayout === "horizontal"
+            class="form-control-label${this.required ? " required" : ""}${this
+              .labelHidden
+              ? " sr-only"
+              : ""}${this.formLayout === "horizontal"
               ? " col-md-2 no-padding"
               : ""}${this.validation ? " invalid" : ""}"
             for=${ifDefined(ids ? ids : undefined)}
             >${this.formLayout === "horizontal" || this.formLayout === "inline"
-              ? `${this.label}:`
-              : `${this.label}`}${this.required
-              ? html`<span class="required">*</span>`
-              : ""}</label
-          >
+              ? html`${this.label}:`
+              : html`${this.label}`}
+          </label>
           <div
             class=${ifDefined(
               this.formLayout === "horizontal"
@@ -227,7 +234,9 @@ class PlInputGroup extends LitElement {
                 value=${ifDefined(this.value ? this.value : undefined)}
                 aria-label=${ifDefined(this.label ? this.label : undefined)}
                 aria-labelledby=${ifDefined(names ? names : undefined)}
-                aria-describedby=${ifDefined(this.validation ? "validationMessage" : undefined)}
+                aria-describedby=${ifDefined(
+                  this.validation ? "validationMessage" : undefined
+                )}
                 ?disabled=${this.disabled}
                 @focus="${this.handleInteraction}"
                 @blur="${this.handleDocumentClick}"

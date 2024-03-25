@@ -46,7 +46,6 @@ class PlInputField extends LitElement {
     this.value = "";
   }
 
- 
   connectedCallback() {
     super.connectedCallback();
     document.addEventListener("click", this.handleDocumentClick);
@@ -80,32 +79,31 @@ class PlInputField extends LitElement {
 
   connectedCallback() {
     super.connectedCallback();
-  
+
     // Access the formId and formLayout properties from the closest form-component
     const formComponent = this.closest("form-component");
-  
+
     if (formComponent) {
       this.formId = formComponent.formId || "";
       this.formLayout = formComponent.formLayout || "";
     }
-  }   
+  }
 
   updated(changedProperties) {
     super.updated(changedProperties);
-  
-    if (changedProperties.has('formId')) {
-      const input = this.shadowRoot.querySelector('formField');
+
+    if (changedProperties.has("formId")) {
+      const input = this.shadowRoot.querySelector("formField");
       if (input) {
         // Check if formId is not a symbol before setting the attribute
-        if (typeof this.formId !== 'symbol') {
-          input.setAttribute('form', this.formId);
+        if (typeof this.formId !== "symbol") {
+          input.setAttribute("form", this.formId);
         } else {
-          input.removeAttribute('form'); // Remove the form attribute if formId is a symbol
+          input.removeAttribute("form"); // Remove the form attribute if formId is a symbol
         }
       }
     }
   }
-
 
   handleDocumentClick() {
     const bFocusDiv = this.shadowRoot.querySelector(".b-focus");
@@ -117,9 +115,9 @@ class PlInputField extends LitElement {
 
   handleInput(event) {
     const formId = this.formId;
-  
+
     // Set the form attribute using event delegation
-    if (formId !== undefined && typeof formId !== 'symbol') {
+    if (formId !== undefined && typeof formId !== "symbol") {
       const form = event.target.form || document.getElementById(formId);
       if (form) {
         event.target.form = form;
@@ -148,16 +146,16 @@ class PlInputField extends LitElement {
           class="form-group row${this.formLayout ? ` ${this.formLayout}` : ""}"
         >
           <label
-            class="form-control-label${this.labelHidden ? " sr-only" : ""}${this
-              .formLayout === "horizontal"
+            class="form-control-label${this.required ? " required" : ""}${this
+              .labelHidden
+              ? " sr-only"
+              : ""}${this.formLayout === "horizontal"
               ? " col-2 no-padding"
               : ""}${this.validation ? " invalid" : ""}"
             for=${ifDefined(ids ? ids : undefined)}
             >${this.formLayout === "horizontal" || this.formLayout === "inline"
               ? `${this.label}:`
-              : `${this.label}`}${this.required
-              ? html`<span class="required">*</span>`
-              : ""}</label
+              : `${this.label}`}</label
           >
 
           <div
@@ -172,7 +170,7 @@ class PlInputField extends LitElement {
               aria-labelledby=${ifDefined(names ? names : undefined)}
             >
               <input
-              type="${this.type || "text"}"
+                type="${this.type || "text"}"
                 class="form-control${this.validation ? " is-invalid" : ""}${this
                   .size === "sm"
                   ? " pl-input-sm"
@@ -187,7 +185,9 @@ class PlInputField extends LitElement {
                 value=${ifDefined(this.value ? this.value : undefined)}
                 aria-label=${ifDefined(this.labelHidden ? names : undefined)}
                 aria-labelledby=${ifDefined(names ? names : undefined)}
-                aria-describedby=${ifDefined(this.validation ? "validationMessage" : undefined)}
+                aria-describedby=${ifDefined(
+                  this.validation ? "validationMessage" : undefined
+                )}
                 ?disabled=${this.disabled}
                 @focus="${this.handleInteraction}"
                 @blur="${this.handleDocumentClick}"

@@ -1,6 +1,6 @@
 import { css } from "lit";
 
-export const autocompleteInputStyles = css`
+export const plAutocompleteInputStyles = css`
   *,
   ::after,
   ::before {
@@ -12,7 +12,8 @@ export const autocompleteInputStyles = css`
     padding: 10px;
     font-size: 16px;
   }
-  .autocomplete-dropdown {
+
+  .pl-autocomplete-dropdown {
     position: absolute;
     min-width: 150px;
     max-width: 300px;
@@ -24,73 +25,71 @@ export const autocompleteInputStyles = css`
     z-index: 1000;
   }
 
-  .autocomplete-dropdown ul {
+  .pl-autocomplete-dropdown ul {
     list-style: none;
     margin: 0;
     padding: 0;
   }
 
-  .autocomplete-dropdown-item {
+  .pl-autocomplete-dropdown-item {
     padding: 5px 10px;
     cursor: pointer;
   }
-  .autocomplete-dropdown-item:hover {
+  .pl-autocomplete-dropdown-item:hover {
     background-color: #f2f2f2;
   }
 
-  .autocomplete-dropdown-item:active {
+  .pl-autocomplete-dropdown-item:active {
     background-color: #2680eb;
     color: #fff;
     text-decoration: none;
   }
 
-  .autocomplete-dropdown-item.focused {
+  .pl-autocomplete-dropdown-item.focused {
     background-color: #eee;
   }
 
-  .autocomplete-dropdown-item.key-selected {
+  .pl-autocomplete-dropdown-item.key-selected {
     background-color: #5a5a5a;
     color: #fff;
   }
 
-  .autocomplete-dropdown-item.key-selected.focused {
+  .pl-autocomplete-dropdown-item.key-selected.focused {
     background-color: #3a3a3a;
     color: #fff;
   }
 
-  .ac-form-control {
+  .pl-ac-form-control {
     border-right: none;
   }
 
-  .ac-combobox-container {
+  .pl-ac-combobox-container {
     margin-bottom: 0.25rem;
     position: relative;
   }
 
-  .ac-multi-select-container {
-    border: 1px solid #ced4da;
-    border-radius: 0.25rem;
+  .pl-ac-multi-select-container {
     display: flex;
     flex-wrap: wrap;
     width: 100%;
   }
 
-  .ac-selected-items {
+  .pl-ac-selected-items {
     display: flex;
     flex-wrap: wrap;
   }
 
-  .ac-multi-select-container .pl-input-group-append .pl-input-group-btn {
+  .pl-ac-multi-select-container .pl-input-group-append .pl-input-group-btn {
     border: none;
   }
 
-  .ac-basic-container,
-  .ac-input-container {
+  .pl-ac-basic-container,
+  .pl-ac-input-container {
     display: flex;
     flex: 1 1 auto;
   }
 
-  .ac-input-container .ac-input-group {
+  .pl-ac-input-container .pl-ac-input-group {
     position: relative;
     display: flex;
     flex-wrap: wrap;
@@ -98,25 +97,29 @@ export const autocompleteInputStyles = css`
     width: 100%;
   }
 
-  .ac-input-container .ac-input-group .form-control {
-    border: none;
+  .pl-ac-input-container .pl-ac-input-group .form-control {
+    border: none !important;
     display: flex !important;
     flex: 1 1 200px;
     padding: 0.375rem 0.75rem;
     width: 200px;
   }
 
-  .ac-multi-select-container:invalid,
-  .ac-multi-select-container.is-invalid {
-    border-color: #e34850;
+  .pl-ac-input-container .pl-ac-input-group > .form-control:first-child {
+    padding-left: 0.5rem;
   }
 
-  .autocomplete-dropdown-item.sm {
+  .pl-ac-input-container .pl-ac-input-group input:focus {
+    box-shadow: none;
+    outline: none;
+  }
+
+  .pl-autocomplete-dropdown-item.sm {
     font-size: 0.75rem;
   }
 
-  .autocomplete-dropdown-item.lg {
-    font-size: 1.2rem
+  .pl-autocomplete-dropdown-item.lg {
+    font-size: 1.2rem;
   }
 
   .error-message {
@@ -179,6 +182,8 @@ export const autocompleteInputStyles = css`
 
   .pl-input-group-append .pl-input-group-btn {
     color: #999999;
+    padding: 0.275rem 0.75rem;
+    background-color: transparent;
   }
 
   .pl-input-group-append .pl-input-group-btn.clear:hover {
@@ -194,16 +199,6 @@ export const autocompleteInputStyles = css`
   .pl-input-group-append.is-invalid > .pl-input-group-btn.clear {
     color: rgb(227, 72, 80);
     border-color: rgb(227, 72, 80);
-  }
-
-  .pl-input-group-append .pl-input-group-btn.add:hover {
-    color: #008f0c;
-    outline: none;
-  }
-
-  .pl-input-group-append .pl-input-group-btn.add:focus-visible {
-    color: #008f0c;
-    outline: 1px solid #008f0c;
   }
 
   .form-group {

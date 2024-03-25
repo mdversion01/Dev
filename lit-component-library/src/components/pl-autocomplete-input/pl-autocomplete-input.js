@@ -2,18 +2,18 @@ import { LitElement, html, css } from "lit";
 import { ifDefined } from "lit/directives/if-defined.js";
 import { layoutStyles } from "../layout-styles.js";
 import { formStyles } from "../form-styles.js";
-import { inputFieldStyles } from "../input-field/input-field-styles.js";
-import { inputGroupStyles } from "../input-group/input-group-styles.js";
-import { autocompleteInputStyles } from "./autocomplete-input-styles.js";
+import { plInputFieldStyles } from "../pl-input-field/pl-input-field-styles.js";
+import { plInputGroupStyles } from "../pl-input-group/pl-input-group-styles.js";
+import { plAutocompleteInputStyles } from "./pl-autocomplete-input-styles.js";
 import Fontawesome from "lit-fontawesome";
 
-class AutocompleteInput extends LitElement {
+class PlAutocompleteInput extends LitElement {
   static styles = [
     layoutStyles,
     formStyles,
-    inputFieldStyles,
-    inputGroupStyles,
-    autocompleteInputStyles,
+    plInputFieldStyles,
+    plInputGroupStyles,
+    plAutocompleteInputStyles,
     Fontawesome,
     css`
       :host {
@@ -27,7 +27,6 @@ class AutocompleteInput extends LitElement {
     formLayout: { type: String },
     formId: { type: String },
     inputId: { type: String },
-    addBtn: { type: Boolean },
     addIcon: { type: String },
     clearBtn: { type: Boolean },
     clearIcon: { type: String },
@@ -49,7 +48,6 @@ class AutocompleteInput extends LitElement {
 
   constructor() {
     super();
-    this.addBtn = false;
     this.addIcon = "";
     this.disabled = false;
     this.error = false;
@@ -97,12 +95,14 @@ class AutocompleteInput extends LitElement {
     // Add an event listener to close the dropdown when clicking outside
     this.boundClickListener = this.handleClickOutside.bind(this);
     document.addEventListener("click", this.boundClickListener);
+    document.addEventListener("click", this.handleDocumentClick);
   }
 
   disconnectedCallback() {
     // Remove the event listener when the component is removed from the DOM
     document.removeEventListener("click", this.boundClickListener);
     super.disconnectedCallback();
+    document.removeEventListener("click", this.handleDocumentClick);
   }
 
   handleClickOutside(event) {
@@ -132,6 +132,7 @@ class AutocompleteInput extends LitElement {
         case "Enter":
           // Select the focused option
           if (this.multiSelect) {
+            console.log("multiSelect");
             if (this.focusedOptionIndex !== -1) {
               this.handleMultiSelectOption(
                 this.filteredOptions[this.focusedOptionIndex]
@@ -139,6 +140,7 @@ class AutocompleteInput extends LitElement {
               this.focusedOptionIndex = -1; // Reset focus
             }
           } else {
+            console.log("not multiSelect");
             if (this.focusedOptionIndex !== -1) {
               this.handleSelectOption(
                 this.filteredOptions[this.focusedOptionIndex]
@@ -199,7 +201,7 @@ class AutocompleteInput extends LitElement {
   // Helper method to ensure the selected item is scrolled into view
   ensureOptionInView(index) {
     const items = this.shadowRoot.querySelectorAll(
-      ".autocomplete-dropdown-item"
+      ".pl-autocomplete-dropdown-item"
     );
     if (index >= 0 && index < items.length) {
       const item = items[index];
@@ -316,23 +318,21 @@ class AutocompleteInput extends LitElement {
   renderInputLabel(ids) {
     return html`
       <label
-        class="form-control-label${this.required
-          ? " required" : ""}${this.labelHidden ? " sr-only" : ""}${this
+        class="form-control-label${this.required ? " required" : ""}${this.labelHidden ? " sr-only" : ""}${this
           .formLayout === "horizontal"
-          ? " col-2 no-padding col-form-label"
+          ? " col-md-2 no-padding col-form-label"
           : ""}${this.validation ? " invalid" : ""}"
         for=${ifDefined(ids ? ids : undefined)}
-        >${this.formLayout === "horizontal" || this.formLayout === "inline"
-          ? `${this.label}:`
-          : `${this.label}`}</label
+        >${this.formLayout === "horizontal" || this.formLayout === "inline" ? html`${this.label}:` : html`${this.label}`}
+        </label
       >
     `;
   }
 
   renderInput(ids, names) {
     return html`
-      <div class="ac-basic-container">
-        <div class="pl-input-group${this.validation ? " is-invalid" : ""}">
+      <div class="pl-ac-basic-container">
+        <div class="pl-input-group">
           <input
             aria-label="${ifDefined(this.labelHidden ? names : undefined)}"
             aria-labelledby=${ifDefined(names ? names : undefined)}
@@ -340,11 +340,11 @@ class AutocompleteInput extends LitElement {
               this.validation ? "validationMessage" : undefined
             )}
             class="form-control${this.clearBtn && this.inputValue.length > 0
-              ? " ac-form-control"
+              ? " pl-ac-form-control"
               : ""}${this.validation ? " is-invalid" : ""}${this.size === "sm"
-              ? " basic-input-sm"
+              ? " pl-input-sm"
               : this.size === "lg"
-              ? " basic-input-lg"
+              ? " pl-input-lg"
               : ""}"
             type="text"
             placeholder="${this.labelHidden
@@ -352,6 +352,8 @@ class AutocompleteInput extends LitElement {
               : this.label || this.placeholder || "Placeholder Text"}"
             id=${ifDefined(ids ? ids : undefined)}
             name=${ifDefined(names ? names : undefined)}
+            @focus="${this.handleInteraction}"
+            @blur="${this.handleDocumentClick}"
             @input=${this.handleInput}
             @keydown=${(e) => this.handleKeydown(e)}
             .value=${this.inputValue}
@@ -374,6 +376,19 @@ class AutocompleteInput extends LitElement {
                 </button>
               </div>`
             : ""}
+
+          <div
+            class="b-underline${this.validation ? " invalid" : ""}"
+            role="presentation"
+          >
+            <div
+              class="b-focus${this.disabled ? " disabled" : ""}${this.validation
+                ? " invalid"
+                : ""}"
+              role="presentation"
+              aria-hidden="true"
+            ></div>
+          </div>
         </div>
         
       </div>
@@ -409,13 +424,11 @@ class AutocompleteInput extends LitElement {
 
   renderMultipleSelections(ids, names) {
     return html`
-      <div
-        class="ac-multi-select-container${this.validation ? " is-invalid" : ""}"
-      >
-        <div class="ac-selected-items">${this.renderSelectedItems()}</div>
+      <div class="pl-ac-multi-select-container">
+        <div class="pl-ac-selected-items">${this.renderSelectedItems()}</div>
 
-        <div class="ac-input-container">
-          <div class="ac-input-group">
+        <div class="pl-ac-input-container">
+          <div class="pl-ac-input-group">
             <input
               aria-label="${ifDefined(this.labelHidden ? names : undefined)}"
               aria-labelledby=${ifDefined(names ? names : undefined)}
@@ -426,12 +439,13 @@ class AutocompleteInput extends LitElement {
                   ? this.errorMessage
                   : undefined
               )}
-              class="form-control${this.clearBtn && this.inputValue.length > 0
-                ? " ac-form-control"
+              class="form-control${this.addBtn ||
+              (this.clearBtn && this.inputValue.length > 0)
+                ? " pl-ac-form-control"
                 : ""}${this.validation ? " is-invalid" : ""}${this.size === "sm"
-                ? " basic-input-sm"
+                ? " pl-input-sm"
                 : this.size === "lg"
-                ? " basic-input-lg"
+                ? " pl-input-lg"
                 : ""}"
               type="text"
               placeholder="${this.labelHidden
@@ -439,6 +453,8 @@ class AutocompleteInput extends LitElement {
                 : this.label || this.placeholder || "Placeholder Text"}"
               id=${ifDefined(ids ? ids : undefined)}
               name=${ifDefined(names ? names : undefined)}
+              @focus="${this.handleInteraction}"
+              @blur="${this.handleDocumentClick}"
               @input=${this.handleInput}
               @keydown=${this.multiSelect
                 ? (e) => this.handleMultiKeydown(e)
@@ -463,6 +479,18 @@ class AutocompleteInput extends LitElement {
           </div>
         </div>
       </div>
+      <div
+        class="b-underline${this.validation ? " invalid" : ""}"
+        role="presentation"
+      >
+        <div
+          class="b-focus${this.disabled ? " disabled" : ""}${this.validation
+            ? " invalid"
+            : ""}"
+          role="presentation"
+          aria-hidden="true"
+        ></div>
+      </div>
       ${this.error
         ? html`<div class="error-message">${this.errorMessage}</div>`
         : ""}
@@ -476,12 +504,12 @@ class AutocompleteInput extends LitElement {
     if (this.filteredOptions.length === 0) return null;
 
     return html`
-      <div class="autocomplete-dropdown">
+      <div class="pl-autocomplete-dropdown">
         <ul role="listbox" tabindex="-1">
           ${this.filteredOptions.map(
             (option, index) => html`
               <li
-                class=${`autocomplete-dropdown-item${
+                class=${`pl-autocomplete-dropdown-item${
                   this.size === "sm" ? " sm" : this.size === "lg" ? " lg" : ""
                 }${index === this.focusedOptionIndex ? " focused" : ""}${
                   index === this.selectedOptionIndex ? " key-selected" : ""
@@ -503,12 +531,12 @@ class AutocompleteInput extends LitElement {
   renderMultiSelectDropdown() {
     if (this.filteredOptions.length === 0) return null;
     return html`
-      <div class="autocomplete-dropdown">
+      <div class="pl-autocomplete-dropdown">
         <ul role="listbox" tabindex="-1">
           ${this.filteredOptions.map(
             (option, index) => html`
               <li
-                class=${`autocomplete-dropdown-item ${
+                class=${`pl-autocomplete-dropdown-item ${
                   this.size === "sm" ? " sm" : this.size === "lg" ? " lg" : ""
                 } ${
                   this.selectedItems.includes(option) ? " key-selected" : ""
@@ -528,6 +556,35 @@ class AutocompleteInput extends LitElement {
         </ul>
       </div>
     `;
+  }
+
+  handleInteraction(event) {
+    // Stop the event from propagating to the document click handler
+    event.stopPropagation();
+
+    const bFocusDiv = this.shadowRoot.querySelector(".b-focus");
+    const isInputFocused =
+      event.target === this.shadowRoot.querySelector("input");
+
+    if (bFocusDiv) {
+      if (isInputFocused) {
+        // Handle input focus
+        bFocusDiv.style.width = "100%";
+        bFocusDiv.style.left = "0";
+      } else {
+        // Handle input blur
+        bFocusDiv.style.width = "0";
+        bFocusDiv.style.left = "50%";
+      }
+    }
+  }
+
+  handleDocumentClick() {
+    const bFocusDiv = this.shadowRoot.querySelector(".b-focus");
+    if (bFocusDiv) {
+      bFocusDiv.style.width = "0";
+      bFocusDiv.style.left = "50%";
+    }
   }
 
   handleClickOption(option) {
@@ -692,6 +749,58 @@ class AutocompleteInput extends LitElement {
     this.requestUpdate();
   }
 
+  // render() {
+  //   const ids = this.camelCase(this.inputId).replace(/ /g, "");
+  //   const names = this.camelCase(this.label).replace(/ /g, "");
+
+  //   return html`
+  //     <div class="plumage${this.formLayout ? ` ${this.formLayout}` : ""}">
+  //       <div
+  //         class="form-group${this.formLayout === "horizontal"
+  //           ? ` row`
+  //           : this.formLayout === "inline"
+  //           ? ` row inline`
+  //           : ""}${this.multiSelect ? " pl-ac-combobox-container" : ""}"
+  //       >
+  //         ${this.label ? this.renderInputLabel(ids) : ""}
+  //         ${this.multiSelect
+  //           ? html`<div
+  //               class="${this.formLayout === "horizontal" ? "col-10" : ""}"
+  //             >
+  //               ${this.renderMultipleSelections(ids, names)}
+  //               ${this.renderMultiSelectDropdown()}
+  //             </div>`
+  //           : this.renderMultipleSelections(ids, names)
+  //           ? html`<div
+  //               class="${this.formLayout === "horizontal" ? "col-10" : ""}"
+  //             >
+  //               ${this.renderMultipleSelections(ids, names)}
+  //               ${this.renderDropdown()}
+  //             </div>`
+  //           : this.formLayout === "horizontal"
+  //           ? html`<div class="col-10">
+  //               ${this.renderInput(ids, names)} ${this.renderDropdown()}
+  //             </div>`
+  //           : this.formLayout === "inline"
+  //           ? html`<div>
+  //               ${this.multiSelect
+  //                 ? this.renderMultipleSelections(ids, names)
+  //                 : this.multipleSelections
+  //                 ? this.renderMultipleSelections(ids, names)
+  //                 : this.renderInput(ids, names)}
+  //               ${this.renderDropdown()}
+  //             </div>`
+  //           : html`${this.multiSelect
+  //               ? this.renderMultipleSelections(ids, names)
+  //               : this.multipleSelections
+  //               ? this.renderMultipleSelections(ids, names)
+  //               : this.renderInput(ids, names)}
+  //             ${this.renderDropdown()}`}
+  //       </div>
+  //     </div>
+  //   `;
+  // }
+
   render() {
     const ids = this.camelCase(this.inputId).replace(/ /g, "");
     const names = this.camelCase(this.label).replace(/ /g, "");
@@ -712,4 +821,4 @@ class AutocompleteInput extends LitElement {
   }
 }
 
-customElements.define("autocomplete-input", AutocompleteInput);
+customElements.define("pl-autocomplete-input", PlAutocompleteInput);

@@ -84,16 +84,15 @@ class InputField extends LitElement {
   renderInputLabel(ids) {
     return html`
       <label
-        class="form-control-label${this.labelHidden ? " sr-only" : ""}${this
+        class="form-control-label${this.required
+          ? " required" : ""}${this.labelHidden ? " sr-only" : ""}${this
           .formLayout === "horizontal"
           ? " col-2 no-padding col-form-label"
           : ""}${this.validation ? " invalid" : ""}"
         for=${ifDefined(ids ? ids : undefined)}
         >${this.formLayout === "horizontal" || this.formLayout === "inline"
           ? `${this.label}:`
-          : `${this.label}`}${this.required
-          ? html`<span class="required">*</span>`
-          : ""}</label
+          : `${this.label}`}</label
       >
     `;
   }
