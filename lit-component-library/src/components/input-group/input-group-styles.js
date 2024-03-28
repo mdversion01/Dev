@@ -201,13 +201,13 @@ export const inputGroupStyles = css`
 
   .pl-input-group-prepend.is-invalid > .pl-input-group-text,
   .pl-input-group-append.is-invalid > .pl-input-group-text {
-    color: rgb(227, 72, 80);
-    border-color: rgb(227, 72, 80);
+    color: #b30009;
+    border-color: #b30009;
   }
 
   .form-control:invalid,
   .form-control.is-invalid {
-    border-color: rgb(227, 72, 80);
+    border-color: #b30009;
     padding-right: calc(1.5em + 0.75rem);
     background-repeat: no-repeat;
     background-position: right calc(-1em + 1.5rem) center;
@@ -219,6 +219,6 @@ export const inputGroupStyles = css`
   }
 
   .invalid {
-    color: rgb(227, 72, 80);
+    color: #b30009;
   }
 `;

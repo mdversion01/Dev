@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <title>Form</title>
   <head>
     <!-- <link
@@ -41,7 +41,8 @@
                     name="input1"
                     slot="formField"
                   ></input-field-component>
-
+                </form-component>
+              <form-component formLayout="inline">  
                   <checkbox-radio-input-component
                     checkbox
                     inputId="cbx-1"
@@ -49,13 +50,29 @@
                     slot="formField"
                   ></checkbox-radio-input-component>
 
+                  <toggle-switch
+                    inputId="toggle-1"
+                    labelTxt="Toggle Switch"
+                    slot="formField"
+                  ></toggle-switch>
+                </form-component>
+              <form-component>
                   <select-field-component
                     label="Select Field"
-                    inputId="input-1"
+                    selectFieldId="input-1"
                     formLayout="vertical"
                     id="selections"
                     slot="formField"
                   ></select-field-component>
+
+                  <autocomplete-input
+                  label="Autocomplete Input"
+                  inputId="aciD"
+                  id="aciD"
+                  multiSelect
+                  clearBtn
+                  slot="formField"
+                  ></autocomplete-input-component>
                 </form-component>
               </section>
               <section class="display-box-meta markdown">
@@ -556,6 +573,8 @@
       type="module"
     ></script>
     <script src="../select-field/select-field.js" type="module"></script>
+    <script src="../autocomplete-input/autocomplete-input.js" type="module"></script>
+    <script src="../toggle-switch/toggle-switch.js" type="module"></script>
 
     <script type="module">
        document.addEventListener("DOMContentLoaded", () => {
@@ -591,6 +610,21 @@
             // Add more options as needed
           ];
         }
+
+        // Define mock options for the first autocomplete input
+        const aciOptionsD = [
+          "Apple",
+          "Apparatus",
+          "Apple Pie",
+          "Applegate",
+          "Banana",
+          "Orange",
+          "Mango",
+        ];
+        // Get the first autocomplete input element
+        const aciD = document.getElementById("aciD");
+        // Set the options property of the first autocomplete input element to the mock data
+        aciD.options = aciOptionsD;
       });
      </script>
 

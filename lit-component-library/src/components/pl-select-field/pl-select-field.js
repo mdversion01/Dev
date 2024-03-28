@@ -190,14 +190,14 @@ class PlSelectField extends LitElement {
           ?multiple=${this.multiple}
           ?disabled=${this.disabled}
           aria-label=${ifDefined(names ? names : undefined)}
-          aria-labelledby=${ifDefined(ids ? ids : undefined)}
+          aria-labelledby=${ifDefined(names ? names : undefined)}
           aria-describedby=${ifDefined(
             this.validation ? "validationMessage" : undefined
           )}
           ?required=${this.required}
           aria-invalid=${this.validation}
           aria-multiselectable=${this.multiple}
-          role=${this.multiple ? "listbox" : "combobox"}
+          role=${this.multiple ? "combobox" : "listbox"}
           @focus="${this.handleFocus}"
           @blur="${this.handleBlur}"
           @input=${this.handleInput}

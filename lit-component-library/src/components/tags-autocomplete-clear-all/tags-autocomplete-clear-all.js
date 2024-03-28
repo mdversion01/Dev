@@ -31,7 +31,7 @@ class TagsAutocompleteClearAll extends LitElement {
             aria-label="Selected Tags"
           >
             <ul id="tag-list" class="tag-list">
-              <!-- Tags will be added here -->
+              
             </ul>
           </div>
 

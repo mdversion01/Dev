@@ -34,11 +34,12 @@ export const formStyles = css`
 
   .required:after {
     content: "*";
-    color: #e34850;
+    color: #b30009;
     margin-left: 5px;
     /* margin-left: -10px; */
     margin-left: 2px;
     margin-top: -2px;
+    margin-right: 5px;
   }
 
   button,
@@ -119,6 +120,16 @@ export const formStyles = css`
 
   .horizontal .form-group {
     padding: 5px;
+  }
+
+  .form-toggle-inline {
+    display: inline-flex;
+    align-items: center;
+    padding-left: 0px;
+    margin-right: 0.75rem;
+    height: 100%;
+    padding-top: 6px;
+    padding-bottom: 0;
   }
 
   // Plumage Search Bar

@@ -162,7 +162,7 @@ export const plInputGroupStyles = css`
 
   .pl-input-group-prepend.is-invalid > .pl-input-group-text,
   .pl-input-group-append.is-invalid > .pl-input-group-text {
-    color: #e34850;
+    color: #b30009;
   }
 
   .search-bar-container {

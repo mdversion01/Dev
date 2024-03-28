@@ -260,7 +260,7 @@ export const checkboxRadioStyles = css`
   }
 
   .invalid-feedback {
-    color: #e34850;
+    color: #b30009;
     /* display: none; */
     margin-top: 0.25rem;
     font-size: 0.75rem;
@@ -273,14 +273,14 @@ export const checkboxRadioStyles = css`
   }
 
   .invalid {
-    color: #e34850;
+    color: #b30009;
   }
 
   .form-check-input.is-invalid ~ .form-check-label,
   .was-validated .form-check-input:invalid ~ .form-check-label,
   .custom-control-input.is-invalid ~ .custom-control-label,
   .was-validated .custom-control-input:invalid ~ .custom-control-label {
-    color: #dc3545;
+    color: #b30009;
   }
 
   // Kick in the inline
