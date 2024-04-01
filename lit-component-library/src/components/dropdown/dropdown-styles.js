@@ -33,6 +33,10 @@ export const dropdownStyles = css`
     margin-right: 2px;
   }
 
+  .pl-size .dropdown-caret {
+    margin-top: 3px;
+  }
+
   .custom-fill-color {
     fill: currentColor; /* Set your desired fill color */
   }
@@ -145,6 +149,13 @@ export const dropdownStyles = css`
     border: 0;
   }
 
+  .dropdown-item.pl-size {
+    font-size: 0.75rem;
+    font-weight: 400;
+    line-height: 1.1;
+    padding: 0.25rem 0.5rem;
+  }
+
   .dropdown-item.sm {
     font-size: 0.75rem;
   }
@@ -155,9 +166,9 @@ export const dropdownStyles = css`
 
   .dropdown-item:focus,
   .dropdown-item:hover {
-    color: #16181b !important;
-    text-decoration: none !important;
-    background-color: #f8f9fa !important;
+    color: #16181b;
+    text-decoration: none;
+    background-color: #f8f9fa;
     outline: 0;
   }
 
@@ -165,7 +176,7 @@ export const dropdownStyles = css`
   .dropdown-item:active {
     color: #fff;
     text-decoration: none;
-    background-color: #007bff;
+    background-color: #2680eb;
   }
 
   .dropdown-submenu {

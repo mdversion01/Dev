@@ -256,7 +256,6 @@ class PlButton extends LitElement {
   }
 
   render() {
-    
     // List of color classes to append '--text'
     const colorVariants = [
       "primary",
@@ -281,6 +280,9 @@ class PlButton extends LitElement {
         break;
       case "lg":
         buttonSize = "lg";
+        break;
+      case "pl-size":
+        buttonSize = "pl-size";
         break;
       default:
         // For 'default' or any other unspecified size

@@ -250,7 +250,14 @@
                 <section
                   class="display-box-demo"
                   style="display: flex; flex-wrap: wrap"
-                >
+                > 
+                <div style="margin: 0 5px 10px">
+                  <dropdown-component
+                    id="dditemsPl"
+                    size="pl-size"
+                    buttonText="Plumage Dropdown"
+                  ></dropdown-component>
+                </div>
                   <div style="margin: 0 5px 10px">
                     <dropdown-component
                       id="dditemsSm"
@@ -275,7 +282,7 @@
                 <section class="display-box-meta markdown">
                   <div class="display-box-title">Basic Usage</div>
                   <div class="display-box-description">
-                    Dropdown Menu Button Sizes (sm, lg)
+                    Dropdown Menu Button Sizes (pl-size(Plumage), sm, lg)
                   </div>
                   <div class=""></div>
                 </section>
@@ -579,8 +586,8 @@
               <td>String</td>
               <td></td>
               <td>
-                The size of the button. Possible values are 'sm', 'lg', and
-                'default'.
+                The size of the button. Possible values are 'pl-size'(Plumage), 'sm', 'lg', and
+                default is when there isn't a prop assigned.
               </td>
             </tr>
             <tr>
@@ -792,6 +799,17 @@
         const dditems2 = document.getElementById("dditems2");
         if (dditems2) {
           dditems2.items = [
+            { name: "Action", path: "#" },
+            { name: "Another Action", path: "#" },
+            { name: "Something else here", path: "#" },
+            // Add more items as needed
+          ];
+        }
+
+        // Dynamically selectable options
+        const dditemsPl = document.getElementById("dditemsPl");
+        if (dditemsPl) {
+          dditemsPl.items = [
             { name: "Action", path: "#" },
             { name: "Another Action", path: "#" },
             { name: "Something else here", path: "#" },

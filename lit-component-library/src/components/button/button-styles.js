@@ -477,6 +477,18 @@ export const buttonStyles = css`
     color: #505050;
   }
 
+  .pl-btn.pl-size {
+    align-items: center;
+    border-radius: .25rem;
+    display: inline-flex;
+    font-size: .8333rem;
+    font-weight: normal;
+    height: 1.375rem;
+    line-height: 1.2;
+    margin: .125rem;
+    padding: 0 0.5rem;
+  }
+
   .pl-btn.xs {
     font-size: 0.625rem;
     height: 20px;
