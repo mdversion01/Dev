@@ -237,24 +237,24 @@ export const selectFieldStyles = css`
   }
 
   .invalid-feedback {
-    color: #e34850;
+    color: #b30009;
     /* display: none; */
     margin-top: 0.25rem;
     font-size: 0.75rem;
   }
 
   .invalid {
-    color: #e34850;
+    color: #b30009;
   }
 
   .invalid.b-underline,
   .invalid.b-focus {
-    background-color: #e34850;
+    background-color: #b30009;
   }
 
   .form-select.form-control:invalid,
   .form-select.form-control.is-invalid {
-    border-color: #e34850;
+    border-color: #b30009;
     //padding-right: calc(1.5em + 0.75rem);
     // background-repeat: no-repeat;
     //background-position: center right calc(-1em + 1.5rem);
@@ -264,30 +264,30 @@ export const selectFieldStyles = css`
 
   .form-control.is-invalid::-webkit-input-placeholder {
     /* WebKit, Blink, Edge */
-    color: #e34850;
+    color: #b30009;
   }
   .form-control.is-invalid:-moz-placeholder {
     /* Mozilla Firefox 4 to 18 */
-    color: #e34850;
+    color: #b30009;
     opacity: 1;
   }
   .form-control.is-invalid::-moz-placeholder {
     /* Mozilla Firefox 19+ */
-    color: #e34850;
+    color: #b30009;
     opacity: 1;
   }
   .form-control.is-invalid:-ms-input-placeholder {
     /* Internet Explorer 10-11 */
-    color: #e34850;
+    color: #b30009;
   }
   .form-control.is-invalid::-ms-input-placeholder {
     /* Microsoft Edge */
-    color: #e34850;
+    color: #b30009;
   }
 
   .form-control.is-invalid::placeholder {
     /* Most modern browsers support this now. */
-    color: #e34850;
+    color: #b30009;
   }
 
   .basic-input-sm {

@@ -61,7 +61,7 @@ class CardComponent extends LitElement {
               <img
                 src="${this.imgSrc}"
                 class="pl-card-img-top"
-                alt=${ifDefined(this.altText ? this.altText : undefined)}
+                alt=${this.altText ? this.altText : "Card image"}
                 style="${cardImageStyles}"
               />
             `

@@ -88,7 +88,7 @@ class SelectField extends LitElement {
       .replace(/\s+/g, "");
   }
 
-  renderSelectLabel(ids) {
+  renderSelectLabel(ids, names) {
     return html`
       <label
         class="form-control-label${this.required ? " required" : ""}${this
@@ -122,14 +122,14 @@ class SelectField extends LitElement {
           ?multiple=${this.multiple}
           ?disabled=${this.disabled}
           aria-label=${ifDefined(names ? names : undefined)}
-          aria-labelledby=${ifDefined(ids ? ids : undefined)}
+          aria-labelledby=${ifDefined(names ? names : undefined)}
           aria-describedby=${ifDefined(
             this.validation ? "validationMessage" : undefined
           )}
           ?required=${this.required}
           aria-invalid=${this.validation}
           aria-multiselectable=${this.multiple}
-          role=${this.multiple ? "listbox" : "combobox"}
+          role=${this.multiple ? "combobox" : "listbox"}
         >
           ${this.options
             ? this.options.map(

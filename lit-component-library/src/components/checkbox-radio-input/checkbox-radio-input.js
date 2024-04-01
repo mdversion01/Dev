@@ -130,7 +130,7 @@ class CheckboxRadioInput extends LitElement {
                 for=${ifDefined(ids ? ids : undefined)}
                 >${this.labelTxt}</label
               >`}
-          ${this.validation
+          ${this.validation && this.validationMessage
             ? html`<div class="invalid-feedback form-text">
                 ${this.validationMessage}
               </div>`
@@ -172,7 +172,7 @@ class CheckboxRadioInput extends LitElement {
               : ""}"
             for=${ifDefined(ids ? ids : undefined)}
             >${this.labelTxt}</label>`}
-          ${this.validation
+          ${this.validation && this.validationMessage
             ? html`<div class="invalid-feedback form-text">
                 ${this.validationMessage}
               </div>`
@@ -213,7 +213,7 @@ class CheckboxRadioInput extends LitElement {
                 for=${ifDefined(ids ? ids : undefined)}
                 >${this.labelTxt}</label
               >`}
-          ${this.validation
+          ${this.validation && this.validationMessage
             ? html`<div class="invalid-feedback form-text">
                 ${this.validationMessage}
               </div>`
@@ -254,7 +254,7 @@ class CheckboxRadioInput extends LitElement {
                 for=${ifDefined(ids ? ids : undefined)}
                 >${this.labelTxt}</label
               >`}
-          ${this.validation
+          ${this.validation && this.validationMessage
             ? html`<div class="invalid-feedback form-text">
                 ${this.validationMessage}
               </div>`
@@ -313,7 +313,7 @@ class CheckboxRadioInput extends LitElement {
             `
           )
         : html``}
-      ${this.validation
+      ${this.validation && this.validationMessage
         ? html`<div class="invalid-feedback form-text">
             ${this.validationMessage}
           </div>`
@@ -370,7 +370,7 @@ class CheckboxRadioInput extends LitElement {
             `
           )
         : html``}
-      ${this.validation
+      ${this.validation && this.validationMessage
         ? html`<div class="invalid-feedback form-text">
             ${this.validationMessage}
           </div>`

@@ -197,8 +197,8 @@ export const plAutocompleteInputStyles = css`
   }
 
   .pl-input-group-append.is-invalid > .pl-input-group-btn.clear {
-    color: rgb(227, 72, 80);
-    border-color: rgb(227, 72, 80);
+    color: #b30009;
+    border-color: #b30009;
   }
 
   .form-group {

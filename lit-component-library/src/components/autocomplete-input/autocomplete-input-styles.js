@@ -108,7 +108,7 @@ export const autocompleteInputStyles = css`
 
   .ac-multi-select-container:invalid,
   .ac-multi-select-container.is-invalid {
-    border-color: #e34850;
+    border-color: #b30009;
   }
 
   .autocomplete-dropdown-item.sm {
@@ -167,7 +167,7 @@ export const autocompleteInputStyles = css`
 
   .badge .remove-btn:hover svg,
   .badge .remove-btn:focus svg {
-    fill: #ff5d6d;
+    fill: #b30009;
     outline: none;
   }
 
@@ -192,8 +192,8 @@ export const autocompleteInputStyles = css`
   }
 
   .pl-input-group-append.is-invalid > .pl-input-group-btn.clear {
-    color: rgb(227, 72, 80);
-    border-color: rgb(227, 72, 80);
+    color: #b30009;
+    border-color: #b30009;
   }
 
   .pl-input-group-append .pl-input-group-btn.add:hover {
