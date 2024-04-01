@@ -18,7 +18,11 @@ class CheckboxRadioInput extends LitElement {
     return {
       checked: { type: Boolean },
       checkbox: { type: Boolean },
+      checkboxGroup: { type: Boolean },
+      checkboxGroupOptions: { type: Array },
+      checkedValues: { type: Array },
       customCheckbox: { type: Boolean },
+      customCheckboxGroup: { type: Boolean },
       customRadio: { type: Boolean },
       customRadioGroup: { type: Boolean },
       disabled: { type: Boolean },
@@ -42,7 +46,11 @@ class CheckboxRadioInput extends LitElement {
     super();
     this.checked = false;
     this.checkbox = false;
+    this.checkboxGroup = false;
+    this.checkboxGroupOptions = [];
+    this.checkedValues = [];
     this.customCheckbox = false;
+    this.customCheckboxGroup = false;
     this.customRadio = false;
     this.customRadioGroup = false;
     this.disabled = false;
@@ -52,6 +60,7 @@ class CheckboxRadioInput extends LitElement {
     this.name = "";
     this.radio = false;
     this.radioGroup = false;
+    this.radioGroupOptions = [];
     this.selectedValue = "";
     this.validation = false;
     this.validationMessage = "";
@@ -83,7 +92,6 @@ class CheckboxRadioInput extends LitElement {
     } else {
       this.validation = true;
     }
-    
   }
 
   connectedCallback() {
@@ -109,6 +117,7 @@ class CheckboxRadioInput extends LitElement {
             class="form-check-input"
             type="checkbox"
             value=${ifDefined(this.value)}
+            name=${ifDefined(names ? names : undefined)}
             id=${ifDefined(ids ? ids : undefined)}
             aria-label=${ifDefined(!this.label ? this.labelTxt : undefined)}
             aria-checked=${ifDefined(this.checked ? this.checked : undefined)}
@@ -165,13 +174,14 @@ class CheckboxRadioInput extends LitElement {
           ${this.noLabel
             ? ""
             : html`<label
-            class="custom-control-label${this.size === "sm"
-              ? " small"
-              : this.size === "md"
-              ? " med"
-              : ""}"
-            for=${ifDefined(ids ? ids : undefined)}
-            >${this.labelTxt}</label>`}
+                class="custom-control-label${this.size === "sm"
+                  ? " small"
+                  : this.size === "md"
+                  ? " med"
+                  : ""}"
+                for=${ifDefined(ids ? ids : undefined)}
+                >${this.labelTxt}</label
+              >`}
           ${this.validation && this.validationMessage
             ? html`<div class="invalid-feedback form-text">
                 ${this.validationMessage}
@@ -179,6 +189,134 @@ class CheckboxRadioInput extends LitElement {
             : ""}
         </div>
       </div>
+    `;
+  }
+
+  renderCheckboxGroup(names) {
+    return html`
+      ${this.checkboxGroupOptions
+        ? this.checkboxGroupOptions.map(
+            (option) => html`
+              <div
+                class="form-group${this.formLayout === "inline"
+                  ? " form-check-inline"
+                  : ""}${this.validation ? " was-validated" : ""}"
+              >
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    name=${ifDefined(names ? names : undefined)}
+                    id=${ifDefined(option.inputId ? option.inputId : undefined)}
+                    aria-label=${ifDefined(
+                      !option.label ? option.labelTxt : undefined
+                    )}
+                    aria-checked=${ifDefined(
+                      option.checked ? option.checked : undefined
+                    )}
+                    value=${ifDefined(option.value)}
+                    ?checked=${this.checkedValues.includes(option.value)}
+                    ?disabled=${option.disabled}
+                    ?required=${this.validation}
+                    @change="${this.handleCheckboxGroupChange}"
+                    tabindex="0"
+                    aria-invalid=${ifDefined(
+                      this.validation ? "true" : undefined
+                    )}
+                  />
+                  ${!this.noLabel
+                    ? html`<label
+                        class="form-check-label${this.size === "sm"
+                          ? " small"
+                          : this.size === "md"
+                          ? " med"
+                          : ""}"
+                        for=${ifDefined(
+                          option.inputId ? option.inputId : undefined
+                        )}
+                        >${option.labelTxt}</label
+                      >`
+                    : ""}
+                </div>
+              </div>
+            `
+          )
+        : html``}
+      ${this.validation && this.validationMessage
+        ? html`<div
+            class="invalid-feedback form-text"
+            style=${ifDefined(
+              this.formLayout === "inline" ? "" : "margin-left: 15px;"
+            )}
+          >
+            ${this.validationMessage}
+          </div>`
+        : ""}
+    `;
+  }
+
+  renderCustomCheckboxGroup(names) {
+    return html`
+      ${this.checkboxGroupOptions
+        ? this.checkboxGroupOptions.map(
+            (option) => html`
+              <div
+                class="form-group${this.formLayout === "inline"
+                  ? " form-check-inline"
+                  : ""}${this.validation ? " was-validated" : ""}"
+              >
+                <div class="custom-control custom-checkbox">
+                  <input
+                    type="checkbox"
+                    class="custom-control-input"
+                    name=${ifDefined(names ? names : undefined)}
+                    id=${ifDefined(option.inputId ? option.inputId : undefined)}
+                    aria-label=${ifDefined(
+                      !option.label ? option.labelTxt : undefined
+                    )}
+                    aria-checked=${ifDefined(
+                      option.checked ? option.checked : undefined
+                    )}
+                    value=${ifDefined(option.value)}
+                    ?checked=${this.checkedValues.includes(option.value)}
+                    ?disabled=${option.disabled}
+                    ?required=${this.validation}
+                    @change="${this.handleCheckboxGroupChange}"
+                    tabindex="0"
+                    aria-invalid=${ifDefined(
+                      this.validation ? "true" : undefined
+                    )}
+                  />
+                  ${this.noLabel
+                    ? ""
+                    : html`<label
+                        class="custom-control-label${this.size === "sm"
+                          ? " small"
+                          : this.size === "md"
+                          ? " med"
+                          : ""}"
+                        for=${ifDefined(
+                          option.inputId ? option.inputId : undefined
+                        )}
+                        >${option.labelTxt}</label
+                      >`}
+                </div>
+              </div>
+            `
+          )
+        : html``}
+      ${this.validation && this.validationMessage
+        ? html`<div
+            class="invalid-feedback form-text${this.customCheckboxGroup
+              ? " custom"
+              : ""}"
+            style=${ifDefined(
+              this.formLayout === "inline" ? "" : "margin-left: 15px;"
+            )}
+          >
+            ${this.validationMessage}
+          </div>`
+        : ""}
     `;
   }
 
@@ -255,7 +393,12 @@ class CheckboxRadioInput extends LitElement {
                 >${this.labelTxt}</label
               >`}
           ${this.validation && this.validationMessage
-            ? html`<div class="invalid-feedback form-text">
+            ? html`<div
+                class="invalid-feedback form-text"
+                style=${ifDefined(
+                  this.formLayout === "inline" ? "" : "margin-left: 15px;"
+                )}
+              >
                 ${this.validationMessage}
               </div>`
             : ""}
@@ -314,7 +457,12 @@ class CheckboxRadioInput extends LitElement {
           )
         : html``}
       ${this.validation && this.validationMessage
-        ? html`<div class="invalid-feedback form-text">
+        ? html`<div
+            class="invalid-feedback form-text"
+            style=${ifDefined(
+              this.formLayout === "inline" ? "" : "margin-left: 15px;"
+            )}
+          >
             ${this.validationMessage}
           </div>`
         : ""}
@@ -331,9 +479,9 @@ class CheckboxRadioInput extends LitElement {
                   ? " form-check-inline"
                   : ""}${this.validation ? " was-validated" : ""}"
               >
-              <div class="custom-control custom-radio">
+                <div class="custom-control custom-radio">
                   <input
-                  class="custom-control-input${this.noLabel
+                    class="custom-control-input${this.noLabel
                       ? " position-static"
                       : ""}"
                     type="radio"
@@ -371,11 +519,51 @@ class CheckboxRadioInput extends LitElement {
           )
         : html``}
       ${this.validation && this.validationMessage
-        ? html`<div class="invalid-feedback form-text">
+        ? html`<div
+            class="invalid-feedback form-text${this.customRadioGroup
+              ? " custom"
+              : ""}"
+          >
             ${this.validationMessage}
           </div>`
         : ""}
     `;
+  }
+
+  handleCheckboxGroupChange(event) {
+    const target = event.target;
+    const value = target.value;
+    let newCheckedValues = [...this.checkedValues];
+
+    if (target.checked) {
+      // Add the value to the array if it's checked and not already present
+      if (!newCheckedValues.includes(value)) {
+        newCheckedValues.push(value);
+      }
+    } else {
+      // Remove the value from the array if it's unchecked
+      newCheckedValues = newCheckedValues.filter((v) => v !== value);
+    }
+
+    // Update the checkedValues property
+    this.checkedValues = newCheckedValues;
+
+    // Only update validation state if this group is intended to be validated
+    if (this.checkboxGroup && this.checkboxGroupOptions.length > 0) {
+      // Assuming validation is required only when checkboxGroup is true and options are provided
+      this.validation = this.checkedValues.length === 0;
+    }
+
+    // Only update validation state if this group is intended to be validated
+    if (this.customCheckboxGroup && this.checkboxGroupOptions.length > 0) {
+      // Assuming validation is required only when checkboxGroup is true and options are provided
+      this.validation = this.checkedValues.length === 0;
+    }
+
+    // Dispatch a custom event with the new array of checked values
+    this.dispatchEvent(
+      new CustomEvent("checkbox-group-change", { detail: this.checkedValues })
+    );
   }
 
   handleRadioGroupChange(event) {
@@ -404,6 +592,12 @@ class CheckboxRadioInput extends LitElement {
       return html`${this.renderCustomCheckbox(ids, names)}`;
     } else if (this.checkbox) {
       return html`${this.renderCheckbox(ids, names)}`;
+    }
+
+    if (this.customCheckboxGroup) {
+      return html`${this.renderCustomCheckboxGroup(names)}`;
+    } else if (this.checkboxGroup) {
+      return html`${this.renderCheckboxGroup(names)}`;
     }
 
     if (this.customRadio) {

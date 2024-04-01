@@ -49,7 +49,7 @@ export const checkboxRadioStyles = css`
     align-items: center;
     padding-left: 0;
     margin-right: 0.75rem;
-    height: 100%;
+    /* height: 100%; */
   }
 
   .form-check-inline .form-check-input {
@@ -80,9 +80,9 @@ export const checkboxRadioStyles = css`
     margin-right: 0;
   }
 
-  .form-group.form-check-inline:first-child {
+  /* .form-group.form-check-inline:first-child {
     padding-left: 15px;
-  }
+  } */
 
   .form-group.form-check-inline .form-check {
     padding-left: 0;
@@ -267,9 +267,14 @@ export const checkboxRadioStyles = css`
     margin-bottom: 0.25rem;
   }
 
+  .invalid-feedback.custom {
+    margin-top: 0;
+  }
+
   .form-check-inline.was-validated + .invalid-feedback {
-    padding: 0 0 0 30px;
-    margin-top: -4px;
+    /* padding: 0 0 0 30px; */
+    padding: 0;
+    /* margin-top: -4px; */
   }
 
   .invalid {
