@@ -301,7 +301,8 @@
             <td></td>
             <td>
               An object with two properties, 'on' and 'off', that define the
-              text that is displayed when the switch is toggled on and off.
+              text that is displayed when the switch is toggled on and off.<br />
+              Example: { on: "Enabled", off: "Disabled" }
             </td>
           </tr>
           <tr>
@@ -339,21 +340,21 @@
               An array of objects that define the options for toggle switch
               group. Each object should have the following properties:
               <ul>
-                <li>id: (inputId)</li>
-                <li>label: (labelTxt)</li>
-                <li>value:</li>
-                <li>checked:</li>
-                <li>disabled:</li>
+                <li>id: (inputId) String</li>
+                <li>label: (labelTxt) String</li>
+                <li>value: String</li>
+                <li>checked: Boolean</li>
+                <li>disabled: Boolean</li>
               </ul>
               optional properties:
               <ul>
-                <li>newToggleTxt:</li>
-                <li>value:</li>
-                <li>required:</li>
-                <li>size:</li>
-                <li>toggleTxt:</li>
-                <li>validation:</li>
-                <li>validationMessage:</li>
+                <li>newToggleTxt: ex: { on: "Enabled", off: "Disabled" }</li>
+                <li>value: String</li>
+                <li>required: Boolean</li>
+                <li>size: String</li>
+                <li>toggleTxt: Boolean</li>
+                <li>validation: Boolean</li>
+                <li>validationMessage: String</li>
               </ul>
             </td>
           </tr>

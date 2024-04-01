@@ -51,7 +51,7 @@ export const toggleSwitchStyles = css`
   }
 
   .custom-control-inline {
-    display: -ms-inline-flexbox;
+    align-items: center;
     display: inline-flex;
     margin-right: 1rem;
   }
