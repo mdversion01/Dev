@@ -50,6 +50,35 @@ class ModalComponent extends LitElement {
 
   }
 
+  firstUpdated() {
+    this.shadowRoot.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        this.closeModal();
+      } else if (event.key === 'Tab') {
+        this.trapFocus(event);
+      }
+    });
+  }
+
+  trapFocus(event) {
+    const focusableElements = this.shadowRoot.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+    const firstElement = focusableElements[0];
+    const lastElement = focusableElements[focusableElements.length - 1];
+
+    if (event.shiftKey) {  // if shift key pressed for shift + tab combination
+      if (document.activeElement === firstElement) {
+        lastElement.focus();
+        event.preventDefault();
+      }
+    } else {  // if tab key is pressed
+      if (document.activeElement === lastElement) {
+        firstElement.focus();
+        event.preventDefault();
+      }
+    }
+  }
+
+
   render() {
 
     // Declare classAttribute before using it
@@ -92,6 +121,7 @@ class ModalComponent extends LitElement {
           ? "display:block; padding-right: 17px;"
           : "display:none;"}"
         aria-labelledby="${this.modalId}Label"
+        aria-modal="true"
         @click="${this.closeModal}"
       >
         <div
@@ -121,12 +151,12 @@ class ModalComponent extends LitElement {
             <div class="modal-footer">
               <button
                 type="button"
-                aria-label="${this.buttonText}"
+                aria-label="Cancel"
                 class="pl-btn btn-secondary sm"
                 data-dismiss="modal"
                 @click="${this.closeModal}"
               >
-                Close
+                Cancel
               </button>
               <slot name="footer"></slot>
               <!-- Use slot for additional button insertion -->
@@ -139,7 +169,11 @@ class ModalComponent extends LitElement {
 
   openModal() {
     this.open = true;
+    this.updateComplete.then(() => {
+      this.shadowRoot.querySelector('.modal-dialog').focus();  // Focus the modal dialog or a specific element within it
+    });
   }
+  
 
   closeModal() {
     this.open = false;
