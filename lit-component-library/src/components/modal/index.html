@@ -23,9 +23,14 @@
       .flex {
         display: flex;
       }
+
+      .modal-open .modal {
+        overflow-x: hidden;
+        overflow-y: auto;
+      }
     </style>
   </head>
-  <body>
+  <body class="modal-open">
     <div class="title">Modal Component</div>
 
     <div class="demo-wrapper">
@@ -34,16 +39,26 @@
           <section class="section">
             <section class="display-box" id="db-1">
               <section class="display-box-demo">
-                <modal-component id="modal1">
-                    <p>This is a modal dialog powered by LitElement!</p>
+                <modal-component
+                  id="modal1"
+                  buttonText="Launch Modal Button"
+                  variant="primary"
+                  size="sm"
+                  modalTitle="Modal Title"
+                >
+                  <p>This is a modal dialog powered by LitElement!</p>
+                  <pl-button
+                    btnText="Save"
+                    slot="footer"
+                    variant="primary"
+                    size="sm"
+                    styles="margin-left:5px;"
+                  ></pl-button>
                 </modal-component>
-                <button onclick="document.getElementById('modal1').openModal()">Open Modal</button>
               </section>
               <section class="display-box-meta markdown">
                 <div class="display-box-title">Basic Usage</div>
-                <div class="display-box-description">
-                  Text
-                </div>
+                <div class="display-box-description">Text</div>
                 <div class=""></div>
               </section>
             </section>
@@ -53,14 +68,10 @@
         <section>
           <section class="section">
             <section class="display-box" id="db-1">
-              <section class="display-box-demo">
-               
-              </section>
+              <section class="display-box-demo"></section>
               <section class="display-box-meta markdown">
                 <div class="display-box-title">Basic Usage</div>
-                <div class="display-box-description">
-                  Text
-                </div>
+                <div class="display-box-description">Text</div>
                 <div class=""></div>
               </section>
             </section>
@@ -437,8 +448,11 @@
       </p>
     </div> -->
 
-    
-    <script type="module" src="./modal.js"></script>
+    <script type="module">
+      import "./modal.js"; // Adjust the path as necessary
+      import "../button/button.js"; // Adjust the path as necessary
+    </script>
+
     <!-- <script src="../../../node_modules/bootstrap/dist/js/bootstrap.js"></script> -->
   </body>
 </html>

@@ -28,9 +28,7 @@
           <section class="section">
             <section class="display-box" id="db-1">
               <section class="display-box-demo" style="text-align: center">
-                <pl-button ariaLabel="Default Button">
-                  Default Button
-                </pl-button>
+                <pl-button btnText="Default Button"></pl-button>
               </section>
               <section class="display-box-meta markdown">
                 <div class="display-box-title">Basic Usage</div>
@@ -44,7 +42,7 @@
           <section class="section">
             <section class="display-box" id="db-3">
               <section class="display-box-demo" style="text-align: center">
-                <pl-button textBtn default> Text Button </pl-button>
+                <pl-button textBtn default btnText="Text Button"></pl-button>
               </section>
               <section class="display-box-meta markdown">
                 <div class="display-box-title">Basic Usage</div>
@@ -58,7 +56,7 @@
           <section class="section">
             <section class="display-box" id="db-5">
               <section class="display-box-demo" style="text-align: center">
-                <pl-button link> Link Button </pl-button>
+                <pl-button link btnText="Link Button"></pl-button>
               </section>
               <section class="display-box-meta markdown">
                 <div class="display-box-title">Basic Usage</div>
@@ -73,7 +71,7 @@
           <section class="section">
             <section class="display-box" id="db-7">
               <section class="display-box-demo" style="text-align: center">
-                <pl-button iconBtn title="Home">
+                <pl-button iconBtn title="Home" ariaLabel="Dashboard Button">
                   <icon-component icon="fas fa-tachometer-alt"></icon-component>
                 </pl-button>
               </section>
@@ -89,11 +87,21 @@
           <section class="section">
             <section class="display-box" id="db-9">
               <section class="display-box-demo" style="text-align: center">
-                <pl-button btnIcon variant="primary" title="Dashboard">
+                <pl-button
+                  btnIcon
+                  variant="primary"
+                  title="Dashboard"
+                  ariaLabel="Dashboard Button"
+                >
                   <icon-component icon="fas fa-tachometer-alt"></icon-component>
                 </pl-button>
 
-                <pl-button btnIcon variant="primary" title="Igloo">
+                <pl-button
+                  btnIcon
+                  variant="primary"
+                  title="Igloo"
+                  ariaLabel="Home Button"
+                >
                   <svg-component ariaHidden="true" ariaLabel="Igloo">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -123,7 +131,7 @@
           <section class="section">
             <section class="display-box" id="db-2">
               <section class="display-box-demo" style="text-align: center">
-                <pl-button stripped> Stripped Styles </pl-button>
+                <pl-button stripped btnText="Stripped Styles"></pl-button>
               </section>
               <section class="display-box-meta markdown">
                 <div class="display-box-title">Basic Usage</div>
@@ -137,7 +145,7 @@
           <section class="section">
             <section class="display-box" id="db-4">
               <section class="display-box-demo" style="text-align: center">
-                <pl-button text default> Text Only Button</pl-button>
+                <pl-button text default btnText="Text Only Button"></pl-button>
               </section>
               <section class="display-box-meta markdown">
                 <div class="display-box-title">Basic Usage</div>
@@ -151,7 +159,7 @@
           <section class="section">
             <section class="display-box" id="db-6">
               <section class="display-box-demo" style="text-align: center">
-                <pl-button outlined> Outlined Button </pl-button>
+                <pl-button outlined btnText="Outlined Button"></pl-button>
               </section>
               <section class="display-box-meta markdown">
                 <div class="display-box-title">Basic Usage</div>
@@ -163,7 +171,12 @@
           <section class="section">
             <section class="display-box" id="db-8">
               <section class="display-box-demo" style="text-align: center">
-                <pl-button outlined iconBtn title="Dashboard">
+                <pl-button
+                  outlined
+                  iconBtn
+                  title="Dashboard"
+                  ariaLabel="Dashboard Icon"
+                >
                   <icon-component icon="fas fa-tachometer-alt"></icon-component>
                 </pl-button>
               </section>
@@ -188,29 +201,75 @@
             <section class="section">
               <section class="display-box" id="db-11">
                 <section class="display-box-demo" style="text-align: center">
-                  <pl-button variant="primary" size="sm" styles="margin-bottom: 10px;"> Primary </pl-button>
+                  <pl-button
+                    btnText="Primary"
+                    variant="primary"
+                    size="sm"
+                    styles="margin-bottom: 10px;"
+                  ></pl-button>
 
-                  <pl-button variant="secondary" size="sm" styles="margin-bottom: 10px;">
-                    Secondary
-                  </pl-button>
+                  <pl-button
+                    btnText="Secondary"
+                    variant="secondary"
+                    size="sm"
+                    styles="margin-bottom: 10px;"
+                  ></pl-button>
 
-                  <pl-button variant="tertiary" size="sm" styles="margin-bottom: 10px;"> Tertiary </pl-button>
+                  <pl-button
+                    btnText="Tertiary"
+                    variant="tertiary"
+                    size="sm"
+                    styles="margin-bottom: 10px;"
+                  ></pl-button>
 
-                  <pl-button variant="active-blue" size="sm" styles="margin-bottom: 10px;">
-                    Active
-                  </pl-button>
+                  <pl-button
+                    btnText="Active"
+                    variant="active-blue"
+                    size="sm"
+                    styles="margin-bottom: 10px;"
+                  ></pl-button>
 
-                  <pl-button variant="success" size="sm" styles="margin-bottom: 10px;"> Success </pl-button>
+                  <pl-button
+                    btnText="Success"
+                    variant="success"
+                    size="sm"
+                    styles="margin-bottom: 10px;"
+                  ></pl-button>
 
-                  <pl-button variant="danger" size="sm" styles="margin-bottom: 10px;"> Danger </pl-button>
+                  <pl-button
+                    btnText="Danger"
+                    variant="danger"
+                    size="sm"
+                    styles="margin-bottom: 10px;"
+                  ></pl-button>
 
-                  <pl-button variant="warning" size="sm" styles="margin-bottom: 10px;"> Warning </pl-button>
+                  <pl-button
+                    btnText="Warning"
+                    variant="warning"
+                    size="sm"
+                    styles="margin-bottom: 10px;"
+                  ></pl-button>
 
-                  <pl-button variant="info" size="sm" styles="margin-bottom: 10px;"> Info </pl-button>
+                  <pl-button
+                    btnText="Info"
+                    variant="info"
+                    size="sm"
+                    styles="margin-bottom: 10px;"
+                  ></pl-button>
 
-                  <pl-button variant="light" size="sm" styles="margin-bottom: 10px;"> Light </pl-button>
+                  <pl-button
+                    btnText="Light"
+                    variant="light"
+                    size="sm"
+                    styles="margin-bottom: 10px;"
+                  ></pl-button>
 
-                  <pl-button variant="dark" size="sm" styles="margin-bottom: 10px;"> Dark </pl-button>
+                  <pl-button
+                    btnText="Dark"
+                    variant="dark"
+                    size="sm"
+                    styles="margin-bottom: 10px;"
+                  ></pl-button>
                 </section>
                 <section class="display-box-meta markdown">
                   <div class="display-box-title">Basic Usage</div>
@@ -226,39 +285,84 @@
             <section class="section">
               <section class="display-box" id="db-13">
                 <section class="display-box-demo" style="text-align: center">
-                  <pl-button textBtn size="sm" styles="margin-bottom: 10px;"> Default </pl-button>
+                  <pl-button
+                    btnText="Default"
+                    textBtn
+                    size="sm"
+                    styles="margin-bottom: 10px;"
+                  ></pl-button>
 
-                  <pl-button textBtn variant="primary" size="sm" styles="margin-bottom: 10px;">
-                    Primary
-                  </pl-button>
+                  <pl-button
+                    btnText="Primary"
+                    textBtn
+                    variant="primary"
+                    size="sm"
+                    styles="margin-bottom: 10px;"
+                  ></pl-button>
 
-                  <pl-button textBtn variant="secondary" size="sm" styles="margin-bottom: 10px;">
-                    Secondary
-                  </pl-button>
+                  <pl-button
+                    btnText="Secondary"
+                    textBtn
+                    variant="secondary"
+                    size="sm"
+                    styles="margin-bottom: 10px;"
+                  ></pl-button>
 
-                  <pl-button textBtn variant="tertiary" size="sm" styles="margin-bottom: 10px;">
-                    Tertiary
-                  </pl-button>
+                  <pl-button
+                    btnText="Tertiary"
+                    textBtn
+                    variant="tertiary"
+                    size="sm"
+                    styles="margin-bottom: 10px;"
+                  ></pl-button>
 
-                  <pl-button textBtn variant="success" size="sm" styles="margin-bottom: 10px;">
-                    Success
-                  </pl-button>
+                  <pl-button
+                    btnText="Success"
+                    textBtn
+                    variant="success"
+                    size="sm"
+                    styles="margin-bottom: 10px;"
+                  ></pl-button>
 
-                  <pl-button textBtn variant="danger" size="sm" styles="margin-bottom: 10px;">
-                    Danger
-                  </pl-button>
+                  <pl-button
+                    btnText="Danger"
+                    textBtn
+                    variant="danger"
+                    size="sm"
+                    styles="margin-bottom: 10px;"
+                  ></pl-button>
 
-                  <pl-button textBtn variant="warning" size="sm" styles="margin-bottom: 10px;">
-                    Warning
-                  </pl-button>
+                  <pl-button
+                    btnText="Warning"
+                    textBtn
+                    variant="warning"
+                    size="sm"
+                    styles="margin-bottom: 10px;"
+                  ></pl-button>
 
-                  <pl-button textBtn variant="info" size="sm" styles="margin-bottom: 10px;"> Info </pl-button>
+                  <pl-button
+                    btnText="Info"
+                    textBtn
+                    variant="info"
+                    size="sm"
+                    styles="margin-bottom: 10px;"
+                  ></pl-button>
 
-                  <pl-button textBtn variant="light" size="sm" styles="margin-bottom: 10px;">
-                    Light
-                  </pl-button>
+                  <pl-button
+                    btnText="Light"
+                    textBtn
+                    variant="light"
+                    size="sm"
+                    styles="margin-bottom: 10px;"
+                  ></pl-button>
 
-                  <pl-button textBtn variant="dark" size="sm" styles="margin-bottom: 10px;"> Dark </pl-button>
+                  <pl-button
+                    btnText="Dark"
+                    textBtn
+                    variant="dark"
+                    size="sm"
+                    styles="margin-bottom: 10px;"
+                  ></pl-button>
                 </section>
                 <section class="display-box-meta markdown">
                   <div class="display-box-title">Basic Usage</div>
@@ -272,76 +376,203 @@
             <section class="section">
               <section class="display-box" id="db-15">
                 <section class="display-box-demo" style="text-align: center">
-                  <pl-button variant="primary" round iconBtn title="Home" styles="margin-bottom: 10px;">
+                  <pl-button
+                    ariaLabel="Dashboard Primary"
+                    variant="primary"
+                    round
+                    iconBtn
+                    title="Home"
+                    styles="margin-bottom: 10px;"
+                  >
                     <icon-component
                       icon="fas fa-tachometer-alt"
                     ></icon-component>
                   </pl-button>
 
-                  <pl-button variant="secondary" round iconBtn title="Home" styles="margin-bottom: 10px;">
+                  <pl-button
+                    ariaLabel="Home Secondary"
+                    variant="secondary"
+                    round
+                    iconBtn
+                    title="Home"
+                    styles="margin-bottom: 10px;"
+                  >
                     <icon-component icon="fas fa-home"></icon-component>
                   </pl-button>
 
-                  <pl-button variant="tertiary" round iconBtn title="Home" styles="margin-bottom: 10px;">
+                  <pl-button
+                    ariaLabel="Home Tertiary"
+                    variant="tertiary"
+                    round
+                    iconBtn
+                    title="Home"
+                    styles="margin-bottom: 10px;"
+                  >
                     <icon-component icon="fas fa-home"></icon-component>
                   </pl-button>
 
-                  <pl-button variant="success" round iconBtn title="Home" styles="margin-bottom: 10px;">
+                  <pl-button
+                    ariaLabel="Home Success"
+                    variant="success"
+                    round
+                    iconBtn
+                    title="Home"
+                    styles="margin-bottom: 10px;"
+                  >
                     <icon-component icon="fas fa-home"></icon-component>
                   </pl-button>
 
-                  <pl-button variant="danger" round iconBtn title="Home" styles="margin-bottom: 10px;">
+                  <pl-button
+                    ariaLabel="Home Danger"
+                    variant="danger"
+                    round
+                    iconBtn
+                    title="Home"
+                    styles="margin-bottom: 10px;"
+                  >
                     <icon-component icon="fas fa-home"></icon-component>
                   </pl-button>
 
-                  <pl-button variant="warning" round iconBtn title="Home" styles="margin-bottom: 10px;">
+                  <pl-button
+                    ariaLabel="Home Warning"
+                    variant="warning"
+                    round
+                    iconBtn
+                    title="Home"
+                    styles="margin-bottom: 10px;"
+                  >
                     <icon-component icon="fas fa-home"></icon-component>
                   </pl-button>
 
-                  <pl-button variant="info" round iconBtn title="Home" styles="margin-bottom: 10px;">
+                  <pl-button
+                    ariaLabel="Home Info"
+                    variant="info"
+                    round
+                    iconBtn
+                    title="Home"
+                    styles="margin-bottom: 10px;"
+                  >
                     <icon-component icon="fas fa-home"></icon-component>
                   </pl-button>
 
-                  <pl-button variant="light" round iconBtn title="Home" styles="margin-bottom: 10px;">
+                  <pl-button
+                    ariaLabel="Home Light"
+                    variant="light"
+                    round
+                    iconBtn
+                    title="Home"
+                    styles="margin-bottom: 10px;"
+                  >
                     <icon-component icon="fas fa-home"></icon-component>
                   </pl-button>
 
-                  <pl-button variant="dark" round iconBtn title="Home" styles="margin-bottom: 10px;">
-                    <icon-component icon="fas fa-home"></icon-component>
-                  </pl-button>
-                  <pl-button variant="primary" outlined round iconBtn styles="margin-bottom: 10px;">
-                    <icon-component icon="fas fa-home"></icon-component>
-                  </pl-button>
-
-                  <pl-button variant="secondary" outlined round iconBtn styles="margin-bottom: 10px;">
-                    <icon-component icon="fas fa-home"></icon-component>
-                  </pl-button>
-
-                  <pl-button variant="tertiary" outlined round iconBtn styles="margin-bottom: 10px;">
+                  <pl-button
+                    ariaLabel="Home Dark"
+                    variant="dark"
+                    round
+                    iconBtn
+                    title="Home"
+                    styles="margin-bottom: 10px;"
+                  >
                     <icon-component icon="fas fa-home"></icon-component>
                   </pl-button>
 
-                  <pl-button variant="success" outlined round iconBtn styles="margin-bottom: 10px;">
+                  <pl-button
+                    ariaLabel="Home Primary"
+                    variant="primary"
+                    outlined
+                    round
+                    iconBtn
+                    styles="margin-bottom: 10px;"
+                  >
                     <icon-component icon="fas fa-home"></icon-component>
                   </pl-button>
 
-                  <pl-button variant="danger" outlined round iconBtn styles="margin-bottom: 10px;">
+                  <pl-button
+                    ariaLabel="Home Secondary"
+                    variant="secondary"
+                    outlined
+                    round
+                    iconBtn
+                    styles="margin-bottom: 10px;"
+                  >
                     <icon-component icon="fas fa-home"></icon-component>
                   </pl-button>
 
-                  <pl-button variant="warning" outlined round iconBtn styles="margin-bottom: 10px;">
+                  <pl-button
+                    ariaLabel="Home Tertiary"
+                    variant="tertiary"
+                    outlined
+                    round
+                    iconBtn
+                    styles="margin-bottom: 10px;"
+                  >
                     <icon-component icon="fas fa-home"></icon-component>
                   </pl-button>
 
-                  <pl-button variant="info" outlined round iconBtn styles="margin-bottom: 10px;">
+                  <pl-button
+                    ariaLabel="Home Success"
+                    variant="success"
+                    outlined
+                    round
+                    iconBtn
+                    styles="margin-bottom: 10px;"
+                  >
                     <icon-component icon="fas fa-home"></icon-component>
                   </pl-button>
 
-                  <pl-button variant="light" outlined round iconBtn styles="margin-bottom: 10px;">
+                  <pl-button
+                    ariaLabel="Home Danger"
+                    variant="danger"
+                    outlined
+                    round
+                    iconBtn
+                    styles="margin-bottom: 10px;"
+                  >
                     <icon-component icon="fas fa-home"></icon-component>
                   </pl-button>
 
-                  <pl-button variant="dark" outlined round iconBtn styles="margin-bottom: 10px;">
+                  <pl-button
+                    ariaLabel="Home Warning"
+                    variant="warning"
+                    outlined
+                    round
+                    iconBtn
+                    styles="margin-bottom: 10px;"
+                  >
+                    <icon-component icon="fas fa-home"></icon-component>
+                  </pl-button>
+
+                  <pl-button
+                    ariaLabel="Home Info"
+                    variant="info"
+                    outlined
+                    round
+                    iconBtn
+                    styles="margin-bottom: 10px;"
+                  >
+                    <icon-component icon="fas fa-home"></icon-component>
+                  </pl-button>
+
+                  <pl-button
+                    ariaLabel="Home Light"
+                    variant="light"
+                    outlined
+                    round
+                    iconBtn
+                    styles="margin-bottom: 10px;"
+                  >
+                    <icon-component icon="fas fa-home"></icon-component>
+                  </pl-button>
+
+                  <pl-button
+                    ariaLabel="Home Dark"
+                    variant="dark"
+                    outlined
+                    round
+                    iconBtn
+                    styles="margin-bottom: 10px;"
+                  >
                     <icon-component icon="fas fa-home"></icon-component>
                   </pl-button>
                 </section>
@@ -358,50 +589,104 @@
               <section class="display-box" id="db-17">
                 <section class="display-box-demo" style="text-align: center">
                   <div style="margin-top: 15px">
-                    <pl-button variant="primary" flat styles="margin-bottom: 10px;"> no size </pl-button>
-                    
-                    <pl-button variant="primary" flat size="pl-size" styles="margin-bottom: 10px;">
-                      plumage-size
-                    </pl-button>
+                    <pl-button
+                      btnText="no size"
+                      variant="primary"
+                      flat
+                      styles="margin-bottom: 10px;"
+                    ></pl-button>
 
-                    <pl-button variant="primary" flat size="xs" styles="margin-bottom: 10px;">
-                      x-small
-                    </pl-button>
+                    <pl-button
+                      btnText="plumage-size"
+                      variant="primary"
+                      flat
+                      size="pl-size"
+                      styles="margin-bottom: 10px;"
+                    ></pl-button>
 
-                    <pl-button variant="primary" flat size="sm" styles="margin-bottom: 10px;">
-                      small
-                    </pl-button>
+                    <pl-button
+                      btnText="x-small"
+                      variant="primary"
+                      flat
+                      size="xs"
+                      styles="margin-bottom: 10px;"
+                    ></pl-button>
 
-                    <pl-button variant="primary" flat styles="margin-bottom: 10px;"> default </pl-button>
+                    <pl-button
+                      btnText="small"
+                      variant="primary"
+                      flat
+                      size="sm"
+                      styles="margin-bottom: 10px;"
+                    ></pl-button>
 
-                    <pl-button variant="primary" flat size="lg" styles="margin-bottom: 10px;">
-                      large
-                    </pl-button>
+                    <pl-button
+                      btnText="default"
+                      variant="primary"
+                      flat
+                      styles="margin-bottom: 10px;"
+                    ></pl-button>
+
+                    <pl-button
+                      btnText="large"
+                      variant="primary"
+                      flat
+                      size="lg"
+                      styles="margin-bottom: 10px;"
+                    ></pl-button>
                   </div>
-                    <div style="margin-top: 15px">
-                    <pl-button variant="primary" outlined flat styles="margin-bottom: 10px;">
-                      no size
-                    </pl-button>
+                  <div style="margin-top: 15px">
+                    <pl-button
+                      btnText="no size"
+                      variant="primary"
+                      outlined
+                      flat
+                      styles="margin-bottom: 10px;"
+                    ></pl-button>
 
-                    <pl-button variant="primary" outlined flat size="pl-size" styles="margin-bottom: 10px;">
-                      plumage-size
-                    </pl-button>
+                    <pl-button
+                      btnText="plumage-size"
+                      variant="primary"
+                      outlined
+                      flat
+                      size="pl-size"
+                      styles="margin-bottom: 10px;"
+                    ></pl-button>
 
-                    <pl-button variant="primary" flat outlined size="xs" styles="margin-bottom: 10px;">
-                      x-small
-                    </pl-button>
+                    <pl-button
+                      btnText="x-small"
+                      variant="primary"
+                      flat
+                      outlined
+                      size="xs"
+                      styles="margin-bottom: 10px;"
+                    ></pl-button>
 
-                    <pl-button variant="primary" flat outlined size="sm" styles="margin-bottom: 10px;">
-                      small
-                    </pl-button>
+                    <pl-button
+                      btnText="small"
+                      variant="primary"
+                      flat
+                      outlined
+                      size="sm"
+                      styles="margin-bottom: 10px;"
+                    ></pl-button>
 
-                    <pl-button variant="primary" flat outlined styles="margin-bottom: 10px;">
-                      default
-                    </pl-button>
+                    <pl-button
+                      btnText="default"
+                      variant="primary"
+                      flat
+                      outlined
+                      styles="margin-bottom: 10px;"
+                    ></pl-button>
 
-                    <pl-button variant="primary" flat outlined size="lg" styles="margin-bottom: 10px;">
-                      large
-                    </pl-button>
+                    <pl-button
+                      btnText="large"
+                      variant="primary"
+                      flat
+                      outlined
+                      size="lg"
+                      styles="margin-bottom: 10px;"
+                    ></pl-button>
                   </div>
                   <div style="margin-top: 15px">
                     <pl-button
@@ -409,6 +694,7 @@
                       round
                       iconBtn
                       size="xs"
+                      ariaLabel="Home"
                       title="Home"
                       styles="margin-bottom: 10px;"
                     >
@@ -423,6 +709,7 @@
                       round
                       iconBtn
                       size="sm"
+                      ariaLabel="Home"
                       title="Home"
                       styles="margin-bottom: 10px;"
                     >
@@ -432,7 +719,13 @@
                       ></icon-component>
                     </pl-button>
 
-                    <pl-button variant="primary" round iconBtn title="Home" styles="margin-bottom: 10px;">
+                    <pl-button
+                      variant="primary"
+                      round
+                      iconBtn
+                      title="Home"
+                      styles="margin-bottom: 10px;"
+                    >
                       <icon-component icon="fas fa-home"></icon-component>
                     </pl-button>
 
@@ -441,6 +734,7 @@
                       round
                       iconBtn
                       size="lg"
+                      ariaLabel="Home"
                       title="Home"
                       styles="margin-bottom: 10px;"
                     >
@@ -456,6 +750,7 @@
                       outlined
                       iconBtn
                       size="xs"
+                      ariaLabel="Home"
                       title="Home"
                       styles="margin-bottom: 10px;"
                     >
@@ -471,6 +766,7 @@
                       outlined
                       iconBtn
                       size="sm"
+                      ariaLabel="Home"
                       title="Home"
                       styles="margin-bottom: 10px;"
                     >
@@ -486,6 +782,7 @@
                       icon="fas fa-home"
                       outlined
                       iconBtn
+                      ariaLabel="Home"
                       title="Home"
                       styles="margin-bottom: 10px;"
                     >
@@ -498,6 +795,7 @@
                       outlined
                       iconBtn
                       size="lg"
+                      ariaLabel="Home"
                       title="Home"
                       styles="margin-bottom: 10px;"
                     >
@@ -518,9 +816,12 @@
               <section class="display-box" id="db-19">
                 <section class="display-box-demo" style="text-align: center">
                   <div style="margin-top: 15px">
-                    <pl-button variant="primary" ripple size="sm">
-                      Ripple Effect
-                    </pl-button>
+                    <pl-button
+                      btnText="Ripple Effect"
+                      variant="primary"
+                      ripple
+                      size="sm"
+                    ></pl-button>
                   </div>
                 </section>
                 <section class="display-box-meta markdown">
@@ -537,41 +838,77 @@
             <section class="section">
               <section class="display-box" id="db-10">
                 <section class="display-box-demo" style="text-align: center">
-                  <pl-button variant="primary" outlined size="sm" styles="margin-bottom: 10px;">
-                    Primary
-                  </pl-button>
+                  <pl-button
+                    btnText="Primary"
+                    variant="primary"
+                    outlined
+                    size="sm"
+                    styles="margin-bottom: 10px;"
+                  ></pl-button>
 
-                  <pl-button variant="secondary" outlined size="sm" styles="margin-bottom: 10px;">
-                    Secondary
-                  </pl-button>
+                  <pl-button
+                    btnText="Secondary"
+                    variant="secondary"
+                    outlined
+                    size="sm"
+                    styles="margin-bottom: 10px;"
+                  ></pl-button>
 
-                  <pl-button variant="tertiary" outlined size="sm" styles="margin-bottom: 10px;">
-                    Tertiary
-                  </pl-button>
+                  <pl-button
+                    btnText="Tertiary"
+                    variant="tertiary"
+                    outlined
+                    size="sm"
+                    styles="margin-bottom: 10px;"
+                  ></pl-button>
 
-                  <pl-button variant="success" outlined size="sm" styles="margin-bottom: 10px;">
-                    Success
-                  </pl-button>
+                  <pl-button
+                    btnText="Success"
+                    variant="success"
+                    outlined
+                    size="sm"
+                    styles="margin-bottom: 10px;"
+                  ></pl-button>
 
-                  <pl-button variant="danger" outlined size="sm" styles="margin-bottom: 10px;">
-                    Danger
-                  </pl-button>
+                  <pl-button
+                    btnText="Danger"
+                    variant="danger"
+                    outlined
+                    size="sm"
+                    styles="margin-bottom: 10px;"
+                  ></pl-button>
 
-                  <pl-button variant="warning" outlined size="sm" styles="margin-bottom: 10px;">
-                    Warning
-                  </pl-button>
+                  <pl-button
+                    btnText="Warning"
+                    variant="warning"
+                    outlined
+                    size="sm"
+                    styles="margin-bottom: 10px;"
+                  ></pl-button>
 
-                  <pl-button variant="info" outlined size="sm" styles="margin-bottom: 10px;">
-                    Info
-                  </pl-button>
+                  <pl-button
+                    btnText="Info"
+                    variant="info"
+                    outlined
+                    size="sm"
+                    styles="margin-bottom: 10px;"
+                  ></pl-button>
 
-                  <pl-button variant="light" outlined size="sm" styles="margin-bottom: 10px;">
-                    Light
-                  </pl-button>
+                  <pl-button
+                    btnText="Light"
+                    variant="light"
+                    outlined
+                    size="sm"
+                    styles="margin-bottom: 10px;"
+                  ></pl-button>
 
-                  <pl-button variant="dark" outlined size="sm" styles="margin-bottom: 10px;">
-                    Dark
-                  </pl-button>
+                  <pl-button
+                    btnText="Dark"
+                    variant="dark"
+                    outlined
+                    size="sm"
+                    styles="margin-bottom: 10px;"
+                  ></pl-button>
                 </section>
                 <section class="display-box-meta markdown">
                   <div class="display-box-title">Basic Usage</div>
@@ -585,37 +922,84 @@
             <section class="section">
               <section class="display-box" id="db-12">
                 <section class="display-box-demo" style="text-align: center">
-                  <pl-button text size="sm" styles="margin-bottom: 10px;"> Default </pl-button>
+                  <pl-button
+                    btnText="Default"
+                    text
+                    size="sm"
+                    styles="margin-bottom: 10px;"
+                  ></pl-button>
 
-                  <pl-button text variant="primary" size="sm" styles="margin-bottom: 10px;">
-                    Primary
-                  </pl-button>
+                  <pl-button
+                    btnText="Primary"
+                    text
+                    variant="primary"
+                    size="sm"
+                    styles="margin-bottom: 10px;"
+                  ></pl-button>
 
-                  <pl-button text variant="secondary" size="sm" styles="margin-bottom: 10px;">
-                    Secondary
-                  </pl-button>
+                  <pl-button
+                    btnText="Secondary"
+                    text
+                    variant="secondary"
+                    size="sm"
+                    styles="margin-bottom: 10px;"
+                  ></pl-button>
 
-                  <pl-button text variant="tertiary" size="sm" styles="margin-bottom: 10px;">
-                    Tertiary
-                  </pl-button>
+                  <pl-button
+                    btnText="Tertiary"
+                    text
+                    variant="tertiary"
+                    size="sm"
+                    styles="margin-bottom: 10px;"
+                  ></pl-button>
 
-                  <pl-button text variant="success" size="sm" styles="margin-bottom: 10px;">
-                    Success
-                  </pl-button>
+                  <pl-button
+                    btnText="Success"
+                    text
+                    variant="success"
+                    size="sm"
+                    styles="margin-bottom: 10px;"
+                  ></pl-button>
 
-                  <pl-button text variant="danger" size="sm" styles="margin-bottom: 10px;">
-                    Danger
-                  </pl-button>
+                  <pl-button
+                    btnText="Danger"
+                    text
+                    variant="danger"
+                    size="sm"
+                    styles="margin-bottom: 10px;"
+                  ></pl-button>
 
-                  <pl-button text variant="warning" size="sm" styles="margin-bottom: 10px;">
-                    Warning
-                  </pl-button>
+                  <pl-button
+                    btnText="Warning"
+                    text
+                    variant="warning"
+                    size="sm"
+                    styles="margin-bottom: 10px;"
+                  ></pl-button>
 
-                  <pl-button text variant="info" size="sm" styles="margin-bottom: 10px;"> Info </pl-button>
+                  <pl-button
+                    btnText="Info"
+                    text
+                    variant="info"
+                    size="sm"
+                    styles="margin-bottom: 10px;"
+                  ></pl-button>
 
-                  <pl-button text variant="light" size="sm" styles="margin-bottom: 10px;"> Light </pl-button>
+                  <pl-button
+                    btnText="Light"
+                    text
+                    variant="light"
+                    size="sm"
+                    styles="margin-bottom: 10px;"
+                  ></pl-button>
 
-                  <pl-button text variant="dark" size="sm" styles="margin-bottom: 10px;"> Dark </pl-button>
+                  <pl-button
+                    btnText="Dark"
+                    text
+                    variant="dark"
+                    size="sm"
+                    styles="margin-bottom: 10px;"
+                  ></pl-button>
                 </section>
                 <section class="display-box-meta markdown">
                   <div class="display-box-title">Basic Usage</div>
@@ -630,90 +1014,182 @@
               <section class="display-box" id="db-14">
                 <section class="display-box-demo" style="text-align: center">
                   <div style="margin-top: 15px">
-                    <pl-button variant="primary" size="sm" disabled styles="margin-bottom: 10px;">
-                      Primary
-                    </pl-button>
+                    <pl-button
+                      btnText="Primary"
+                      variant="primary"
+                      size="sm"
+                      disabled
+                      styles="margin-bottom: 10px;"
+                    ></pl-button>
 
-                    <pl-button variant="secondary" size="sm" disabled styles="margin-bottom: 10px;">
-                      Secondary
-                    </pl-button>
+                    <pl-button
+                      btnText="Secondary"
+                      variant="secondary"
+                      size="sm"
+                      disabled
+                      styles="margin-bottom: 10px;"
+                    ></pl-button>
 
-                    <pl-button variant="tertiary" size="sm" disabled styles="margin-bottom: 10px;">
-                      Tertiary
-                    </pl-button>
+                    <pl-button
+                      btnText="Tertiary"
+                      variant="tertiary"
+                      size="sm"
+                      disabled
+                      styles="margin-bottom: 10px;"
+                    ></pl-button>
 
-                    <pl-button variant="active-blue" size="sm" disabled styles="margin-bottom: 10px;">
-                      Active
-                    </pl-button>
+                    <pl-button
+                      btnText="Active"
+                      variant="active-blue"
+                      size="sm"
+                      disabled
+                      styles="margin-bottom: 10px;"
+                    ></pl-button>
 
-                    <pl-button variant="success" size="sm" disabled styles="margin-bottom: 10px;">
-                      Success
-                    </pl-button>
+                    <pl-button
+                      btnText="Success"
+                      variant="success"
+                      size="sm"
+                      disabled
+                      styles="margin-bottom: 10px;"
+                    ></pl-button>
 
-                    <pl-button variant="danger" size="sm" disabled styles="margin-bottom: 10px;">
-                      Danger
-                    </pl-button>
+                    <pl-button
+                      btnText="Danger"
+                      variant="danger"
+                      size="sm"
+                      disabled
+                      styles="margin-bottom: 10px;"
+                    ></pl-button>
 
-                    <pl-button variant="warning" size="sm" disabled styles="margin-bottom: 10px;">
-                      Warning
-                    </pl-button>
+                    <pl-button
+                      btnText="Warning"
+                      variant="warning"
+                      size="sm"
+                      disabled
+                      styles="margin-bottom: 10px;"
+                    ></pl-button>
 
-                    <pl-button variant="info" size="sm" disabled styles="margin-bottom: 10px;">
-                      Info
-                    </pl-button>
+                    <pl-button
+                      btnText="Info"
+                      variant="info"
+                      size="sm"
+                      disabled
+                      styles="margin-bottom: 10px;"
+                    ></pl-button>
 
-                    <pl-button variant="light" size="sm" disabled styles="margin-bottom: 10px;">
-                      Light
-                    </pl-button>
+                    <pl-button
+                      btnText="Light"
+                      variant="light"
+                      size="sm"
+                      disabled
+                      styles="margin-bottom: 10px;"
+                    ></pl-button>
 
-                    <pl-button variant="dark" size="sm" disabled styles="margin-bottom: 10px;">
-                      Dark
-                    </pl-button>
+                    <pl-button
+                      btnText="Dark"
+                      variant="dark"
+                      size="sm"
+                      disabled
+                      styles="margin-bottom: 10px;"
+                    ></pl-button>
                   </div>
                   <div style="margin-top: 15px">
-                    <pl-button textBtn size="sm" disabled styles="margin-bottom: 10px;"> Default </pl-button>
+                    <pl-button
+                      btnText="Default"
+                      textBtn
+                      size="sm"
+                      disabled
+                      styles="margin-bottom: 10px;"
+                    ></pl-button>
 
-                    <pl-button textBtn variant="primary" size="sm" disabled styles="margin-bottom: 10px;">
-                      Primary
-                    </pl-button>
+                    <pl-button
+                      btnText="Primary"
+                      textBtn
+                      variant="primary"
+                      size="sm"
+                      disabled
+                      styles="margin-bottom: 10px;"
+                    ></pl-button>
 
-                    <pl-button textBtn variant="secondary" size="sm" disabled styles="margin-bottom: 10px;">
-                      Secondary
-                    </pl-button>
+                    <pl-button
+                      btnText="Secondary"
+                      textBtn
+                      variant="secondary"
+                      size="sm"
+                      disabled
+                      styles="margin-bottom: 10px;"
+                    ></pl-button>
 
-                    <pl-button textBtn variant="tertiary" size="sm" disabled styles="margin-bottom: 10px;">
-                      Tertiary
-                    </pl-button>
+                    <pl-button
+                      btnText=" Tertiary"
+                      textBtn
+                      variant="tertiary"
+                      size="sm"
+                      disabled
+                      styles="margin-bottom: 10px;"
+                    ></pl-button>
 
-                    <pl-button textBtn variant="success" size="sm" disabled styles="margin-bottom: 10px;">
-                      Success
-                    </pl-button>
+                    <pl-button
+                      btnText="Success"
+                      textBtn
+                      variant="success"
+                      size="sm"
+                      disabled
+                      styles="margin-bottom: 10px;"
+                    ></pl-button>
 
-                    <pl-button textBtn variant="danger" size="sm" disabled styles="margin-bottom: 10px;">
-                      Danger
-                    </pl-button>
+                    <pl-button
+                      btnText="Danger"
+                      textBtn
+                      variant="danger"
+                      size="sm"
+                      disabled
+                      styles="margin-bottom: 10px;"
+                    ></pl-button>
 
-                    <pl-button textBtn variant="warning" size="sm" disabled styles="margin-bottom: 10px;">
-                      Warning
-                    </pl-button>
+                    <pl-button
+                      btnText="Warning"
+                      textBtn
+                      variant="warning"
+                      size="sm"
+                      disabled
+                      styles="margin-bottom: 10px;"
+                    ></pl-button>
 
-                    <pl-button textBtn variant="info" size="sm" disabled styles="margin-bottom: 10px;">
-                      Info
-                    </pl-button>
+                    <pl-button
+                      btnText="Info"
+                      textBtn
+                      variant="info"
+                      size="sm"
+                      disabled
+                      styles="margin-bottom: 10px;"
+                    ></pl-button>
 
-                    <pl-button textBtn variant="light" size="sm" disabled styles="margin-bottom: 10px;">
-                      Light
-                    </pl-button>
+                    <pl-button
+                      btnText="Light"
+                      textBtn
+                      variant="light"
+                      size="sm"
+                      disabled
+                      styles="margin-bottom: 10px;"
+                    ></pl-button>
 
-                    <pl-button textBtn variant="dark" size="sm" disabled styles="margin-bottom: 10px;">
-                      Dark
-                    </pl-button>
+                    <pl-button
+                      btnText="Dark"
+                      textBtn
+                      variant="dark"
+                      size="sm"
+                      disabled
+                      styles="margin-bottom: 10px;"
+                    ></pl-button>
                   </div>
                   <div style="margin-top: 15px">
                     <pl-button
                       variant="primary"
                       round
                       iconBtn
+                      ariaLabel="Home"
                       title="Home"
                       disabled
                       styles="margin-bottom: 10px;"
@@ -725,6 +1201,7 @@
                       variant="secondary"
                       round
                       iconBtn
+                      ariaLabel="Home"
                       title="Home"
                       disabled
                       styles="margin-bottom: 10px;"
@@ -736,6 +1213,7 @@
                       variant="tertiary"
                       round
                       iconBtn
+                      ariaLabel="Home"
                       title="Home"
                       disabled
                       styles="margin-bottom: 10px;"
@@ -747,6 +1225,7 @@
                       variant="success"
                       round
                       iconBtn
+                      ariaLabel="Home"
                       title="Home"
                       disabled
                       styles="margin-bottom: 10px;"
@@ -758,6 +1237,7 @@
                       variant="danger"
                       round
                       iconBtn
+                      ariaLabel="Home"
                       title="Home"
                       disabled
                       styles="margin-bottom: 10px;"
@@ -769,6 +1249,7 @@
                       variant="warning"
                       round
                       iconBtn
+                      ariaLabel="Home"
                       title="Home"
                       disabled
                       styles="margin-bottom: 10px;"
@@ -780,6 +1261,7 @@
                       variant="info"
                       round
                       iconBtn
+                      ariaLabel="Home"
                       title="Home"
                       disabled
                       styles="margin-bottom: 10px;"
@@ -791,6 +1273,7 @@
                       variant="light"
                       round
                       iconBtn
+                      ariaLabel="Home"
                       title="Home"
                       disabled
                       styles="margin-bottom: 10px;"
@@ -802,6 +1285,7 @@
                       variant="dark"
                       round
                       iconBtn
+                      ariaLabel="Home"
                       title="Home"
                       disabled
                       styles="margin-bottom: 10px;"
@@ -823,29 +1307,55 @@
               <section class="display-box" id="db-16">
                 <section class="display-box-demo" style="text-align: center">
                   <div style="margin-top: 15px">
-                    <pl-button variant="primary" styles="margin-bottom: 10px;"> Default </pl-button>
+                    <pl-button
+                      btnText="Default"
+                      variant="primary"
+                      styles="margin-bottom: 10px;"
+                    ></pl-button>
 
-                    <pl-button variant="primary" shape="square" styles="margin-bottom: 10px;">
-                      Square
-                    </pl-button>
+                    <pl-button
+                      btnText="Square"
+                      variant="primary"
+                      shape="square"
+                      styles="margin-bottom: 10px;"
+                    ></pl-button>
 
-                    <pl-button variant="primary" shape="pill" styles="margin-bottom: 10px;"> Pill </pl-button>
+                    <pl-button
+                      btnText="Pill"
+                      variant="primary"
+                      shape="pill"
+                      styles="margin-bottom: 10px;"
+                    ></pl-button>
 
-                    <pl-button variant="primary" outlined styles="margin-bottom: 10px;"> Default </pl-button>
+                    <pl-button
+                      btnText="Default"
+                      variant="primary"
+                      outlined
+                      styles="margin-bottom: 10px;"
+                    ></pl-button>
 
-                    <pl-button variant="primary" shape="square" outlined styles="margin-bottom: 10px;">
-                      Square
-                    </pl-button>
+                    <pl-button
+                      btnText="Square"
+                      variant="primary"
+                      shape="square"
+                      outlined
+                      styles="margin-bottom: 10px;"
+                    ></pl-button>
 
-                    <pl-button variant="primary" shape="pill" outlined styles="margin-bottom: 10px;">
-                      Pill
-                    </pl-button>
+                    <pl-button
+                      btnText="Pill"
+                      variant="primary"
+                      shape="pill"
+                      outlined
+                      styles="margin-bottom: 10px;"
+                    ></pl-button>
                   </div>
                   <div style="margin-top: 15px">
                     <pl-button
                       variant="primary"
                       shape="circle"
                       iconBtn
+                      ariaLabel="Home"
                       title="Home"
                       styles="margin-bottom: 10px;"
                     >
@@ -856,13 +1366,19 @@
                       variant="primary"
                       shape="square"
                       iconBtn
+                      ariaLabel="Home"
                       title="Home"
                       styles="margin-bottom: 10px;"
                     >
                       <icon-component icon="fas fa-home"></icon-component>
                     </pl-button>
 
-                    <pl-button variant="primary" iconBtn title="Home" styles="margin-bottom: 10px;">
+                    <pl-button
+                      variant="primary"
+                      iconBtn
+                      title="Home"
+                      styles="margin-bottom: 10px;"
+                    >
                       <icon-component icon="fas fa-home"></icon-component>
                     </pl-button>
 
@@ -871,6 +1387,7 @@
                       shape="circle"
                       outlined
                       iconBtn
+                      ariaLabel="Home"
                       title="Home"
                       styles="margin-bottom: 10px;"
                     >
@@ -882,13 +1399,20 @@
                       shape="square"
                       outlined
                       iconBtn
+                      ariaLabel="Home"
                       title="Home"
                       styles="margin-bottom: 10px;"
                     >
                       <icon-component icon="fas fa-home"></icon-component>
                     </pl-button>
 
-                    <pl-button variant="primary" iconBtn outlined title="Home" styles="margin-bottom: 10px;">
+                    <pl-button
+                      variant="primary"
+                      iconBtn
+                      outlined
+                      title="Home"
+                      styles="margin-bottom: 10px;"
+                    >
                       <icon-component icon="fas fa-home"></icon-component>
                     </pl-button>
                   </div>
@@ -905,30 +1429,60 @@
             <section class="section">
               <section class="display-box" id="db-18">
                 <section class="display-box-demo" style="text-align: center">
-                  <pl-button variant="primary" flat size="sm" styles="margin-bottom: 10px;"> Flat </pl-button>
-                  <pl-button variant="primary" is-elevated size="sm" styles="margin-bottom: 10px;">
-                    Is Elevated
-                  </pl-button>
+                  <pl-button
+                    btnText="Flat"
+                    variant="primary"
+                    flat
+                    size="sm"
+                    styles="margin-bottom: 10px;"
+                  ></pl-button>
+                  <pl-button
+                    btnText="Is Elevated"
+                    variant="primary"
+                    is-elevated
+                    size="sm"
+                    styles="margin-bottom: 10px;"
+                  ></pl-button>
 
-                  <pl-button variant="primary" elevated-5 size="sm" styles="margin-bottom: 10px;">
-                    Elevated 5
-                  </pl-button>
+                  <pl-button
+                    btnText="Elevated 5"
+                    variant="primary"
+                    elevated-5
+                    size="sm"
+                    styles="margin-bottom: 10px;"
+                  ></pl-button>
 
-                  <pl-button variant="primary" elevated-10 size="sm" styles="margin-bottom: 10px;">
-                    Elevated 10
-                  </pl-button>
+                  <pl-button
+                    btnText="Elevated 10"
+                    variant="primary"
+                    elevated-10
+                    size="sm"
+                    styles="margin-bottom: 10px;"
+                  ></pl-button>
 
-                  <pl-button variant="primary" elevated-15 size="sm" styles="margin-bottom: 10px;">
-                    Elevated 15
-                  </pl-button>
+                  <pl-button
+                    btnText="Elevated 15"
+                    variant="primary"
+                    elevated-15
+                    size="sm"
+                    styles="margin-bottom: 10px;"
+                  ></pl-button>
 
-                  <pl-button variant="primary" elevated-20 size="sm" styles="margin-bottom: 10px;">
-                    Elevated 20
-                  </pl-button>
+                  <pl-button
+                    btnText="Elevated 20"
+                    variant="primary"
+                    elevated-20
+                    size="sm"
+                    styles="margin-bottom: 10px;"
+                  ></pl-button>
 
-                  <pl-button variant="primary" elevated-24 size="sm" styles="margin-bottom: 10px;">
-                    Elevated 24
-                  </pl-button>
+                  <pl-button
+                    btnText="Elevated 24"
+                    variant="primary"
+                    elevated-24
+                    size="sm"
+                    styles="margin-bottom: 10px;"
+                  ></pl-button>
                 </section>
                 <section class="display-box-meta markdown">
                   <div class="display-box-title">Basic Usage</div>
@@ -953,32 +1507,50 @@
             <section class="section">
               <section class="display-box" id="db-21">
                 <section class="display-box-demo" style="text-align: center">
-                  <pl-button variant="primary" size="sm">
+                  <pl-button
+                    btnText="Primary"
+                    variant="primary"
+                    size="sm"
+                    slotLeft
+                  >
                     <icon-component
                       icon="fas fa-home"
                       iconPosition="left"
                     ></icon-component>
-                    Primary
                   </pl-button>
 
-                  <pl-button variant="primary" outlined size="sm">
+                  <pl-button
+                    btnText="Primary"
+                    variant="primary"
+                    outlined
+                    size="sm"
+                    slotLeft
+                  >
                     <icon-component
                       icon="fas fa-home"
                       iconPosition="left"
                     ></icon-component>
-                    Primary
                   </pl-button>
 
-                  <pl-button variant="primary" size="sm">
-                    Primary
+                  <pl-button
+                    btnText="Primary"
+                    variant="primary"
+                    size="sm"
+                    slotRight
+                  >
                     <icon-component
                       icon="fas fa-home"
                       iconPosition="right"
                     ></icon-component>
                   </pl-button>
 
-                  <pl-button variant="primary" outlined size="sm">
-                    Primary
+                  <pl-button
+                    btnText="Primary"
+                    variant="primary"
+                    outlined
+                    size="sm"
+                    slotRight
+                  >
                     <icon-component
                       icon="fas fa-home"
                       iconPosition="right"
@@ -997,8 +1569,12 @@
             <section class="section">
               <section class="display-box" id="db-25">
                 <section class="display-box-demo" style="text-align: center">
-                  <pl-button variant="primary" size="sm">
-                    Primary
+                  <pl-button
+                    btnText="Primary"
+                    variant="primary"
+                    size="sm"
+                    slotRight
+                  >
                     <pl-badge variant="light" size="sm" bdgPosition="right"
                       >1</pl-badge
                     >
@@ -1018,8 +1594,12 @@
             <section class="section">
               <section class="display-box" id="db-20">
                 <section class="display-box-demo" style="text-align: center">
-                  <pl-button variant="primary" size="sm">
-                    Home
+                  <pl-button
+                    btnText="Home"
+                    variant="primary"
+                    size="sm"
+                    slotRight
+                  >
                     <svg-component
                       svgMargin="right"
                       ariaHidden="true"
@@ -1032,7 +1612,6 @@
                         viewBox="0 0 576 512"
                         fill="currentColor"
                       >
-                        <!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.-->
                         <path
                           d="M320 33.9c-10.5-1.2-21.2-1.9-32-1.9-99.8 0-187.8 50.8-239.4 128H320V33.9zM96 192H30.3C11.1 230.6 0 274 0 320h96V192zM352 39.4V160h175.4C487.2 99.9 424.8 55.9 352 39.4zM480 320h96c0-46-11.1-89.4-30.3-128H480v128zm-64 64v96h128c17.7 0 32-14.3 32-32v-96H411.5c2.6 10.3 4.5 20.9 4.5 32zm32-192H128v128h49.8c22.2-38.1 63-64 110.2-64s88 25.9 110.2 64H448V192zM0 448c0 17.7 14.3 32 32 32h128v-96c0-11.1 1.9-21.7 4.5-32H0v96zm288-160c-53 0-96 43-96 96v96h192v-96c0-53-43-96-96-96z"
                         />
@@ -1040,7 +1619,12 @@
                     </svg-component>
                   </pl-button>
 
-                  <pl-button variant="primary" size="sm">
+                  <pl-button
+                    btnText="Info"
+                    variant="primary"
+                    size="sm"
+                    slotLeft
+                  >
                     <svg-component
                       svgMargin="left"
                       ariaHidden="true"
@@ -1052,13 +1636,11 @@
                         width="16"
                         viewBox="0 0 512 512"
                       >
-                        <!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.-->
                         <path
                           d="M256 8C119 8 8 119.1 8 256c0 137 111 248 248 248s248-111 248-248C504 119.1 393 8 256 8zm0 110c23.2 0 42 18.8 42 42s-18.8 42-42 42-42-18.8-42-42 18.8-42 42-42zm56 254c0 6.6-5.4 12-12 12h-88c-6.6 0-12-5.4-12-12v-24c0-6.6 5.4-12 12-12h12v-64h-12c-6.6 0-12-5.4-12-12v-24c0-6.6 5.4-12 12-12h64c6.6 0 12 5.4 12 12v100h12c6.6 0 12 5.4 12 12v24z"
                         />
                       </svg>
                     </svg-component>
-                    Primary
                   </pl-button>
                 </section>
                 <section class="display-box-meta markdown">
@@ -1083,27 +1665,29 @@
             <section class="section">
               <section class="display-box" id="db-27">
                 <section class="display-box-demo" style="text-align: center">
-                  <pl-button variant="primary" active size="sm" pressed="false">
-                    Primary
-                  </pl-button>
+                  <pl-button
+                    btnText="Primary"
+                    variant="primary"
+                    active
+                    size="sm"
+                    pressed="false"
+                  ></pl-button>
 
                   <pl-button
+                    btnText="Active"
                     active
                     size="sm"
                     variant="active-blue"
                     pressed="true"
-                  >
-                    Active
-                  </pl-button>
+                  ></pl-button>
 
                   <pl-button
+                    btnText="Secondary"
                     variant="secondary"
                     size="sm"
                     active
                     pressed="true"
-                  >
-                    Button
-                  </pl-button>
+                  ></pl-button>
                 </section>
                 <section class="display-box-meta markdown">
                   <div class="display-box-title">Basic Usage</div>
@@ -1115,17 +1699,18 @@
             <section class="section">
               <section class="display-box" id="db-29">
                 <section class="display-box-demo" style="text-align: center">
-                  <pl-button iconBtn title="Home">
+                  <pl-button iconBtn title="Home" ariaLabel="Home">
                     <icon-component icon="fas fa-home"></icon-component>
                   </pl-button>
 
-                  <pl-button disabled iconBtn title="Home">
+                  <pl-button disabled iconBtn title="Home" ariaLabel="Home">
                     <icon-component icon="fas fa-home"></icon-component>
                   </pl-button>
 
                   <pl-button
                     variant="active-blue"
                     iconBtn
+                    ariaLabel="Home"
                     title="Home"
                     active
                     pressed="true"
@@ -1147,34 +1732,31 @@
               <section class="display-box" id="db-24">
                 <section class="display-box-demo" style="text-align: center">
                   <pl-button
+                    btnText="Primary"
                     variant="primary"
                     link
                     active
                     size="sm"
                     pressed="true"
-                  >
-                    Primary
-                  </pl-button>
+                  ></pl-button>
 
                   <pl-button
+                    btnText="Active"
                     active
                     link
                     size="sm"
                     variant="active-blue"
                     pressed="true"
-                  >
-                    Active
-                  </pl-button>
+                  ></pl-button>
 
                   <pl-button
+                    btnText="Secondary"
                     variant="secondary"
                     link
                     size="sm"
                     active
                     pressed="true"
-                  >
-                    Button
-                  </pl-button>
+                  ></pl-button>
                 </section>
                 <section class="display-box-meta markdown">
                   <div class="display-box-title">Basic Usage</div>
@@ -1200,36 +1782,38 @@
                 <section class="display-box-demo" style="text-align: center">
                   <button-group vertical>
                     <pl-button
+                      btnText="Button 1"
                       slot="buttons"
                       size="sm"
                       variant="primary"
                       groupBtn
                       vertical
                       start
-                      >Button 1</pl-button
-                    >
+                    ></pl-button>
                     <pl-button
+                      btnText="Button 2"
                       slot="buttons"
                       size="sm"
                       variant="secondary"
                       groupBtn
                       vertical
-                      >Button 2</pl-button
-                    >
+                    ></pl-button>
                     <pl-button
+                      btnText="Button 3"
                       slot="buttons"
                       size="sm"
                       variant="tertiary"
                       groupBtn
                       vertical
                       end
-                      >Button 3</pl-button
-                    >
+                    ></pl-button>
                   </button-group>
                 </section>
                 <section class="display-box-meta markdown">
                   <div class="display-box-title">Basic Usage</div>
-                  <div class="display-box-description">Default button Group (Vertical)</div>
+                  <div class="display-box-description">
+                    Default button Group (Vertical)
+                  </div>
                 </section>
               </section>
             </section>
@@ -1241,44 +1825,44 @@
                 <section class="display-box-demo" style="text-align: center">
                   <button-group horizontal>
                     <pl-button
+                      btnText="Button 1"
                       slot="buttons"
                       size="sm"
                       variant="primary"
                       groupBtn
                       horizontal
                       start
-                      >Button 1</pl-button
-                    >
+                    ></pl-button>
                     <pl-button
+                      btnText="Button 2"
                       slot="buttons"
                       size="sm"
                       variant="secondary"
                       groupBtn
                       horizontal
-                      >Button 2</pl-button
-                    >
+                    ></pl-button>
                     <pl-button
+                      btnText="Button 3"
                       slot="buttons"
                       size="sm"
                       variant="tertiary"
                       groupBtn
                       horizontal
                       end
-                      >Button 3</pl-button
-                    >
+                    ></pl-button>
                   </button-group>
                 </section>
                 <section class="display-box-meta markdown">
                   <div class="display-box-title">Basic Usage</div>
-                  <div class="display-box-description">Default button Group (Horizontal)</div>
+                  <div class="display-box-description">
+                    Default button Group (Horizontal)
+                  </div>
                 </section>
               </section>
             </section>
           </section>
         </div>
       </div>
-
-      
     </div>
 
     <!-- Props -->
@@ -1310,7 +1894,9 @@
               <td></td>
               <td>
                 Changes the default 'aria-label' of 'Button' to the inputed
-                value.<br />
+                value. This is used with btnIcon or iconBtn properties. Buttons
+                with text use btnText to set the aria-label and the text in a
+                button.<br />
                 <span class="example">Ex: ariaLabel="This is a button"</span>
               </td>
             </tr>
@@ -1470,6 +2056,24 @@
                 This property allows the user to change the size of the button
                 to xs(x-small), sm(small), default and lg(large).
                 <br /><span class="example">Ex: size="sm"</span>
+              </td>
+            </tr>
+            <tr>
+              <td>slotLeft</td>
+              <td>Boolean</td>
+              <td>false</td>
+              <td>
+                This property allows the user to add an icon or svg component to the left of the
+                button text.
+              </td>
+            </tr>
+            <tr>
+              <td>slotRight</td>
+              <td>Boolean</td>
+              <td>false</td>
+              <td>
+                This property allows the user to add an icon or svg component to the right of the
+                button text.
               </td>
             </tr>
             <tr>

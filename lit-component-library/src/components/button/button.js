@@ -23,12 +23,15 @@ class PlButton extends LitElement {
       block: { type: Boolean },
       bottom: { type: String },
       btnIcon: { type: Boolean },
+      btnText: { type: String },
       classNames: { type: String },
       disabled: { type: Boolean },
       end: { type: Boolean },
       fixed: { type: Boolean },
       groupBtn: { type: Boolean },
       iconBtn: { type: Boolean },
+      slotLeft: { type: Boolean },
+      slotRight: { type: Boolean },
       styles: { type: String },
       left: { type: String },
       link: { type: Boolean },
@@ -61,12 +64,15 @@ class PlButton extends LitElement {
     this.block = false;
     this.bottom = "";
     this.btnIcon = false;
+    this.btnText = "Button";
     this.classNames = "";
     this.disabled = false;
     this.end = false;
     this.fixed = false;
     this.groupBtn = false;
     this.iconBtn = false;
+    this.slotLeft = false;
+    this.slotRight = false;
     this.styles = "";
     this.left = "";
     this.link = false;
@@ -107,7 +113,7 @@ class PlButton extends LitElement {
         href="${this.url || "#"}"
         role="button"
         @click="${this._handleClick}"
-        aria-label="${this.ariaLabel || "Button"}"
+        aria-label="${this.btnText || "Button"}"
         ?disabled="${this.disabled}"
       >
         ${content}
@@ -135,7 +141,7 @@ class PlButton extends LitElement {
         class="${classAttribute} text-btn"
         style=${ifDefined(styles ? styles : undefined)}
         @click="${this._handleClick}"
-        aria-label="${this.ariaLabel || "Button"}"
+        aria-label="${this.btnText || "Button"}"
         role="button"
         ?disabled="${this.disabled}"
       >
@@ -164,7 +170,7 @@ class PlButton extends LitElement {
         class="${classAttribute} text"
         style=${ifDefined(styles ? styles : undefined)}
         @click="${this._handleClick}"
-        aria-label="${this.ariaLabel || "Button"}"
+        aria-label="${this.btnText || "Button"}"
         role="button"
         ?disabled="${this.disabled}"
       >
@@ -245,7 +251,7 @@ class PlButton extends LitElement {
         class="${classAttribute}"
         style="${ifDefined(styles ? styles : undefined)}"
         @click="${this._handleClick}"
-        aria-label="${this.ariaLabel || "Button"}"
+        aria-label="${this.btnText || "Button"}"
         title="${ifDefined(this.title ? this.title : undefined)}"
         role="button"
         ?disabled="${this.disabled}"
@@ -337,9 +343,9 @@ class PlButton extends LitElement {
     const variant = `${this.variant}`;
     const outlinedClass = this.outlined ? "pl-btn--outlined" : "";
     const blockClass = this.block ? "pl-btn--block" : "";
-    const content = this.iconBtn
+    const content = this.iconBtn || this.btnIcon
       ? html`<slot></slot>`
-      : html`<span class="pl-btn__content"><slot></slot></span>`;
+      : html`${this.slotLeft ? html`<slot></slot>` : ""}<span class="pl-btn__content">${this.btnText}</span>${this.slotRight ? html`<slot></slot>` : ""}`;
 
     const rippleEffect = this.ripple ? "pl-btn-ripple" : "";
 

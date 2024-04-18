@@ -479,13 +479,13 @@ export const buttonStyles = css`
 
   .pl-btn.pl-size {
     align-items: center;
-    border-radius: .25rem;
+    border-radius: 0.25rem;
     display: inline-flex;
-    font-size: .8333rem;
+    font-size: 0.8333rem;
     font-weight: normal;
     height: 1.375rem;
     line-height: 1.2;
-    margin: .125rem;
+    margin: 0.125rem;
     padding: 0 0.5rem;
   }
 
@@ -508,6 +508,12 @@ export const buttonStyles = css`
     height: 36px;
     min-width: 64px;
     padding: 0 16px;
+  }
+
+  .pl-btn.btn-icon {
+    height: auto !important;
+    min-width: 10px !important;
+    padding: 0 4px !important;
   }
 
   .pl-btn.lg {
@@ -903,5 +909,4 @@ export const buttonStyles = css`
     display: flex;
     width: 100%;
   }
-  
 `;
