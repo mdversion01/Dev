@@ -170,6 +170,32 @@ export const modalStyles = css`
     padding: 1rem;
   }
 
+  .modal-body.scrollable {
+    max-height: calc(100vh - 145px);
+    overflow-y: auto;
+  }
+
+  .modal-body.scrollable::-webkit-scrollbar {
+    width: 12px;
+    height: 10px;
+  }
+
+  .modal-body.scrollable::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border: 2px solid transparent;
+    border-radius: 9px;
+    background-clip: content-box;
+  }
+
+  .modal-body.scrollable::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+  }
+
+  .modal-body.scrollable::-webkit-scrollbar-track {
+    background-color: #f5f5f5;
+    border-radius: 10px;
+  }
+
   .modal-footer {
     display: flex;
     align-items: center;

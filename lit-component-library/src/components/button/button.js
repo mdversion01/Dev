@@ -1,19 +1,11 @@
 import { LitElement, html, css } from "lit";
 import { ifDefined } from "lit/directives/if-defined.js";
 import { buttonStyles } from "./button-styles";
-// import { buttonGroupStyles } from "../button-group/button-group-styles.js";
-// import Fontawesome from "lit-fontawesome";
 
 class PlButton extends LitElement {
-  // static get styles() {
-  //   return css``;
-  // }
-
-  static styles = [
+   static styles = [
     buttonStyles,
-    // buttonGroupStyles,
-    // Fontawesome,
-    // css``
+    css``
   ];
 
   static get properties() {
@@ -446,7 +438,12 @@ class PlButton extends LitElement {
   }
 
   _handleClick() {
-    this.dispatchEvent(new CustomEvent("custom-click", { bubbles: true }));
+    // console.log('Button clicked');  // Useful for debugging
+    this.dispatchEvent(new CustomEvent('custom-click', {
+      bubbles: true,
+      composed: true,  // Allows the event to cross shadow DOM boundaries
+      detail: { message: 'Button clicked!' }  // Optional detail object
+    }));
   }
 
   _getClassNames() {

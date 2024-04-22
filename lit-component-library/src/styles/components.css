@@ -107,7 +107,7 @@ pre {
   border: 1px solid #ccc;
 }
 
-p {
+p, li {
   font-size: 14px;
 }
 
