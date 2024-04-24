@@ -265,7 +265,7 @@ class PlButton extends LitElement {
       "info",
       "light",
       "dark",
-    ]; // Add your color classes hereS
+    ]; // Add your color classes here
 
     // size attribute
     let buttonSize = "";
