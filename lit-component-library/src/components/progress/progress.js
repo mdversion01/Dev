@@ -11,6 +11,7 @@ class Progress extends LitElement {
       bars: { type: Array },
       circular: { type: Boolean },
       height: { type: Number },
+      lineCap: { type: Boolean },
       max: { type: Number },
       multi: { type: Boolean },
       precision: { type: Number },
@@ -19,7 +20,7 @@ class Progress extends LitElement {
       showProgress: { type: Boolean },
       showValue: { type: Boolean },
       size: { type: Number },
-      spin: { type: Boolean },
+      indeterminate: { type: Boolean },
       striped: { type: Boolean },
       styles: { type: String },
       value: { type: Number },
@@ -34,6 +35,7 @@ class Progress extends LitElement {
     this.bars = [];
     this.variant = "";
     this.height = 20;
+    this.lineCap = false;
     this.max = 100;
     this.multi = false;
     this.precision = 0;
@@ -42,7 +44,7 @@ class Progress extends LitElement {
     this.showProgress = false;
     this.showValue = false;
     this.size = 80;
-    this.spin = false;
+    this.indeterminate = false;
     this.striped = false;
     this.styles = "";
     this.value = 0;
@@ -93,8 +95,6 @@ class Progress extends LitElement {
   }
 
   render() {
-    console.log(this.bars);
-
     if (this.circular) {
       const radius = 20;
       const circumference = 2 * Math.PI * radius;
@@ -111,7 +111,7 @@ class Progress extends LitElement {
       const blackText = this.variant === "warning" ? "color: #000;" : "";
       return html`
         <div
-          class="progress-circular ${this.spin
+          class="progress-circular ${this.indeterminate
             ? "progress-circular-spin progress-circular-visible"
             : ""} ${this.getColorText(this.variant)}"
           style="${ifDefined(styleString)}"
@@ -119,7 +119,7 @@ class Progress extends LitElement {
           aria-valuemin="${0}"
           aria-valuemax="${this.max}"
         >
-          ${this.spin
+          ${this.indeterminate
             ? html` <svg
                 viewBox="0 0 ${viewBox} ${viewBox}"
                 style="${ifDefined(rotateStyle)}"
@@ -158,6 +158,7 @@ class Progress extends LitElement {
                     stroke-width="${this.width}"
                     stroke-dasharray="${circumference}"
                     stroke-dashoffset="${offset}"
+                    style="stroke-linecap: ${this.lineCap ? "square" : "round"};"
                   ></circle>
                 </svg>
               `}
@@ -222,8 +223,8 @@ class Progress extends LitElement {
           <div
             class="progress-bar ${this.getColorBg(this.variant)}${this.striped
               ? " progress-bar-striped"
-              : this.animated
-              ? "  progress-bar-striped progress-bar-animated"
+              : ""}${this.animated
+              ? " progress-bar-animated"
               : ""}"
             role="progressbar"
             style="width: ${this.value}%;"

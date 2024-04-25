@@ -26,14 +26,20 @@
     </style>
   </head>
   <body>
-    <div class="title">Progress Component</div>
+    <div class="title">Progress Component - Linear</div>
 
     <div class="demo-wrapper">
       <div class="main">
         <section>
           <section class="display-box" id="db-1">
             <section class="display-box-demo">
-              <progress-component value="50"></progress-component>
+              <progress-component
+                value="50"
+                id="progressBarComp"
+                showProgress
+                progressAlign="right"
+                >This is a Test</progress-component
+              >
             </section>
             <section class="display-box-meta markdown">
               <div class="display-box-title">Basic Usage</div>
@@ -78,7 +84,7 @@
 
               <div style="margin-bottom: 10px; font-size: 12px">
                 Add text with value or progress and align it left or right.<br />
-                <progress-component showValue progressAlign="left" value="65"
+                <progress-component showValue progressAlign="right" value="65"
                   >Ongoing progress:
                 </progress-component>
               </div>
@@ -97,55 +103,305 @@
             </section>
           </section>
 
+          <section class="display-box" id="db-1">
+            <section class="display-box-demo">
+              <progress-component multi id="multi">
+                <div slot="bar-0">Content for Bar 0</div>
+                <div slot="bar-1">Content for Bar 1</div>
+                <div slot="bar-2">Content for Bar 2</div>
+              </progress-component>
+            </section>
+            <section class="display-box-meta markdown">
+              <div class="display-box-title">Basic Usage</div>
+              <div class="display-box-description">
+                Include multiple progress bars in a progress component if you
+                need to by using the 'multi' prop. Add content to each bar by
+                making a array with the props needed and using the slot
+                attribute with the slot name 'bar-0', 'bar-1', 'bar-2', etc.
+              </div>
+              <div class=""></div>
+            </section>
+          </section>
+        </section>
+
+        <section>
           <section class="section">
             <section class="display-box" id="db-1">
               <section class="display-box-demo">
-               <progress-component value="80" striped></progress-component>
-                <br />
-                <progress-component
-                  value="80"
-                  id="progressBarComp"
-                  showProgress
-                  animated
-                  variant="danger"
-                ></progress-component>
+                <div style="margin-bottom: 10px; font-size: 12px; width: 50%">
+                  Inline style width<br />
+                  <progress-component value="50"></progress-component>
+                </div>
 
-                <!-- Circular progress bar -->
-                <progress-component
-                  value="66.666"
-                  circular
-                  variant="warning"
-                  showProgress
-                  width="5"
-                  size="150"
-                >
-                </progress-component>
+                <div style="margin-bottom: 10px; font-size: 12px" class="w-75">
+                  Wrapped in a div with Bootstrap width class<br />
+                  <progress-component value="40"></progress-component>
+                </div>
 
-                <progress-component
-                  value="35"
-                  circular
-                  variant="warning"
-                  size="50"
-                  width="10"
-                >
-                </progress-component>
-
-                <progress-component
-                  showProgress
-                  id="progressComp"
-                  circular
-                  rotate="360"
-                  size="100"
-                  width="5"
-                >
-                </progress-component>
-
-                <progress-component circular spin width="5" size="100">
-                </progress-component>
+                <div style="margin-bottom: 10px; font-size: 12px" class="w-75">
+                  Give a new height with the 'height' prop <br />
+                  <progress-component
+                    value="60"
+                    height="10"
+                  ></progress-component>
+                </div>
               </section>
               <section class="display-box-meta markdown">
                 <div class="display-box-title">Basic Usage</div>
-                <div class="display-box-description">Text</div>
+                <div class="display-box-description">
+                  The progress-component will always expand to the maximum width
+                  of its parent container. To change the width, wrap it in a
+                  standard Bootstrap column or the standard Bootstrap width
+                  classes or create your own. To change the height, use the
+                  'height' prop (default is 20).
+                </div>
+                <div class=""></div>
+              </section>
+            </section>
+
+            <section class="display-box" id="db-1">
+              <section class="display-box-demo">
+                <div style="margin-bottom: 10px; font-size: 12px">
+                  <progress-component value="50" striped></progress-component>
+                </div>
+                <div style="margin-bottom: 10px; font-size: 12px">
+                  <progress-component
+                    value="30"
+                    variant="danger"
+                    striped
+                  ></progress-component>
+                </div>
+
+                <div style="margin-bottom: 10px; font-size: 12px">
+                  <progress-component
+                    value="80"
+                    variant="success"
+                    striped
+                  ></progress-component>
+                </div>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">
+                  Add the 'striped' prop to the component to apply a stripe via
+                  CSS gradient over the progress bar’s background color.
+                </div>
+                <div class=""></div>
+              </section>
+            </section>
+
+            <section class="display-box" id="db-1">
+              <section class="display-box-demo">
+                <div style="margin-bottom: 10px; font-size: 12px">
+                  <progress-component
+                    value="50"
+                    striped
+                    animated
+                  ></progress-component>
+                </div>
+                <div style="margin-bottom: 10px; font-size: 12px">
+                  <progress-component
+                    value="70"
+                    variant="warning"
+                    striped
+                    animated
+                  ></progress-component>
+                </div>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">
+                  The 'striped' prop can also be animated. Add 'animated' prop
+                  to component to animate the stripes right to left via CSS3
+                  animations.
+                </div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
+        </section>
+      </div>
+    </div>
+
+    <div class="title">Progress Component - Circular</div>
+
+    <div class="demo-wrapper">
+      <div class="main">
+        <section>
+          <section class="section">
+            <section class="display-box" id="db-1">
+              <section class="display-box-demo">
+                <!-- Circular progress bar -->
+                <div
+                  style="
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-evenly;
+                  "
+                >
+                  <progress-component value="100" circular width="5" size="90">
+                  </progress-component>
+
+                  <progress-component
+                    value="80"
+                    circular
+                    variant="info"
+                    size="90"
+                    width="5"
+                  >
+                  </progress-component>
+
+                  <progress-component
+                    value="60"
+                    circular
+                    variant="warning"
+                    size="90"
+                    width="5"
+                  >
+                  </progress-component>
+
+                  <progress-component
+                    value="40"
+                    circular
+                    variant="danger"
+                    size="90"
+                    width="5"
+                  >
+                  </progress-component>
+                </div>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">
+                  The progress component can be used to convey data circularly
+                  to users by adding the 'circular' prop. Alternate colors can
+                  be applied to the component using the 'variant' prop, the
+                  default color is 'primary'.
+                </div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
+
+          <section class="section">
+            <section class="display-box" id="db-1">
+              <section class="display-box-demo">
+                <!-- Circular progress bar -->
+                <div
+                  style="
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-evenly;
+                  "
+                >
+                  <progress-component
+                    circular
+                    width="5"
+                    rotate="20"
+                    size="90"
+                    id="progressOrigin1"
+                    showProgress
+                  >
+                  </progress-component>
+
+                  <progress-component
+                    circular
+                    variant="info"
+                    size="90"
+                    rotate="90"
+                    width="5"
+                    id="progressOrigin2"
+                    showValue
+                  >
+                  </progress-component>
+
+                  <progress-component
+                    circular
+                    variant="warning"
+                    size="90"
+                    rotate="45"
+                    width="5"
+                    id="progressOrigin3"
+                    showProgress
+                  >
+                  </progress-component>
+
+                  <progress-component
+                    circular
+                    variant="danger"
+                    size="90"
+                    width="5"
+                    rotate="180"
+                    showValue
+                    id="progressOrigin4"
+                  >
+                  </progress-component>
+                </div>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">
+                  The 'rotate' prop gives you the ability to customize the
+                  component's starting point.
+                </div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
+
+          <section class="section">
+            <section class="display-box" id="db-1">
+              <section class="display-box-demo">
+                <!-- Circular progress bar -->
+                <div
+                  style="
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-evenly;
+                  "
+                >
+                  <progress-component
+                    circular
+                    indeterminate
+                    width="5"
+                    size="30"
+                  >
+                  </progress-component>
+
+                  <progress-component
+                    circular
+                    indeterminate
+                    variant="success"
+                    width="5"
+                    size="50"
+                  >
+                  </progress-component>
+
+                  <progress-component
+                    circular
+                    indeterminate
+                    variant="info"
+                    width="5"
+                    size="80"
+                  >
+                  </progress-component>
+
+                  <progress-component
+                    circular
+                    indeterminate
+                    variant="dark"
+                    width="5"
+                    size="100"
+                  >
+                  </progress-component>
+                </div>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">
+                  It also can be put into an indeterminate state to portray
+                  loading using the 'indeterminate' prop.
+                </div>
                 <div class=""></div>
               </section>
             </section>
@@ -156,55 +412,161 @@
           <section class="section">
             <section class="display-box" id="db-1">
               <section class="display-box-demo">
-                <div style="margin-bottom: 10px; font-size: 12px; width: 50%;" >
-                  Inline style width<br />
-                  <progress-component value="50"></progress-component>
-                </div>
-                 
-                <div style="margin-bottom: 10px; font-size: 12px;" class="w-75">
-                  Wrapped in a div with Bootstrap width class<br />
-                  <progress-component value="40"></progress-component>
-                </div>
+                <div
+                  style="
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-evenly;
+                  "
+                >
+                  <progress-component
+                    showProgress
+                    id="progressComp"
+                    circular
+                    size="100"
+                    width="5"
+                  >
+                  </progress-component>
 
-                <div style="margin-bottom: 10px; font-size: 12px;" class="w-75">
-                  Give a new height with the 'height' prop <br />
-                  <progress-component value="60" height="10"></progress-component>
+                  <progress-component
+                    showValue
+                    value="75"
+                    circular
+                    rotate="360"
+                    size="100"
+                    width="5"
+                  >
+                  </progress-component>
+
+                  <progress-component
+                    showProgress
+                    value="66.666"
+                    circular
+                    precision="2"
+                    rotate="360"
+                    size="100"
+                    width="5"
+                  >
+                  </progress-component>
                 </div>
               </section>
               <section class="display-box-meta markdown">
                 <div class="display-box-title">Basic Usage</div>
                 <div class="display-box-description">
-                  The progress-component will always expand to the maximum width
-                  of its parent container. To change the width, wrap it in a
-                  standard Bootstrap column or the standard
-                  Bootstrap width classes or create your own. To change the height, use the 'height' prop (default is 20).
+                  Add the progress by either enabling showProgress (percentage
+                  of max) or showValue for the current absolute value. You may
+                  also set the precision (number of digits after the decimal)
+                  via the 'precision' prop (default is 0 digits after the
+                  decimal). This does not use the alignment props that the
+                  linear progress bar uses.
                 </div>
                 <div class=""></div>
               </section>
             </section>
+          </section>
 
+          <section class="section">
             <section class="display-box" id="db-1">
               <section class="display-box-demo">
-                <progress-component> </progress-component>
+                <!-- Circular progress bar -->
+                <div
+                  style="
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-evenly;
+                  "
+                >
+                  <progress-component value="100" circular width="3" size="30">
+                  </progress-component>
+
+                  <progress-component
+                    value="80"
+                    circular
+                    variant="info"
+                    size="50"
+                    width="5"
+                  >
+                  </progress-component>
+
+                  <progress-component
+                    value="60"
+                    circular
+                    variant="warning"
+                    size="75"
+                    width="8"
+                  >
+                  </progress-component>
+
+                  <progress-component
+                    value="40"
+                    circular
+                    variant="danger"
+                    size="100"
+                    width="10"
+                  >
+                  </progress-component>
+                </div>
               </section>
               <section class="display-box-meta markdown">
                 <div class="display-box-title">Basic Usage</div>
-                <div class="display-box-description">Text</div>
+                <div class="display-box-description">
+                  The 'size' and 'width' props allow you to easily alter the
+                  size (sets the width and height of the div element) and width
+                  (the thickness) of the component.
+                </div>
                 <div class=""></div>
               </section>
             </section>
+          </section>
 
+          <section class="section">
             <section class="display-box" id="db-1">
               <section class="display-box-demo">
-                <progress-component multi id="multi">
-                  <div slot="bar-0">Content for Bar 0</div>
-                  <div slot="bar-1">Content for Bar 1</div>
-                  <div slot="bar-2">Content for Bar 2</div>
-                </progress-component>
+                <!-- Circular progress bar -->
+                <div
+                  style="
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-evenly;
+                  "
+                >
+                  <progress-component value="35" circular size="100" lineCap>
+                  </progress-component>
+
+                  <progress-component
+                    value="80"
+                    circular
+                    variant="info"
+                    size="100"
+                    lineCap
+                  >
+                  </progress-component>
+
+                  <progress-component
+                    value="60"
+                    circular
+                    variant="warning"
+                    size="100"
+                    lineCap
+                  >
+                  </progress-component>
+
+                  <progress-component
+                    value="40"
+                    circular
+                    variant="danger"
+                    size="100"
+                    lineCap
+                  >
+                  </progress-component>
+                </div>
               </section>
               <section class="display-box-meta markdown">
                 <div class="display-box-title">Basic Usage</div>
-                <div class="display-box-description">Text</div>
+                <div class="display-box-description">
+                  To change the styling of the ends of the circular progress bar
+                  from round to flat, add the 'lineCap' prop.
+                </div>
                 <div class=""></div>
               </section>
             </section>
@@ -215,16 +577,9 @@
 
     <!-- Props -->
 
-    <!-- <div class="title">Props</div>
+    <div class="title">Props</div>
 
-    <p>
-      The modal launch button uses these props from the button component:
-      'block', 'classnames', 'disabled', 'id', 'outlined', 'ripple' and
-      'styles'. See the documentation
-      <a href="../button/index.html" target="_blank">here</a>.
-    </p> -->
-
-    <!-- <div class="table-wrapper">
+    <div class="table-wrapper">
       <table>
         <thead>
           <tr>
@@ -236,83 +591,183 @@
         </thead>
         <tbody>
           <tr>
-            <td>btnText</td>
+            <td>animated</td>
+            <td>Boolean</td>
+            <td>false</td>
+            <td>
+              Adds an animation to the striped linear progress bar. The
+              animation is left to right.
+            </td>
+          </tr>
+          <tr>
+            <td>bars</td>
+            <td>Array</td>
+            <td></td>
+            <td>
+              Used to add multiple progress bars to the progress component. Each
+              item in the array should have the following properties: value,
+              variant, striped, animated, showValue, showProgress,
+              progressAlign, precision.
+            </td>
+          </tr>
+          <tr>
+            <td>circular</td>
+            <td>Boolean</td>
+            <td>false</td>
+            <td>
+              Adds a circular progress bar to the component. The default is a
+              linear progress bar.
+            </td>
+          </tr>
+          <tr>
+            <td>height</td>
+            <td>String</td>
+            <td>20</td>
+            <td>
+              Sets the height of the linear progress bar. The default height is
+              20px.
+            </td>
+          </tr>
+          <tr>
+            <td>indeterminate</td>
+            <td>Boolean</td>
+            <td>false</td>
+            <td>
+              Puts the circular progress bar into an indeterminate state to
+              portray loading.
+            </td>
+          </tr>
+          <tr>
+            <td>lineCap</td>
+            <td>Boolean</td>
+            <td>false</td>
+            <td>
+              Changes the styling of the ends of the circular progress bar from
+              round to flat.
+            </td>
+          </tr>
+          <tr>
+            <td>max</td>
+            <td>Number</td>
+            <td>100</td>
+            <td>
+              Sets the maximum value of the progress bar. The default is 100.
+            </td>
+          </tr>
+          <tr>
+            <td>multi</td>
+            <td>Boolean</td>
+            <td>false</td>
+            <td>
+              Adds the ability to include multiple progress bars in the progress
+              component.
+            </td>
+          </tr>
+          <tr>
+            <td>precision</td>
+            <td>Number</td>
+            <td>0</td>
+            <td>
+              Sets the number of digits after the decimal for the progress bar
+              value. The default is 0.
+            </td>
+          </tr>
+          <tr>
+            <td>progressAlign</td>
             <td>String</td>
             <td></td>
             <td>
-              The text displayed on the button that launches the modal. It is
-              also used to set the aria-label attribute on the button.
+              Aligns the text to the 'left' or 'right' of the value or progress
+              for the linear progress bar. The default is center.
             </td>
           </tr>
           <tr>
-            <td>modalId</td>
+            <td>rotate</td>
+            <td>Number</td>
+            <td>0</td>
+            <td>
+              Sets the starting point of the circular progress bar. The default
+              is 0 degrees.
+            </td>
+          </tr>
+          <tr>
+            <td>showProgress</td>
+            <td>Boolean</td>
+            <td>false</td>
+            <td>
+              Adds a label to the progress bar that shows the percentage of the
+              max value.
+            </td>
+          </tr>
+          <tr>
+            <td>showValue</td>
+            <td>Boolean</td>
+            <td>false</td>
+            <td>
+              Adds a label to the progress bar that shows the current absolute
+              value.
+            </td>
+          </tr>
+          <tr>
+            <td>size</td>
+            <td>Number</td>
+            <td>100</td>
+            <td>
+              Sets the width and height of the circular progress bar. The
+              default is 100px.
+            </td>
+          </tr>
+          <tr>
+            <td>striped</td>
+            <td>Boolean</td>
+            <td>false</td>
+            <td>
+              Adds a stripe via CSS gradient over the linear progress bar’s
+              background color.
+            </td>
+          </tr>
+          <tr>
+            <td>styles</td>
             <td>String</td>
             <td></td>
             <td>
-              The id of the modal. This is used to uniquely identify the modal
-              component. It is also used to set the aria-labelledby attribute on
-              the modal and the aria-controls attribute on the button that
-              launches the modal as well as the data-target attribute on the
-              button that closes the modal.
+              Adds custom inline styles to the progress component. The default
+              is an empty string.
             </td>
           </tr>
           <tr>
-            <td>modalLg</td>
-            <td>Boolean</td>
-            <td>false</td>
+            <td>value</td>
+            <td>Number</td>
+            <td>0</td>
             <td>
-              Set to true to make the modal large. This will increase the width
-              of the modal to 90% of the viewport width.
+              Sets the current value of the progress bar. The default is 0.
             </td>
           </tr>
           <tr>
-            <td>modalSm</td>
-            <td>Boolean</td>
-            <td>false</td>
-            <td>
-              Set to true to make the modal small. This will decrease the width
-              of the modal to 50% of the viewport width.
-            </td>
-          </tr>
-          <tr>
-            <td>modalTitle</td>
+            <td>variant</td>
             <td>String</td>
-            <td></td>
+            <td>primary</td>
             <td>
-              The title of the modal. This is displayed at the top of the modal.
+              This prop sets the color of the progress bar. The default in
+              'primary'. Other color options are secondary, success, danger,
+              info, warning, and dark.
             </td>
           </tr>
           <tr>
-            <td>scrollableBody</td>
-            <td>Boolean</td>
-            <td>flase</td>
+            <td>width</td>
+            <td>Number</td>
+            <td>4</td>
             <td>
-              Set to true to make the body of the modal scrollable. This is
-              useful when the content of the modal is too long to fit in the
-              viewport.
+              This prop sets the width of the circular progress bar. The default
+              is '4'.
             </td>
-          </tr>
-          <tr>
-            <td>scrollLongContent</td>
-            <td>Boolean</td>
-            <td>false</td>
-            <td>
-              Set to true to make the entire modal scrollable. This is useful
-              when the content of the modal is too long to fit in the viewport.
-            </td>
-          </tr>
-          <tr>
-            <td>verticallyCentered</td>
-            <td>Boolean</td>
-            <td>false</td>
-            <td>Set to true to vertically center the modal.</td>
           </tr>
         </tbody>
       </table>
-    </div> -->
+    </div>
 
     <!-- Slots -->
-    <!-- <div style="margin-top: 50px">
+    <div style="margin-top: 50px">
       <div class="title">Slots</div>
       <div class="table-wrapper">
         <table>
@@ -325,63 +780,39 @@
 
           <tbody>
             <tr>
-              <td>footer</td>
+              <td>default</td>
               <td>
-                Use this slot to add additional buttons/pl-button component or content to the footer
-                of the modal. This is useful for adding buttons that perform
-                actions like saving or deleting data.
+                Add text to the component's default slot for custom labels. This
+                only uses the alignment props that the linear progress bar uses
+                when the 'showProgress' and 'showValue' props are used. The
+                default slot is overwritten when the 'showProgress' or
+                'showValue' props are used unless the 'progressAlign' prop is
+                paired with it.
+              </td>
+            </tr>
+
+            <tr>
+              <td>bar-${index}</td>
+              <td>
+                When using the 'multi' prop, you can add content to each bar by
+                the is being created with the index of the array item. For
+                example, 'bar-0', 'bar-1', 'bar-2', etc.
               </td>
             </tr>
           </tbody>
         </table>
       </div>
-    </div> -->
+    </div>
 
     <!-- Instructions -->
-    <!-- <div style="margin-top: 50px">
-      <div class="title">PlButton Custom '_handleClick'</div>
-      <p>
-        The _handleClick() method in the PlButton component is a custom event
-        dispatcher that triggers the custom-click event when the button is
-        clicked. To use this functionality in an instance of your PlButton
-        component, a user would listen for the custom-click event.
-      </p>
-      <p>
-        Here's an example of how a user might implement this event listener in
-        the Modal component:
-      </p>
-      <pre>
-        <code>
-         // Dispatching the custom-click event
-          const modal = document.getElementById("modal2");
-
-          // Creating an instance of the PlButton component
-          const saveButton = document.getElementById("saveButton");
-
-          // Listening for the custom-click event
-          // Assuming the modal component has a method closeModal() exposed 
-          saveButton.addEventListener("click", () => {
-            console.log("Save button clicked");
-            // Code to save data goes here or for editing data or deleting data etc.
-            // Close the modal after saving data
-            modal.closeModal(); // Call closeModal method on the modal-component
-          });
-        </code>
-      </pre>
-      <p>
-        By adding an event listener to the pl-button element, the user can
-        respond to the custom-click event triggered by your component's
-        _handleClick() method. This allows them to execute specific actions or
-        code when the button is clicked.
-      </p>
-
+    <div style="margin-top: 50px">
       <div class="title">Using Component in other JavaScript Frameworks</div>
 
       <p>
-        Integrating a Lit Element component with other JavaScript frameworks
-        like Vue, React, and Angular involves creating a wrapper component in
-        each framework to encapsulate and use the Lit Element component. Here
-        are examples for each framework:
+        Integrating a Lit Element component like Progress into frameworks such
+        as Vue, React, and Angular involves wrapping the Web Component within
+        the specific framework's component system. Here are brief guides on how
+        to do this for each framework:
       </p>
 
       <h5>Vue.js</h5>
@@ -391,53 +822,39 @@
         element:
       </p>
       <p>
-        This example assumes you have the Modal component globally
-        registered and available in your project.
+        This example assumes you have the Modal component globally registered
+        and available in your project.
       </p>
       <pre>
         <code>
           // main.js
           import Vue from 'vue';
-          import App from './App.vue';
-          
-          // Import your custom element here
-          import 'path/to/modal-component.js';
-          
-          new Vue({
-            el: '#app',
-            render: h => h(App)
-          });
+          import './path/to/your/progress'; // Ensure the Progress Web Component is imported
+
+          // Prevent Vue from warning about the unknown `progress-component` element
+          Vue.config.ignoredElements = ['progress-component'];
           
         </code>
       </pre>
       <p>
         Next, within your Vue component (App.vue in this example), you can use
-        the modal element directly in the template. You can bind
-        properties and listen to events on it just like you would with a native
-        HTML element or Vue component.
+        the modal element directly in the template. You can bind properties and
+        listen to events on it just like you would with a native HTML element or
+        Vue component.
       </p>
       <pre>
           <code>
-            // javascript
-            // Tell Vue to ignore the custom element
-            Vue.config.ignoredElements = ['modal-component'];
-
             &#60;template&#62;
-                &#60;div&#62;
-                    &#60;modal-component open @close-modal="handleClose"&#62;
-                        &#60;!-- Modal content here --&#62;
-                    &#60;/modal-component&#62;
-                &#60;/div&#62;
+              &#60;div&#62;
+                &#60;progress-component value="50" max="100"&#62;&#60;/progress-component&#62;
+              &#60;/div&#62;
             &#60;/template&#62;
-              
+            
             &#60;script&#62;
-              export default {
-                methods: {
-                  handleClose() {
-                    console.log('Modal closed');
-                  }
-                }
-              };
+            export default {
+              name: 'App',
+              // Additional component logic can be placed here
+            }
             &#60;/script&#62;
           </code>
         </pre>
@@ -453,61 +870,46 @@
           <code>
             // jsx
             import React from 'react';
-
-            class App extends React.Component {
-              componentDidMount() {
-                document.addEventListener('close-modal', this.handleClose);
-              }
+            import './path/to/progress'; // Imports the Progress Web Component
             
-              componentWillUnmount() {
-                document.removeEventListener('close-modal', this.handleClose);
-              }
-            
-              handleClose = () => {
-                console.log('Modal closed');
-              }
-            
-              render() {
-                return (
-                    &#60;modal-component open&#62;
-                    {/* Your modal content here */}
-                    &#60;/modal-component&#62;
-                );
-              }
+            function App() {
+              return (
+                &#60;div&#62;
+                &#60;progress-component value={30} max={100}&#62; &#60;/progress-component&#62;
+                &#60;/div&#62;
+              );
             }
             
-            export default App;            
+            export default App;
+                       
           </code>
         </pre>
 
       <h5>Angular</h5>
       <p>
-        Angular can also work directly with Web Components. Use Angular's event
-        binding to listen for custom events and property binding for attributes.
-        First, ensure your custom element is declared to Angular's custom
-        elements schema in your module:
+        Angular can also work directly with Web Components. Include Custom Elements Schema: Allow Angular to recognize custom elements.
       </p>
       <pre>
           <code>
             // Add the CUSTOM_ELEMENTS_SCHEMA to your Angular module to avoid template parse errors.
-            
             import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
             import { BrowserModule } from '@angular/platform-browser';
             import { AppComponent } from './app.component';
+            import './path/to/progress'; // Imports the Progress Web Component
 
             @NgModule({
-                declarations: [
-                    AppComponent
-                ],
-                imports: [
-                    BrowserModule
-                ],
-                providers: [],
-                bootstrap: [AppComponent],
-                schemas: [CUSTOM_ELEMENTS_SCHEMA] // Add this line
+              declarations: [
+                AppComponent
+              ],
+              imports: [
+                BrowserModule
+              ],
+              providers: [],
+              bootstrap: [AppComponent],
+              schemas: [CUSTOM_ELEMENTS_SCHEMA] // Allows custom elements
             })
             export class AppModule { }
-   
+
           </code>
         </pre>
 
@@ -516,38 +918,13 @@
           <code>
             // html 
             
-            &#60;!-- In your component template --&#62;
-            &#60;modal-component [attr.open]="isOpen" (close-modal)="handleClose()"&#62;
-                &#60;!-- Your modal content here --&#62;
-            &#60;/modal-component&#62;
+            &#60;!-- In your component's HTML --&#62;
+            &#60;progress-component [attr.value]="50" [attr.max]="100"&#62;&#60;/progress-component&#60;
+
           </code>
         </pre>
 
-      <p>And in your component class:</p>
-
-      <pre>
-          <code>
-            // typescript
-
-            // In your component TypeScript
-            import { Component } from '@angular/core';
-            
-            @Component({
-              selector: 'app-root',
-              templateUrl: './app.component.html'
-            })
-            export class AppComponent {
-              isOpen = true;
-            
-              handleClose() {
-                console.log('Modal closed');
-                this.isOpen = false;
-              }
-            }
-            
-          </code>
-        </pre>
-
+    
       <p>
         Remember to adjust the paths and imports based on your project
         structure. These examples demonstrate how to create wrapper components
@@ -573,7 +950,7 @@
           setting them via JavaScript rather than as HTML attributes.
         </li>
       </ul>
-    </div> -->
+    </div>
 
     <script src="./progress.js" type="module"></script>
 
@@ -603,15 +980,15 @@
         }
 
         const progressBarComp = document.getElementById("progressBarComp");
-        let value = 0;
+        let value1 = 0;
 
         let interval1 = setInterval(() => {
-          if (value >= 100) {
-            value = 0; // Reset the value
+          if (value1 >= 100) {
+            value1 = 0; // Reset the value
           } else {
-            value += 10; // Increment the value
+            value1 += 10; // Increment the value
           }
-          progressBarComp.setAttribute("value", value); // Update the progress component
+          progressBarComp.setAttribute("value", value1); // Update the progress component
         }, 1000);
 
         // Clean up the interval when the window is unloaded or when you want to stop the interval
@@ -620,19 +997,84 @@
         });
 
         const progressComp = document.getElementById("progressComp");
+        let value2 = 0;
 
         let interval = setInterval(() => {
-          if (value >= 100) {
-            value = 0; // Reset the value
+          if (value2 >= 100) {
+            value2 = 0; // Reset the value
           } else {
-            value += 10; // Increment the value
+            value2 += 10; // Increment the value
           }
-          progressComp.setAttribute("value", value); // Update the progress component
+          progressComp.setAttribute("value", value2); // Update the progress component
         }, 1000);
 
         // Clean up the interval when the window is unloaded or when you want to stop the interval
         window.addEventListener("beforeunload", () => {
           clearInterval(interval);
+        });
+
+        const progressOrigin1 = document.getElementById("progressOrigin1");
+        let valueA = 0;
+        let intervalA = setInterval(() => {
+          if (valueA >= 100) {
+            valueA = 0; // Reset the value
+          } else {
+            valueA += 10; // Increment the value
+          }
+          progressOrigin1.setAttribute("value", valueA); // Update the progress component
+        }, 1000);
+
+        // Clean up the interval when the window is unloaded or when you want to stop the interval
+        window.addEventListener("beforeunload", () => {
+          clearInterval(intervalA);
+        });
+
+        const progressOrigin2 = document.getElementById("progressOrigin2");
+        let valueB = 0;
+        let intervalB = setInterval(() => {
+          if (valueB >= 100) {
+            valueB = 0; // Reset the value
+          } else {
+            valueB += 10; // Increment the value
+          }
+          progressOrigin2.setAttribute("value", valueB); // Update the progress component
+        }, 1000);
+
+        // Clean up the interval when the window is unloaded or when you want to stop the interval
+        window.addEventListener("beforeunload", () => {
+          clearInterval(intervalB);
+        });
+
+        const progressOrigin3 = document.getElementById("progressOrigin3");
+        let valueC = 0;
+        let intervalC = setInterval(() => {
+          if (valueC >= 100) {
+            valueC = 0; // Reset the value
+          } else {
+            valueC += 10; // Increment the value
+          }
+          progressOrigin3.setAttribute("value", valueC); // Update the progress component
+        }, 1000);
+
+        // Clean up the interval when the window is unloaded or when you want to stop the interval
+        window.addEventListener("beforeunload", () => {
+          clearInterval(intervalC);
+        });
+
+        const progressOrigin4 = document.getElementById("progressOrigin4");
+        let valueD = 0;
+        let intervalD = setInterval(() => {
+          if (valueD >= 100) {
+            valueD = 0; // Reset the value
+          } else {
+            valueD += 10; // Increment the value
+          }
+          progressOrigin4.setAttribute("value", valueD); // Update the progress component
+        }, 1000);
+
+        // Clean up the interval when the window is unloaded or when you want to stop the interval
+        window.addEventListener("beforeunload", () => {
+          clearInterval(intervalD);
         });
       });
     </script>
