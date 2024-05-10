@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+  <title>Slider Component</title>
+  <head>
+    <link
+      rel="stylesheet"
+      href="../../../node_modules/bootstrap/dist/css/bootstrap.css"
+    />
+    <!-- <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    /> -->
+    <link
+      rel="stylesheet"
+      href="../../../node_modules/lit-fontawesome/css/font.css"
+    />
+    <link rel="stylesheet" href="../../styles/components.css" />
+
+    <style>
+      .content-box {
+        flex: 1 1 auto;
+      }
+      .flex {
+        display: flex;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="title">Slider</div>
+    
+    <div class="demo-wrapper">
+      <div class="main">
+        <section>
+          <section class="section">
+            <section class="display-box" id="db-1">
+              <section class="display-box-demo">
+                <custom-slider label="Volume:" min="0" max="100" unit="%" rangeSlider></custom-slider>
+
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">Text</div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
+
+          <section class="section">
+            <section class="display-box" id="db-1">
+              <section class="display-box-demo">
+                <custom-slider label="Volume:" min="0" max="100" unit="%" snapToSlider></custom-slider>
+
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">Text</div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
+
+
+        </section>
+
+        <section>
+          <section class="section">
+            <section class="display-box" id="db-1">
+              <section class="display-box-demo">
+                <custom-slider label="Range:" min="0" max="100" unit="%" multiRangeSlider></custom-slider>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">Text</div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
+        </section>
+      </div>
+    </div>
+
+    <!-- Props -->
+
+    <!-- <div class="title">Props</div>
+
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Property</th>
+            <th>Type</th>
+            <th>Default</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>animated</td>
+            <td>Boolean</td>
+            <td>false</td>
+            <td>
+              Adds an animation to the striped linear progress bar. The
+              animation is left to right.
+            </td>
+          </tr>
+          <tr>
+            <td>bars</td>
+            <td>Array</td>
+            <td></td>
+            <td>
+              Used to add multiple progress bars to the progress component. Each
+              item in the array should have the following properties: value,
+              variant, striped, animated, showValue, showProgress,
+              progressAlign, precision.
+            </td>
+          </tr>
+          <tr>
+            <td>circular</td>
+            <td>Boolean</td>
+            <td>false</td>
+            <td>
+              Adds a circular progress bar to the component. The default is a
+              linear progress bar.
+            </td>
+          </tr>
+          <tr>
+            <td>height</td>
+            <td>String</td>
+            <td>20</td>
+            <td>
+              Sets the height of the linear progress bar. The default height is
+              20px.
+            </td>
+          </tr>
+          <tr>
+            <td>indeterminate</td>
+            <td>Boolean</td>
+            <td>false</td>
+            <td>
+              Puts the circular progress bar into an indeterminate state to
+              portray loading.
+            </td>
+          </tr>
+          <tr>
+            <td>lineCap</td>
+            <td>Boolean</td>
+            <td>false</td>
+            <td>
+              Changes the styling of the ends of the circular progress bar from
+              round to flat.
+            </td>
+          </tr>
+          <tr>
+            <td>max</td>
+            <td>Number</td>
+            <td>100</td>
+            <td>
+              Sets the maximum value of the progress bar. The default is 100.
+            </td>
+          </tr>
+          <tr>
+            <td>multi</td>
+            <td>Boolean</td>
+            <td>false</td>
+            <td>
+              Adds the ability to include multiple progress bars in the progress
+              component.
+            </td>
+          </tr>
+          <tr>
+            <td>precision</td>
+            <td>Number</td>
+            <td>0</td>
+            <td>
+              Sets the number of digits after the decimal for the progress bar
+              value. The default is 0.
+            </td>
+          </tr>
+          <tr>
+            <td>progressAlign</td>
+            <td>String</td>
+            <td></td>
+            <td>
+              Aligns the text to the 'left' or 'right' of the value or progress
+              for the linear progress bar. The default is center.
+            </td>
+          </tr>
+          <tr>
+            <td>rotate</td>
+            <td>Number</td>
+            <td>0</td>
+            <td>
+              Sets the starting point of the circular progress bar. The default
+              is 0 degrees.
+            </td>
+          </tr>
+          <tr>
+            <td>showProgress</td>
+            <td>Boolean</td>
+            <td>false</td>
+            <td>
+              Adds a label to the progress bar that shows the percentage of the
+              max value.
+            </td>
+          </tr>
+          <tr>
+            <td>showValue</td>
+            <td>Boolean</td>
+            <td>false</td>
+            <td>
+              Adds a label to the progress bar that shows the current absolute
+              value.
+            </td>
+          </tr>
+          <tr>
+            <td>size</td>
+            <td>Number</td>
+            <td>100</td>
+            <td>
+              Sets the width and height of the circular progress bar. The
+              default is 100px.
+            </td>
+          </tr>
+          <tr>
+            <td>striped</td>
+            <td>Boolean</td>
+            <td>false</td>
+            <td>
+              Adds a stripe via CSS gradient over the linear progress bar’s
+              background color.
+            </td>
+          </tr>
+          <tr>
+            <td>styles</td>
+            <td>String</td>
+            <td></td>
+            <td>
+              Adds custom inline styles to the progress component. The default
+              is an empty string.
+            </td>
+          </tr>
+          <tr>
+            <td>value</td>
+            <td>Number</td>
+            <td>0</td>
+            <td>
+              Sets the current value of the progress bar. The default is 0.
+            </td>
+          </tr>
+          <tr>
+            <td>variant</td>
+            <td>String</td>
+            <td>primary</td>
+            <td>
+              This prop sets the color of the progress bar. The default in
+              'primary'. Other color options are secondary, success, danger,
+              info, warning, and dark.
+            </td>
+          </tr>
+          <tr>
+            <td>width</td>
+            <td>Number</td>
+            <td>4</td>
+            <td>
+              This prop sets the width of the circular progress bar. The default
+              is '4'.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div> -->
+
+    <!-- Slots -->
+    <!-- <div style="margin-top: 50px">
+      <div class="title">Slots</div>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Slot</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td>default</td>
+              <td>
+                Add text to the component's default slot for custom labels. This
+                only uses the alignment props that the linear progress bar uses
+                when the 'showProgress' and 'showValue' props are used. The
+                default slot is overwritten when the 'showProgress' or
+                'showValue' props are used unless the 'progressAlign' prop is
+                paired with it.
+              </td>
+            </tr>
+
+            <tr>
+              <td>bar-${index}</td>
+              <td>
+                When using the 'multi' prop, you can add content to each bar by
+                the is being created with the index of the array item. For
+                example, 'bar-0', 'bar-1', 'bar-2', etc.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div> -->
+
+    <!-- Instructions -->
+    <!-- <div style="margin-top: 50px">
+      <div class="title">Using Component in other JavaScript Frameworks</div>
+
+      <p>
+        Integrating a Lit Element component like Progress into frameworks such
+        as Vue, React, and Angular involves wrapping the Web Component within
+        the specific framework's component system. Here are brief guides on how
+        to do this for each framework:
+      </p>
+
+      <h5>Vue.js</h5>
+      <p>
+        To use the Lit Element component in Vue, you can use the
+        'vue-custom-element' library to register the Lit Element as a custom
+        element:
+      </p>
+      <p>
+        This example assumes you have the Modal component globally registered
+        and available in your project.
+      </p>
+      <pre>
+        <code>
+          // main.js
+          import Vue from 'vue';
+          import './path/to/your/progress'; // Ensure the Progress Web Component is imported
+
+          // Prevent Vue from warning about the unknown `progress-component` element
+          Vue.config.ignoredElements = ['progress-component'];
+          
+        </code>
+      </pre>
+      <p>
+        Next, within your Vue component (App.vue in this example), you can use
+        the modal element directly in the template. You can bind properties and
+        listen to events on it just like you would with a native HTML element or
+        Vue component.
+      </p>
+      <pre>
+          <code>
+            &#60;template&#62;
+              &#60;div&#62;
+                &#60;progress-component value="50" max="100"&#62;&#60;/progress-component&#62;
+              &#60;/div&#62;
+            &#60;/template&#62;
+            
+            &#60;script&#62;
+            export default {
+              name: 'App',
+              // Additional component logic can be placed here
+            }
+            &#60;/script&#62;
+          </code>
+        </pre>
+
+      <h5>React</h5>
+      <p>
+        For React, you'll use refs to interact with the DOM element for
+        properties and events not directly supported by React's synthetic event
+        system:
+      </p>
+
+      <pre>
+          <code>
+            // jsx
+            import React from 'react';
+            import './path/to/progress'; // Imports the Progress Web Component
+            
+            function App() {
+              return (
+                &#60;div&#62;
+                &#60;progress-component value={30} max={100}&#62; &#60;/progress-component&#62;
+                &#60;/div&#62;
+              );
+            }
+            
+            export default App;
+                       
+          </code>
+        </pre>
+
+      <h5>Angular</h5>
+      <p>
+        Angular can also work directly with Web Components. Include Custom Elements Schema: Allow Angular to recognize custom elements.
+      </p>
+      <pre>
+          <code>
+            // Add the CUSTOM_ELEMENTS_SCHEMA to your Angular module to avoid template parse errors.
+            import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+            import { BrowserModule } from '@angular/platform-browser';
+            import { AppComponent } from './app.component';
+            import './path/to/progress'; // Imports the Progress Web Component
+
+            @NgModule({
+              declarations: [
+                AppComponent
+              ],
+              imports: [
+                BrowserModule
+              ],
+              providers: [],
+              bootstrap: [AppComponent],
+              schemas: [CUSTOM_ELEMENTS_SCHEMA] // Allows custom elements
+            })
+            export class AppModule { }
+
+          </code>
+        </pre>
+
+      <p>Then, use it in your Angular component template:</p>
+      <pre>
+          <code>
+            // html 
+            
+            &#60;!-- In your component's HTML --&#62;
+            &#60;progress-component [attr.value]="50" [attr.max]="100"&#62;&#60;/progress-component&#60;
+
+          </code>
+        </pre>
+
+    
+      <p>
+        Remember to adjust the paths and imports based on your project
+        structure. These examples demonstrate how to create wrapper components
+        for each framework to use your Lit Element 'Modal' component.
+      </p>
+
+      <p>
+        The interoperability is possible because Web Components, once defined
+        and registered as custom elements, act like native HTML elements that
+        these frameworks can understand and interact with.
+      </p>
+
+      <p>Notes:</p>
+      <ul>
+        <li>
+          Event Handling: Make sure to handle events appropriately. React, for
+          example, may require you to attach event listeners directly to the DOM
+          elements for custom events, as shown above.
+        </li>
+        <li>
+          Properties and Attributes: If your Web Component uses properties that
+          are objects or arrays, passing them from frameworks might require
+          setting them via JavaScript rather than as HTML attributes.
+        </li>
+      </ul>
+    </div> -->
+
+    <script src="./slider.js" type="module"></script>
+
+    <!-- <script src="../../../node_modules/bootstrap/dist/js/bootstrap.js"></script> -->
+  </body>
+</html>
