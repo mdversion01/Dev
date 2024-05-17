@@ -1,4 +1,5 @@
 import { LitElement, html, css } from "lit";
+import { ifDefined } from "lit/directives/if-defined.js";
 import { sliderStyles } from "./slider-styles.js";
 
 class CustomSlider extends LitElement {
@@ -9,350 +10,357 @@ class CustomSlider extends LitElement {
         display: block;
         padding: 16px;
       }
+
+      :host([focused]) .slider-thumb {
+        border: 2px solid blue; /* Custom focus styling */
+      }
     `,
   ];
 
   static get properties() {
     return {
+      discreteSlider: { type: Boolean },
       label: { type: String },
-      value: { type: Number },
+      value: { type: Object },
+      focused: { type: Boolean },
+      hideTextBoxes: { type: Boolean },
+      hideLeftTextBox: { type: Boolean },
+      hideRightTextBox: { type: Boolean },
       lowerValue: { type: Number },
       upperValue: { type: Number },
       min: { type: Number },
       max: { type: Number },
-      steps: { type: Number },
-      ticks: { type: Number },
-      unit: { type: String },
       multiRangeSlider: { type: Boolean },
       rangeSlider: { type: Boolean },
+      sliderThumbLabel: { type: Boolean },
       snapToSlider: { type: Boolean },
       dragging: { type: String },
+      snapToTicks: { type: Boolean },
+      stringValues: { type: Array },
+      selectedIndex: { type: Number },
+      ticks: { type: Number },
       tickValues: { type: Array }, // Array of values for each tick
-      tickLabels: { type: Array }, // Optional: Labels for each tick
-
-      valuesArray: { type: Array }, // Array of values for each tick
+      tickLabels: { type: Boolean }, // Optional: Labels for each tick
+      unit: { type: String },
+      variant: { type: String },
     };
   }
 
   constructor() {
     super();
-    this.label = "Adjust value";
-    this.value = 30; // default value
-    this.lowerValue = 25; // Initial lower value
-    this.upperValue = 75; // Initial upper value
-    this.min = 0;
-    this.max = 100;
-    this.ticks = 5;
-    this.unit = "%";
-    this.steps = 1;
+    this.discreteSlider = false;
+    this.focused = false;
+    this.hideTextboxes = false;
+    this.hideLeftTextBox = false;
+    this.hideRightTextBox = false;
+    this.label = "";
+    this.lowerValue = 0; // Initial lower value
+    this.upperValue = 100; // Initial upper value
+    this.min = "";
+    this.max = "";
     this.multiRangeSlider = false;
     this.rangeSlider = false;
+    this.sliderThumbLabel = false;
     this.snapToSlider = false;
     this._mouseNearLower = false;
     this.dragging = null;
-    this.tickValues = [0, 25, 50, 75, 100]; // Example tick positions
-    this.tickLabels = ["0%", "25%", "50%", "75%", "100%"]; // Corresponding labels
+    this.snapToTicks = false;
+    this.stringValues = []; // Default string values
+    this.selectedIndex = 0; // Start with the first index
+    this.ticks = "";
+    this.tickValues = []; // Example tick positions
+    this.tickLabels = false; // Corresponding labels
+    this.unit = "";
+    this.variant = "";
 
-    this.valuesArray = [0, 25, 50, 75, 100]; // Ensure this is set or handled dynamically
+    if (this.discreteSlider) {
+      this.value = this.stringValues[this.selectedIndex];
+    } else {
+      this.value = 0;
+    }
   }
 
-  //   renderRangeSlider() {
-  //     const valuePercent =
-  //       ((this.value - this.min) / (this.max - this.min)) * 100; // Calculate the position as a percentage
+  getColor(variant) {
+    switch (variant) {
+      case "primary":
+        return "primary";
+      case "secondary":
+        return "secondary";
+      case "success":
+        return "success";
+      case "danger":
+        return "danger";
+      case "info":
+        return "info";
+      case "warning":
+        return "warning";
+      case "dark":
+        return "dark";
+      default:
+        return ""; // Default color if no variant or unrecognized variant
+    }
+  }
 
-  //     return html`
-  //       <div dir="ltr" class="slider form-group">
-  //         <label
-  //           id="slider-input-label"
-  //           for="slider-input"
-  //           class="form-control-label"
-  //           >${this.label} ${this.value}${this.unit}</label
-  //         >
-  //         <div class="slider-container">
-  //           <div
-  //             role="textbox"
-  //             aria-readonly="true"
-  //             aria-labelledby="slider-input-label"
-  //             class="slider-value-left"
-  //           >
-  //             ${this.value}
-  //           </div>
-  //           <div class="slider-min-value">0</div>
-  //           <div class="slider-controls">
-  //             <div class="slider-track" style="width: ${valuePercent}%;"></div>
-  //             ${this.ticks > 0
-  //               ? html`
-  //                   <div class="slider-ticks">
-  //                     ${Array.from({ length: this.ticks }, (_, index) => {
-  //                       const tickPosition =
-  //                         ((index + 1) / (this.ticks + 1)) * 100;
-  //                       return html`
-  //                         <div
-  //                           class="slider-tick"
-  //                           style="left: ${tickPosition}%;"
-  //                         ></div>
-  //                       `;
-  //                     })}
-  //                   </div>
-  //                 `
-  //               : ""}
-  //             <input
-  //               type="range"
-  //               class="slider-input"
-  //               min="${this.min}"
-  //               max="${this.max}"
-  //               value="${this.value}"
-  //               @input="${this._updateValue}"
-  //               id="slider-input"
-  //               aria-labelledby="slider-input-label"
-  //               step="${this.steps}"
-  //             />
-  //             <div
-  //               class="slider-thumb-label primary"
-  //               style="position: absolute; left: ${valuePercent.toFixed(
-  //                 0
-  //               )}%; transform: translateX(-50%) translateY(60%) translateY(-100%) rotate(45deg);"
-  //             >
-  //               <div><span>${this.value}${this.unit}</span></div>
-  //             </div>
-  //             <div
-  //               class="slider-track"
-  //               style="width: ${100 - valuePercent}%;"
-  //             ></div>
-  //           </div>
-  //           <div class="slider-max-value">100</div>
-  //           <div
-  //             role="textbox"
-  //             aria-readonly="true"
-  //             aria-labelledby="slider-input-label"
-  //             class="slider-value-right"
-  //           >
-  //             ${this.value}
-  //           </div>
-  //         </div>
-  //       </div>
-  //     `;
-  //   }
+  // Method to calculate position based on the value type
+  calculatePosition(value) {
+    if (typeof value === "number") {
+      return ((value - this.min) / (this.max - this.min)) * 100;
+    }
+    return null; // Default fallback if needed
+  }
 
   renderRangeSlider() {
-    const valuePercent = ((this.value - this.min) / (this.max - this.min)) * 100; // Calculate the position as a percentage
+    const valuePercent =
+      ((this.value - this.min) / (this.max - this.min)) * 100; // Calculate the position as a percentage
 
     return html`
-      <div dir="ltr" class="slider form-group">
-        <label id="slider-input-label" class="form-control-label">
-          ${this.label} ${this.value.toFixed(0)}${this.unit}
-        </label>
+      <div
+        dir="ltr"
+        class="slider form-group"
+        aria-label="${ifDefined(this.label || undefined)}"
+        role="slider"
+        aria-valuemin="${ifDefined(this.min || undefined)}"
+        aria-valuemax="${ifDefined(this.max || undefined)}"
+        aria-valuenow="${ifDefined(this.value || undefined)}"
+        aria-orientation="horizontal"
+      >
+        ${this.sliderThumbLabel
+          ? ""
+          : this.label === ""
+          ? ""
+          : html`<label id="slider-input-label" class="form-control-label">
+              ${this.label} ${this.value.toFixed(0)}${this.unit}
+            </label>`}
         <div class="slider-container">
+          <div class="slider-min-value">${this.min}${this.unit}</div>
           <div class="slider-controls">
             <div class="slider-background-track" style="width: 100%;"></div>
-            <div class="slider-moving-track" style="width: ${valuePercent.toFixed(0)}%;"></div>
             <div
-              class="slider-thumb-container primary"
-              style="left: ${valuePercent.toFixed(0)}%; transition: all 0.1s cubic-bezier(0.25, 0.8, 0.5, 1) 0s;"
+              class="slider-moving-track ${this.getColor(this.variant)}"
+              style="width: ${valuePercent.toFixed(0)}%;"
+            ></div>
+            <div
+              class="slider-thumb-container ${this.getColor(this.variant)}"
+              style="left: ${valuePercent.toFixed(
+                0
+              )}%; transition: all 0.1s cubic-bezier(0.25, 0.8, 0.5, 1) 0s;"
               @mousedown="${this.dragStart}"
+              @touchstart="${this.dragStart}"
             >
-              <div class="slider-thumb primary"></div>
+              <div class="slider-thumb ${this.getColor(this.variant)}"></div>
 
-              <div
-                class="slider-thumb-label primary"
-                style="position: absolute; left: ${this.value.toFixed(0)}%; transform: translateX(-50%) translateY(30%) translateY(-100%) rotate(45deg);"
-              >
-                <div>
-                  <span>${this.value.toFixed(0)}${this.unit}</span>
-                </div>
-              </div>
+              ${this.sliderThumbLabel
+                ? html` <div
+                    class="slider-thumb-label ${this.getColor(this.variant)}"
+                    style="position: absolute; left: ${this.value.toFixed(
+                      0
+                    )}%; transform: translateX(-50%) translateY(30%) translateY(-100%) rotate(45deg);"
+                  >
+                    <div>
+                      <span>${this.value.toFixed(0)}${this.unit}</span>
+                    </div>
+                  </div>`
+                : ""}
             </div>
-            ${this.ticks > 0 ? html`
-              <div class="slider-ticks">
-                ${this.tickValues.map((tick, index) => {
-                  const pos = ((tick - this.min) / (this.max - this.min)) * 100;
-                  return html`
-                    <div class="slider-tick" style="left: ${pos}%; top: calc(50% - 10px);"></div>
-                    <div class="slider-tick-label" style="left: ${pos}%; transform: translateX(-50%);">${this.tickLabels[index] || tick}</div>
-                  `;
-                })}
-              </div>
-            ` : ""}
+            ${this.ticks > 0
+              ? html`
+                  <div class="slider-ticks">
+                    ${this.tickValues.map((tick, index) => {
+                      const pos =
+                        typeof tick === "number"
+                          ? this.calculatePosition(tick)
+                          : (index / (this.tickValues.length - 1)) * 100;
+                      return html`
+                        <div
+                          class="slider-tick"
+                          style="left: ${pos}%; top: calc(50% - 10px);"
+                        ></div>
+                        ${this.tickLabels
+                          ? html` <div
+                              class="slider-tick-label"
+                              style="left: ${pos}%; transform: translateX(-50%);"
+                            >
+                              ${tick}${typeof tick === "number"
+                                ? this.unit
+                                : ""}
+                            </div>`
+                          : ""}
+                      `;
+                    })}
+                  </div>
+                `
+              : ""}
           </div>
           <div class="slider-max-value">${this.max}${this.unit}</div>
+
           <div
             role="textbox"
             aria-readonly="true"
             aria-labelledby="slider-input-label"
-            class="slider-value-right"
+            class="slider-value-right${this.hideRightTextBox ? " hidden" : ""}"
           >
             ${this.value.toFixed(0)}
           </div>
         </div>
       </div>
     `;
-}
-
-dragStart(event) {
-    event.preventDefault();
-    this.initialX = event.clientX;
-    this.dragging = true;
-    const thumbContainer = this.shadowRoot.querySelector('.slider-thumb-container');
-    thumbContainer.classList.add('slider-thumb-container-active');
-  
-    // Attach event listeners
-    window.addEventListener("mousemove", this.dragMove);
-    window.addEventListener("mouseup", this.dragStop);
-}
-
-dragMove = (event) => {
-    if (!this.dragging) return;
-    this.updatePosition(event);
-};
-
-dragStop = () => {
-    this.dragging = false;
-    const thumbContainer = this.shadowRoot.querySelector('.slider-thumb-container');
-    thumbContainer.classList.remove('slider-thumb-container-active');
-    window.removeEventListener("mousemove", this.dragMove);
-    window.removeEventListener("mouseup", this.dragStop);
-};
-
-updatePosition(event) {
-    const sliderRect = this.shadowRoot.querySelector('.slider-container').getBoundingClientRect();
-    let newPos = event.clientX - sliderRect.left;
-    let newPositionPercent = (newPos / sliderRect.width) * 100;
-    newPositionPercent = Math.max(0, Math.min(newPositionPercent, 100));
-
-    if (this.snapToSlider) {
-        newPositionPercent = this.calculateSnapPosition(newPositionPercent);
-    }
-
-    this.value = ((newPositionPercent / 100) * (this.max - this.min)) + this.min;
-    this.requestUpdate();
-}
-
-calculateSnapPosition(positionPercent) {
-    const closest = this.tickValues.reduce((prev, curr) => {
-        const prevDist = Math.abs(((prev - this.min) / (this.max - this.min) * 100) - positionPercent);
-        const currDist = Math.abs(((curr - this.min) / (this.max - this.min) * 100) - positionPercent);
-        return (prevDist < currDist ? prev : curr);
-    });
-    return ((closest - this.min) / (this.max - this.min)) * 100;
-}
-
-  calculateStepSize() {
-    if (!this.valuesArray || this.valuesArray.length < 2) {
-      console.error("valuesArray is not defined or has insufficient data");
-      return 1; // Return a default step size or handle this case appropriately
-    }
-    return (this.max - this.min) / (this.valuesArray.length - 1);
   }
 
-  renderSnapToTicksSlider() {
-    if (!this.valuesArray || this.valuesArray.length === 0) {
-      return html`<p>Loading or error in setup...</p>`; // Placeholder or error message
-    }
-
+  renderDiscreteSlider() {
     const valuePercent =
-      ((this.value - this.min) / (this.max - this.min)) * 100; // Calculate the position as a percentage
+      (this.selectedIndex / (this.stringValues.length - 1)) * 100;
 
     return html`
-      <div dir="ltr" class="slider form-group">
-        <label
-          id="slider-input-label"
-          for="slider-input"
-          class="form-control-label"
-          >${this.label} ${this.value}${this.unit}</label
-        >
+      <div
+        dir="ltr"
+        class="slider form-group"
+        aria-label="${ifDefined(this.label || undefined)}"
+        role="slider"
+        aria-valuemin="${ifDefined(this.min || undefined)}"
+        aria-valuemax="${ifDefined(this.max || undefined)}"
+        aria-valuenow="${ifDefined(this.value || undefined)}"
+        aria-orientation="horizontal"
+      >
+        ${this.label === ""
+          ? ""
+          : html` <label id="slider-input-label" class="form-control-label">
+              ${this.label} ${this.stringValues[this.selectedIndex]}
+            </label>`}
         <div class="slider-container">
-          <div
-            role="textbox"
-            aria-readonly="true"
-            aria-labelledby="slider-input-label"
-            class="slider-value-left"
-          >
-            ${this.value}
-          </div>
-          <div class="slider-min-value">0</div>
           <div class="slider-controls">
-            <div class="slider-track" style="width: ${valuePercent}%;"></div>
-            ${this.tickValues.length > 0
-              ? html`
-                  <div class="slider-ticks">
-                    ${this.tickValues.map((value, index) => {
-                      const position =
-                        ((value - this.min) / (this.max - this.min)) * 100;
-                      return html`
-                        <div
-                          class="slider-tick"
-                          style="left: ${position}%; position: absolute;"
-                        >
-                          <span
-                            class="slider-tick-label"
-                            style="position: relative; left: -50%; top: -20px;"
-                          >
-                            ${this.tickLabels[index] || value}
-                          </span>
-                        </div>
-                      `;
-                    })}
-                  </div>
-                `
-              : ""}
-            <input
-              type="range"
-              class="slider-input"
-              min="${this.min}"
-              max="${this.max}"
-              value="${this.value}"
-              @input="${this._updateValue}"
-              id="slider-input"
-              list="tickmarks"
-              step="${this.calculateStepSize()}"
-            />
-            <datalist id="tickmarks">
-              ${this.valuesArray.map((value, index) => {
-                const position =
-                  (index / (this.valuesArray.length - 1)) *
-                    (this.max - this.min) +
-                  this.min;
-                return html`<option value="${position}">${value}</option>`;
-              })}
-            </datalist>
+            <div class="slider-background-track" style="width: 100%;"></div>
             <div
-              class="slider-thumb-label primary"
-              style="position: absolute; left: ${valuePercent.toFixed(
-                0
-              )}%; transform: translateX(-50%) translateY(60%) translateY(-100%) rotate(45deg);"
-            >
-              <div><span>${this.value}${this.unit}</span></div>
-            </div>
-            <div
-              class="slider-track"
-              style="width: ${100 - valuePercent}%;"
+              class="slider-moving-track ${this.getColor(this.variant)}"
+              style="width: ${valuePercent}%;"
             ></div>
+            <div
+              class="slider-thumb-container ${this.getColor(this.variant)}"
+              style="left: ${valuePercent.toFixed(
+                0
+              )}%; transition: all 0.1s cubic-bezier(0.25, 0.8, 0.5, 1) 0s;"
+              @mousedown="${this.dragStart}"
+              @touchstart="${this.dragStart}"
+            >
+              <div class="slider-thumb ${this.getColor(this.variant)}"></div>
+            </div>
+            <div class="slider-ticks">
+              ${this.stringValues.map((tick, index) => {
+                const pos = (index / (this.stringValues.length - 1)) * 100;
+                return html`
+                  <div
+                    class="slider-tick"
+                    style="left: ${pos}%; top: calc(50% - 10px);"
+                    @click="${() => this.selectValue(index)}"
+                  ></div>
+                  <div
+                    class="slider-tick-label"
+                    style="left: ${pos}%; transform: translateX(-50%);"
+                  >
+                    ${tick}
+                  </div>
+                `;
+              })}
+            </div>
           </div>
-          <div class="slider-max-value">100</div>
           <div
             role="textbox"
             aria-readonly="true"
             aria-labelledby="slider-input-label"
-            class="slider-value-right"
+            class="slider-value-right${this.hideRightTextBox ? " hidden" : ""}"
           >
-            ${this.value}
+            ${this.stringValues[this.selectedIndex]}
           </div>
         </div>
       </div>
     `;
   }
 
-  updated(changedProperties) {
-    if (
-      changedProperties.has("valuesArray") &&
-      this.valuesArray &&
-      this.valuesArray.length > 1
-    ) {
-      this.requestUpdate(); // Re-trigger rendering if necessary
+  dragStart(event) {
+    event.preventDefault();
+    this.initialX = event.clientX;
+    this.dragging = true;
+    const thumbContainer = this.shadowRoot.querySelector(
+      ".slider-thumb-container"
+    );
+    thumbContainer.classList.add("slider-thumb-container-active");
+
+    // Attach event listeners
+    window.addEventListener("mousemove", this.dragMove);
+    window.addEventListener("mouseup", this.dragStop);
+  }
+
+  dragMove = (event) => {
+    if (!this.dragging) return;
+    this.updatePosition(event);
+  };
+
+  dragStop = () => {
+    this.dragging = false;
+    const thumbContainer = this.shadowRoot.querySelector(
+      ".slider-thumb-container"
+    );
+    thumbContainer.classList.remove("slider-thumb-container-active");
+    window.removeEventListener("mousemove", this.dragMove);
+    window.removeEventListener("mouseup", this.dragStop);
+  };
+
+  updatePosition(event) {
+    const sliderRect = this.shadowRoot
+      .querySelector(".slider-container")
+      .getBoundingClientRect();
+    let newPos = event.clientX - sliderRect.left;
+    let newPositionPercent = (newPos / sliderRect.width) * 100;
+    newPositionPercent = Math.max(0, Math.min(newPositionPercent, 100));
+
+    if (this.discreteSlider) {
+      // Calculate index based on the current position percent, clamped to the bounds of stringValues array
+      let newIndex = Math.round(
+        (newPositionPercent / 100) * (this.stringValues.length - 1)
+      );
+      newIndex = Math.max(0, Math.min(newIndex, this.stringValues.length - 1)); // Further clamping to ensure index is within bounds
+      this.selectValue(newIndex);
+    } else {
+      // Apply snap logic based on the snapToTicks property
+      if (this.snapToTicks) {
+        newPositionPercent = this.calculateSnapPosition(newPositionPercent);
+      }
+
+      this.value =
+        (newPositionPercent / 100) * (this.max - this.min) + this.min;
+      this.requestUpdate();
     }
+  }
+  
+
+  selectValue(index) {
+    this.selectedIndex = index;
+    this.value = this.stringValues[this.selectedIndex];
+    this.requestUpdate();
+    this.dispatchEvent(
+      new CustomEvent("value-changed", { detail: { value: this.value } })
+    );
+  }
+
+  calculateSnapPosition(positionPercent) {
+    const closestTickValue = this.tickValues.reduce((prev, curr) => {
+      const prevPos = ((prev - this.min) / (this.max - this.min)) * 100;
+      const currPos = ((curr - this.min) / (this.max - this.min)) * 100;
+      return Math.abs(prevPos - positionPercent) <
+        Math.abs(currPos - positionPercent)
+        ? prev
+        : curr;
+    });
+    return ((closestTickValue - this.min) / (this.max - this.min)) * 100;
   }
 
   firstUpdated() {
+    super.firstUpdated();
+    this.setAttribute("tabindex", "0"); // Make the slider focusable
+
+    this.addEventListener("focus", () => (this.focused = true));
+    this.addEventListener("blur", () => (this.focused = false));
+    this.addEventListener("keydown", this.handleKeyDown);
+
     this.sliderArea = this.shadowRoot.querySelector(".slider-container");
     this.lowerThumb = this.shadowRoot.querySelector(".lower-thumb");
     this.upperThumb = this.shadowRoot.querySelector(".upper-thumb");
@@ -421,23 +429,41 @@ calculateSnapPosition(positionPercent) {
     let value = (x / rect.width) * (this.max - this.min) + this.min;
     value = Math.max(this.min, Math.min(this.max, value));
 
-    if (thumb === "lower" && value < this.upperValue) {
-      this.lowerValue = value;
-      this.requestUpdate();
-      this.dispatchEvent(
-        new CustomEvent("value-changed", {
-          detail: { lowerValue: this.lowerValue },
-        })
-      );
-    } else if (thumb === "upper" && value > this.lowerValue) {
-      this.upperValue = value;
-      this.requestUpdate();
-      this.dispatchEvent(
-        new CustomEvent("value-changed", {
-          detail: { upperValue: this.upperValue },
-        })
-      );
+    if (this.snapToTicks) {
+      let positionPercent = ((value - this.min) / (this.max - this.min)) * 100;
+      let snappedPositionPercent = this.calculateSnapPosition(positionPercent);
+      value = (snappedPositionPercent / 100) * (this.max - this.min) + this.min;
     }
+
+    if (thumb === "lower") {
+      if (value < this.upperValue) {
+        this.lowerValue = value;
+      }
+    } else if (thumb === "upper") {
+      if (value > this.lowerValue) {
+        this.upperValue = value;
+      }
+    }
+
+    this.requestUpdate();
+    this.dispatchEvent(
+      new CustomEvent("value-changed", {
+        detail: { lowerValue: this.lowerValue, upperValue: this.upperValue },
+      })
+    );
+  }
+
+  calculateSnapPosition(positionPercent) {
+    const closestTickValue = this.tickValues.reduce((prev, curr) => {
+      const prevDist = Math.abs(
+        ((prev - this.min) / (this.max - this.min)) * 100 - positionPercent
+      );
+      const currDist = Math.abs(
+        ((curr - this.min) / (this.max - this.min)) * 100 - positionPercent
+      );
+      return prevDist < currDist ? prev : curr;
+    });
+    return ((closestTickValue - this.min) / (this.max - this.min)) * 100;
   }
 
   renderMultiRangeSlider() {
@@ -448,111 +474,148 @@ calculateSnapPosition(positionPercent) {
       ((this.value - this.min) / (this.max - this.min)) * 100; // Calculate the position as a percentage
 
     return html`
-      <div dir="ltr" class="slider form-group">
-        <label id="slider-input-label" class="form-control-label"
-          >${this.label}
-          ${(upperPercent - lowerPercent).toFixed(0)}${this.unit}</label
-        >
+      <div
+        dir="ltr"
+        class="slider form-group"
+        aria-label="${ifDefined(this.label || undefined)}"
+        role="slider"
+        aria-valuemin="${ifDefined(this.min || undefined)}"
+        aria-valuemax="${ifDefined(this.max || undefined)}"
+        aria-valuenow="${ifDefined(this.value || undefined)}"
+        aria-orientation="horizontal"
+      >
+        ${this.sliderThumbLabel
+          ? ""
+          : this.label === ""
+          ? ""
+          : html`<label id="slider-input-label" class="form-control-label">
+              ${this.label}
+              ${(upperPercent - lowerPercent).toFixed(0)}${this.unit}
+            </label>`}
         <div class="slider-container">
           <div
             role="textbox"
             aria-readonly="true"
             aria-labelledby="slider-input-label"
-            class="slider-value-left"
+            class="slider-value-left${this.hideTextBoxes || this.hideLeftTextBox
+              ? " hidden"
+              : ""}"
           >
             ${this.lowerValue.toFixed(0)}
           </div>
-          <div class="slider-min-value">0</div>
+          <div class="slider-min-value">${this.min}${this.unit}</div>
           <div class="slider-controls">
             <div
               tabindex="-1"
-              class="slider-thumb-container lower-thumb primary"
+              class="slider-thumb-container lower-thumb ${this.getColor(
+                this.variant
+              )}"
               style="transition: all 0.1s cubic-bezier(0.25, 0.8, 0.5, 1) 0s; left: calc(${lowerPercent.toFixed(
                 0
               )}% - 5px);"
               @mousedown="${(e) => this.startDrag(e, "lower")}"
+              @touchstart="${(e) => this.startDrag(e, "lower")}"
             >
               <div
-                class="slider-thumb primary"
+                class="slider-thumb ${this.getColor(this.variant)}"
                 style="left: ${lowerPercent.toFixed(0)}%"
               ></div>
-              <div
-                class="slider-thumb-label primary"
-                style="position: absolute; left: ${lowerPercent.toFixed(
-                  0
-                )}%; transform: translateX(-30%) translateY(30%) translateY(-100%) rotate(45deg);"
-              >
-                <div>
-                  <span>${this.lowerValue.toFixed(0)}${this.unit}</span>
-                </div>
-              </div>
+              ${this.sliderThumbLabel
+                ? html` <div
+                    class="slider-thumb-label ${this.getColor(this.variant)}"
+                    style="position: absolute; left: ${lowerPercent.toFixed(
+                      0
+                    )}%; transform: translateX(-30%) translateY(30%) translateY(-100%) rotate(45deg);"
+                  >
+                    <div>
+                      <span>${this.lowerValue.toFixed(0)}${this.unit}</span>
+                    </div>
+                  </div>`
+                : ""}
             </div>
             <div
-              class="slider-track multi"
+              class="slider-track multi ${this.getColor(this.variant)}"
               style="width: ${lowerPercent.toFixed(0)}%;"
               @mousedown="${(e) => this.startDrag(e, "track")}"
+              @touchstart="${(e) => this.startDrag(e, "track")}"
             ></div>
             <div
-              class="slider-track multi"
+              class="slider-track multi ${this.getColor(this.variant)}"
               style="left: ${lowerPercent.toFixed(0)}%; right: ${100 -
               upperPercent.toFixed(0)}%;"
               @mousedown="${(e) => this.startDrag(e, "track")}"
+              @touchstart="${(e) => this.startDrag(e, "track")}"
             ></div>
 
             <div
               tabindex="-1"
-              class="slider-thumb-container upper-thumb primary"
+              class="slider-thumb-container upper-thumb ${this.getColor(
+                this.variant
+              )}"
               style="transition: all 0.1s cubic-bezier(0.25, 0.8, 0.5, 1) 0s; left: calc(${upperPercent.toFixed(
                 0
               )}% - 8px);"
               @mousedown="${(e) => this.startDrag(e, "upper")}"
+              @touchstart="${(e) => this.startDrag(e, "upper")}"
             >
               <div
-                class="slider-thumb primary"
-                style="left: ${upperPercent.toFixed(0)}%"
+                class="slider-thumb ${this.getColor(this.variant)}"
+                style="left: calc(${upperPercent.toFixed(0)}% + 3px);"
               ></div>
-
-              <div
-                class="slider-thumb-label primary"
-                style="position: absolute; left: ${upperPercent.toFixed(
-                  0
-                )}%; transform: translateX(-30%) translateY(30%) translateY(-100%) rotate(45deg);"
-              >
-                <div>
-                  <span>${this.upperValue.toFixed(0)}${this.unit}</span>
-                </div>
-              </div>
+              ${this.sliderThumbLabel
+                ? html` <div
+                    class="slider-thumb-label ${this.getColor(this.variant)}"
+                    style="position: absolute; left: calc(${upperPercent.toFixed(
+                      0
+                    )}% + 3px); transform: translateX(-30%) translateY(30%) translateY(-100%) rotate(45deg);"
+                  >
+                    <div>
+                      <span>${this.upperValue.toFixed(0)}${this.unit}</span>
+                    </div>
+                  </div>`
+                : ""}
             </div>
             <div
               class="slider-track multi"
               style="width: ${100 - upperPercent.toFixed(0)}%;"
               @mousedown="${(e) => this.startDrag(e, "track")}"
+              @touchstart="${(e) => this.startDrag(e, "track")}"
             ></div>
-
             ${this.ticks > 0
-              ? html`<div class="slider-ticks">
-                  ${Array.from({ length: this.ticks }, (_, index) => {
-                    // Calculate position for each tick
-                    const tickPosition = (index / (this.ticks - 1)) * 100; // Adjusted formula
-                    return html`
-                      <div
-                        class="slider-tick"
-                        style="left: ${tickPosition.toFixed(0)}%;
-                        top: calc(50% - 10px);"
-                      >
-                        <div class="slider-tick-label">${this.tickLabel} X</div>
-                      </div>
-                    `;
-                  })}
-                </div>`
+              ? html`
+                  <div class="slider-ticks">
+                    ${this.tickValues.map((tick, index) => {
+                      const pos =
+                        ((tick - this.min) / (this.max - this.min)) * 100;
+                      return html`
+                        <div
+                          class="slider-tick"
+                          style="left: ${pos}%; top: calc(50% - 10px);"
+                        ></div>
+                        ${this.tickLabels
+                          ? html` <div
+                              class="slider-tick-label"
+                              style="left: ${pos}%; transform: translateX(-50%);"
+                            >
+                              ${this.tickValues[index] || tick}${this.unit ||
+                              ""}
+                            </div>`
+                          : ""}
+                      `;
+                    })}
+                  </div>
+                `
               : ""}
           </div>
-          <div class="slider-max-value">100</div>
+          <div class="slider-max-value">${this.max}${this.unit}</div>
           <div
             role="textbox"
             aria-readonly="true"
             aria-labelledby="slider-input-label"
-            class="slider-value-right"
+            class="slider-value-right${this.hideTextBoxes ||
+            this.hideRightTextBox
+              ? " hidden"
+              : ""}"
           >
             ${this.upperValue.toFixed(0)}
           </div>
@@ -566,11 +629,11 @@ calculateSnapPosition(positionPercent) {
       return this.renderMultiRangeSlider();
     } else if (this.rangeSlider) {
       return this.renderRangeSlider();
-    } else if (this.snapToSlider) {
-      return this.renderSnapToTicksSlider();
+    } else if (this.discreteSlider) {
+      return this.renderDiscreteSlider();
     } else {
       return html`<p>
-        Please set either multiRangeSlider, snapToSlider or rangeSlider to true.
+        Please set either rangeSlider or multiRangeSlider in your component.
       </p>`;
     }
   }

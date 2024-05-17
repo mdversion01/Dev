@@ -16,7 +16,43 @@ export const sliderStyles = css`
   .primary {
     background-color: #1867c0 !important;
     border-color: #1867c0 !important;
-    color: #1867c0 !important;
+    color: #1867c0;
+  }
+
+  .secondary {
+    background-color: #6c757d !important;
+    border-color: #6c757d !important;
+    color: #6c757d;
+  }
+
+  .success {
+    background-color: #28a745 !important;
+    border-color: #28a745 !important;
+    color: #28a745;
+  }
+
+  .info {
+    background-color: #17a2b8 !important;
+    border-color: #17a2b8 !important;
+    color: #17a2b8;
+  }
+
+  .warning {
+    background-color: #ffc107 !important;
+    border-color: #ffc107 !important;
+    color: #ffc107;
+  }
+
+  .danger {
+    background-color: #dc3545 !important;
+    border-color: #dc3545 !important;
+    color: #dc3545;
+  }
+
+  .dark {
+    background-color: #343a40 !important;
+    border-color: #343a40 !important;
+    color: #343a40;
   }
 
   .form-group {
@@ -63,6 +99,20 @@ export const sliderStyles = css`
     flex: 1;
   }
 
+  .slider-background-track {
+    position: absolute;
+    height: 0.125rem;
+    background-color: #ccc; /* Light grey background */
+    width: 100%;
+  }
+
+  .slider-moving-track {
+    position: absolute;
+    height: 0.125rem;
+    background-color: #383838; /* Blue color for the selected range */
+    transition: width 0.1s ease; /* Smooth transition for the moving track */
+  }
+
   .slider-track {
     height: 0.125rem;
     position: absolute;
@@ -86,10 +136,6 @@ export const sliderStyles = css`
     content: "";
     display: block;
     height: 100%;
-  }
-
-  .slider-track::before {
-    background-color: #6e6e6e;
   }
 
   .slider-track ~ .slider-track {
@@ -147,22 +193,8 @@ export const sliderStyles = css`
     position: absolute;
     width: 100%;
     height: 100%;
-    background-color: #383838;
+    background-color: currentColor;
   }
-
-  .slider-background-track {
-    position: absolute;
-    height: 4px;
-    background-color: #ccc; /* Light grey background */
-    width: 100%;
-}
-
-.slider-moving-track {
-    position: absolute;
-    height: 4px;
-    background-color: #007bff; /* Blue color for the selected range */
-    transition: width 0.1s ease; /* Smooth transition for the moving track */
-}
 
   .slider-ticks {
     left: 0;
@@ -183,14 +215,6 @@ export const sliderStyles = css`
     width: 0.125rem;
     margin: 0;
   }
-
-  /* .slider-tick:first-of-type {
-    margin-left: 0;
-  }
-
-  .slider-tick:last-of-type {
-    margin-right: 0;
-  } */
 
   .slider-tick-label {
     color: rgb(108, 117, 125);
@@ -215,21 +239,6 @@ export const sliderStyles = css`
     transform: translateX(-50%);
   }
 
-  /* [dir="ltr"] .slider-tick::after {
-    left: calc(50% - 0.0625rem);
-  } */
-
-  input {
-    margin: 0;
-    font-size: inherit;
-    font-family: inherit;
-    line-height: inherit;
-  }
-
-  input {
-    overflow: visible;
-  }
-
   .slider-thumb {
     position: absolute;
     width: 0.875rem;
@@ -249,7 +258,7 @@ export const sliderStyles = css`
     z-index: 2;
   }
 
-  .slider-input {
+  /* .slider-input {
     width: 100%;
     height: 1.5rem;
     padding: 0;
@@ -260,7 +269,6 @@ export const sliderStyles = css`
     border: 0;
     cursor: grab;
     margin: 0;
-    /* pointer-events: auto; */
     position: absolute;
     transform: translate(0, 0);
     transition: transform 0.11s cubic-bezier(0.2, 0, 0.38, 0.9),
@@ -323,11 +331,10 @@ export const sliderStyles = css`
 
   .slider-input::-webkit-slider-thumb:active {
     background-color: #71acff;
-    /* background-color: #0d6efd; */
     transform: scale(1) translateY(-40%);
     transition: transform 0.11s cubic-bezier(0.2, 0, 0.38, 0.9),
       background-color 0.11s cubic-bezier(0.2, 0, 0.38, 0.9);
-  }
+  } */
 
   .slider-thumb-container {
     position: absolute;
@@ -393,7 +400,7 @@ export const sliderStyles = css`
     transform: scale(1);
   }
 
-  .slider-input::-webkit-slider-runnable-track {
+  /* .slider-input::-webkit-slider-runnable-track {
     width: 100%;
     height: 0;
     color: transparent;
@@ -409,16 +416,16 @@ export const sliderStyles = css`
     cursor: grab;
     -moz-appearance: none;
     appearance: none;
-    background-color: #383838; /* #0d6efd */
+    background-color: #383838; 
     border: 0;
     border-radius: 50%;
     -moz-transition: background-color 0.15s ease-in-out,
       border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
     transition: background-color 0.15s ease-in-out,
       border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-  }
+  } */
 
-  @media (prefers-reduced-motion: reduce) {
+  /* @media (prefers-reduced-motion: reduce) {
     .slider-input::-moz-range-thumb {
       -moz-transition: none;
       transition: none;
@@ -454,7 +461,7 @@ export const sliderStyles = css`
 
   [dir="ltr"] .slider-input {
     left: -2px;
-  }
+  } */
 
   .slider-min-value,
   .slider-max-value {
@@ -477,6 +484,13 @@ export const sliderStyles = css`
     min-width: 40px;
   }
 
+  .slider-value-left.hidden,
+  .slider-value-right.hidden {
+    display: none;
+    visibility: hidden;
+  }
+
+
   .slider .slider-container .slider-value-left,
   .slider .slider-container .slider-value-right {
     background-color: #eaeaea; /* #909090 */
@@ -496,6 +510,7 @@ export const sliderStyles = css`
   }
 
   .slider-thumb-label {
+    background-color: #383838;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -517,5 +532,9 @@ export const sliderStyles = css`
 
   .slider-thumb-label > * {
     transform: rotate(-45deg);
+  }
+
+  .slider-thumb-label.warning {
+    color: #000 !important;
   }
 `;

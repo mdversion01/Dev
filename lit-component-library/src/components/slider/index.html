@@ -34,8 +34,24 @@
           <section class="section">
             <section class="display-box" id="db-1">
               <section class="display-box-demo">
-                <custom-slider label="Volume:" min="0" max="100" unit="%" rangeSlider></custom-slider>
+              <div style="margin-bottom: 10px; font-size: 12px">
+                Default Slider<br /> 
+                <basic-range-slider label="Range:" min="0" max="100"></basic-range-slider>
+              </div>
+              <div style="margin-bottom: 10px; font-size: 12px">
+                Default Slider with variant color defined<br /> 
+                <basic-range-slider label="Range:" min="0" max="100" variant="primary"></basic-range-slider>
+                
+                </div>
+                <div style="margin-bottom: 10px; font-size: 12px">
+                  Default Slider with slider label removed<br />
+                  <basic-range-slider min="0" max="100" variant="warning"></basic-range-slider> 
+                </div>
 
+                <div style="margin-bottom: 0px; font-size: 12px">
+                  Default Slider with right side textbox removed<br />
+                  <basic-range-slider label="Range:" min="0" max="100" variant="warning" hideRightTextBox></basic-range-slider> 
+                </div>
               </section>
               <section class="display-box-meta markdown">
                 <div class="display-box-title">Basic Usage</div>
@@ -48,8 +64,11 @@
           <section class="section">
             <section class="display-box" id="db-1">
               <section class="display-box-demo">
-                <custom-slider label="Volume:" min="0" max="100" unit="%" snapToSlider></custom-slider>
-
+                <div style="margin-bottom: 0px; font-size: 12px">
+                  Slider with ticks<br /> 
+                  <basic-range-slider label="Volume:" unit="%" min="0" max="100" ticks="5" id="tickValuesEx1" variant="danger"></basic-range-slider>
+                </div>
+               
               </section>
               <section class="display-box-meta markdown">
                 <div class="display-box-title">Basic Usage</div>
@@ -59,6 +78,102 @@
             </section>
           </section>
 
+          <section class="section">
+            <section class="display-box" id="db-1">
+              <section class="display-box-demo">
+                <div style="margin-bottom: 0px; font-size: 12px">
+                  Slider with ticks and tick labels<br /> 
+                  <basic-range-slider label="Volume:" unit="%" min="0" max="100" ticks="5" tickLabels id="tickValuesEx2" variant="info"></basic-range-slider>
+                </div>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">Text</div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
+
+          <section class="section">
+            <section class="display-box" id="db-1">
+              <section class="display-box-demo">
+                <div style="margin-bottom: 0px; font-size: 12px">
+                  Slider with snap to ticks<br /> 
+                  <basic-range-slider label="Volume:" unit="%" min="0" max="100" ticks="5" snapToTicks tickLabels id="tickValuesEx5" variant="primary"></basic-range-slider>
+                </div>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">Text</div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
+
+          <section class="section">
+            <section class="display-box" id="db-1">
+              <section class="display-box-demo">
+                <div style="margin-bottom: 0px; font-size: 12px">
+                  Slider with thumb label<br /> 
+                  <basic-range-slider label="Range:" min="0" max="100" sliderThumbLabel variant="primary"></basic-range-slider>
+                </div>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">Text</div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
+
+          <section class="section">
+            <section class="display-box" id="db-1">
+              <section class="display-box-demo">
+                <div style="margin-bottom: 0px; font-size: 12px">
+                  Slider with thumb label<br /> 
+                  <basic-range-slider label="Volume:" min="0" max="100" unit="%" ticks="5" sliderThumbLabel id="tickValuesEx3" variant="warning"></basic-range-slider>
+                </div>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">Text</div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
+
+          <section class="section">
+            <section class="display-box" id="db-1">
+              <section class="display-box-demo">
+                <div style="margin-bottom: 0px; font-size: 12px">
+                  Slider with thumb label<br /> 
+                  <basic-range-slider label="Volume:" min="0" max="100" unit="%" ticks="10" sliderThumbLabel snapToTicks id="tickValuesEx4" variant="danger"></basic-range-slider>
+                </div>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">Text</div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
+
+          <section class="section">
+            <section class="display-box" id="db-1">
+              <section class="display-box-demo">
+                <discrete-slider label="Fruit:" ticks="5" tickLabels id="discreteSlider1"></discrete-slider>
+
+                <discrete-slider label="Items:" ticks="5" tickLabels id="discreteSlider2" variant="success"></discrete-slider>
+                
+                <discrete-slider label="Bands:" ticks="5" tickLabels id="discreteSlider3" variant="info" hideRightTextBox></discrete-slider>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">Discrete Slider</div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
 
         </section>
 
@@ -66,7 +181,79 @@
           <section class="section">
             <section class="display-box" id="db-1">
               <section class="display-box-demo">
-                <custom-slider label="Range:" min="0" max="100" unit="%" multiRangeSlider></custom-slider>
+                <multi-range-slider label="Range:" min="0" max="100" unit="%"></multi-range-slider>
+                
+                <multi-range-slider label="Range:" min="0" max="100" unit="%" variant="primary"></multi-range-slider>
+               
+                <multi-range-slider label="Range:" min="0" max="100" unit="%" variant="info" hideTextBoxes></multi-range-slider>
+                
+                <multi-range-slider min="0" max="100" unit="%" variant="danger"></multi-range-slider>
+                
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">Text</div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
+
+          <section class="section">
+            <section class="display-box" id="db-1">
+              <section class="display-box-demo">
+                <multi-range-slider label="Range:" min="0" max="100" unit="%" ticks="5" id="multiRange1" variant="success"></multi-range-slider>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">Text</div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
+
+          <section class="section">
+            <section class="display-box" id="db-1">
+              <section class="display-box-demo">
+                <multi-range-slider label="Range:" min="0" max="100" unit="%" ticks="5" tickLabels snapToTicks id="multiRange2" variant="warning"></multi-range-slider>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">Text</div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
+
+          <section class="section">
+            <section class="display-box" id="db-1">
+              <section class="display-box-demo">
+                <multi-range-slider label="Range:" min="0" max="100" unit="%" sliderThumbLabel></multi-range-slider>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">Text</div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
+
+          <section class="section">
+            <section class="display-box" id="db-1">
+              <section class="display-box-demo">
+                <multi-range-slider label="Range:" min="0" max="100" unit="%" ticks="5" sliderThumbLabel id="multiRange3" variant="warning"></multi-range-slider>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">Text</div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
+
+          <section class="section">
+            <section class="display-box" id="db-1">
+              <section class="display-box-demo">
+                <multi-range-slider label="Range:" min="0" max="100" unit="%" multiRangeSlider ticks="5" sliderThumbLabel tickLabels snapToTicks id="multiRange4" variant="danger"></multi-range-slider>
               </section>
               <section class="display-box-meta markdown">
                 <div class="display-box-title">Basic Usage</div>
@@ -457,6 +644,49 @@
     </div> -->
 
     <script src="./slider.js" type="module"></script>
+    <script src="./basic-slider.js" type="module"></script>
+    <script src="./multi-range-slider.js" type="module"></script>
+    <script src="./discrete-slider.js" type="module"></script>
+    
+    <script>
+       document.addEventListener('DOMContentLoaded', () => {
+            const slider1 = document.getElementById('tickValuesEx1');
+            slider1.tickValues = [0, 25, 50, 75, 100];
+
+            const slider2 = document.getElementById('tickValuesEx2');
+            slider2.tickValues = [0, 25, 50, 75, 100];
+
+            const slider3 = document.getElementById('tickValuesEx3');
+            slider3.tickValues = [0, 25, 50, 75, 100];
+            
+            const slider4 = document.getElementById('tickValuesEx4');
+            slider4.tickValues = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
+
+            const slider5 = document.getElementById('tickValuesEx5');
+            slider5.tickValues = [0, 25, 50, 75, 100];
+
+            const multiRange1 = document.getElementById('multiRange1');
+            multiRange1.tickValues = [0, 25, 50, 75, 100];
+
+            const multiRange2 = document.getElementById('multiRange2');
+            multiRange2.tickValues = [0, 25, 50, 75, 100];
+
+            const multiRange3 = document.getElementById('multiRange3');
+            multiRange3.tickValues = [0, 25, 50, 75, 100];
+
+            const multiRange4 = document.getElementById('multiRange4');
+            multiRange4.tickValues = [0, 25, 50, 75, 100];
+
+            const discreteSlider1 = document.getElementById('discreteSlider1');
+            discreteSlider1.stringValues = ["Apple", "Banana", "Orange", "Mango", "Pineapple"];
+
+            const discreteSlider2 = document.getElementById('discreteSlider2');
+            discreteSlider2.stringValues = [0, 25, 50, 75, 100];
+
+            const discreteSlider3 = document.getElementById('discreteSlider3');
+            discreteSlider3.stringValues = ["Beatles", "Led Zeppelin", "KISS", "Aerosmith", "Queen"];
+        });
+    </script>
 
     <!-- <script src="../../../node_modules/bootstrap/dist/js/bootstrap.js"></script> -->
   </body>
