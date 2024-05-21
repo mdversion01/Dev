@@ -20,11 +20,13 @@ class BasicRangeSlider extends LitElement {
   static properties = {
     label: { type: String },
     value: { type: Number },
+    disabled: { type: Boolean, reflect: true },
     hideTextBoxes: { type: Boolean },
     hideLeftTextBox: { type: Boolean },
     hideRightTextBox: { type: Boolean },
     min: { type: Number },
     max: { type: Number },
+    plumage: { type: Boolean },
     sliderThumbLabel: { type: Boolean },
     snapToTicks: { type: Boolean },
     ticks: { type: Number },
@@ -38,11 +40,13 @@ class BasicRangeSlider extends LitElement {
     super();
     this.label = "";
     this.value = 0;
+    this.disabled = false;
     this.hideTextboxes = false;
     this.hideLeftTextBox = false;
     this.hideRightTextBox = false;
     this.min = 0;
     this.max = 100;
+    this.plumage = false;
     this.sliderThumbLabel = false;
     this.snapToTicks = false;
     this.ticks = "";
@@ -84,6 +88,7 @@ class BasicRangeSlider extends LitElement {
   }
 
   handleKeyDown(event) {
+    if (this.disabled) return;
     let increment = 0;
     switch (event.key) {
       case "ArrowRight":
@@ -153,17 +158,19 @@ class BasicRangeSlider extends LitElement {
 
   render() {
     const valuePercent =
-      ((this.value - this.min) / (this.max - this.min)) * 100;
+      ((this.value.toFixed(0) - this.min) / (this.max - this.min)) * 100;
     return html`
       <div
         dir="ltr"
-        class="slider form-group"
+        class="slider"
         aria-label="${ifDefined(this.label || undefined)}"
         role="slider"
         aria-valuemin="${ifDefined(this.min || undefined)}"
         aria-valuemax="${ifDefined(this.max || undefined)}"
-        aria-valuenow="${ifDefined(this.value || undefined)}"
+        aria-valuenow="${ifDefined(this.value.toFixed(0) || undefined)}"
         aria-orientation="horizontal"
+        aria-disabled="${this.disabled ? 'true' : 'false'}"
+        disabled="${ifDefined(this.disabled || undefined)}"
       >
         ${this.sliderThumbLabel
           ? ""
@@ -181,14 +188,29 @@ class BasicRangeSlider extends LitElement {
               style="width: ${valuePercent.toFixed(0)}%;"
             ></div>
             <div
-              class="slider-thumb-container ${this.getColor(this.variant)}"
+              class="${this.disabled ? '' : 'slider-thumb-container'} ${this.getColor(this.variant)}"
               style="left: ${valuePercent.toFixed(
                 0
               )}%; transition: all 0.1s cubic-bezier(0.25, 0.8, 0.5, 1) 0s;"
               @mousedown="${this.dragStart}"
             >
-              <div class="slider-thumb ${this.getColor(this.variant)}"></div>
-
+              ${this.plumage
+                ? html`
+                    <div
+                      class="slider-handle ${this.getColor(this.variant)}"
+                      role="slider"
+                      aria-label="Slider thumb"
+                      tabindex="0"
+                    ></div>
+                  `
+                : html`
+                    <div
+                      class="slider-thumb ${this.getColor(this.variant)}"
+                      role="slider"
+                      aria-label="Slider thumb"
+                      tabindex="0"
+                    ></div>
+                  `}
               ${this.sliderThumbLabel
                 ? html` <div
                     class="slider-thumb-label ${this.getColor(this.variant)}"
@@ -265,6 +287,7 @@ class BasicRangeSlider extends LitElement {
   }
 
   dragStart(event) {
+    if (this.disabled) return;
     event.preventDefault();
     this.initialX = event.clientX;
     this.dragging = true;

@@ -18,16 +18,17 @@ class DiscreteSlider extends LitElement {
   ];
 
   static properties = {
+    disabled: { type: Boolean, reflect: true },
     hideTextBoxes: { type: Boolean },
     hideLeftTextBox: { type: Boolean },
     hideRightTextBox: { type: Boolean },
     label: { type: String },
     min: { type: Number, attribute: "min" },
     max: { type: Number, attribute: "max" },
+    plumage: { type: Boolean },
     selectedIndex: { type: Number },
     stringValues: { type: Array },
     ticks: { type: Number },
-    //tickValues: { type: Array }, // Array of values for each tick
     tickLabels: { type: Boolean }, // Optional: Labels for each tick
     unit: { type: String },
     variant: { type: String },
@@ -35,16 +36,16 @@ class DiscreteSlider extends LitElement {
 
   constructor() {
     super();
+    this.disabled = false;
     this.hideTextboxes = false;
     this.hideLeftTextBox = false;
     this.hideRightTextBox = false;
     this.label = "";
     this.min = 0; // Ensure proper default initialization
     this.max = 100; // Ensure proper default initialization
+    this.plumage = false;
     this.selectedIndex = 0;
     this.stringValues = [];
-    //this.ticks = "";
-    //this.tickValues = []; // Example tick positions
     this.tickLabels = false; // Corresponding labels
     this.unit = "";
     this.variant = "";
@@ -92,6 +93,7 @@ class DiscreteSlider extends LitElement {
   }
 
   handleKeyDown(event) {
+    if (this.disabled) return;
     let newIndex;
     switch (event.key) {
       case "ArrowRight":
@@ -133,19 +135,20 @@ class DiscreteSlider extends LitElement {
   }
 
   selectValue(index) {
-    this.selectedIndex = index;  // Update the selected index
-    this.requestUpdate();  // Request an update to re-render the component
-  
+    this.selectedIndex = index; // Update the selected index
+    this.requestUpdate(); // Request an update to re-render the component
+
     // Dispatch the custom event with detailed information about the current state
-    this.dispatchEvent(new CustomEvent("value-changed", {
-      detail: {
-        selectedIndex: this.selectedIndex,
-        value: this.stringValues[this.selectedIndex],  // Numeric or actual value if needed
-        stringValue: this.stringValues[this.selectedIndex]  // String representation of the value
-      }
-    }));
+    this.dispatchEvent(
+      new CustomEvent("value-changed", {
+        detail: {
+          selectedIndex: this.selectedIndex,
+          value: this.stringValues[this.selectedIndex], // Numeric or actual value if needed
+          stringValue: this.stringValues[this.selectedIndex], // String representation of the value
+        },
+      })
+    );
   }
-  
 
   render() {
     const valuePercent =
@@ -153,13 +156,14 @@ class DiscreteSlider extends LitElement {
     return html`
       <div
         dir="ltr"
-        class="slider form-group"
+        class="slider"
         aria-label="${ifDefined(this.label || undefined)}"
         role="slider"
         aria-valuemin="${ifDefined(this.min || undefined)}"
         aria-valuemax="${ifDefined(this.max || undefined)}"
         aria-valuenow="${ifDefined(this.value || undefined)}"
         aria-orientation="horizontal"
+        disabled="${ifDefined(this.disabled || undefined)}"
       >
         ${this.label === ""
           ? ""
@@ -174,15 +178,27 @@ class DiscreteSlider extends LitElement {
               style="width: ${valuePercent.toFixed(0)}%;"
             ></div>
             <div
-              class="slider-thumb-container ${this.getColor(this.variant)}"
+              class="${this.disabled ? '' : 'slider-thumb-container'} ${this.getColor(this.variant)}"
               style="left: ${valuePercent.toFixed(
                 0
               )}%; transition: all 0.1s cubic-bezier(0.25, 0.8, 0.5, 1) 0s;"
               @mousedown="${this.dragStart}"
               @keydown="${this.handleKeyDown}"
-              
             >
-              <div class="slider-thumb ${this.getColor(this.variant)}"></div>
+            ${this.plumage ? html`
+            <div
+                class="slider-handle ${this.getColor(this.variant)}"
+                role="slider"
+                aria-label="Slider thumb"
+              ></div>
+              ` : html`
+            <div
+                class="slider-thumb ${this.getColor(this.variant)}"
+                role="slider"
+                aria-label="Slider thumb"
+              ></div>
+              `}
+              
             </div>
             <div class="slider-ticks">
               ${this.stringValues.map((tick, index) => {
@@ -222,6 +238,7 @@ class DiscreteSlider extends LitElement {
   }
 
   dragStart(event) {
+    if (this.disabled) return;
     event.preventDefault();
     this.initialX = event.clientX;
     this.dragging = true;

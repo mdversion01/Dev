@@ -258,84 +258,6 @@ export const sliderStyles = css`
     z-index: 2;
   }
 
-  /* .slider-input {
-    width: 100%;
-    height: 1.5rem;
-    padding: 0;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    background-color: transparent;
-    border: 0;
-    cursor: grab;
-    margin: 0;
-    position: absolute;
-    transform: translate(0, 0);
-    transition: transform 0.11s cubic-bezier(0.2, 0, 0.38, 0.9),
-      background-color 0.11s cubic-bezier(0.2, 0, 0.38, 0.9);
-    z-index: 10;
-    -webkit-appearance: none;
-  }
-
-  .slider-input:focus,
-  .slider-thumb:focus {
-    outline: 0;
-  }
-
-  .slider-input:hover::-webkit-slider-thumb {
-    transform: scale(1.4);
-    transition: transform 0.11s cubic-bezier(0.2, 0, 0.38, 0.9),
-      background-color 0.11s cubic-bezier(0.2, 0, 0.38, 0.9);
-  }
-
-  .slider-input:focus::-webkit-slider-thumb,
-  .slider-thumb:focus {
-    box-shadow: 0 0 0 1px #fff, 0 0 0 0.25rem rgba(13, 110, 253, 0.4);
-    background-color: #0d6efd;
-    transform: scale(1);
-  }
-
-  .slider-input:focus::-moz-range-thumb,
-  .slider-thumb:focus {
-    box-shadow: 0 0 0 1px #fff, 0 0 0 0.25rem rgba(13, 110, 253, 0.4);
-    background-color: #0d6efd;
-  }
-
-  .slider-input::-moz-focus-outer {
-    border: 0;
-  }
-
-  .slider-input::-webkit-slider-thumb {
-    width: 0.875rem;
-    height: 0.875rem;
-    cursor: grab;
-    margin-top: -0.45rem;
-    -webkit-appearance: none;
-    appearance: none;
-    background-color: #383838;
-    border: 0;
-    border-radius: 50%;
-    -webkit-transition: background-color 0.15s ease-in-out,
-      border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-    transition: background-color 0.15s ease-in-out,
-      border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-    z-index: 15;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .slider-input::-webkit-slider-thumb {
-      -webkit-transition: none;
-      transition: none;
-    }
-  }
-
-  .slider-input::-webkit-slider-thumb:active {
-    background-color: #71acff;
-    transform: scale(1) translateY(-40%);
-    transition: transform 0.11s cubic-bezier(0.2, 0, 0.38, 0.9),
-      background-color 0.11s cubic-bezier(0.2, 0, 0.38, 0.9);
-  } */
-
   .slider-thumb-container {
     position: absolute;
     transition: 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
@@ -400,72 +322,93 @@ export const sliderStyles = css`
     transform: scale(1);
   }
 
-  /* .slider-input::-webkit-slider-runnable-track {
-    width: 100%;
-    height: 0;
-    color: transparent;
-    cursor: pointer;
-    background-color: #6c757d;
-    border-color: transparent;
-    border-radius: 1rem;
-  }
+  .slider[disabled] {
+    opacity: 0.5; /* Dim the slider to indicate it's disabled */
+    pointer-events: none; /* Disable all interactions */
 
-  .slider-input::-moz-range-thumb {
-    width: 0.875rem;
-    height: 0.875rem;
-    cursor: grab;
-    -moz-appearance: none;
-    appearance: none;
-    background-color: #383838; 
-    border: 0;
-    border-radius: 50%;
-    -moz-transition: background-color 0.15s ease-in-out,
-      border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-    transition: background-color 0.15s ease-in-out,
-      border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-  } */
-
-  /* @media (prefers-reduced-motion: reduce) {
-    .slider-input::-moz-range-thumb {
-      -moz-transition: none;
-      transition: none;
+     .slider-container .slider-controls .slider-thumb-container[disabled]:hover .slider-thumb::before {
+      transform: scale(0);
     }
   }
 
-  .slider-input::-moz-range-thumb:active,
-  .slider-thumb:active {
-    background-color: #0d6efd;
+  .slider-handle {
+    border-radius: 50%;
+    border-style: solid;
+    border-width: 0;
+    box-sizing: border-box;
+    cursor: grab;
+    display: inline-block;
+    height: 0.875rem;
+    margin: 0;
+    outline: none;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    transition: transform 0.11s cubic-bezier(0.2, 0, 0.38, 0.9),
+      background-color 0.11s cubic-bezier(0.2, 0, 0.38, 0.9);
+    width: 0.875rem;
+    z-index: 2;
   }
 
-  .slider-input::-moz-range-track {
-    width: 100%;
-    height: 0rem;
-    color: transparent;
-    cursor: pointer;
-    background-color: #6c757d;
-    border-color: transparent;
-    border-radius: 1rem;
+  .slider-handle:before {
+    border-radius: 50%;
+    content: "";
+    display: block;
+    height: 0.875rem;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: box-shadow 0.11s cubic-bezier(0.2, 0, 0.38, 0.9),
+      width 0.13s ease-out, height 0.13s ease-out;
+    width: 0.875rem;
   }
 
-  .slider-input:disabled {
-    pointer-events: none;
+  .slider-handle {
+    background-color: #383838;
+    border-color: #383838;
   }
 
-  .slider-input:disabled::-webkit-slider-thumb {
-    background-color: #6c757d;
+  .slider-handle.is-focused {
+    background-color: #383838;
   }
 
-  .slider-input:disabled::-moz-range-thumb {
-    background-color: #6c757d;
+  .slider-handle.is-focused,
+  .slider-handle:focus {
+    background-color: #383838;
+    box-shadow: 0 0 0 2px currentColor, inset 0 0 0 2px #fff;
   }
 
-  [dir="ltr"] .slider-input {
-    left: -2px;
-  } */
+  .slider-handle.is-dragged,
+  .slider-handle:active {
+    background-color: #383838;
+    box-shadow: 0 0 0 2px currentColor, inset 0 0 0 2px #fff;
+  }
+
+  .slider-handle.is-dragged,
+  .slider-handle:active,
+  .slider-handle.is-focused {
+    cursor: grabbing;
+  }
+
+  .slider-handle.is-dragged,
+  .slider-handle:active,
+  .slider-handle.is-focused,
+  .slider-handle.is-tophandle {
+    z-index: 3;
+  }
 
   .slider-min-value,
   .slider-max-value {
     font-size: 0.8333rem;
+  }
+
+  .slider-handle.is-dragged,
+  .slider-handle:active,
+  .slider-handle:hover,
+  .slider-handle:focus,
+  .slider-handle.is-focused,
+  .slider-handle.is-tophandle {
+    transform: translate(-50%, -50%) scale(1.25);
   }
 
   .slider-value-left,
@@ -489,7 +432,6 @@ export const sliderStyles = css`
     display: none;
     visibility: hidden;
   }
-
 
   .slider .slider-container .slider-value-left,
   .slider .slider-container .slider-value-right {
