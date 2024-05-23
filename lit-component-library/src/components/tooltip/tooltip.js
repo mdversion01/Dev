@@ -42,7 +42,6 @@ class TooltipComponent extends LitElement {
     this.container = this.getAttribute('data-container') || this.container;
     this.customClass = this.getAttribute('data-custom-class') || this.customClass;
     this.variant = this.getAttribute('data-variant') || this.variant;
-    this.applyTriggers();
     window.addEventListener('scroll', this.handleScroll, true);
 
     // Inject tooltip styles into the document head
@@ -52,6 +51,10 @@ class TooltipComponent extends LitElement {
       style.innerHTML = tooltipStyles;
       document.head.appendChild(style);
     }
+  }
+
+  firstUpdated() {
+    this.applyTriggers();
   }
 
   disconnectedCallback() {
@@ -83,18 +86,35 @@ class TooltipComponent extends LitElement {
 
   applyTriggers() {
     const triggers = this.trigger.split(' ');
+    const slotElement = this.shadowRoot.querySelector('slot');
 
-    if (triggers.includes('click')) {
-      this.addEventListener('click', this.toggleTooltip);
-    }
-    if (triggers.includes('hover')) {
-      this.addEventListener('mouseenter', this.showTooltip);
-      this.addEventListener('mouseleave', this.hideTooltip);
-    }
-    if (triggers.includes('focus')) {
-      this.addEventListener('focus', this.showTooltip);
-      this.addEventListener('blur', this.hideTooltip);
-    }
+    const addEventListeners = (assignedElements) => {
+      if (assignedElements.length > 0) {
+        const triggerElement = assignedElements[0];
+        triggerElement.setAttribute('tabindex', '0'); // Make the element focusable
+        if (triggers.includes('click')) {
+          triggerElement.addEventListener('click', this.toggleTooltip.bind(this));
+        }
+        if (triggers.includes('hover')) {
+          triggerElement.addEventListener('mouseenter', this.showTooltip.bind(this));
+          triggerElement.addEventListener('mouseleave', this.hideTooltip.bind(this));
+        }
+        if (triggers.includes('focus')) {
+          triggerElement.addEventListener('focus', this.showTooltip.bind(this));
+          triggerElement.addEventListener('blur', this.hideTooltip.bind(this));
+        }
+      }
+    };
+
+    // Initial check for assigned elements
+    const assignedElements = slotElement.assignedElements();
+    addEventListeners(assignedElements);
+
+    // Add event listener for future slot changes
+    slotElement.addEventListener('slotchange', () => {
+      const assignedElements = slotElement.assignedElements();
+      addEventListeners(assignedElements);
+    });
   }
 
   handleScroll = () => {
@@ -167,6 +187,8 @@ class TooltipComponent extends LitElement {
 
   adjustTooltipPosition() {
     const triggerElement = this.shadowRoot.querySelector('slot').assignedElements()[0];
+    if (!triggerElement || !this.tooltipElement) return;
+
     const triggerRect = triggerElement.getBoundingClientRect();
     const tooltipRect = this.tooltipElement.getBoundingClientRect();
 
