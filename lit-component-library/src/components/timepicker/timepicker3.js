@@ -1,9 +1,10 @@
 import { LitElement, html, css } from "lit";
+import { timepickerStyles } from "./timepicker-styles.js";
 
 class TimePicker extends LitElement {
-  static styles = css`
+  static styles = [ timepickerStyles, css`
     /* Add your component styles here */
-  `;
+  `];
 
   connectedCallback() {
     super.connectedCallback();

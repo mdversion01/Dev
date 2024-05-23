@@ -325,10 +325,14 @@ export const sliderStyles = css`
   .slider[disabled] {
     opacity: 0.5; /* Dim the slider to indicate it's disabled */
     pointer-events: none; /* Disable all interactions */
+  }
 
-     .slider-container .slider-controls .slider-thumb-container[disabled]:hover .slider-thumb::before {
-      transform: scale(0);
-    }
+  .slider[disabled]
+    .slider-container
+    .slider-controls
+    .slider-thumb-container:hover
+    .slider-thumb::before {
+    transform: scale(0);
   }
 
   .slider-handle {

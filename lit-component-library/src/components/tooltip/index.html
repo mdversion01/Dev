@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tooltip Component</title>
+
+    <link
+      rel="stylesheet"
+      href="../../../node_modules/bootstrap/dist/css/bootstrap.css"
+    />
+
+    <!-- <link rel="stylesheet" href="./tooltip.css" /> -->
+
+    <link
+      rel="stylesheet"
+      href="../../../node_modules/lit-fontawesome/css/font.css"
+    />
+
+    <link
+      rel="stylesheet"
+      href="../../../node_modules/font-awesome/css/font-awesome.min.css"
+    />
+
+    <link rel="stylesheet" href="../../styles/components.css" />
+
+    <style>
+      button {
+        margin: 20px;
+      }
+
+      .purple {
+        background-color: purple !important;
+      }
+
+      .tooltip.tooltip-top .tooltip-arrow.purple {
+        border-width: 0.5rem 0.375rem 0 !important;
+        background-color: transparent !important;
+      }
+
+      .tooltip.tooltip-top .tooltip-arrow.purple {
+        border-color: purple transparent transparent transparent !important;
+      }
+
+      .tooltip.tooltip-bottom .tooltip-arrow.purple {
+        border-width: 0 0.375rem 0.5rem 0.375rem !important;
+        background-color: transparent !important;
+      }
+
+      .tooltip.tooltip-bottom .tooltip-arrow.purple {
+        border-color: transparent transparent purple transparent !important;
+      }
+
+      .tooltip.tooltip-left .tooltip-arrow.purple {
+        border-width: 0.375rem 0.5rem 0.375rem 0 !important;
+        background-color: transparent !important;
+      }
+
+      .tooltip.tooltip-left .tooltip-arrow.purple {
+        border-color: transparent transparent transparent purple !important;
+      }
+
+      .tooltip.tooltip-right .tooltip-arrow.purple {
+        border-width: 0.375rem 0.5rem 0.375rem 0 !important;
+        background-color: transparent !important;
+      }
+
+      .tooltip.tooltip-right .tooltip-arrow.purple {
+        border-color: transparent purple transparent transparent !important;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="title">Tooltip</div>
+    <div class="demo-wrapper">
+      <div class="main">
+        <section>
+          <section class="section">
+            <section class="display-box" id="db-1">
+              <section class="display-box-demo">
+                <div
+                  style="
+                    display: flex;
+                    justify-content: space-evenly;
+                    flex-wrap: wrap;
+                  "
+                >
+                  <div style="margin: 0 10px 10px 0">
+                    <tooltip-component
+                      data-placement="top"
+                      data-original-title="Tooltip on top"
+                      data-trigger="hover focus"
+                    >
+                      <pl-button
+                        btnText="Hover over me!"
+                        size="sm"
+                        variant="secondary"
+                      ></pl-button>
+                    </tooltip-component>
+                  </div>
+                  <div style="margin: 0 10px 10px 0">
+                    <tooltip-component
+                      data-placement="right"
+                      data-original-title="Tooltip on the right"
+                      data-trigger="hover focus"
+                    >
+                      <pl-button
+                        btnText="Hover over me!"
+                        size="sm"
+                        variant="secondary"
+                      ></pl-button>
+                    </tooltip-component>
+                  </div>
+                  <div style="margin: 0 10px 10px 0">
+                    <tooltip-component
+                      data-placement="left"
+                      data-original-title="Tooltip on the left"
+                      data-trigger="hover focus"
+                    >
+                      <pl-button
+                        btnText="Hover over me!"
+                        size="sm"
+                        variant="secondary"
+                      ></pl-button>
+                    </tooltip-component>
+                  </div>
+                  <div style="margin: 0 10px 10px 0">
+                    <tooltip-component
+                      data-placement="bottom"
+                      data-original-title="Tooltip on the bottom"
+                      data-trigger="hover focus"
+                    >
+                      <pl-button
+                        btnText="Hover over me!"
+                        size="sm"
+                        variant="secondary"
+                      ></pl-button>
+                    </tooltip-component>
+                  </div>
+                  <div style="margin: 0 10px 10px 0">
+                    <tooltip-component
+                      data-placement="auto"
+                      data-original-title="Tooltip placement set to auto"
+                      data-trigger="hover focus"
+                    >
+                      <pl-button
+                        btnText="Hover over me!"
+                        size="sm"
+                        variant="secondary"
+                      ></pl-button>
+                    </tooltip-component>
+                  </div>
+                </div>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">
+                  <p>
+                    Basic tooltips are a good choice to provide the user with
+                    concise basic application and content information.
+                  </p>
+                  <p>
+                    Users can set the placement of a tooltip by assigning 'top',
+                    'bottom', 'left', 'right', and 'auto' to the 'position' or
+                    'data-placement' props. When 'auto' is specified, it will
+                    dynamically reorient the tooltip.
+                  </p>
+                  <p>
+                    The placement of a tooltip will flip if there is not enough
+                    space in the specified direction.
+                  </p>
+                </div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
+
+          <section class="section">
+            <section class="display-box" id="db-1">
+              <section class="display-box-demo">
+                <div
+                  style="
+                    display: flex;
+                    justify-content: space-evenly;
+                    flex-wrap: wrap;
+                  "
+                >
+                  <div style="margin: 0 10px 10px 0">
+                    <tooltip-component
+                      data-placement="top"
+                      data-original-title="<span style='display: flex;'><icon-component icon='fas fa-tachometer-alt'>
+                      </icon-component> Tooltip with icon component</span>"
+                      data-trigger="hover focus"
+                    >
+                      <pl-button
+                        btnText="Hover over me!"
+                        size="sm"
+                        variant="secondary"
+                      ></pl-button>
+                    </tooltip-component>
+                  </div>
+                  <div style="margin: 0 10px 10px 0">
+                    <tooltip-component
+                      data-placement="top"
+                      data-original-title="<em>Tooltip</em> with <strong>HTML</strong> added for styling."
+                      data-trigger="hover focus"
+                    >
+                      <pl-button
+                        btnText="Hover over me!"
+                        size="sm"
+                        variant="secondary"
+                      ></pl-button>
+                    </tooltip-component>
+                  </div>
+                  <div style="margin: 0 10px 10px 0">
+                    <tooltip-component
+                      data-placement="top"
+                      data-original-title="<span><i class='fa fa-tachometer'>
+                      </i> Tooltip with icon</span>"
+                      data-trigger="hover focus"
+                    >
+                      <pl-button
+                        btnText="Hover over me!"
+                        size="sm"
+                        variant="secondary"
+                      ></pl-button>
+                    </tooltip-component>
+                  </div>
+                </div>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">
+                  <p>
+                    Basic tooltips are a good choice to provide the user with
+                    concise basic application and content information.
+                  </p>
+                </div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
+        </section>
+
+        <section>
+          <section class="section">
+            <section class="display-box" id="db-1">
+              <section class="display-box-demo">
+                <div
+                  style="
+                    display: flex;
+                    justify-content: space-evenly;
+                    flex-wrap: wrap;
+                  "
+                >
+                  <div style="margin: 0 10px 10px 0">
+                    <tooltip-component
+                      data-placement="top"
+                      data-original-title="Informational"
+                      data-trigger="hover focus"
+                      variant="info"
+                    >
+                      <pl-button
+                        btnText="Informational"
+                        size="sm"
+                        variant="secondary"
+                      ></pl-button>
+                    </tooltip-component>
+                  </div>
+                  <div style="margin: 0 10px 10px 0">
+                    <tooltip-component
+                      data-placement="top"
+                      data-original-title="Danger"
+                      data-trigger="hover focus"
+                      variant="danger"
+                    >
+                      <pl-button
+                        btnText="Danger"
+                        size="sm"
+                        variant="secondary"
+                      ></pl-button>
+                    </tooltip-component>
+                  </div>
+                  <div style="margin: 0 10px 10px 0">
+                    <tooltip-component
+                      data-placement="top"
+                      data-original-title="Warning"
+                      data-trigger="hover focus"
+                      variant="warning"
+                    >
+                      <pl-button
+                        btnText="Warning"
+                        size="sm"
+                        variant="secondary"
+                      ></pl-button>
+                    </tooltip-component>
+                  </div>
+                  <div style="margin: 0 10px 10px 0">
+                    <tooltip-component
+                      position="top"
+                      data-original-title="Success"
+                      data-trigger="hover focus"
+                      variant="success"
+                    >
+                      <pl-button
+                        btnText="Success"
+                        size="sm"
+                        variant="secondary"
+                      ></pl-button>
+                    </tooltip-component>
+                  </div>
+                  <div style="margin: 0 10px 10px 0">
+                    <tooltip-component
+                      position="top"
+                      data-original-title="Custom class color"
+                      data-trigger="hover focus"
+                      customClass="purple"
+                    >
+                      <pl-button
+                        btnText="Custom class"
+                        size="sm"
+                        variant="secondary"
+                      ></pl-button>
+                    </tooltip-component>
+                  </div>
+                </div>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">
+                  <p>
+                    Contextual tooltips are meant to use color cuing to draw the
+                    user's eye to the tooltip and provide additional information
+                    at-a-glance.
+                  </p>
+                  <p>
+                    Colors can be set using the 'variant' or 'data-variant'
+                    props. Preset colors are 'primary', 'secondary', 'danger',
+                    'warning', 'info', 'success', and 'dark'. Custom classes can
+                    be made as well and assign to the 'customClass' prop.
+                  </p>
+                </div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
+
+          <section class="section">
+            <section class="display-box" id="db-1">
+              <section class="display-box-demo">
+                <p class="muted">
+                  Placeholder text to demonstrate some
+                  <tooltip-component
+                    data-placement="top"
+                    data-original-title="Default tooltip"
+                    data-trigger="hover focus"
+                  >
+                    <a href="#">inline links</a></tooltip-component
+                  >
+                  with tooltips. This is now just filler, no killer. Content
+                  placed here just to mimic the presence of
+                  <tooltip-component
+                    data-placement="top"
+                    data-original-title="Another tooltip"
+                    data-trigger="hover focus"
+                  >
+                    <a href="#">real text</a></tooltip-component
+                  >. And all that just to give you an idea of how tooltips would
+                  look when used in real-world situations. So hopefully you've
+                  now seen how
+                  <tooltip-component
+                    data-placement="top"
+                    data-original-title="Another one here too"
+                    data-trigger="hover focus"
+                    ><a href="#">these tooltips on links</a></tooltip-component
+                  >
+                  can work in practice, once you use them on
+                  <tooltip-component
+                    data-placement="top"
+                    data-original-title="And the last tip!"
+                    data-trigger="hover focus"
+                    ><a href="#">your own</a></tooltip-component
+                  >
+                  site or project.
+                </p>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">
+                  <p>
+                    Tooltips can be used on inline links to provide additional
+                    information about the link or the content it points to.
+                  </p>
+                </div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
+        </section>
+      </div>
+    </div>
+
+    <!-- Props -->
+
+    <div class="title">Props</div>
+
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Property</th>
+            <th>Type</th>
+            <th>Default</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>animation</td>
+            <td>Boolean</td>
+            <td>false</td>
+            <td>If set to true, the tooltip will fade in and out on hover.</td>
+          </tr>
+          <tr>
+            <td>container OR data-container</td>
+            <td>Boolean</td>
+            <td>false</td>
+            <td>
+              Appends the tooltip to a specific element. Example: container:
+              'body'. This option is particularly useful in that it allows you
+              to position the tooltip in the flow of the document near the
+              triggering element - which will prevent the tooltip from floating
+              away from the triggering element during a window resize.
+            </td>
+          </tr>
+          <tr>
+            <td>customClass</td>
+            <td>String</td>
+            <td></td>
+            <td>
+              Add a custom class to the tooltip. Multiple classes can be added
+              by separating them with a space.
+            </td>
+          </tr>
+          <tr>
+            <td>htmlContent</td>
+            <td>Boolean</td>
+            <td>false</td>
+            <td>
+              Insert HTML into the tooltip. Use text if you're worried about XSS
+              attacks.
+            </td>
+          </tr>
+          <tr>
+            <td>message</td>
+            <td>String</td>
+            <td></td>
+            <td>
+              The message to display in the tooltip if not using the
+              'data-original-title' or 'title' attribute.
+            </td>
+          </tr>
+          <tr>
+            <td>position OR data-placement</td>
+            <td>String</td>
+            <td>top</td>
+            <td>
+              How to position the tooltip - top | bottom | left | right | auto.
+              When 'auto' is specified, it will dynamically reorient the
+              tooltip.
+            </td>
+          </tr>
+          <tr>
+            <td>title OR data-original-title</td>
+            <td>String</td>
+            <td></td>
+            <td>Set title value if 'title' attribute isn't present.</td>
+          </tr>
+          <tr>
+            <td>trigger OR data-trigger</td>
+            <td>String</td>
+            <td>hover focus</td>
+            <td>
+              How tooltip is triggered - click | hover | focus | manual. You may
+              pass multiple triggers; separate them with a space.
+            </td>
+          </tr>
+          <tr>
+            <td>variant OR data-variant</td>
+            <td>String</td>
+            <td></td>
+            <td>
+              Contextual color to use for the tooltip - primary | secondary |
+              danger | warning | info | success | dark.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Instructions -->
+    <div style="margin-top: 50px">
+      <div class="title">Using Component in other JavaScript Frameworks</div>
+
+      <h5>Vue.js</h5>
+      <p>
+        <strong>Global Registration</strong>:<br />
+        Register the custom elements globally in your main Vue.js entry file
+        (e.g., main.js or app.js) to ensure they're recognized within the Vue
+        templates.
+      </p>
+
+      <p>
+        <strong>Register the Custom Element in Vue</strong>:<br />
+        Use Vue's config to ignore the custom element during compilation.
+      </p>
+
+      <p>Use the Custom Element in a Vue Component:</p>
+      <pre>
+         <code>
+           // main.js
+           import Vue from 'vue';
+            import App from './App.vue';
+            import './tooltip-component.js'; // Path to your TooltipComponent
+
+            Vue.config.ignoredElements = [/tooltip-component/];
+
+            new Vue({
+              render: h => h(App),
+            }).$mount('#app');
+        </code>
+       </pre>
+      <p>
+        Once registered, you can use the tooltip directly in your Vue templates.
+      </p>
+      <pre>
+           <code>
+            
+            &#60;!-- App.vue --&#62;
+              &#60;template&#62;
+              &#60;div id="app"&#62;
+              &#60;tooltip-component 
+                    id="tooltip1" 
+                    data-placement="top" 
+                    data-original-title="Initial tooltip content" 
+                    data-trigger="hover focus" 
+                    data-custom-class="custom-top-class" 
+                    data-variant="success"&#62;
+                    &#60;button type="button" class="btn btn-secondary"&#62;Hover to see tooltip&#60;/button&#62;
+                    &#60;/tooltip-component&#62;
+                    &#60;/div&#62;
+                    &#60;/template&#62;
+
+                    &#60;script&#62;
+                      export default {
+                        methods: {
+                          updateTooltipContent() {
+                            const tooltipElement = document.getElementById('tooltip1');
+                            const newContent = `Updated tooltip content: ${new Date().toLocaleTimeString()}`;
+                            tooltipElement.setAttribute('data-original-title', newContent);
+
+                            // Manually hide and show the tooltip to apply the new content
+                            tooltipElement.hideTooltip();
+                            tooltipElement.showTooltip();
+                          }
+                        }
+                      }
+                    &#60;/script&#62;
+            </code>
+         </pre>
+
+      <h5>React</h5>
+      <p>
+        <strong>Install and Import the Web Component:</strong><br />
+        Ensure your custom element is included in your project. You can include
+        the custom element in your main entry point file.
+      </p>
+      <p>Use the Custom Element in a React Component:</p>
+      <pre>
+           <code>
+            // index.js
+            import React from 'react';
+            import ReactDOM from 'react-dom';
+            import App from './App';
+            import './tooltip-component.js'; // Path to your TooltipComponent
+            
+            ReactDOM.render(
+              &#60;React.StrictMode&#62;
+              &#60;App /&#62;
+              &#60;/React.StrictMode&#62;,
+              document.getElementById('root')
+            );
+           </code>
+         </pre>
+
+      <pre>
+             <code>
+              // App.js
+              import React from 'react';
+              
+              class App extends React.Component {
+                updateTooltipContent = () => {
+                  const tooltipElement = document.getElementById('tooltip1');
+                  const newContent = `Updated tooltip content: ${new Date().toLocaleTimeString()}`;
+                  tooltipElement.setAttribute('data-original-title', newContent);
+              
+                  // Manually hide and show the tooltip to apply the new content
+                  tooltipElement.hideTooltip();
+                  tooltipElement.showTooltip();
+                };
+              
+                render() {
+                  return (
+                    &#60;div id="app"&#62;
+                    &#60;tooltip-component 
+                        id="tooltip1" 
+                        data-placement="top" 
+                        data-original-title="Initial tooltip content" 
+                        data-trigger="hover focus" 
+                        data-custom-class="custom-top-class" 
+                        data-variant="success"&#62;
+                        &#60;button type="button" className="btn btn-secondary">Hover to see tooltip&#60;/button&#62;
+                        &#60;/tooltip-component&#62;
+                        &#60;/div&#62;
+                  );
+                }
+              }
+              
+              export default App;
+             </code>
+           </pre>
+
+      <h5>Angular</h5>
+      <p>
+        <strong>Install and Import the Web Component</strong>:<br />
+        Ensure your custom element is included in your project. You can include
+        the custom element in your main entry point file.
+      </p>
+
+      <p>Include Custom Elements Schema in Angular Module:</p>
+      <pre>
+           <code>
+             // typescript 
+             // main.ts
+              import './tooltip-component.js'; // Path to your TooltipComponent
+              import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+              import { AppModule } from './app/app.module';
+
+              platformBrowserDynamic().bootstrapModule(AppModule)
+                .catch(err => console.error(err));
+           </code>
+         </pre>
+
+      <pre>
+           <code>
+            // app.module.ts
+            import { BrowserModule } from '@angular/platform-browser';
+            import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+
+            import { AppComponent } from './app.component';
+
+            @NgModule({
+              declarations: [
+                AppComponent
+              ],
+              imports: [
+                BrowserModule
+              ],
+              schemas: [CUSTOM_ELEMENTS_SCHEMA],
+              providers: [],
+              bootstrap: [AppComponent]
+            })
+            export class AppModule { }
+            </code>
+         </pre>
+
+      <pre>
+          <code>
+            &#60;!-- app.component.html --&#62;
+            &#60;div id="app"&#62;
+            &#60;tooltip-component 
+                id="tooltip1" 
+                data-placement="top" 
+                data-original-title="Initial tooltip content" 
+                data-trigger="hover focus" 
+                data-custom-class="custom-top-class" 
+                data-variant="success"&#62;
+                &#60;button type="button" class="btn btn-secondary"&#62;Hover to see tooltip&#60;/button&#62;
+                &#60;/tooltip-component&#62;
+                &#60;/div&#62;
+           </code>
+        </pre>
+
+      <pre>
+          <code>
+            // app.component.ts
+            import { Component } from '@angular/core';
+            
+            @Component({
+              selector: 'app-root',
+              templateUrl: './app.component.html',
+              styleUrls: ['./app.component.css']
+            })
+            export class AppComponent {
+              updateTooltipContent() {
+                const tooltipElement = document.getElementById('tooltip1');
+                const newContent = `Updated tooltip content: ${new Date().toLocaleTimeString()}`;
+                tooltipElement.setAttribute('data-original-title', newContent);
+            
+                // Manually hide and show the tooltip to apply the new content
+                tooltipElement.hideTooltip();
+                tooltipElement.showTooltip();
+              }
+            }
+           </code>
+        </pre>
+
+      <p>
+        This will set up the TooltipComponent for use in Vue, React, and
+        Angular. The custom element is registered, and the styles are injected
+        into the document head, ensuring that they are applied to the tooltips
+        created outside of the shadow DOM.
+      </p>
+
+      <p>
+        <strong>General Note for All Frameworks</strong><br />
+        Ensure that the web components are loaded and defined in the global
+        scope before your framework-based application initializes. This ensures
+        that the custom elements are parsed correctly by the browser's custom
+        element registry. Each framework has its specifics for handling
+        non-reactive attributes and events, so adjustments might be necessary
+        based on more complex interactions or state management needs.
+      </p>
+
+      <p>
+        By following these guidelines, you can integrate Lit-based web
+        components like tooltip into Vue, React,
+        and Angular applications effectively, leveraging the encapsulated
+        functionality of web components across different frontend ecosystems.
+      </p>
+
+      <p>Notes:</p>
+      <ul>
+        <li>
+          Event Handling: Make sure to handle events appropriately. React, for
+          example, may require you to attach event listeners directly to the DOM
+          elements for custom events, as shown above.
+        </li>
+        <li>
+          Properties and Attributes: If your Web Component uses properties that
+          are objects or arrays, passing them from frameworks might require
+          setting them via JavaScript rather than as HTML attributes.
+        </li>
+      </ul>
+    </div>
+
+    <script type="module" src="./tooltip.js"></script>
+    <script type="module" src="../button/button.js"></script>
+    <script type="module" src="../icon/icon.js"></script>
+  </body>
+</html>
