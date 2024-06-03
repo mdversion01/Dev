@@ -1,6 +1,6 @@
 import { css } from "lit";
 
-export const tooltipStyles = `
+export const tooltipStyles = css`
   *,
   :after,
   :before {
@@ -80,9 +80,9 @@ export const tooltipStyles = `
 .tooltip .tooltip-inner {
   max-width: 15rem;
   padding: 0.25rem 0.5rem;
-  color: #fff; /* Tooltip text color #3e3e3e */
+  color: #f0f0f0; /* Tooltip text color #3e3e3e */
   text-align: center;
-  background-color: #000; /* Tooltip background color #e3e3e3 */
+  background-color: #6e6e6e; /* Tooltip background color #e3e3e3 */
   border-radius: 0.25rem;
 }
 
@@ -91,7 +91,7 @@ export const tooltipStyles = `
   left: 50%;
   transform: translateX(-50%);
   border-width: 0.5rem 0.375rem 0;
-  border-color: #000 transparent transparent transparent; /* Tooltip background color #e3e3e3 */
+  border-color: #6e6e6e transparent transparent transparent; /* Tooltip background color #e3e3e3 */
 }
 
 .tooltip.tooltip-top .tooltip-arrow.primary,
@@ -138,7 +138,7 @@ export const tooltipStyles = `
   left: 50%;
   transform: translateX(-50%);
   border-width: 0 0.375rem 0.5rem;
-  border-color: transparent transparent #000 transparent; /* Tooltip background color #e3e3e3 */
+  border-color: transparent transparent #6e6e6e transparent; /* Tooltip background color #e3e3e3 */
 }
 
 .tooltip.tooltip-bottom .tooltip-arrow.primary,
@@ -185,7 +185,7 @@ export const tooltipStyles = `
   top: 50%;
   transform: translateY(-50%);
   border-width: 0.375rem 0 0.375rem 0.5rem;
-  border-color: transparent transparent transparent #000; /* Tooltip background color #e3e3e3 */
+  border-color: transparent transparent transparent #6e6e6e; /* Tooltip background color #e3e3e3 */
 }
 
 .tooltip.tooltip-left .tooltip-arrow.primary,
@@ -232,7 +232,7 @@ export const tooltipStyles = `
   top: 50%;
   transform: translateY(-50%);
   border-width: 0.375rem 0.5rem 0.375rem 0;
-  border-color: transparent #000 transparent transparent; /* Tooltip background color #e3e3e3 */
+  border-color: transparent #6e6e6e transparent transparent; /* Tooltip background color #e3e3e3 */
 }
 
 .tooltip.tooltip-right .tooltip-arrow.primary,

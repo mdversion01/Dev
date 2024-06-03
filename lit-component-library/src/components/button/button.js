@@ -3,10 +3,7 @@ import { ifDefined } from "lit/directives/if-defined.js";
 import { buttonStyles } from "./button-styles";
 
 class PlButton extends LitElement {
-   static styles = [
-    buttonStyles,
-    css``
-  ];
+  static styles = [buttonStyles, css``];
 
   static get properties() {
     return {
@@ -335,9 +332,13 @@ class PlButton extends LitElement {
     const variant = `${this.variant}`;
     const outlinedClass = this.outlined ? "pl-btn--outlined" : "";
     const blockClass = this.block ? "pl-btn--block" : "";
-    const content = this.iconBtn || this.btnIcon
-      ? html`<slot></slot>`
-      : html`${this.slotLeft ? html`<slot></slot>` : ""}<span class="pl-btn__content">${this.btnText}</span>${this.slotRight ? html`<slot></slot>` : ""}`;
+    const content =
+      this.iconBtn || this.btnIcon
+        ? html`<slot></slot>`
+        : html`${this.slotLeft ? html`<slot></slot>` : ""}<span
+              class="pl-btn__content"
+              >${this.btnText}</span
+            >${this.slotRight ? html`<slot></slot>` : ""}`;
 
     const rippleEffect = this.ripple ? "pl-btn-ripple" : "";
 
@@ -439,11 +440,13 @@ class PlButton extends LitElement {
 
   _handleClick() {
     // console.log('Button clicked');  // Useful for debugging
-    this.dispatchEvent(new CustomEvent('custom-click', {
-      bubbles: true,
-      composed: true,  // Allows the event to cross shadow DOM boundaries
-      detail: { message: 'Button clicked!' }  // Optional detail object
-    }));
+    this.dispatchEvent(
+      new CustomEvent("custom-click", {
+        bubbles: true,
+        composed: true, // Allows the event to cross shadow DOM boundaries
+        detail: { message: "Button clicked!" }, // Optional detail object
+      })
+    );
   }
 
   _getClassNames() {
@@ -451,6 +454,8 @@ class PlButton extends LitElement {
       "additionalstyles",
       "aria-pressed",
       "arialabel",
+      "data-placement",
+      "aria-describedby",
       "pressed",
       "btnicon",
       "buttongroup",
@@ -488,6 +493,7 @@ class PlButton extends LitElement {
       "data-target",
       "isOpen",
       "targetId",
+      "tabindex",
       // Add other property names to be excluded from the class here
     ];
 

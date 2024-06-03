@@ -3,6 +3,7 @@ import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 import { tooltipStyles } from './tooltip-styles.js';
 
 class TooltipComponent extends LitElement {
+  
   static properties = {
     message: { type: String },
     position: { type: String },
@@ -48,7 +49,7 @@ class TooltipComponent extends LitElement {
     if (!document.getElementById('tooltip-styles')) {
       const style = document.createElement('style');
       style.id = 'tooltip-styles';
-      style.innerHTML = tooltipStyles;
+      style.innerHTML = tooltipStyles.toString();
       document.head.appendChild(style);
     }
   }
@@ -92,8 +93,13 @@ class TooltipComponent extends LitElement {
       if (assignedElements.length > 0) {
         const triggerElement = assignedElements[0];
         triggerElement.setAttribute('tabindex', '0'); // Make the element focusable
+        triggerElement.setAttribute('data-toggle', 'tooltip');
+        triggerElement.setAttribute('data-placement', this.position);
+        triggerElement.setAttribute('aria-describedby', this.tooltipId);
+
         if (triggers.includes('click')) {
-          triggerElement.addEventListener('click', this.toggleTooltip.bind(this));
+          triggerElement.addEventListener('click', this.showTooltip.bind(this));
+          document.addEventListener('click', this.handleOutsideClick.bind(this), true);
         }
         if (triggers.includes('hover')) {
           triggerElement.addEventListener('mouseenter', this.showTooltip.bind(this));
@@ -123,8 +129,17 @@ class TooltipComponent extends LitElement {
     }
   };
 
-  showTooltip() {
+  handleOutsideClick(event) {
+    const triggerElement = this.shadowRoot.querySelector('slot').assignedElements()[0];
+    if (this.visible && !this.tooltipElement.contains(event.target) && !triggerElement.contains(event.target)) {
+      this.hideTooltip();
+    }
+  }
+
+  showTooltip(event) {
     if (this.trigger.includes('manual')) return;
+    // Only show the tooltip if the event is the trigger element itself
+    if (event && event.target !== this.shadowRoot.querySelector('slot').assignedElements()[0]) return;
     this.visible = true;
     this.createTooltipElement();
     requestAnimationFrame(() => {
@@ -138,19 +153,9 @@ class TooltipComponent extends LitElement {
     this.removeTooltipElement();
   }
 
-  toggleTooltip() {
-    this.visible = !this.visible;
-    if (this.visible) {
-      this.showTooltip();
-    } else {
-      this.hideTooltip();
-    }
-  }
-
   createTooltipElement() {
     if (!this.tooltipElement) {
       const triggerElement = this.shadowRoot.querySelector('slot').assignedElements()[0];
-      triggerElement.setAttribute('aria-describedby', this.tooltipId);
 
       this.tooltipElement = document.createElement('div');
       this.tooltipElement.id = this.tooltipId;
@@ -192,15 +197,15 @@ class TooltipComponent extends LitElement {
     const triggerRect = triggerElement.getBoundingClientRect();
     const tooltipRect = this.tooltipElement.getBoundingClientRect();
 
-    const offset = 10; // Offset between the trigger and the tooltip
-
+    const offset = 10;
     let top, left;
-    let position = this.position;
 
     const spaceAbove = triggerRect.top;
     const spaceBelow = window.innerHeight - triggerRect.bottom;
     const spaceLeft = triggerRect.left;
     const spaceRight = window.innerWidth - triggerRect.right;
+
+    let position = this.position;
 
     if (position === 'auto') {
       const maxSpace = Math.max(spaceAbove, spaceBelow, spaceLeft, spaceRight);
@@ -265,16 +270,13 @@ class TooltipComponent extends LitElement {
 
     this.tooltipElement.style.top = `${top + window.scrollY}px`;
     this.tooltipElement.style.left = `${left + window.scrollX}px`;
-    this.tooltipElement.classList.remove(`tooltip-top`, `tooltip-bottom`, `tooltip-left`, `tooltip-right`);
+    this.tooltipElement.classList.remove('tooltip-top', 'tooltip-bottom', 'tooltip-left', 'tooltip-right');
     this.tooltipElement.classList.add(`tooltip-${position}`);
   }
 
   getTooltipContent() {
     const triggerElement = this.shadowRoot.querySelector('slot').assignedElements()[0];
     const content = triggerElement.getAttribute('data-original-title') || this.title;
-    if (typeof content === 'function') {
-      return content.call(this);
-    }
     return this.htmlContent ? unsafeHTML(content) : content;
   }
 
