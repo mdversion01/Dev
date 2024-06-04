@@ -28,7 +28,7 @@ class TooltipComponent extends LitElement {
     this.container = null; // default container
     this.customClass = ''; // default custom class
     this.variant = ''; // default variant
-    this.tooltipId = `tooltip${Math.random().toString(36).substr(2, 9)}`;
+    this.tooltipId = `tooltip_${Math.random().toString(36).substr(2, 9)}`;
   }
 
   connectedCallback() {

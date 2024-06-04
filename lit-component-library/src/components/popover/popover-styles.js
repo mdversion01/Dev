@@ -680,6 +680,12 @@ export const popoverStyles = css`
     background-color: #e1e1e1;
     padding: 0.4rem !important;
   }
+   
+  .popover:focus-visible,
+  .popover .popover-body:focus,
+  .popover .popover-body:focus-visible {
+    outline: 0;
+  }
 
   .popover.primary {
     border-color: #1867c0 !important;

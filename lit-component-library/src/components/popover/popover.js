@@ -16,7 +16,8 @@ class PopoverComponent extends LitElement {
     trigger: { type: String },
     fallbackPlacement: { type: String },
     offset: { type: Number },
-    target: { type: Object }, // New target property
+    yOffset: { type: Number },
+    target: { type: Object },
   };
 
   constructor() {
@@ -33,18 +34,16 @@ class PopoverComponent extends LitElement {
     this.trigger = "click";
     this.fallbackPlacement = "flip";
     this.offset = 0;
+    this.yOffset = 0;
     this.super = false;
     this.target = null;
-    this.popoverId = `popover${Math.random().toString(36).substr(2, 9)}`;
+    this.popoverId = `popover_${Math.random().toString(36).substr(2, 9)}`;
     this.popoverElement = null;
     this.triggerElement = null;
+    this.originatingTrigger = null; // Track the originating trigger
   }
 
-  static styles = css`
-    :host {
-      display: inline-block;
-    }
-  `;
+  static styles = css``;
 
   connectedCallback() {
     super.connectedCallback();
@@ -135,6 +134,11 @@ class PopoverComponent extends LitElement {
       }
     }
 
+    if (!this.triggerElement.hasAttribute("tabindex")) {
+      this.triggerElement.setAttribute("tabindex", "0");
+    }
+
+    this.triggerElement.setAttribute("aria-describedby", this.popoverId);
   }
 
   applyTriggers() {
@@ -143,7 +147,11 @@ class PopoverComponent extends LitElement {
     if (triggers.includes("click")) {
       this.triggerElement.addEventListener(
         "click",
-        this.togglePopover.bind(this)
+        this.handleTriggerClick.bind(this)
+      );
+      this.triggerElement.addEventListener(
+        "keydown",
+        this.handleTriggerKeydown.bind(this)
       );
     }
     if (triggers.includes("hover")) {
@@ -169,8 +177,26 @@ class PopoverComponent extends LitElement {
       this.triggerElement.addEventListener("focus", this.showPopover.bind(this));
       this.triggerElement.addEventListener("focusout", this.handleFocusOut.bind(this));
     }
+  }
 
-    this.triggerElement.setAttribute("aria-describedby", this.popoverId);
+  handleTriggerClick(event) {
+    event.preventDefault(); // Prevent default action to avoid scrolling
+    this.originatingTrigger = event.currentTarget; // Track the originating trigger
+    this.togglePopover();
+    if (this.visible) {
+      this.popoverElement.focus({ preventScroll: true });
+    }
+  }
+
+  handleTriggerKeydown(event) {
+    if (event.key === "Enter") {
+      event.preventDefault(); // Prevent default action to avoid scrolling
+      this.originatingTrigger = event.currentTarget; // Track the originating trigger
+      this.togglePopover();
+      if (this.visible) {
+        this.popoverElement.focus({ preventScroll: true });
+      }
+    }
   }
 
   handleOutsideClick(event) {
@@ -212,7 +238,20 @@ class PopoverComponent extends LitElement {
     this.createPopoverElement();
     requestAnimationFrame(() => {
       this.adjustPopoverPosition();
+      if (this.trigger === "click") {
+        this.popoverElement.focus({ preventScroll: true });
+      }
     });
+
+    if (this.trigger.includes("hover") || this.trigger.includes("focus")) {
+      // Remove tabindex attributes if the trigger is hover or focus
+      this.popoverElement.querySelectorAll("[tabindex]").forEach((el) => {
+        el.removeAttribute("tabindex");
+      });
+    } else {
+      this.popoverElement.addEventListener("keydown", this.handleKeyDown.bind(this));
+    }
+
     document.addEventListener(
       "click",
       this.handleOutsideClick.bind(this),
@@ -228,6 +267,41 @@ class PopoverComponent extends LitElement {
       this.handleOutsideClick.bind(this),
       true
     );
+    if (this.originatingTrigger) {
+      this.originatingTrigger.focus({ preventScroll: true });
+    }
+  }
+
+  handleKeyDown(event) {
+    if (event.key === "Tab" && this.visible) {
+      const focusableElements = this.popoverElement.querySelectorAll(
+        'a, button, input, textarea, select, details, [tabindex]:not([tabindex="-1"])'
+      );
+      const firstElement = focusableElements[0];
+      const lastElement = focusableElements[focusableElements.length - 1];
+
+      if (event.shiftKey) {
+        // Shift + Tab
+        if (document.activeElement === firstElement) {
+          event.preventDefault();
+          lastElement.focus();
+        }
+      } else {
+        // Tab
+        if (document.activeElement === lastElement) {
+          event.preventDefault();
+          if (this.originatingTrigger) {
+            this.originatingTrigger.focus({ preventScroll: true });
+          }
+          this.hidePopover();
+        }
+      }
+    }
+
+    // Close popover on Escape key
+    if (event.key === "Escape") {
+      this.hidePopover();
+    }
   }
 
   getPopoverContent() {
@@ -255,6 +329,9 @@ class PopoverComponent extends LitElement {
         "data-popover-placement",
         this.placement
       );
+      if (!(this.trigger.includes("hover") || this.trigger.includes("focus"))) {
+        this.popoverElement.setAttribute("tabindex", "-1");
+      }
       let arrowHtml = this.arrowOff ? "" : '<div class="popover-arrow"></div>';
       let headerHtml = this.title
         ? `<h3 class="popover-header">${this.getPopoverContent()}</h3>`
@@ -262,7 +339,7 @@ class PopoverComponent extends LitElement {
       this.popoverElement.innerHTML = `
         ${arrowHtml}
         ${headerHtml}
-        <div class="popover-body">${this.content}</div>
+        <div class="popover-body" ${!(this.trigger.includes("hover") || this.trigger.includes("focus")) ? 'tabindex="0"' : ''}>${this.content}</div>
       `;
       document.body.appendChild(this.popoverElement);
     }
@@ -270,6 +347,7 @@ class PopoverComponent extends LitElement {
 
   removePopover() {
     if (this.popoverElement) {
+      this.popoverElement.removeEventListener("keydown", this.handleKeyDown.bind(this));
       document.body.removeChild(this.popoverElement);
       this.popoverElement = null;
     }
@@ -355,23 +433,23 @@ class PopoverComponent extends LitElement {
             popoverArrow.className = "popover-arrow bottomleft";
           break;
         case "lefttop":
-          top = triggerRect.top - popoverRect.height + triggerRect.height;
+          top = triggerRect.bottom - popoverRect.height + this.yOffset;
           left = triggerRect.left - popoverRect.width - baseOffset;
           if (!this.arrowOff) popoverArrow.className = "popover-arrow lefttop";
           break;
         case "leftbottom":
-          top = triggerRect.top;
+          top = triggerRect.top + this.yOffset;
           left = triggerRect.left - popoverRect.width - baseOffset;
           if (!this.arrowOff)
             popoverArrow.className = "popover-arrow leftbottom";
           break;
         case "righttop":
-          top = triggerRect.top - popoverRect.height + triggerRect.height;
+          top = triggerRect.bottom - popoverRect.height + this.yOffset;
           left = triggerRect.right + baseOffset;
           if (!this.arrowOff) popoverArrow.className = "popover-arrow righttop";
           break;
         case "rightbottom":
-          top = triggerRect.top;
+          top = triggerRect.top + this.yOffset;
           left = triggerRect.right + baseOffset;
           if (!this.arrowOff)
             popoverArrow.className = "popover-arrow rightbottom";
