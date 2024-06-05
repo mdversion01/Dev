@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <title>Table Component</title>
+  <head>
+    <link
+      rel="stylesheet"
+      href="../../../node_modules/bootstrap/dist/css/bootstrap.css"
+    />
+    <!-- <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    /> -->
+    <link
+      rel="stylesheet"
+      href="../../../node_modules/lit-fontawesome/css/font.css"
+    />
+    <link rel="stylesheet" href="../../styles/components.css" />
+
+    <style></style>
+  </head>
+  <body>
+    <div class="title">Table</div>
+    <div class="demo-wrapper">
+      <div class="main">
+        <section>
+          <section class="section">
+            <section class="display-box" id="db-1">
+              <section class="display-box-demo">
+                <table-component id="table1" sticky noBorderCollapsed>
+                  <!-- <span slot="caption">This is a caption</span> -->
+                </table-component>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">Text</div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
+        </section>
+      </div>
+    </div>
+    <script type="module" src="./table.js"></script>
+    <script>
+      const table = document.getElementById("table1");
+      table.items = [
+        { name: "John", age: 30, city: "New York" },
+        { name: "Anna", age: 25, city: "London", _rowVariant: 'primary' },
+        {
+          name: "Mike",
+          age: 32,
+          city: "Chicago",
+          _cellVariants: { age: "info", name: "warning" },
+        },
+        { name: "Terry", age: 21, city: "Augusta", _rowVariant: 'secondary' },
+        {
+          name: "Clark",
+          age: 56,
+          city: "Tucson",
+          _cellVariants: { age: "success", city: "danger" },
+        },
+        { name: "Seth", age: 31, city: "Pittsburgh" },
+      ];
+    </script>
+  </body>
+</html>
