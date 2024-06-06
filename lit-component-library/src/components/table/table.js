@@ -3,7 +3,22 @@ import { LitElement, html, css } from "lit";
 import { tableStyles } from "./table-styles.js";
 
 class Table extends LitElement {
-  static styles = [tableStyles, css``];
+  static styles = [tableStyles, css`
+    /* th[aria-sort="ascending"]::after {
+      content: "▲";
+      margin-left: 0.5em;
+    }
+
+    th[aria-sort="descending"]::after {
+      content: "▼";
+      margin-left: 0.5em;
+    }
+
+    th[aria-sort="none"]::after {
+      content: "⇅";
+      margin-left: 0.5em;
+    } */
+  `];
 
   static properties = {
     border: { type: Boolean },
@@ -12,6 +27,7 @@ class Table extends LitElement {
     caption: { type: String },
     cloneFooter: { type: Boolean },
     dark: { type: Boolean },
+    fields: { type: Array },
     fixed: { type: Boolean },
     headerDark: { type: Boolean },
     headerLight: { type: Boolean },
@@ -24,6 +40,8 @@ class Table extends LitElement {
     sticky: { type: Boolean },
     striped: { type: Boolean },
     tableVariant: { type: String },
+    sortCriteria: { type: Array },
+    sortable: { type: Boolean }, // New property to enable or disable sorting
   };
 
   constructor() {
@@ -34,6 +52,7 @@ class Table extends LitElement {
     this.caption = "";
     this.cloneFooter = false;
     this.dark = false;
+    this.fields = [];
     this.fixed = false;
     this.headerDark = false;
     this.headerLight = false;
@@ -46,6 +65,30 @@ class Table extends LitElement {
     this.sticky = false;
     this.striped = false;
     this.tableVariant = "table";
+    this.sortCriteria = [];
+    this.sortable = false; // Default sorting to false
+  }
+
+  get normalizedFields() {
+    if (this.fields.length > 0) {
+      return this.fields.map(field => {
+        if (typeof field === 'string') {
+          return { key: field, label: this.formatHeader(field), sortable: false, variant: "" };
+        }
+        return {
+          key: field.key,
+          label: field.label || this.formatHeader(field.key),
+          sortable: field.sortable || false,
+          variant: field.variant || ""
+        };
+      });
+    } else if (this.items.length > 0) {
+      return Object.keys(this.items[0])
+        .filter(key => key !== '_cellVariants' && key !== '_rowVariant' && key !== '_showDetails')
+        .map(key => ({ key, label: this.formatHeader(key), sortable: false, variant: "" }));
+    } else {
+      return [];
+    }
   }
 
   formatHeader(key) {
@@ -83,12 +126,58 @@ class Table extends LitElement {
       case "light":
         return "table-light";
       default:
-        return ""; // Default color if no variant or unrecognized variant
+        return "";
     }
   }
 
+  sortItems(key) {
+    if (!this.sortable) return;
+
+    const existingSort = this.sortCriteria.find(criteria => criteria.key === key);
+
+    if (existingSort) {
+      existingSort.order = existingSort.order === 'asc' ? 'desc' : 'asc';
+    } else {
+      this.sortCriteria.push({ key, order: 'asc' });
+    }
+
+    this.items = [...this.items].sort((a, b) => {
+      for (const criteria of this.sortCriteria) {
+        const aValue = a[criteria.key];
+        const bValue = b[criteria.key];
+        const order = criteria.order === 'asc' ? 1 : -1;
+
+        if (aValue < bValue) return -order;
+        if (aValue > bValue) return order;
+      }
+      return 0;
+    });
+
+    this.requestUpdate();
+  }
+
+  getAriaSort(key) {
+    if (!this.sortable) return null;
+
+    const criteria = this.sortCriteria.find(c => c.key === key);
+    if (criteria) {
+      return criteria.order === 'asc' ? 'ascending' : 'descending';
+    }
+    return 'none';
+  }
+
+  renderSortIndicator(key) {
+    if (!this.sortable) return '';
+
+    const criteria = this.sortCriteria.find(c => c.key === key);
+    if (criteria) {
+      const index = this.sortCriteria.indexOf(criteria) + 1;
+      return html`<sup>${index}</sup>`;
+    }
+    return '';
+  }
+
   renderDetails(row, rowIndex) {
-    // We will use this slot to trigger the custom event
     return html`<slot
       name="row-details"
       .rowData="${row}"
@@ -101,14 +190,7 @@ class Table extends LitElement {
     return html`
       <table
         role="table"
-        aria-colcount="${this.items.length > 0
-          ? Object.keys(this.items[0]).filter(
-              (key) =>
-                key !== "_cellVariants" &&
-                key !== "_rowVariant" &&
-                key !== "_showDetails"
-            ).length
-          : 0}"
+        aria-colcount="${this.normalizedFields.length}"
         class="table b-table${this.hover ? " table-hover" : ""}${this.striped
           ? " table-striped"
           : ""}${this.bordered ? " table-bordered" : ""}${this.borderless
@@ -129,153 +211,87 @@ class Table extends LitElement {
               <slot name="caption"></slot>
             </caption>`
           : ""}
-        ${this.stacked
-          ? html`
-              <tbody role="rowgroup">
-                ${this.items.map((row, rowIndex) => {
-                  const rowVariantClass = row._rowVariant
-                    ? this.tableVariantColor(row._rowVariant)
-                    : "";
-                  return html`
-                    <tr role="row" class="${rowVariantClass}">
-                      ${Object.entries(row)
-                        .filter(
-                          ([key]) =>
-                            key !== "_cellVariants" &&
-                            key !== "_rowVariant" &&
-                            key !== "_showDetails"
-                        )
-                        .map(([key, cell], index) => {
-                          const variant =
-                            row._cellVariants && row._cellVariants[key]
-                              ? this.tableVariantColor(row._cellVariants[key])
-                              : "";
-                          return html`<td
-                            aria-colindex="${index + 1}"
-                            data-label="${this.formatHeader(key)}"
-                            role="cell"
-                            class="${variant}"
-                          >
-                            <div>${cell}</div>
-                          </td>`;
-                        })}
-                    </tr>
-                    ${row._showDetails
-                      ? html`<tr role="row" class="row-details">
-                          <td
-                            colspan="${Object.keys(row).filter(
-                              (key) =>
-                                key !== "_cellVariants" &&
-                                key !== "_rowVariant" &&
-                                key !== "_showDetails"
-                            ).length}"
-                          >
-                            ${this.renderDetails(row, rowIndex)}
-                          </td>
-                        </tr>`
-                      : ""}
-                  `;
-                })}
-              </tbody>
-            `
-          : html` <thead role="rowgroup" class="${this.headertheme()}">
-                <tr role="row">
-                  ${this.items.length > 0
-                    ? Object.keys(this.items[0])
-                        .filter(
-                          (key) =>
-                            key !== "_cellVariants" &&
-                            key !== "_rowVariant" &&
-                            key !== "_showDetails"
-                        )
-                        .map(
-                          (key, index) =>
-                            html`<th
-                              role="columnheader"
-                              scope="col"
-                              aria-colindex="${index + 1}"
-                            >
-                              ${this.formatHeader(key)}
-                            </th>`
-                        )
-                    : ""}
+        <thead role="rowgroup" class="${this.headertheme()}">
+          <tr role="row">
+            ${this.normalizedFields.map(({ key, label, sortable, variant }, index) =>
+              sortable && this.sortable
+                ? html`<th
+                    role="columnheader"
+                    scope="col"
+                    aria-colindex="${index + 1}"
+                    aria-sort="${this.getAriaSort(key)}"
+                    class="${this.tableVariantColor(variant)}"
+                    @click="${() => this.sortItems(key)}"
+                    style="cursor: pointer;"
+                  >
+                    ${label} ${this.renderSortIndicator(key)}
+                  </th>`
+                : html`<th
+                    role="columnheader"
+                    scope="col"
+                    aria-colindex="${index + 1}"
+                    class="${this.tableVariantColor(variant)}"
+                  >
+                    ${label}
+                  </th>`
+            )}
+          </tr>
+        </thead>
+        <tbody role="rowgroup">
+          ${this.items.flatMap((row, rowIndex) => {
+            const rowVariantClass = row._rowVariant ? this.tableVariantColor(row._rowVariant) : "";
+            return [
+              html`
+                <tr role="row" class="${rowVariantClass}">
+                  ${this.normalizedFields.map(({ key, variant }, index) => {
+                    const cell = row[key];
+                    const cellVariant =
+                      row._cellVariants && row._cellVariants[key]
+                        ? this.tableVariantColor(row._cellVariants[key])
+                        : this.tableVariantColor(variant);
+                    return html`<td
+                      aria-colindex="${index + 1}"
+                      role="cell"
+                      class="${cellVariant}"
+                    >
+                      ${cell}
+                    </td>`;
+                  })}
                 </tr>
-              </thead>
-              <tbody role="rowgroup">
-                ${this.items.map((row, rowIndex) => {
-                  const rowVariantClass = row._rowVariant
-                    ? this.tableVariantColor(row._rowVariant)
-                    : "";
-                  return html`
-                    <tr role="row" class="${rowVariantClass}">
-                      ${Object.entries(row)
-                        .filter(
-                          ([key]) =>
-                            key !== "_cellVariants" &&
-                            key !== "_rowVariant" &&
-                            key !== "_showDetails"
-                        )
-                        .map(([key, cell], index) => {
-                          const variant =
-                            row._cellVariants && row._cellVariants[key]
-                              ? this.tableVariantColor(row._cellVariants[key])
-                              : "";
-                          return html`<td
-                            aria-colindex="${index + 1}"
-                            role="cell"
-                            class="${variant}"
-                          >
-                            ${cell}
-                          </td>`;
-                        })}
+              `,
+              row._showDetails
+                ? html`
+                    <tr role="row" class="row-details">
+                      <td colspan="${this.normalizedFields.length}">
+                        ${this.renderDetails(row, rowIndex)}
+                      </td>
                     </tr>
-                    ${row._showDetails
-                      ? html`<tr role="row" class="row-details">
-                          <td
-                            colspan="${Object.keys(row).filter(
-                              (key) =>
-                                key !== "_cellVariants" &&
-                                key !== "_rowVariant" &&
-                                key !== "_showDetails"
-                            ).length}"
-                          >
-                            ${this.renderDetails(row, rowIndex)}
-                          </td>
-                        </tr>`
-                      : ""}
-                  `;
-                })}
-              </tbody>
-              ${this.caption === "bottom"
-                ? html`<caption>
-                    <slot name="caption"></slot>
-                  </caption>`
-                : ""}
-              ${this.cloneFooter
-                ? html` <tfoot role="rowgroup" class="${this.headertheme()}">
-                    <tr role="row">
-                      ${this.items.length > 0
-                        ? Object.keys(this.items[0])
-                            .filter(
-                              (key) =>
-                                key !== "_cellVariants" &&
-                                key !== "_rowVariant" &&
-                                key !== "_showDetails"
-                            )
-                            .map(
-                              (key, index) =>
-                                html`<th
-                                  role="columnheader"
-                                  scope="col"
-                                  aria-colindex="${index + 1}"
-                                >
-                                  ${this.formatHeader(key)}
-                                </th>`
-                            )
-                        : ""}
-                    </tr>
-                  </tfoot>`
-                : ""}`}
+                  `
+                : null,
+            ];
+          })}
+        </tbody>
+        ${this.caption === "bottom"
+          ? html`<caption>
+              <slot name="caption"></slot>
+            </caption>`
+          : ""}
+        ${this.cloneFooter
+          ? html` <tfoot role="rowgroup" class="${this.headertheme()}">
+              <tr role="row">
+                ${this.normalizedFields.map(({ key, label, variant }, index) =>
+                  html`<th
+                    role="columnheader"
+                    scope="col"
+                    aria-colindex="${index + 1}"
+                    class="${this.tableVariantColor(variant)}"
+                  >
+                    ${label}
+                  </th>`
+                )}
+              </tr>
+            </tfoot>`
+          : ""}
       </table>
     `;
   }
@@ -293,11 +309,9 @@ class Table extends LitElement {
   }
 
   updated(changedProperties) {
-    // Handle updates to items to ensure row details are displayed correctly
     if (changedProperties.has("items")) {
       this.items.forEach((row, index) => {
         if (row._showDetails) {
-          // Trigger custom event to render row details
           this.dispatchEvent(
             new CustomEvent("render-row-details", {
               detail: { rowData: row, rowIndex: index },
