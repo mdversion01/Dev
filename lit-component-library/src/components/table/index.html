@@ -37,22 +37,37 @@
               </section>
             </section>
           </section>
+
+          <section class="section">
+            <section class="display-box" id="db-1">
+              <section class="display-box-demo">
+                <table-component id="table2" caption="top" responsive>
+                    <span slot="caption">Example Caption</span>
+                  </table-component>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">Text</div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
         </section>
       </div>
     </div>
     <script type="module" src="./table.js"></script>
     <script>
-      const table = document.getElementById("table1");
-      table.items = [
+      const tableA = document.getElementById("table1");
+      tableA.items = [
         { name: "John", age: 30, city: "New York" },
-        { name: "Anna", age: 25, city: "London", _rowVariant: 'primary' },
+        { name: "Anna", age: 25, city: "London", _rowVariant: "primary" },
         {
           name: "Mike",
           age: 32,
           city: "Chicago",
           _cellVariants: { age: "info", name: "warning" },
         },
-        { name: "Terry", age: 21, city: "Augusta", _rowVariant: 'secondary' },
+        { name: "Terry", age: 21, city: "Augusta", _rowVariant: "secondary" },
         {
           name: "Clark",
           age: 56,
@@ -61,6 +76,42 @@
         },
         { name: "Seth", age: 31, city: "Pittsburgh" },
       ];
+
+      const table = document.getElementById("table2");
+    table.items = [
+      {
+        age: 40,
+        first_name: "Thor",
+        last_name: "MacDonald",
+        _cellVariants: { age: "info", first_name: "warning" },
+        _rowVariant: "primary",
+        _showDetails: true,
+      },
+      {
+        age: 25,
+        first_name: "Anna",
+        last_name: "Smith",
+        _cellVariants: { age: "success", last_name: "danger" },
+        _rowVariant: "secondary",
+        _showDetails: true,
+      },
+    ];
+
+    // Handle the custom event to dynamically inject row details
+    table.addEventListener('render-row-details', (event) => {
+      const { rowData, rowIndex } = event.detail;
+      
+      // Create a container for the details content
+      const detailsContent = document.createElement('div');
+      detailsContent.innerHTML = `<p>Details for ${rowData.first_name}, Age: ${rowData.age}</p>`;
+
+      // Find the correct slot element in the shadow DOM and append the content
+      const slotElements = table.shadowRoot.querySelectorAll(`slot[name="row-details"]`);
+      if (slotElements[rowIndex]) {
+        slotElements[rowIndex].innerHTML = ''; // Clear existing content
+        slotElements[rowIndex].appendChild(detailsContent);
+      }
+    });
     </script>
   </body>
 </html>

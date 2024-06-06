@@ -87,13 +87,27 @@ class Table extends LitElement {
     }
   }
 
+  renderDetails(row, rowIndex) {
+    // We will use this slot to trigger the custom event
+    return html`<slot
+      name="row-details"
+      .rowData="${row}"
+      .rowIndex="${rowIndex}"
+    ></slot>`;
+  }
+
   renderTable() {
     const tableVariantColor = this.tableVariantColor(this.tableVariant);
     return html`
       <table
         role="table"
         aria-colcount="${this.items.length > 0
-          ? Object.keys(this.items[0]).filter(key => key !== '_cellVariants' && key !== '_rowVariant').length
+          ? Object.keys(this.items[0]).filter(
+              (key) =>
+                key !== "_cellVariants" &&
+                key !== "_rowVariant" &&
+                key !== "_showDetails"
+            ).length
           : 0}"
         class="table b-table${this.hover ? " table-hover" : ""}${this.striped
           ? " table-striped"
@@ -105,7 +119,8 @@ class Table extends LitElement {
           ? " b-table-fixed"
           : ""}${this.noBorderCollapsed
           ? " b-table-no-border-collapse"
-          : ""}${this.caption === "top" ? " b-table-caption-top" : ""}${this.stacked
+          : ""}${this.caption === "top" ? " b-table-caption-top" : ""}${this
+          .stacked
           ? " b-table-stacked"
           : ""}${" " + tableVariantColor}"
       >
@@ -117,12 +132,19 @@ class Table extends LitElement {
         ${this.stacked
           ? html`
               <tbody role="rowgroup">
-                ${this.items.map((row) => {
-                  const rowVariantClass = row._rowVariant ? this.tableVariantColor(row._rowVariant) : "";
+                ${this.items.map((row, rowIndex) => {
+                  const rowVariantClass = row._rowVariant
+                    ? this.tableVariantColor(row._rowVariant)
+                    : "";
                   return html`
                     <tr role="row" class="${rowVariantClass}">
                       ${Object.entries(row)
-                        .filter(([key]) => key !== '_cellVariants' && key !== '_rowVariant')
+                        .filter(
+                          ([key]) =>
+                            key !== "_cellVariants" &&
+                            key !== "_rowVariant" &&
+                            key !== "_showDetails"
+                        )
                         .map(([key, cell], index) => {
                           const variant =
                             row._cellVariants && row._cellVariants[key]
@@ -138,6 +160,20 @@ class Table extends LitElement {
                           </td>`;
                         })}
                     </tr>
+                    ${row._showDetails
+                      ? html`<tr role="row" class="row-details">
+                          <td
+                            colspan="${Object.keys(row).filter(
+                              (key) =>
+                                key !== "_cellVariants" &&
+                                key !== "_rowVariant" &&
+                                key !== "_showDetails"
+                            ).length}"
+                          >
+                            ${this.renderDetails(row, rowIndex)}
+                          </td>
+                        </tr>`
+                      : ""}
                   `;
                 })}
               </tbody>
@@ -146,7 +182,12 @@ class Table extends LitElement {
                 <tr role="row">
                   ${this.items.length > 0
                     ? Object.keys(this.items[0])
-                        .filter(key => key !== '_cellVariants' && key !== '_rowVariant')
+                        .filter(
+                          (key) =>
+                            key !== "_cellVariants" &&
+                            key !== "_rowVariant" &&
+                            key !== "_showDetails"
+                        )
                         .map(
                           (key, index) =>
                             html`<th
@@ -161,12 +202,19 @@ class Table extends LitElement {
                 </tr>
               </thead>
               <tbody role="rowgroup">
-                ${this.items.map((row) => {
-                  const rowVariantClass = row._rowVariant ? this.tableVariantColor(row._rowVariant) : "";
+                ${this.items.map((row, rowIndex) => {
+                  const rowVariantClass = row._rowVariant
+                    ? this.tableVariantColor(row._rowVariant)
+                    : "";
                   return html`
                     <tr role="row" class="${rowVariantClass}">
                       ${Object.entries(row)
-                        .filter(([key]) => key !== '_cellVariants' && key !== '_rowVariant')
+                        .filter(
+                          ([key]) =>
+                            key !== "_cellVariants" &&
+                            key !== "_rowVariant" &&
+                            key !== "_showDetails"
+                        )
                         .map(([key, cell], index) => {
                           const variant =
                             row._cellVariants && row._cellVariants[key]
@@ -181,6 +229,20 @@ class Table extends LitElement {
                           </td>`;
                         })}
                     </tr>
+                    ${row._showDetails
+                      ? html`<tr role="row" class="row-details">
+                          <td
+                            colspan="${Object.keys(row).filter(
+                              (key) =>
+                                key !== "_cellVariants" &&
+                                key !== "_rowVariant" &&
+                                key !== "_showDetails"
+                            ).length}"
+                          >
+                            ${this.renderDetails(row, rowIndex)}
+                          </td>
+                        </tr>`
+                      : ""}
                   `;
                 })}
               </tbody>
@@ -194,7 +256,12 @@ class Table extends LitElement {
                     <tr role="row">
                       ${this.items.length > 0
                         ? Object.keys(this.items[0])
-                            .filter(key => key !== '_cellVariants' && key !== '_rowVariant')
+                            .filter(
+                              (key) =>
+                                key !== "_cellVariants" &&
+                                key !== "_rowVariant" &&
+                                key !== "_showDetails"
+                            )
                             .map(
                               (key, index) =>
                                 html`<th
@@ -217,9 +284,29 @@ class Table extends LitElement {
     if (this.responsive) {
       return html`<div class="table-responsive">${this.renderTable()}</div>`;
     } else if (this.sticky) {
-      return html`<div class="b-table-sticky-header">${this.renderTable()}</div>`;
+      return html`<div class="b-table-sticky-header">
+        ${this.renderTable()}
+      </div>`;
     } else {
       return this.renderTable();
+    }
+  }
+
+  updated(changedProperties) {
+    // Handle updates to items to ensure row details are displayed correctly
+    if (changedProperties.has("items")) {
+      this.items.forEach((row, index) => {
+        if (row._showDetails) {
+          // Trigger custom event to render row details
+          this.dispatchEvent(
+            new CustomEvent("render-row-details", {
+              detail: { rowData: row, rowIndex: index },
+              bubbles: true,
+              composed: true,
+            })
+          );
+        }
+      });
     }
   }
 }
