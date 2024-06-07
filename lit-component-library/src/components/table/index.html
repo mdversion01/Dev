@@ -73,6 +73,7 @@
           <section class="section">
               <section class="display-box" id="db-1">
                 <section class="display-box-demo">
+                    <button onclick="resetTableSort('table4')">Reset Sort</button>
                     <table-component id="table4" sortable caption="top" responsive>
                         <span slot="caption">Example Caption</span>
                       </table-component>
@@ -199,13 +200,20 @@
         }
       });
 
+      function resetTableSort(tableId) {
+      const table = document.getElementById(tableId);
+      if (table && typeof table.resetSort === 'function') {
+        table.resetSort();
+      }
+    }
+
       const tableC = document.getElementById("table4");
 
       // Define the fields with additional properties
       tableC.fields = [
         { key: "last_name", sortable: true },
-        { key: "first_name", sortable: false },
-        { key: "age", label: "Person Age", sortable: true, variant: "danger" },
+        { key: "first_name", sortable: true },
+        { key: "age", label: "Person Age", sortable: true },
       ];
 
       // Define the items (data)
@@ -213,20 +221,22 @@
         {
           age: 40,
           first_name: "Thor",
-          last_name: "MacDonald",
-          _showDetails: true,
+          last_name: "MacDonald"
         },
         {
           age: 20,
           first_name: "Pete",
-          last_name: "MacDonald",
-          _showDetails: true,
+          last_name: "MacDonald"
         },
         {
           age: 25,
           first_name: "Anna",
-          last_name: "Smith",
-          _showDetails: true,
+          last_name: "Smith"
+        },
+        {
+          age: 36,
+          first_name: "Zachary",
+          last_name: "Peterson"
         },
       ];
 

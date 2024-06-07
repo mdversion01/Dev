@@ -3,22 +3,7 @@ import { LitElement, html, css } from "lit";
 import { tableStyles } from "./table-styles.js";
 
 class Table extends LitElement {
-  static styles = [tableStyles, css`
-    /* th[aria-sort="ascending"]::after {
-      content: "▲";
-      margin-left: 0.5em;
-    }
-
-    th[aria-sort="descending"]::after {
-      content: "▼";
-      margin-left: 0.5em;
-    }
-
-    th[aria-sort="none"]::after {
-      content: "⇅";
-      margin-left: 0.5em;
-    } */
-  `];
+  static styles = [tableStyles, css``];
 
   static properties = {
     border: { type: Boolean },
@@ -41,7 +26,7 @@ class Table extends LitElement {
     striped: { type: Boolean },
     tableVariant: { type: String },
     sortCriteria: { type: Array },
-    sortable: { type: Boolean }, // New property to enable or disable sorting
+    sortable: { type: Boolean },
   };
 
   constructor() {
@@ -130,15 +115,19 @@ class Table extends LitElement {
     }
   }
 
-  sortItems(key) {
+  sortItems(event, key) {
     if (!this.sortable) return;
 
     const existingSort = this.sortCriteria.find(criteria => criteria.key === key);
 
-    if (existingSort) {
-      existingSort.order = existingSort.order === 'asc' ? 'desc' : 'asc';
+    if (event.ctrlKey || event.metaKey) {
+      if (existingSort) {
+        existingSort.order = existingSort.order === 'asc' ? 'desc' : 'asc';
+      } else {
+        this.sortCriteria.push({ key, order: 'asc' });
+      }
     } else {
-      this.sortCriteria.push({ key, order: 'asc' });
+      this.sortCriteria = existingSort ? [{ key, order: existingSort.order === 'asc' ? 'desc' : 'asc' }] : [{ key, order: 'asc' }];
     }
 
     this.items = [...this.items].sort((a, b) => {
@@ -171,10 +160,11 @@ class Table extends LitElement {
 
     const criteria = this.sortCriteria.find(c => c.key === key);
     if (criteria) {
-      const index = this.sortCriteria.indexOf(criteria) + 1;
-      return html`<sup>${index}</sup>`;
+      const order = criteria.order === 'asc' ? 'ascending' : 'descending';
+      const index = this.sortCriteria.length > 1 ? this.sortCriteria.indexOf(criteria) + 1 : '';
+      return html`<i class="sort-icon ${order}"></i>${index ? html`<sup>${index}</sup>` : ''}`;
     }
-    return '';
+    return html`<i class="sort-icon none"></i>`;
   }
 
   renderDetails(row, rowIndex) {
@@ -183,6 +173,19 @@ class Table extends LitElement {
       .rowData="${row}"
       .rowIndex="${rowIndex}"
     ></slot>`;
+  }
+
+  resetSort() {
+    if (this.normalizedFields.length > 0) {
+      const firstField = this.normalizedFields[0];
+      this.sortCriteria = [{ key: firstField.key, order: 'asc' }];
+      this.items = [...this.items].sort((a, b) => {
+        const aValue = a[firstField.key];
+        const bValue = b[firstField.key];
+        return aValue < bValue ? -1 : aValue > bValue ? 1 : 0;
+      });
+      this.requestUpdate();
+    }
   }
 
   renderTable() {
@@ -221,7 +224,7 @@ class Table extends LitElement {
                     aria-colindex="${index + 1}"
                     aria-sort="${this.getAriaSort(key)}"
                     class="${this.tableVariantColor(variant)}"
-                    @click="${() => this.sortItems(key)}"
+                    @click="${(event) => this.sortItems(event, key)}"
                     style="cursor: pointer;"
                   >
                     ${label} ${this.renderSortIndicator(key)}
