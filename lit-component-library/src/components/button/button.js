@@ -53,7 +53,7 @@ class PlButton extends LitElement {
     this.block = false;
     this.bottom = "";
     this.btnIcon = false;
-    this.btnText = "Button";
+    this.btnText = "";
     this.classNames = "";
     this.disabled = false;
     this.end = false;
@@ -332,13 +332,25 @@ class PlButton extends LitElement {
     const variant = `${this.variant}`;
     const outlinedClass = this.outlined ? "pl-btn--outlined" : "";
     const blockClass = this.block ? "pl-btn--block" : "";
-    const content =
-      this.iconBtn || this.btnIcon
+    
+    const content = this.iconBtn || this.btnIcon
         ? html`<slot></slot>`
         : html`${this.slotLeft ? html`<slot></slot>` : ""}<span
               class="pl-btn__content"
-              >${this.btnText}</span
+              >${this.btnText}<slot></slot></span
             >${this.slotRight ? html`<slot></slot>` : ""}`;
+
+    // const content = this.iconBtn
+    //   ? html`<slot></slot>`
+    //   : html`<span class="pl-btn__content"><slot></slot></span>`;
+
+    // const content = this.iconBtn ? html`<slot></slot>` :
+    // this.btnIcon ? html`<slot></slot>` :
+    // this.slotLeft ? html`<slot></slot><span class="pl-btn__content">${this.btnText}</span>` :
+    // this.slotRight ? html`<span class="pl-btn__content">${this.btnText}</span><slot></slot>` :
+    // this.btnText ? html`<span class="pl-btn__content">${this.btnText}</span>` : 
+    // html`<span class="pl-btn__content"><slot></slot></span>`;
+
 
     const rippleEffect = this.ripple ? "pl-btn-ripple" : "";
 
@@ -443,8 +455,8 @@ class PlButton extends LitElement {
     this.dispatchEvent(
       new CustomEvent("custom-click", {
         bubbles: true,
-        composed: true, // Allows the event to cross shadow DOM boundaries
-        detail: { message: "Button clicked!" }, // Optional detail object
+        // composed: true, // Allows the event to cross shadow DOM boundaries
+        // detail: { message: "Button clicked!" }, // Optional detail object
       })
     );
   }

@@ -1,5 +1,6 @@
 // src/components/table/table.js
 import { LitElement, html, css } from "lit";
+import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import { tableStyles } from "./table-styles.js";
 
 class Table extends LitElement {
@@ -27,6 +28,7 @@ class Table extends LitElement {
     tableVariant: { type: String },
     sortCriteria: { type: Array },
     sortable: { type: Boolean },
+    expandedRows: { type: Array },
   };
 
   constructor() {
@@ -52,25 +54,42 @@ class Table extends LitElement {
     this.tableVariant = "table";
     this.sortCriteria = [];
     this.sortable = false; // Default sorting to false
+    this.expandedRows = []; // Track expanded rows
   }
 
   get normalizedFields() {
     if (this.fields.length > 0) {
-      return this.fields.map(field => {
-        if (typeof field === 'string') {
-          return { key: field, label: this.formatHeader(field), sortable: false, variant: "" };
+      return this.fields.map((field) => {
+        if (typeof field === "string") {
+          return {
+            key: field,
+            label: this.formatHeader(field),
+            sortable: false,
+            variant: "",
+          };
         }
         return {
           key: field.key,
           label: field.label || this.formatHeader(field.key),
           sortable: field.sortable || false,
-          variant: field.variant || ""
+          variant: field.variant || "",
         };
       });
     } else if (this.items.length > 0) {
       return Object.keys(this.items[0])
-        .filter(key => key !== '_cellVariants' && key !== '_rowVariant' && key !== '_showDetails')
-        .map(key => ({ key, label: this.formatHeader(key), sortable: false, variant: "" }));
+        .filter(
+          (key) =>
+            key !== "_cellVariants" &&
+            key !== "_rowVariant" &&
+            key !== "_showDetails" &&
+            key !== "_additionalInfo"
+        )
+        .map((key) => ({
+          key,
+          label: this.formatHeader(key),
+          sortable: false,
+          variant: "",
+        }));
     } else {
       return [];
     }
@@ -121,15 +140,35 @@ class Table extends LitElement {
     const existingSort = this.sortCriteria.find(criteria => criteria.key === key);
 
     if (event.ctrlKey || event.metaKey) {
+      // Multi-sort behavior
       if (existingSort) {
-        existingSort.order = existingSort.order === 'asc' ? 'desc' : 'asc';
+        if (existingSort.order === 'asc') {
+          existingSort.order = 'desc';
+        } else if (existingSort.order === 'desc') {
+          this.sortCriteria = this.sortCriteria.filter(c => c.key !== key);
+        } else {
+          this.sortCriteria.push({ key, order: 'asc' });
+        }
       } else {
         this.sortCriteria.push({ key, order: 'asc' });
       }
     } else {
-      this.sortCriteria = existingSort ? [{ key, order: existingSort.order === 'asc' ? 'desc' : 'asc' }] : [{ key, order: 'asc' }];
+      // Single-sort behavior with tri-state and clearing multi-column selections
+      this.sortCriteria = []; // Clear all existing multi-column selections
+      if (existingSort) {
+        if (existingSort.order === 'asc') {
+          this.sortCriteria = [{ key, order: 'desc' }];
+        } else if (existingSort.order === 'desc') {
+          this.sortCriteria = [];
+        } else {
+          this.sortCriteria = [{ key, order: 'asc' }];
+        }
+      } else {
+        this.sortCriteria = [{ key, order: 'asc' }];
+      }
     }
 
+    // Update the items based on the new sort criteria
     this.items = [...this.items].sort((a, b) => {
       for (const criteria of this.sortCriteria) {
         const aValue = a[criteria.key];
@@ -150,7 +189,7 @@ class Table extends LitElement {
 
     const criteria = this.sortCriteria.find(c => c.key === key);
     if (criteria) {
-      return criteria.order === 'asc' ? 'ascending' : 'descending';
+      return criteria.order === 'asc' ? 'ascending' : criteria.order === 'desc' ? 'descending' : 'none';
     }
     return 'none';
   }
@@ -160,40 +199,49 @@ class Table extends LitElement {
 
     const criteria = this.sortCriteria.find(c => c.key === key);
     if (criteria) {
-      const order = criteria.order === 'asc' ? 'ascending' : 'descending';
+      const order = criteria.order === 'asc' ? 'ascending' : criteria.order === 'desc' ? 'descending' : 'none';
       const index = this.sortCriteria.length > 1 ? this.sortCriteria.indexOf(criteria) + 1 : '';
       return html`<i class="sort-icon ${order}"></i>${index ? html`<sup>${index}</sup>` : ''}`;
     }
     return html`<i class="sort-icon none"></i>`;
   }
 
-  renderDetails(row, rowIndex) {
-    return html`<slot
-      name="row-details"
-      .rowData="${row}"
-      .rowIndex="${rowIndex}"
-    ></slot>`;
+  evaluateTemplateLiteral(template, data) {
+    return new Function('return `' + template + '`;').call(data);
+  }
+
+  renderDetails(row) {
+    const content = row._additionalInfo ? this.evaluateTemplateLiteral(row._additionalInfo, row) : 'No additional information';
+    return html`
+      <div class="details">
+        ${unsafeHTML(content)}
+      </div>
+    `;
   }
 
   resetSort() {
-    if (this.normalizedFields.length > 0) {
-      const firstField = this.normalizedFields[0];
-      this.sortCriteria = [{ key: firstField.key, order: 'asc' }];
-      this.items = [...this.items].sort((a, b) => {
-        const aValue = a[firstField.key];
-        const bValue = b[firstField.key];
-        return aValue < bValue ? -1 : aValue > bValue ? 1 : 0;
-      });
-      this.requestUpdate();
+    this.sortCriteria = [];
+    this.requestUpdate();
+  }
+
+  toggleDetails(rowIndex) {
+    const index = this.expandedRows.indexOf(rowIndex);
+    if (index === -1) {
+      this.expandedRows = [...this.expandedRows, rowIndex];
+    } else {
+      this.expandedRows = this.expandedRows.filter(i => i !== rowIndex);
     }
+    this.requestUpdate();
   }
 
   renderTable() {
     const tableVariantColor = this.tableVariantColor(this.tableVariant);
+    const hasDetailsRows = this.items.some(row => row._showDetails);
+
     return html`
       <table
         role="table"
-        aria-colcount="${this.normalizedFields.length}"
+        aria-colcount="${this.normalizedFields.length + (hasDetailsRows ? 1 : 0)}"
         class="table b-table${this.hover ? " table-hover" : ""}${this.striped
           ? " table-striped"
           : ""}${this.bordered ? " table-bordered" : ""}${this.borderless
@@ -216,6 +264,7 @@ class Table extends LitElement {
           : ""}
         <thead role="rowgroup" class="${this.headertheme()}">
           <tr role="row">
+            ${hasDetailsRows ? html`<th class="toggle-col"></th>` : ''}
             ${this.normalizedFields.map(({ key, label, sortable, variant }, index) =>
               sortable && this.sortable
                 ? html`<th
@@ -243,9 +292,15 @@ class Table extends LitElement {
         <tbody role="rowgroup">
           ${this.items.flatMap((row, rowIndex) => {
             const rowVariantClass = row._rowVariant ? this.tableVariantColor(row._rowVariant) : "";
+            const isExpanded = this.expandedRows.includes(rowIndex);
             return [
               html`
                 <tr role="row" class="${rowVariantClass}">
+                  ${row._showDetails
+                    ? html`<td @click="${() => this.toggleDetails(rowIndex)}" style="cursor: pointer;">
+                        <div class="caret-icon ${isExpanded ? 'rotate-down' : 'rotate-up'}"></div>
+                      </td>`
+                    : hasDetailsRows ? html`<td></td>` : ''}
                   ${this.normalizedFields.map(({ key, variant }, index) => {
                     const cell = row[key];
                     const cellVariant =
@@ -264,9 +319,9 @@ class Table extends LitElement {
               `,
               row._showDetails
                 ? html`
-                    <tr role="row" class="row-details">
-                      <td colspan="${this.normalizedFields.length}">
-                        ${this.renderDetails(row, rowIndex)}
+                    <tr role="row" class="details-row" ?expanded="${isExpanded}">
+                      <td colspan="${this.normalizedFields.length + 1}">
+                        <div>${this.renderDetails(row)}</div>
                       </td>
                     </tr>
                   `
@@ -282,6 +337,7 @@ class Table extends LitElement {
         ${this.cloneFooter
           ? html` <tfoot role="rowgroup" class="${this.headertheme()}">
               <tr role="row">
+                ${hasDetailsRows ? html`<th></th>` : ''}
                 ${this.normalizedFields.map(({ key, label, variant }, index) =>
                   html`<th
                     role="columnheader"

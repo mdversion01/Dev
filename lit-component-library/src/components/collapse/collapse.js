@@ -251,12 +251,12 @@ async toggleSingleCollapse(event) {
   renderAccordionExpansionCard() {
     return html` 
         <div class="expansion-card">
-            ${this.renderAccordionButton()} ${this.renderExapnsionContentArea()}
+            ${this.renderAccordionButton()} ${this.renderExpansionContentArea()}
         </div>
     `;
   }
 
-  renderExapnsionContentArea() {
+  renderExpansionContentArea() {
     return html`
       <div
         id="${this.targetId}"
@@ -283,11 +283,11 @@ async toggleSingleCollapse(event) {
       </div>`;
     } else if (this.link) {
       return html` <div class="expansion-wrapper">
-        ${this.renderToggleLink()} ${this.renderExapnsionContentArea()}
+        ${this.renderToggleLink()} ${this.renderExpansionContentArea()}
       </div>`;
     } else {
       return html` <div class="expansion-wrapper">
-        ${this.renderToggleButton()} ${this.renderExapnsionContentArea()}
+        ${this.renderToggleButton()} ${this.renderExpansionContentArea()}
       </div>`;
     }
   }

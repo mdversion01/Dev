@@ -36,10 +36,60 @@ export const tableStyles = css`
     width: 28px;
     height: 28px;
     background-color: transparent;
-    border: 1px solid #CCC;
-    border-radius: 3px;
     padding: 0;
     margin: 0;
+    transform: scaleY(-1);
+  }
+
+  .details-row > td > div {
+    transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out;
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+  }
+
+  .details-row[expanded] > td > div {
+    max-height: 100vh;
+    opacity: 1;
+  }
+
+  .caret-icon {
+    transition: transform 0.3s ease-in-out;
+  }
+
+  .rotate-down {
+    transform: rotate(90deg);
+  }
+
+  .rotate-up {
+    transform: rotate(0deg);
+  }
+
+  .details-row,
+  .details-row > td {
+    padding: 0 !important;
+  }
+
+  .details {
+    padding: 5px 15px;
+  }
+
+  .caret-icon {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 512'%3E%3Cpath d='M224.3 273l-136 136c-9.4 9.4-24.6 9.4-33.9 0l-22.6-22.6c-9.4-9.4-9.4-24.6 0-33.9l96.4-96.4-96.4-96.4c-9.4-9.4-9.4-24.6 0-33.9L54.3 103c9.4-9.4 24.6-9.4 33.9 0l136 136c9.5 9.4 9.5 24.6 .1 34z'/%3E%3C/svg%3E");
+    background-position: center center;
+    background-repeat: no-repeat;
+    width: 16px;
+    height: 16px;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .toggle-col {
+    width: 20px;
   }
 
   table {
@@ -66,12 +116,18 @@ export const tableStyles = css`
     margin-bottom: 1rem;
     color: #212529;
   }
-  .table td,
+
   .table th {
     padding: 0.75rem;
     vertical-align: top;
     border-top: 1px solid #dee2e6;
   }
+
+  .table td {
+    padding: 0.75rem;
+    border-top: 1px solid #dee2e6;
+  }
+
   .table thead th {
     vertical-align: bottom;
     border-bottom: 1px solid #dee2e6;

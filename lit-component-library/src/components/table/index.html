@@ -16,7 +16,24 @@
     />
     <link rel="stylesheet" href="../../styles/components.css" />
 
-    <style></style>
+    <style>
+      button {
+        border: 1px solid #ccc;
+        border-radius: 3px;
+      }
+
+      .reset-sort-icon {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ctitle%3Esort-variant-remove%3C/title%3E%3Cpath d='M3 13H15V11H3M3 6V8H21V6M3 18H9V16H3V18M22.54 16.88L20.41 19L22.54 21.12L21.12 22.54L19 20.41L16.88 22.54L15.47 21.12L17.59 19L15.47 16.88L16.88 15.47L19 17.59L21.12 15.46L22.54 16.88' /%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-size: 24px 24px;
+        width: 28px;
+        height: 28px;
+        background-color: transparent;
+        padding: 0;
+        margin: 0;
+        transform: scaleY(-1);
+      }
+    </style>
   </head>
   <body>
     <div class="title">Table</div>
@@ -71,25 +88,26 @@
           </section>
 
           <section class="section">
-              <section class="display-box" id="db-1">
-                <section class="display-box-demo">
-                    <button onclick="resetTableSort('table4')">Reset Sort</button>
-                    <table-component id="table4" sortable caption="top" responsive>
-                        <span slot="caption">Example Caption</span>
-                      </table-component>
-                </section>
-                <section class="display-box-meta markdown">
-                  <div class="display-box-title">Basic Usage</div>
-                  <div class="display-box-description">Text</div>
-                  <div class=""></div>
-                </section>
+            <section class="display-box" id="db-1">
+              <section class="display-box-demo">
+                <button
+                  class="reset-sort-icon"
+                  onclick="resetTableSort('table4')"
+                ></button>
+                <table-component id="table4" small sortable caption="top" responsive>
+                  <span slot="caption">Example Caption</span>
+                </table-component>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">Text</div>
+                <div class=""></div>
               </section>
             </section>
+          </section>
         </section>
       </div>
     </div>
-
-
 
     <script type="module" src="./table.js"></script>
     <script>
@@ -124,6 +142,8 @@
           _cellVariants: { age: "info", first_name: "warning" },
           _rowVariant: "primary",
           _showDetails: true,
+          _additionalInfo:
+            "<p>Hello ${this.first_name}, Age: ${this.age}</p><p>${this.first_name} is a software engineer.</p>",
         },
         {
           age: 25,
@@ -132,26 +152,36 @@
           _cellVariants: { age: "success", last_name: "danger" },
           _rowVariant: "secondary",
           _showDetails: true,
+          _additionalInfo:
+            "<p>Hello ${this.first_name}, Age: ${this.age}</p><p>${this.first_name} is a graphic designer.</p>",
+        },
+        {
+          age: 32,
+          first_name: "Mike",
+          last_name: "Johnson",
+          _cellVariants: { age: "info", last_name: "success" },
+          _rowVariant: "info",
+          _showDetails: false,
         },
       ];
 
-      // Handle the custom event to dynamically inject row details
-      table.addEventListener("render-row-details", (event) => {
-        const { rowData, rowIndex } = event.detail;
+      // // Handle the custom event to dynamically inject row details
+      // table.addEventListener("render-row-details", (event) => {
+      //   const { rowData, rowIndex } = event.detail;
 
-        // Create a container for the details content
-        const detailsContent = document.createElement("div");
-        detailsContent.innerHTML = `<p>Details for ${rowData.first_name}, Age: ${rowData.age}</p>`;
+      //   // Create a container for the details content
+      //   const detailsContent = document.createElement("div");
+      //   detailsContent.innerHTML = `<p>Details for ${rowData.first_name}, Age: ${rowData.age}</p>`;
 
-        // Find the correct slot element in the shadow DOM and append the content
-        const slotElements = table.shadowRoot.querySelectorAll(
-          `slot[name="row-details"]`
-        );
-        if (slotElements[rowIndex]) {
-          slotElements[rowIndex].innerHTML = ""; // Clear existing content
-          slotElements[rowIndex].appendChild(detailsContent);
-        }
-      });
+      //   // Find the correct slot element in the shadow DOM and append the content
+      //   const slotElements = table.shadowRoot.querySelectorAll(
+      //     `slot[name="row-details"]`
+      //   );
+      //   if (slotElements[rowIndex]) {
+      //     slotElements[rowIndex].innerHTML = ""; // Clear existing content
+      //     slotElements[rowIndex].appendChild(detailsContent);
+      //   }
+      // });
 
       const tableB = document.getElementById("table3");
 
@@ -170,7 +200,6 @@
           last_name: "MacDonald",
           _cellVariants: { age: "info", first_name: "warning" },
           _rowVariant: "primary",
-          _showDetails: true,
         },
         {
           age: 25,
@@ -178,34 +207,15 @@
           last_name: "Smith",
           _cellVariants: { age: "success", last_name: "danger" },
           _rowVariant: "secondary",
-          _showDetails: true,
         },
       ];
 
-      // Handle the custom event to dynamically inject row details
-      tableB.addEventListener("render-row-details", (event) => {
-        const { rowData, rowIndex } = event.detail;
-
-        // Create a container for the details content
-        const detailsContent = document.createElement("div");
-        detailsContent.innerHTML = `<p>Details for ${rowData.first_name}, Age: ${rowData.age}</p>`;
-
-        // Find the correct slot element in the shadow DOM and append the content
-        const slotElements = tableB.shadowRoot.querySelectorAll(
-          `slot[name="row-details"]`
-        );
-        if (slotElements[rowIndex]) {
-          slotElements[rowIndex].innerHTML = ""; // Clear existing content
-          slotElements[rowIndex].appendChild(detailsContent);
-        }
-      });
-
       function resetTableSort(tableId) {
-      const table = document.getElementById(tableId);
-      if (table && typeof table.resetSort === 'function') {
-        table.resetSort();
+        const table = document.getElementById(tableId);
+        if (table && typeof table.resetSort === "function") {
+          table.resetSort();
+        }
       }
-    }
 
       const tableC = document.getElementById("table4");
 
@@ -221,40 +231,33 @@
         {
           age: 40,
           first_name: "Thor",
-          last_name: "MacDonald"
+          last_name: "MacDonald",
+          _showDetails: true,
+          _additionalInfo:
+            "<p>Hello ${this.first_name}, Age: ${this.age}</p><p>${this.first_name} is a software engineer.</p>",
         },
         {
           age: 20,
           first_name: "Pete",
-          last_name: "MacDonald"
+          last_name: "MacDonald",
+          _showDetails: true,
+          _additionalInfo:
+            "<p>Hello ${this.first_name}, Age: ${this.age}</p><p>${this.first_name} is a software engineer.</p>",
         },
         {
           age: 25,
           first_name: "Anna",
-          last_name: "Smith"
+          last_name: "Smith",
+          _showDetails: true,
+          _additionalInfo:
+            "<p>Hello ${this.first_name}, Age: ${this.age}</p><p>${this.first_name} is a software engineer.</p>",
         },
         {
           age: 36,
           first_name: "Zachary",
-          last_name: "Peterson"
+          last_name: "Peterson",
         },
       ];
-
-      // Handle the custom event to dynamically inject row details
-      tableC.addEventListener('render-row-details', (event) => {
-      const { rowData, rowIndex } = event.detail;
-      
-      // Create a container for the details content
-      const detailsContent = document.createElement('div');
-      detailsContent.innerHTML = `<p>Details for ${rowData.first_name}, Age: ${rowData.age}</p>`;
-
-      // Find the correct slot element in the shadow DOM and append the content
-      const slotElements = tableC.shadowRoot.querySelectorAll(`slot[name="row-details"]`);
-      if (slotElements[rowIndex]) {
-        slotElements[rowIndex].innerHTML = ''; // Clear existing content
-        slotElements[rowIndex].appendChild(detailsContent);
-      }
-      });
     </script>
   </body>
 </html>
