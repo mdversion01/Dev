@@ -153,6 +153,11 @@ class SelectField extends LitElement {
     `;
   }
 
+  handleChange(event) {
+    console.log('Selected value:', event.target.value);
+    this.dispatchEvent(new CustomEvent('change', { detail: { value: event.target.value } }));
+  }
+
   render() {
     const ids = this.camelCase(this.selectFieldId).replace(/ /g, "");
     const names = this.camelCase(this.label).replace(/ /g, "");
