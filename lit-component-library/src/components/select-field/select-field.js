@@ -18,6 +18,7 @@ class SelectField extends LitElement {
     return {
       custom: { type: Boolean },
       defaultTxt: { type: String },
+      defaultOptionTxt: { type: String },
       disabled: { type: Boolean },
       formLayout: { type: String },
       formId: { type: String },
@@ -32,6 +33,7 @@ class SelectField extends LitElement {
       validation: { type: Boolean },
       validationMessage: { type: String },
       value: { type: String },
+      withTable: { type: Boolean },
     };
   }
 
@@ -39,6 +41,7 @@ class SelectField extends LitElement {
     super();
     this.custom = false;
     this.defaultTxt = "";
+    this.defaultOptionTxt = "Select an option";
     this.disabled = false;
     this.formId = "";
     this.selectFieldId = "";
@@ -49,18 +52,46 @@ class SelectField extends LitElement {
     this.selected = false;
     this.validation = false;
     this.validationMessage = "";
-    this.value = "";
+    this.value = "--none--";
+    this.options = [];
+    this.withTable = false; // New property to determine if used with table
   }
 
   connectedCallback() {
     super.connectedCallback();
 
-    // Access the formId and formLayout properties from the closest form-component
     const formComponent = this.closest("form-component");
 
     if (formComponent) {
       this.formId = formComponent.formId || "";
       this.formLayout = formComponent.formLayout || "";
+    }
+
+    if (this.withTable) {
+      window.addEventListener('sort-field-updated', this.updateSortField.bind(this));
+      window.addEventListener('sort-order-updated', this.updateSortOrder.bind(this));
+    }
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    if (this.withTable) {
+      window.removeEventListener('sort-field-updated', this.updateSortField.bind(this));
+      window.removeEventListener('sort-order-updated', this.updateSortOrder.bind(this));
+    }
+  }
+
+  updateSortField(event) {
+    if (this.id === 'sortField') {
+      this.value = event.detail.value || '--none--';
+      this.requestUpdate();
+    }
+  }
+
+  updateSortOrder(event) {
+    if (this.id === 'sortOrder') {
+      this.value = event.detail.value || '--none--';
+      this.requestUpdate();
     }
   }
 
@@ -70,12 +101,18 @@ class SelectField extends LitElement {
     if (changedProperties.has("formId")) {
       const input = this.shadowRoot.querySelector("formField");
       if (input) {
-        // Check if formId is not a symbol before setting the attribute
         if (typeof this.formId !== "symbol") {
           input.setAttribute("form", this.formId);
         } else {
-          input.removeAttribute("form"); // Remove the form attribute if formId is a symbol
+          input.removeAttribute("form");
         }
+      }
+    }
+
+    if (changedProperties.has("value")) {
+      const selectElement = this.shadowRoot.querySelector("select");
+      if (selectElement) {
+        selectElement.value = this.value;
       }
     }
   }
@@ -130,12 +167,14 @@ class SelectField extends LitElement {
           aria-invalid=${this.validation}
           aria-multiselectable=${this.multiple}
           role=${this.multiple ? "combobox" : "listbox"}
+          @change="${this.handleChange}"
         >
+          ${this.withTable ? html`<option value="--none--" aria-label="none">--none--</option>` : html`<option value="" aria-label=${this.defaultOptionTxt}>${this.defaultOptionTxt}</option>`}
           ${this.options
             ? this.options.map(
                 (option) =>
                   html`<option
-                    ?selected=${this.selected}
+                    ?selected=${option.value === this.value}
                     value=${option.value}
                     aria-label=${option.name}
                   >
@@ -184,7 +223,6 @@ class SelectField extends LitElement {
 
   _getClassNames() {
     const excludedProperties = [
-      // Add other property names to be excluded from the class here
     ];
 
     return Array.from(this.attributes)

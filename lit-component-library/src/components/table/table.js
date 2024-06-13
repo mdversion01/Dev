@@ -109,6 +109,19 @@ class Table extends LitElement {
     console.log('Sorted items:', this.items);
     this.clearSelection();
     this.requestUpdate();
+
+    // Dispatch custom events to update the select-field-components
+    const sortFieldEvent = new CustomEvent('sort-field-updated', {
+      detail: { value: this.sortField || '--none--' }
+    });
+    console.log('Dispatching sort-field-updated event:', sortFieldEvent);
+    window.dispatchEvent(sortFieldEvent);
+
+    const sortOrderEvent = new CustomEvent('sort-order-updated', {
+      detail: { value: this.sortOrder || '--none--' }
+    });
+    console.log('Dispatching sort-order-updated event:', sortOrderEvent);
+    window.dispatchEvent(sortOrderEvent);
   }
 
   clearSelection() {
@@ -227,6 +240,14 @@ class Table extends LitElement {
       }
     }
 
+    if (this.sortCriteria.length === 0) {
+      this.sortField = "";
+      this.sortOrder = "";
+    } else {
+      this.sortField = this.sortCriteria[0]?.key;
+      this.sortOrder = this.sortCriteria[0]?.order;
+    }
+
     this.items = [...this.items].sort((a, b) => {
       for (const criteria of this.sortCriteria) {
         const aValue = a[criteria.key];
@@ -241,6 +262,18 @@ class Table extends LitElement {
 
     this.clearSelection();
     this.requestUpdate();
+
+    const sortFieldEvent = new CustomEvent('sort-field-updated', {
+      detail: { value: this.sortField || '--none--' }
+    });
+    console.log('Dispatching sort-field-updated event:', sortFieldEvent);
+    window.dispatchEvent(sortFieldEvent);
+
+    const sortOrderEvent = new CustomEvent('sort-order-updated', {
+      detail: { value: this.sortOrder || '--none--' }
+    });
+    console.log('Dispatching sort-order-updated event:', sortOrderEvent);
+    window.dispatchEvent(sortOrderEvent);
   }
 
   getAriaSort(key) {
@@ -509,8 +542,22 @@ class Table extends LitElement {
 
   resetSort() {
     this.sortCriteria = [];
+    this.sortField = "";
+    this.sortOrder = "";
     this.clearSelection();
     this.requestUpdate();
+
+    const sortFieldEvent = new CustomEvent('sort-field-updated', {
+      detail: { value: '--none--' }
+    });
+    console.log('Dispatching sort-field-updated event:', sortFieldEvent);
+    window.dispatchEvent(sortFieldEvent);
+
+    const sortOrderEvent = new CustomEvent('sort-order-updated', {
+      detail: { value: '--none--' }
+    });
+    console.log('Dispatching sort-order-updated event:', sortOrderEvent);
+    window.dispatchEvent(sortOrderEvent);
   }
 
   toggleDetails(rowIndex) {

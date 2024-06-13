@@ -94,17 +94,22 @@
                   class="reset-sort-icon"
                   onclick="resetTableSort('table4')"
                 ></button>
-                <label for="sortField">Sort Field:</label>
-                <select id="sortField" name="sortField">
-                  <!-- Options will be populated dynamically -->
-                </select>
-
-                <label for="sortOrder">Sort Order:</label>
-                <select id="sortOrder" name="sortOrder">
-                  <option value="asc">Ascending</option>
-                  <option value="desc">Descending</option>
-                </select>
-
+                <div style="display: flex; width: 100%; flex: 1 1 auto">
+                  <div style="flex: 1 1 auto">
+                    <select-field-component
+                      id="sortField"
+                      label="Sort Field"
+                      withTable
+                    ></select-field-component>
+                  </div>
+                  <div style="flex: 1 1 auto">
+                    <select-field-component
+                      id="sortOrder"
+                      label="Sort Order"
+                      withTable
+                    ></select-field-component>
+                  </div>
+                </div>
                 <table-component
                   id="table4"
                   small
@@ -128,7 +133,11 @@
     </div>
 
     <script type="module" src="./table.js"></script>
-    
+    <script
+      type="module"
+      src="../../components/select-field/select-field.js"
+    ></script>
+
     <script>
       const tableA = document.getElementById("table1");
       tableA.items = [
@@ -236,88 +245,90 @@
         }
       }
 
-      document.addEventListener("DOMContentLoaded", () => {
-        const tableC = document.getElementById("table4");
+      const tableC = document.getElementById("table4");
 
-        // Define the fields with additional properties
-        tableC.fields = [
-          { key: "last_name", label: "Last Name", sortable: true },
-          { key: "first_name", label: "First Name", sortable: true },
-          { key: "age", label: "Person Age", sortable: true },
-        ];
+      tableC.fields = [
+        { key: "last_name", label: "Last Name", sortable: true },
+        { key: "first_name", label: "First Name", sortable: true },
+        { key: "age", label: "Person Age", sortable: true },
+      ];
 
-        // Define the items (data)
-        tableC.items = [
-          {
-            age: 40,
-            first_name: "Thor",
-            last_name: "MacDonald",
-            _showDetails: true,
-            _additionalInfo:
-              "<p>Hello Thor, Age: 40</p><p>Thor is a software engineer.</p>",
-          },
-          {
-            age: 20,
-            first_name: "Pete",
-            last_name: "MacDonald",
-            _showDetails: true,
-            _additionalInfo:
-              "<p>Hello Pete, Age: 20</p><p>Pete is a software engineer.</p>",
-          },
-          {
-            age: 25,
-            first_name: "Anna",
-            last_name: "Smith",
-            _showDetails: true,
-            _additionalInfo:
-              "<p>Hello Anna, Age: 25</p><p>Anna is a software engineer.</p>",
-          },
-          {
-            age: 36,
-            first_name: "Zachary",
-            last_name: "Peterson",
-          },
-        ];
+      tableC.items = [
+        {
+          age: 40,
+          first_name: "Thor",
+          last_name: "MacDonald",
+          _showDetails: true,
+          _additionalInfo:
+            "<p>Hello Thor, Age: 40</p><p>Thor is a software engineer.</p>",
+        },
+        {
+          age: 20,
+          first_name: "Pete",
+          last_name: "MacDonald",
+          _showDetails: true,
+          _additionalInfo:
+            "<p>Hello Pete, Age: 20</p><p>Pete is a software engineer.</p>",
+        },
+        {
+          age: 25,
+          first_name: "Anna",
+          last_name: "Smith",
+          _showDetails: true,
+          _additionalInfo:
+            "<p>Hello Anna, Age: 25</p><p>Anna is a software engineer.</p>",
+        },
+        {
+          age: 36,
+          first_name: "Zachary",
+          last_name: "Peterson",
+        },
+      ];
 
-        const sortField = document.getElementById("sortField");
-        const sortOrder = document.getElementById("sortOrder");
+      const sortField = document.getElementById("sortField");
+      const sortOrder = document.getElementById("sortOrder");
 
-        // Populate sort field options dynamically
-        tableC.fields.forEach((field) => {
-          const option = document.createElement("option");
-          option.value = field.key;
-          option.text = field.label || field.key;
-          sortField.add(option);
+      // Populate sort field options dynamically
+      sortField.options = tableC.fields.map((field) => ({
+        value: field.key,
+        name: field.label || field.key,
+      }));
+
+      // Populate sort order options
+      sortOrder.options = [
+        { value: "asc", name: "Ascending" },
+        { value: "desc", name: "Descending" },
+      ];
+
+      // Add event listeners for sortField and sortOrder changes
+      sortField.addEventListener("change", (event) => {
+        console.log("sortField change event:", event.detail);
+        const sortFieldEvent = new CustomEvent("sort-field-changed", {
+          detail: { value: event.detail.value },
         });
-
-        // Add event listeners for sortField and sortOrder changes
-        sortField.addEventListener("change", (event) => {
-          const sortFieldEvent = new CustomEvent("sort-field-changed", {
-            detail: { value: event.target.value },
-          });
-          console.log("Dispatching sort-field-changed event:", sortFieldEvent);
-          tableC.dispatchEvent(sortFieldEvent);
-        });
-
-        sortOrder.addEventListener("change", (event) => {
-          const sortOrderEvent = new CustomEvent("sort-order-changed", {
-            detail: { value: event.target.value },
-          });
-          console.log("Dispatching sort-order-changed event:", sortOrderEvent);
-          tableC.dispatchEvent(sortOrderEvent);
-        });
-
-        tableC.addEventListener("sort-field-changed", (event) => {
-          console.log("sort-field-changed event received:", event.detail);
-        });
-
-        tableC.addEventListener("sort-order-changed", (event) => {
-          console.log("sort-order-changed event received:", event.detail);
-        });
-
-        console.log("Sort field options set:", sortField.options);
-        console.log("Sort order options set:", sortOrder.options);
+        console.log("Dispatching sort-field-changed event:", sortFieldEvent);
+        tableC.dispatchEvent(sortFieldEvent);
       });
+
+      sortOrder.addEventListener("change", (event) => {
+        console.log("sortOrder change event:", event.detail);
+        const sortOrderEvent = new CustomEvent("sort-order-changed", {
+          detail: { value: event.detail.value },
+        });
+        console.log("Dispatching sort-order-changed event:", sortOrderEvent);
+        tableC.dispatchEvent(sortOrderEvent);
+      });
+
+      tableC.addEventListener("sort-field-changed", (event) => {
+        console.log("sort-field-changed event received:", event.detail);
+      });
+
+      tableC.addEventListener("sort-order-changed", (event) => {
+        console.log("sort-order-changed event received:", event.detail);
+      });
+
+      console.log("Sort field options set:", sortField.options);
+      console.log("Sort order options set:", sortOrder.options);
     </script>
   </body>
 </html>
