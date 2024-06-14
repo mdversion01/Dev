@@ -489,6 +489,8 @@ class PlButton extends LitElement {
       "start",
       "title",
       "block",
+      "styles",
+      "onclick",
       "variant",
       "absolute",
       "left",

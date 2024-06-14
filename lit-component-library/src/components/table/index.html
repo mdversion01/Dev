@@ -110,6 +110,31 @@
                     ></select-field-component>
                   </div>
                 </div>
+
+                <div style="display: flex; width: 100%; flex: 1 1 auto">
+                  <div style="flex: 1 1 auto">
+                    <input-group-component
+                      id="filterInput"
+                      label="Filter"
+                      placeholder="Type to Search..."
+                      name="input-1"
+                      value=""
+                      append
+                      appendId="append-1"
+                      otherContent
+                    >
+                      <pl-button
+                        btnText="Clear"
+                        variant="primary"
+                        slot="append"
+                        secondary
+                        styles="border-radius: 0 3px 3px 0; padding: 0 8px;"
+                        onclick="clearFilter()"
+                      ></pl-button>
+                    </input-group-component>
+                  </div>
+                  <div style="flex: 1 1 auto"></div>
+                </div>
                 <table-component
                   id="table4"
                   small
@@ -137,6 +162,11 @@
       type="module"
       src="../../components/select-field/select-field.js"
     ></script>
+    <script
+      type="module"
+      src="../../components/input-group/input-group.js"
+    ></script>
+    <script type="module" src="../../components/button/button.js"></script>
 
     <script>
       const tableA = document.getElementById("table1");
@@ -329,6 +359,27 @@
 
       console.log("Sort field options set:", sortField.options);
       console.log("Sort order options set:", sortOrder.options);
+
+      const filterInput = document.getElementById("filterInput");
+
+      filterInput.addEventListener("change", (event) => {
+        const filterEvent = new CustomEvent("filter-changed", {
+          detail: { value: event.detail.value },
+        });
+        console.log("Dispatching filter-changed event:", filterEvent);
+        tableC.dispatchEvent(filterEvent);
+      });
+
+      window.clearFilter = function () {
+        console.log("Clearing filter...");
+        const inputElement = filterInput.shadowRoot.querySelector("input");
+        if (inputElement) {
+          inputElement.value = "";
+          filterInput.handleClear();
+        }
+      };
+
+      console.log("Table initialized with items:", tableC.items);
     </script>
   </body>
 </html>
