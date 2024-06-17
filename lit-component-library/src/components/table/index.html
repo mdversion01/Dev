@@ -107,6 +107,7 @@
                       id="sortOrder"
                       label="Sort Order"
                       withTable
+                      disabled
                     ></select-field-component>
                   </div>
                 </div>
@@ -338,6 +339,13 @@
         });
         console.log("Dispatching sort-field-changed event:", sortFieldEvent);
         tableC.dispatchEvent(sortFieldEvent);
+        // Enable sortOrder and set default to Ascending
+        sortOrder.disabled = false;
+        sortOrder.value = "asc";
+        const sortOrderEvent = new CustomEvent("sort-order-changed", {
+          detail: { value: "asc" },
+        });
+        tableC.dispatchEvent(sortOrderEvent);
       });
 
       sortOrder.addEventListener("change", (event) => {

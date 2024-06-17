@@ -90,7 +90,7 @@ class SelectField extends LitElement {
 
   updateSortOrder(event) {
     if (this.id === 'sortOrder') {
-      this.value = event.detail.value || '--none--';
+      this.value = event.detail.value || 'asc'; // Default to 'asc'
       this.requestUpdate();
     }
   }
@@ -169,7 +169,7 @@ class SelectField extends LitElement {
           role=${this.multiple ? "combobox" : "listbox"}
           @change="${this.handleChange}"
         >
-          ${this.withTable ? html`<option value="--none--" aria-label="none">--none--</option>` : html`<option value="" aria-label=${this.defaultOptionTxt}>${this.defaultOptionTxt}</option>`}
+          ${this.id === 'sortField' ? html`<option value="none" aria-label="none">--none--</option>` : ''}
           ${this.options
             ? this.options.map(
                 (option) =>
