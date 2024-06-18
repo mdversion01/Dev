@@ -224,24 +224,6 @@
         },
       ];
 
-      // // Handle the custom event to dynamically inject row details
-      // table.addEventListener("render-row-details", (event) => {
-      //   const { rowData, rowIndex } = event.detail;
-
-      //   // Create a container for the details content
-      //   const detailsContent = document.createElement("div");
-      //   detailsContent.innerHTML = `<p>Details for ${rowData.first_name}, Age: ${rowData.age}</p>`;
-
-      //   // Find the correct slot element in the shadow DOM and append the content
-      //   const slotElements = table.shadowRoot.querySelectorAll(
-      //     `slot[name="row-details"]`
-      //   );
-      //   if (slotElements[rowIndex]) {
-      //     slotElements[rowIndex].innerHTML = ""; // Clear existing content
-      //     slotElements[rowIndex].appendChild(detailsContent);
-      //   }
-      // });
-
       const tableB = document.getElementById("table3");
 
       // Define the fields to customize columns
@@ -371,6 +353,8 @@
         },
       ];
 
+      // For Sorting with the Select Field component
+
       const sortField = document.getElementById("sortField");
       const sortOrder = document.getElementById("sortOrder");
 
@@ -427,6 +411,8 @@
         sortOrder.value = order;
         sortOrder.disabled = field === "none";
       });
+
+      // For Filtering the Table
 
       const filterInput = document.getElementById("filterInput");
 
