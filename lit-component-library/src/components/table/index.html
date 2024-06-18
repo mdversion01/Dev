@@ -372,78 +372,78 @@
       ];
 
       const sortField = document.getElementById("sortField");
-  const sortOrder = document.getElementById("sortOrder");
+      const sortOrder = document.getElementById("sortOrder");
 
-  // Populate sort field options dynamically
-  sortField.options = tableC.fields.map((field) => ({
-    value: field.key,
-    name: field.label || field.key,
-  }));
+      // Populate sort field options dynamically
+      sortField.options = tableC.fields.map((field) => ({
+        value: field.key,
+        name: field.label || field.key,
+      }));
 
-  // Populate sort order options
-  sortOrder.options = [
-    { value: "asc", name: "Ascending" },
-    { value: "desc", name: "Descending" },
-  ];
+      // Populate sort order options
+      sortOrder.options = [
+        { value: "asc", name: "Ascending" },
+        { value: "desc", name: "Descending" },
+      ];
 
-  // Add event listeners for sortField and sortOrder changes
-  sortField.addEventListener("change", (event) => {
-    const sortFieldEvent = new CustomEvent("sort-field-changed", {
-      detail: { value: event.detail.value },
-    });
-    tableC.dispatchEvent(sortFieldEvent);
-    sortOrder.disabled = event.detail.value === "none";
-    if (!sortOrder.disabled) {
-      sortOrder.value = "asc";
-      const sortOrderEvent = new CustomEvent("sort-order-changed", {
-        detail: { value: "asc" },
+      // Add event listeners for sortField and sortOrder changes
+      sortField.addEventListener("change", (event) => {
+        const sortFieldEvent = new CustomEvent("sort-field-changed", {
+          detail: { value: event.detail.value },
+        });
+        tableC.dispatchEvent(sortFieldEvent);
+        sortOrder.disabled = event.detail.value === "none";
+        if (!sortOrder.disabled) {
+          sortOrder.value = "asc";
+          const sortOrderEvent = new CustomEvent("sort-order-changed", {
+            detail: { value: "asc" },
+          });
+          tableC.dispatchEvent(sortOrderEvent);
+        }
       });
-      tableC.dispatchEvent(sortOrderEvent);
-    }
-  });
 
-  sortOrder.addEventListener("change", (event) => {
-    const sortOrderEvent = new CustomEvent("sort-order-changed", {
-      detail: { value: event.detail.value },
-    });
-    tableC.dispatchEvent(sortOrderEvent);
-  });
+      sortOrder.addEventListener("change", (event) => {
+        const sortOrderEvent = new CustomEvent("sort-order-changed", {
+          detail: { value: event.detail.value },
+        });
+        tableC.dispatchEvent(sortOrderEvent);
+      });
 
-  tableC.addEventListener("sort-field-updated", (event) => {
-    sortField.value = event.detail.value;
-    sortOrder.disabled = event.detail.value === "none";
-  });
+      tableC.addEventListener("sort-field-updated", (event) => {
+        sortField.value = event.detail.value;
+        sortOrder.disabled = event.detail.value === "none";
+      });
 
-  tableC.addEventListener("sort-order-updated", (event) => {
-    sortOrder.value = event.detail.value;
-    if (sortField.value !== "none") {
-      sortOrder.disabled = false;
-    }
-  });
+      tableC.addEventListener("sort-order-updated", (event) => {
+        sortOrder.value = event.detail.value;
+        if (sortField.value !== "none") {
+          sortOrder.disabled = false;
+        }
+      });
 
-  tableC.addEventListener("sort-changed", (event) => {
-    const { field, order } = event.detail;
-    sortField.value = field;
-    sortOrder.value = order;
-    sortOrder.disabled = field === "none";
-  });
+      tableC.addEventListener("sort-changed", (event) => {
+        const { field, order } = event.detail;
+        sortField.value = field;
+        sortOrder.value = order;
+        sortOrder.disabled = field === "none";
+      });
 
-  const filterInput = document.getElementById("filterInput");
+      const filterInput = document.getElementById("filterInput");
 
-  filterInput.addEventListener("change", (event) => {
-    const filterEvent = new CustomEvent("filter-changed", {
-      detail: { value: event.detail.value },
-    });
-    tableC.dispatchEvent(filterEvent);
-  });
+      filterInput.addEventListener("change", (event) => {
+        const filterEvent = new CustomEvent("filter-changed", {
+          detail: { value: event.target.value },
+        });
+        tableC.dispatchEvent(filterEvent);
+      });
 
-  window.clearFilter = function () {
-    const inputElement = filterInput.shadowRoot.querySelector("input");
-    if (inputElement) {
-      inputElement.value = "";
-      filterInput.handleClear();
-    }
-  };
+      window.clearFilter = function () {
+        const inputElement = filterInput.shadowRoot.querySelector("input");
+        if (inputElement) {
+          inputElement.value = "";
+          filterInput.handleClear();
+        }
+      };
     </script>
   </body>
 </html>
