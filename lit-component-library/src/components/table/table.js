@@ -19,6 +19,7 @@ class Table extends LitElement {
     headerLight: { type: Boolean },
     hover: { type: Boolean },
     items: { type: Array },
+    originalItems: { type: Array },
     noBorderCollapsed: { type: Boolean },
     responsive: { type: Boolean },
     small: { type: Boolean },
@@ -33,11 +34,17 @@ class Table extends LitElement {
     selectedRows: { type: Array },
     selectedVariant: { type: String },
     sortField: { type: String },
-    sortOrder: { type: String }
+    sortOrder: { type: String },
+    filterText: { type: String },
+    sortOrderDisabled: { type: Boolean },
   };
 
   constructor() {
     super();
+    this.initializeProperties();
+  }
+
+  initializeProperties() {
     this.border = false;
     this.bordered = false;
     this.borderless = false;
@@ -50,6 +57,7 @@ class Table extends LitElement {
     this.headerLight = false;
     this.hover = false;
     this.items = [];
+    this.originalItems = [];
     this.noBorderCollapsed = false;
     this.responsive = false;
     this.small = false;
@@ -63,39 +71,72 @@ class Table extends LitElement {
     this.selectMode = "";
     this.selectedRows = [];
     this.selectedVariant = "table-active";
-    this.sortField = "";
+    this.sortField = "none";
     this.sortOrder = "asc";
+    this.filterText = "";
+    this.sortOrderDisabled = true;
   }
 
   connectedCallback() {
     super.connectedCallback();
-    this.addEventListener('sort-field-changed', this.handleFieldChanged.bind(this));
-    this.addEventListener('sort-order-changed', this.handleOrderChanged.bind(this));
-    console.log('Event listeners added');
+    this.addEventListener(
+      "sort-field-changed",
+      this.handleFieldChanged.bind(this)
+    );
+    this.addEventListener(
+      "sort-order-changed",
+      this.handleOrderChanged.bind(this)
+    );
+    this.addEventListener(
+      "filter-changed",
+      this.handleFilterChanged.bind(this)
+    );
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
-    this.removeEventListener('sort-field-changed', this.handleFieldChanged.bind(this));
-    this.removeEventListener('sort-order-changed', this.handleOrderChanged.bind(this));
+    this.removeEventListener(
+      "sort-field-changed",
+      this.handleFieldChanged.bind(this)
+    );
+    this.removeEventListener(
+      "sort-order-changed",
+      this.handleOrderChanged.bind(this)
+    );
+    this.removeEventListener(
+      "filter-changed",
+      this.handleFilterChanged.bind(this)
+    );
   }
 
   handleFieldChanged(event) {
-    console.log('Sort field event triggered:', event.detail.value);
     this.sortField = event.detail.value;
-    this.applySort();
+    this.sortOrderDisabled = this.sortField === "none";
+    if (this.sortField !== "none") {
+      this.sortOrder = "asc";
+      this.applySort();
+    } else {
+      this.resetColumnSort();
+    }
+    this.requestUpdate();
   }
 
   handleOrderChanged(event) {
-    console.log('Sort order event triggered:', event.detail.value);
     this.sortOrder = event.detail.value;
     this.applySort();
   }
 
-  applySort() {
-    if (!this.sortField) return;
+  handleFilterChanged(event) {
+    this.filterText = event.detail.value;
+    this.applyFilter();
+  }
 
-    console.log('Applying sort:', this.sortField, this.sortOrder);
+  applySort() {
+    if (!this.sortField || this.sortField === "none") {
+      this.resetColumnSort();
+      return;
+    }
+
     this.sortCriteria = [{ key: this.sortField, order: this.sortOrder }];
     this.items = [...this.items].sort((a, b) => {
       const aValue = a[this.sortField];
@@ -106,22 +147,45 @@ class Table extends LitElement {
       if (aValue > bValue) return order;
       return 0;
     });
-    console.log('Sorted items:', this.items);
     this.clearSelection();
     this.requestUpdate();
 
-    // Dispatch custom events to update the select-field-components
-    const sortFieldEvent = new CustomEvent('sort-field-updated', {
-      detail: { value: this.sortField || '--none--' }
-    });
-    console.log('Dispatching sort-field-updated event:', sortFieldEvent);
-    window.dispatchEvent(sortFieldEvent);
+    this.dispatchEvent(
+      new CustomEvent("sort-field-updated", {
+        detail: { value: this.sortField },
+      })
+    );
+    this.dispatchEvent(
+      new CustomEvent("sort-order-updated", {
+        detail: { value: this.sortOrder },
+      })
+    );
+    this.dispatchEvent(
+      new CustomEvent("sort-changed", {
+        detail: {
+          field: this.sortField,
+          order: this.sortOrder,
+        },
+      })
+    );
+  }
 
-    const sortOrderEvent = new CustomEvent('sort-order-updated', {
-      detail: { value: this.sortOrder || '--none--' }
-    });
-    console.log('Dispatching sort-order-updated event:', sortOrderEvent);
-    window.dispatchEvent(sortOrderEvent);
+  applyFilter() {
+    if (this.filterText !== undefined && this.filterText !== null) {
+      const filterText = this.filterText.trim().toLowerCase();
+      this.items = filterText
+        ? this.originalItems.filter((item) => {
+            const itemString = JSON.stringify(
+              Object.fromEntries(
+                Object.entries(item).filter(([key]) => !key.startsWith("_"))
+              )
+            ).toLowerCase();
+            return itemString.includes(filterText);
+          })
+        : [...this.originalItems];
+      this.clearSelection();
+      this.requestUpdate();
+    }
   }
 
   clearSelection() {
@@ -129,64 +193,53 @@ class Table extends LitElement {
     this.dispatchEvent(new CustomEvent("row-selected", { detail: [] }));
   }
 
+  resetColumnSort() {
+    this.sortCriteria = [];
+    this.items = [...this.originalItems];
+    this.clearSelection();
+    this.requestUpdate();
+  }
+
   tableVariantColor(variant) {
-    switch (variant) {
-      case "primary":
-        return "table-primary";
-      case "secondary":
-        return "table-secondary";
-      case "success":
-        return "table-success";
-      case "danger":
-        return "table-danger";
-      case "info":
-        return "table-info";
-      case "warning":
-        return "table-warning";
-      case "dark":
-        return "table-dark";
-      case "light":
-        return "table-light";
-      default:
-        return "";
-    }
+    const variantMap = {
+      primary: "table-primary",
+      secondary: "table-secondary",
+      success: "table-success",
+      danger: "table-danger",
+      info: "table-info",
+      warning: "table-warning",
+      dark: "table-dark",
+      light: "table-light",
+    };
+    return variantMap[variant] || "";
   }
 
   headertheme() {
-    if (this.headerDark) {
-      return "thead-dark";
-    } else if (this.headerLight) {
-      return "thead-light";
-    }
-    return "";
+    return this.headerDark
+      ? "thead-dark"
+      : this.headerLight
+      ? "thead-light"
+      : "";
   }
 
   get normalizedFields() {
     if (this.fields.length > 0) {
-      return this.fields.map((field) => {
-        if (typeof field === "string") {
-          return {
-            key: field,
-            label: this.formatHeader(field),
-            sortable: false,
-            variant: "",
-          };
-        }
-        return {
-          key: field.key,
-          label: field.label || this.formatHeader(field.key),
-          sortable: field.sortable || false,
-          variant: field.variant || "",
-        };
-      });
+      return this.fields.map((field) => ({
+        key: field.key || field,
+        label: field.label || this.formatHeader(field.key || field),
+        sortable: field.sortable || false,
+        variant: field.variant || "",
+      }));
     } else if (this.items.length > 0) {
       return Object.keys(this.items[0])
         .filter(
           (key) =>
-            key !== "_cellVariants" &&
-            key !== "_rowVariant" &&
-            key !== "_showDetails" &&
-            key !== "_additionalInfo"
+            ![
+              "_cellVariants",
+              "_rowVariant",
+              "_showDetails",
+              "_additionalInfo",
+            ].includes(key)
         )
         .map((key) => ({
           key,
@@ -215,12 +268,9 @@ class Table extends LitElement {
 
     if (event.ctrlKey || event.metaKey) {
       if (existingSort) {
-        if (existingSort.order === "asc") {
-          existingSort.order = "desc";
-        } else if (existingSort.order === "desc") {
+        existingSort.order = existingSort.order === "asc" ? "desc" : "none";
+        if (existingSort.order === "none") {
           this.sortCriteria = this.sortCriteria.filter((c) => c.key !== key);
-        } else {
-          this.sortCriteria.push({ key, order: "asc" });
         }
       } else {
         this.sortCriteria.push({ key, order: "asc" });
@@ -241,11 +291,13 @@ class Table extends LitElement {
     }
 
     if (this.sortCriteria.length === 0) {
-      this.sortField = "";
-      this.sortOrder = "";
+      this.sortField = "none";
+      this.sortOrder = "asc";
+      this.sortOrderDisabled = true;
     } else {
       this.sortField = this.sortCriteria[0]?.key;
       this.sortOrder = this.sortCriteria[0]?.order;
+      this.sortOrderDisabled = false;
     }
 
     this.items = [...this.items].sort((a, b) => {
@@ -263,17 +315,24 @@ class Table extends LitElement {
     this.clearSelection();
     this.requestUpdate();
 
-    const sortFieldEvent = new CustomEvent('sort-field-updated', {
-      detail: { value: this.sortField || '--none--' }
-    });
-    console.log('Dispatching sort-field-updated event:', sortFieldEvent);
-    window.dispatchEvent(sortFieldEvent);
-
-    const sortOrderEvent = new CustomEvent('sort-order-updated', {
-      detail: { value: this.sortOrder || '--none--' }
-    });
-    console.log('Dispatching sort-order-updated event:', sortOrderEvent);
-    window.dispatchEvent(sortOrderEvent);
+    this.dispatchEvent(
+      new CustomEvent("sort-field-updated", {
+        detail: { value: this.sortField || "none" },
+      })
+    );
+    this.dispatchEvent(
+      new CustomEvent("sort-order-updated", {
+        detail: { value: this.sortOrder },
+      })
+    );
+    this.dispatchEvent(
+      new CustomEvent("sort-changed", {
+        detail: {
+          field: this.sortField,
+          order: this.sortOrder,
+        },
+      })
+    );
   }
 
   getAriaSort(key) {
@@ -320,7 +379,7 @@ class Table extends LitElement {
     const content = row._additionalInfo
       ? this.evaluateTemplateLiteral(row._additionalInfo, row)
       : "No additional information";
-    return html` <div class="details">${unsafeHTML(content)}</div> `;
+    return html`<div class="details">${unsafeHTML(content)}</div>`;
   }
 
   renderTableHeader() {
@@ -338,7 +397,7 @@ class Table extends LitElement {
     return html`
       <tr role="row">
         ${["single", "multi", "range"].includes(this.selectMode)
-          ? html` <th class="select-col" @click="${this.selectAllRows}">
+          ? html`<th class="select-col" @click="${this.selectAllRows}">
               <button class="${headerIconClass} select-row-btns"></button>
             </th>`
           : ""}
@@ -352,6 +411,7 @@ class Table extends LitElement {
                   aria-colindex="${index + 1}"
                   aria-sort="${this.getAriaSort(key)}"
                   class="${this.tableVariantColor(variant)}"
+                  data-field="${key}"
                   @click="${(event) => this.sortItems(event, key)}"
                   style="cursor: pointer;"
                 >
@@ -437,13 +497,17 @@ class Table extends LitElement {
                   aria-selected="${isSelected ? "true" : "false"}"
                 >
                   ${["single", "multi", "range"].includes(this.selectMode)
-                    ? html` <td
+                    ? html`<td
                         class="select-col"
                         @click="${(event) => this.selectRow(event, rowIndex)}"
                       >
                         ${isSelected
-                          ? html`<button class="check-icon select-row-btns"></button>`
-                          : html`<button class="square-outline-icon select-row-btns"></button>`}
+                          ? html`<button
+                              class="check-icon select-row-btns"
+                            ></button>`
+                          : html`<button
+                              class="square-outline-icon select-row-btns"
+                            ></button>`}
                       </td>`
                     : ""}
                   ${row._showDetails
@@ -504,7 +568,7 @@ class Table extends LitElement {
             </caption>`
           : ""}
         ${this.cloneFooter
-          ? html` <tfoot role="rowgroup" class="${this.headertheme()}">
+          ? html`<tfoot role="rowgroup" class="${this.headertheme()}">
               ${this.renderTableHeader()}
             </tfoot>`
           : ""}
@@ -525,39 +589,30 @@ class Table extends LitElement {
   }
 
   updated(changedProperties) {
-    if (changedProperties.has("items")) {
-      this.items.forEach((row, index) => {
-        if (row._showDetails) {
-          this.dispatchEvent(
-            new CustomEvent("render-row-details", {
-              detail: { rowData: row, rowIndex: index },
-              bubbles: true,
-              composed: true,
-            })
-          );
-        }
-      });
+    if (changedProperties.has("items") && this.originalItems.length === 0) {
+      this.originalItems = [...this.items];
     }
   }
 
   resetSort() {
     this.sortCriteria = [];
-    this.sortField = "";
-    this.sortOrder = "";
+    this.sortField = "none";
+    this.sortOrder = "asc";
+    this.sortOrderDisabled = true;
     this.clearSelection();
+    this.items = [...this.originalItems];
     this.requestUpdate();
 
-    const sortFieldEvent = new CustomEvent('sort-field-updated', {
-      detail: { value: '--none--' }
-    });
-    console.log('Dispatching sort-field-updated event:', sortFieldEvent);
-    window.dispatchEvent(sortFieldEvent);
-
-    const sortOrderEvent = new CustomEvent('sort-order-updated', {
-      detail: { value: '--none--' }
-    });
-    console.log('Dispatching sort-order-updated event:', sortOrderEvent);
-    window.dispatchEvent(sortOrderEvent);
+    this.dispatchEvent(
+      new CustomEvent("sort-field-updated", {
+        detail: { value: "none" },
+      })
+    );
+    this.dispatchEvent(
+      new CustomEvent("sort-order-updated", {
+        detail: { value: "asc" },
+      })
+    );
   }
 
   toggleDetails(rowIndex) {
@@ -573,17 +628,11 @@ class Table extends LitElement {
   selectRow(event, rowIndex) {
     const row = this.items[rowIndex];
     if (this.selectMode === "single") {
-      if (this.selectedRows.includes(row)) {
-        this.selectedRows = [];
-      } else {
-        this.selectedRows = [row];
-      }
+      this.selectedRows = this.selectedRows.includes(row) ? [] : [row];
     } else if (this.selectMode === "multi") {
-      if (this.selectedRows.includes(row)) {
-        this.selectedRows = this.selectedRows.filter((r) => r !== row);
-      } else {
-        this.selectedRows = [...this.selectedRows, row];
-      }
+      this.selectedRows = this.selectedRows.includes(row)
+        ? this.selectedRows.filter((r) => r !== row)
+        : [...this.selectedRows, row];
     } else if (this.selectMode === "range") {
       if (event.shiftKey) {
         const lastSelectedIndex = this.items.indexOf(
@@ -596,11 +645,9 @@ class Table extends LitElement {
           new Set([...this.selectedRows, ...rangeRows])
         );
       } else if (event.ctrlKey || event.metaKey) {
-        if (this.selectedRows.includes(row)) {
-          this.selectedRows = this.selectedRows.filter((r) => r !== row);
-        } else {
-          this.selectedRows = [...this.selectedRows, row];
-        }
+        this.selectedRows = this.selectedRows.includes(row)
+          ? this.selectedRows.filter((r) => r !== row)
+          : [...this.selectedRows, row];
       } else {
         this.selectedRows = [row];
       }
@@ -612,17 +659,14 @@ class Table extends LitElement {
   }
 
   selectAllRows() {
-    if (
+    this.selectedRows =
       this.selectedRows.length === this.items.length ||
       this.selectedRows.length > 0
-    ) {
-      this.clearSelection();
-    } else {
-      this.selectedRows = [...this.items];
-      this.dispatchEvent(
-        new CustomEvent("row-selected", { detail: this.selectedRows })
-      );
-    }
+        ? []
+        : [...this.items];
+    this.dispatchEvent(
+      new CustomEvent("row-selected", { detail: this.selectedRows })
+    );
     this.requestUpdate();
   }
 }

@@ -28,6 +28,7 @@ class InputGroup extends LitElement {
       inputSize: { type: String },
       label: { type: String },
       labelHidden: { type: Boolean },
+      otherContent: { type: Boolean },
       placeholder: { type: String },
       prepend: { type: Boolean },
       prependId: { type: String },
@@ -50,6 +51,7 @@ class InputGroup extends LitElement {
     this.inputId = "";
     this.label = "";
     this.labelHidden = false;
+    this.otherContent = false;
     this.placeholder = "";
     this.prepend = false;
     this.prependId = "";
@@ -74,7 +76,6 @@ class InputGroup extends LitElement {
 
   updated(changedProperties) {
     super.updated(changedProperties);
-
     if (changedProperties.has("formId")) {
       const input = this.shadowRoot.querySelector("formField");
       if (input) {
@@ -100,6 +101,20 @@ class InputGroup extends LitElement {
     } else {
       event.target.form = null;
     }
+    this.value = event.target.value;
+    this.dispatchEvent(
+      new CustomEvent("change", { detail: { value: this.value } })
+    );
+  }
+
+  handleClear() {
+    console.log("handleClear triggered");
+    this.value = "";
+    const inputElement = this.shadowRoot.querySelector("input");
+    if (inputElement) {
+      inputElement.value = "";
+      this.dispatchEvent(new CustomEvent("change", { detail: { value: "" } }));
+    }
   }
 
   camelCase(str) {
@@ -116,9 +131,10 @@ class InputGroup extends LitElement {
       <div class=${ifDefined(this.formLayout ? this.formLayout : undefined)}>
         <div class="form-group form-input-group-basic row ${this.formLayout}">
           <label
-            class="form-control-label${this.required
-              ? " required" : ""}${this.labelHidden ? " sr-only" : ""}${this
-              .formLayout === "horizontal"
+            class="form-control-label${this.required ? " required" : ""}${this
+              .labelHidden
+              ? " sr-only"
+              : ""}${this.formLayout === "horizontal"
               ? " col-md-2 no-padding"
               : ""}${this.validation ? " invalid" : ""}"
             for=${ifDefined(ids ? ids : undefined)}
@@ -150,6 +166,8 @@ class InputGroup extends LitElement {
                       ? html`<span class="pl-input-group-text"
                           ><i class="${this.icon}"></i
                         ></span>`
+                      : this.otherContent
+                      ? html`<slot name="prepend"></slot>`
                       : html`<span
                           class="pl-input-group-text"
                           id=${ifDefined(
@@ -163,14 +181,16 @@ class InputGroup extends LitElement {
                 type="${this.type || "text"}"
                 class="form-control${this.validation ? " is-invalid" : ""}"
                 placeholder="${this.labelHidden
-                  ? this.label || this.placeholder || "Placeholder Text"
-                  : this.label || this.placeholder || "Placeholder Text"}"
+                  ? this.placeholder || this.label || "Placeholder Text"
+                  : this.placeholder || this.label || "Placeholder Text"}"
                 id=${ifDefined(ids ? ids : undefined)}
                 name=${ifDefined(names ? names : undefined)}
                 value=${ifDefined(this.value ? this.value : undefined)}
                 aria-label=${ifDefined(names ? names : undefined)}
                 aria-labelledby=${ifDefined(names ? names : undefined)}
-                aria-describedby=${ifDefined(this.validation ? "validationMessage" : undefined)}
+                aria-describedby=${ifDefined(
+                  this.validation ? "validationMessage" : undefined
+                )}
                 @input=${this.handleInput}
               />
               ${this.append
@@ -183,7 +203,10 @@ class InputGroup extends LitElement {
                       ? html`<span class="pl-input-group-text"
                           ><i class="${this.icon}"></i
                         ></span>`
-                      : html`<span
+                      : this.otherContent
+                      ? html`<span class="pl-btn"
+                          ><slot name="append"></slot></span>` : 
+                      html`<span
                           class="pl-input-group-text"
                           id=${ifDefined(
                             this.appendId ? this.appendId : undefined
@@ -207,7 +230,6 @@ class InputGroup extends LitElement {
   render() {
     const ids = this.camelCase(this.inputId).replace(/ /g, "");
     const names = this.camelCase(this.label).replace(/ /g, "");
-
     return this.renderInputGroup(ids, names);
   }
 

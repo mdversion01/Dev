@@ -52,7 +52,7 @@ class SelectField extends LitElement {
     this.selected = false;
     this.validation = false;
     this.validationMessage = "";
-    this.value = "--none--";
+    this.value = "none";
     this.options = [];
     this.withTable = false; // New property to determine if used with table
   }
@@ -83,14 +83,14 @@ class SelectField extends LitElement {
 
   updateSortField(event) {
     if (this.id === 'sortField') {
-      this.value = event.detail.value || '--none--';
+      this.value = event.detail.value || 'none';
       this.requestUpdate();
     }
   }
 
   updateSortOrder(event) {
     if (this.id === 'sortOrder') {
-      this.value = event.detail.value || '--none--';
+      this.value = event.detail.value || 'asc'; // Default to 'asc'
       this.requestUpdate();
     }
   }
@@ -169,7 +169,7 @@ class SelectField extends LitElement {
           role=${this.multiple ? "combobox" : "listbox"}
           @change="${this.handleChange}"
         >
-          ${this.withTable ? html`<option value="--none--" aria-label="none">--none--</option>` : html`<option value="" aria-label=${this.defaultOptionTxt}>${this.defaultOptionTxt}</option>`}
+          ${this.id === 'sortField' ? html`<option value="none" aria-label="none">--none--</option>` : ''}
           ${this.options
             ? this.options.map(
                 (option) =>
@@ -193,7 +193,6 @@ class SelectField extends LitElement {
   }
 
   handleChange(event) {
-    console.log('Selected value:', event.target.value);
     this.dispatchEvent(new CustomEvent('change', { detail: { value: event.target.value } }));
   }
 
