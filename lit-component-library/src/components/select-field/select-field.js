@@ -52,7 +52,7 @@ class SelectField extends LitElement {
     this.selected = false;
     this.validation = false;
     this.validationMessage = "";
-    this.value = "--none--";
+    this.value = "none";
     this.options = [];
     this.withTable = false; // New property to determine if used with table
   }
@@ -83,7 +83,7 @@ class SelectField extends LitElement {
 
   updateSortField(event) {
     if (this.id === 'sortField') {
-      this.value = event.detail.value || '--none--';
+      this.value = event.detail.value || 'none';
       this.requestUpdate();
     }
   }
@@ -193,7 +193,6 @@ class SelectField extends LitElement {
   }
 
   handleChange(event) {
-    console.log('Selected value:', event.target.value);
     this.dispatchEvent(new CustomEvent('change', { detail: { value: event.target.value } }));
   }
 

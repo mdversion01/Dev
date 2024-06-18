@@ -67,7 +67,7 @@ class Table extends LitElement {
     this.selectMode = "";
     this.selectedRows = [];
     this.selectedVariant = "table-active";
-    this.sortField = "";
+    this.sortField = "none";
     this.sortOrder = "asc";
     this.filterText = "";
     this.sortOrderDisabled = true;
@@ -78,7 +78,6 @@ class Table extends LitElement {
     this.addEventListener('sort-field-changed', this.handleFieldChanged.bind(this));
     this.addEventListener('sort-order-changed', this.handleOrderChanged.bind(this));
     this.addEventListener('filter-changed', this.handleFilterChanged.bind(this));
-    console.log('Event listeners added');
   }
 
   disconnectedCallback() {
@@ -89,29 +88,33 @@ class Table extends LitElement {
   }
 
   handleFieldChanged(event) {
-    console.log('Sort field event triggered:', event.detail.value);
     this.sortField = event.detail.value;
-    this.sortOrderDisabled = false;
+    this.sortOrderDisabled = this.sortField === 'none';
+    if (this.sortField !== 'none') {
+      this.sortOrder = 'asc';
+      this.applySort();
+    } else {
+      this.resetColumnSort();
+    }
     this.requestUpdate();
-    this.applySort();
   }
 
   handleOrderChanged(event) {
-    console.log('Sort order event triggered:', event.detail.value);
     this.sortOrder = event.detail.value;
     this.applySort();
   }
 
   handleFilterChanged(event) {
-    console.log('Filter event triggered:', event.detail.value);
     this.filterText = event.detail.value;
     this.applyFilter();
   }
 
   applySort() {
-    if (!this.sortField) return;
+    if (!this.sortField || this.sortField === 'none') {
+      this.resetColumnSort();
+      return;
+    }
 
-    console.log('Applying sort:', this.sortField, this.sortOrder);
     this.sortCriteria = [{ key: this.sortField, order: this.sortOrder }];
     this.items = [...this.items].sort((a, b) => {
       const aValue = a[this.sortField];
@@ -122,21 +125,26 @@ class Table extends LitElement {
       if (aValue > bValue) return order;
       return 0;
     });
-    console.log('Sorted items:', this.items);
     this.clearSelection();
     this.requestUpdate();
 
     const sortFieldEvent = new CustomEvent('sort-field-updated', {
       detail: { value: this.sortField || 'none' }
     });
-    console.log('Dispatching sort-field-updated event:', sortFieldEvent);
     window.dispatchEvent(sortFieldEvent);
 
     const sortOrderEvent = new CustomEvent('sort-order-updated', {
       detail: { value: this.sortOrder }
     });
-    console.log('Dispatching sort-order-updated event:', sortOrderEvent);
     window.dispatchEvent(sortOrderEvent);
+
+    const sortChangedEvent = new CustomEvent("sort-changed", {
+      detail: {
+        field: this.sortField,
+        order: this.sortOrder
+      }
+    });
+    this.dispatchEvent(sortChangedEvent);
   }
 
   applyFilter() {
@@ -154,7 +162,6 @@ class Table extends LitElement {
           return itemString.includes(filterText);
         });
       }
-      console.log('Filtered items:', this.items);
       this.clearSelection();
       this.requestUpdate();
     }
@@ -163,6 +170,13 @@ class Table extends LitElement {
   clearSelection() {
     this.selectedRows = [];
     this.dispatchEvent(new CustomEvent("row-selected", { detail: [] }));
+  }
+
+  resetColumnSort() {
+    this.sortCriteria = [];
+    this.items = [...this.originalItems];
+    this.clearSelection();
+    this.requestUpdate();
   }
 
   tableVariantColor(variant) {
@@ -277,11 +291,13 @@ class Table extends LitElement {
     }
 
     if (this.sortCriteria.length === 0) {
-      this.sortField = "";
-      this.sortOrder = "";
+      this.sortField = "none";
+      this.sortOrder = "asc";
+      this.sortOrderDisabled = true;
     } else {
       this.sortField = this.sortCriteria[0]?.key;
       this.sortOrder = this.sortCriteria[0]?.order;
+      this.sortOrderDisabled = false;
     }
 
     this.items = [...this.items].sort((a, b) => {
@@ -302,14 +318,21 @@ class Table extends LitElement {
     const sortFieldEvent = new CustomEvent('sort-field-updated', {
       detail: { value: this.sortField || 'none' }
     });
-    console.log('Dispatching sort-field-updated event:', sortFieldEvent);
     window.dispatchEvent(sortFieldEvent);
 
     const sortOrderEvent = new CustomEvent('sort-order-updated', {
       detail: { value: this.sortOrder }
     });
-    console.log('Dispatching sort-order-updated event:', sortOrderEvent);
     window.dispatchEvent(sortOrderEvent);
+
+    // Dispatch sort-changed event for synchronization
+    const sortChangedEvent = new CustomEvent("sort-changed", {
+      detail: {
+        field: this.sortField,
+        order: this.sortOrder
+      }
+    });
+    this.dispatchEvent(sortChangedEvent);
   }
 
   getAriaSort(key) {
@@ -388,6 +411,7 @@ class Table extends LitElement {
                   aria-colindex="${index + 1}"
                   aria-sort="${this.getAriaSort(key)}"
                   class="${this.tableVariantColor(variant)}"
+                  data-field="${key}"
                   @click="${(event) => this.sortItems(event, key)}"
                   style="cursor: pointer;"
                 >
@@ -568,7 +592,7 @@ class Table extends LitElement {
 
   resetSort() {
     this.sortCriteria = [];
-    this.sortField = "";
+    this.sortField = "none";
     this.sortOrder = "asc";
     this.sortOrderDisabled = true;
     this.clearSelection();
@@ -577,13 +601,11 @@ class Table extends LitElement {
     const sortFieldEvent = new CustomEvent('sort-field-updated', {
       detail: { value: 'none' }
     });
-    console.log('Dispatching sort-field-updated event:', sortFieldEvent);
     window.dispatchEvent(sortFieldEvent);
 
     const sortOrderEvent = new CustomEvent('sort-order-updated', {
       detail: { value: 'asc' }
     });
-    console.log('Dispatching sort-order-updated event:', sortOrderEvent);
     window.dispatchEvent(sortOrderEvent);
   }
 
@@ -655,4 +677,3 @@ class Table extends LitElement {
 }
 
 customElements.define("table-component", Table);
-
