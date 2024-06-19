@@ -138,7 +138,12 @@
                       ></pl-button>
                     </input-group-component>
                   </div>
-                  <div style="flex: 1 1 auto"></div>
+                  <div style="flex: 1 1 auto; margin-top: 28px">
+                    <dropdown-component
+                      id="dditems"
+                      size="sm"
+                    ></dropdown-component>
+                  </div>
                 </div>
                 <table-component
                   id="table4"
@@ -172,6 +177,7 @@
       src="../../components/input-group/input-group.js"
     ></script>
     <script type="module" src="../../components/button/button.js"></script>
+    <script type="module" src="../../components/dropdown/dropdown.js"></script>
 
     <script>
       const tableA = document.getElementById("table1");
@@ -262,13 +268,16 @@
         }
       }
 
-      const tableC = document.getElementById("table4");
-
-      tableC.fields = [
+      const tableFields = [
         { key: "last_name", label: "Last Name", sortable: true },
         { key: "first_name", label: "First Name", sortable: true },
         { key: "age", label: "Person Age", sortable: true },
       ];
+
+      const tableC = document.getElementById("table4");
+      const dropdown = document.getElementById("dditems");
+
+      tableC.fields = tableFields;
 
       tableC.items = [
         {
@@ -417,6 +426,10 @@
       });
 
       // For Filtering the Table
+
+      dropdown.items = tableFields.map(field => ({ key: field.key, name: field.label }));
+
+      console.log(dropdown.items);
 
       const filterInput = document.getElementById("filterInput");
 
