@@ -27,6 +27,7 @@ class PlInputGroup extends LitElement {
       inputId: { type: String },
       label: { type: String },
       labelHidden: { type: Boolean },
+      otherContent: { type: Boolean },
       placeholder: { type: String },
       prepend: { type: Boolean },
       prependId: { type: String },
@@ -51,6 +52,7 @@ class PlInputGroup extends LitElement {
     this.inputId = "";
     this.label = "";
     this.labelHidden = false;
+    this.otherContent = false;
     this.placeholder = "";
     this.prepend = false;
     this.prependId = "";
@@ -110,8 +112,6 @@ class PlInputGroup extends LitElement {
     if (formComponent) {
       this.formId = formComponent.formId || "";
       this.formLayout = formComponent.formLayout || "";
-      console.log("formId: ", this.formId);
-      console.log("formLayout: ", this.formLayout);
     }
   }
 
@@ -143,6 +143,20 @@ class PlInputGroup extends LitElement {
     } else {
       event.target.form = null;
     }
+    this.value = event.target.value;
+    this.dispatchEvent(
+      new CustomEvent("change", { detail: { value: this.value } })
+    );
+  }
+
+  handleClear() {
+    console.log("handleClear triggered");
+    this.value = "";
+    const inputElement = this.shadowRoot.querySelector("input");
+    if (inputElement) {
+      inputElement.value = "";
+      this.dispatchEvent(new CustomEvent("change", { detail: { value: "" } }));
+    }
   }
 
   camelCase(str) {
@@ -157,7 +171,8 @@ class PlInputGroup extends LitElement {
   handleInputChange(event) {
     this.value = event.target.value;
   }
-
+  
+  // Search Field
   clearInput() {
     this.value = ""; // Update the reactive property
     const inputElement = this.shadowRoot.querySelector(".search-bar");
@@ -214,6 +229,8 @@ class PlInputGroup extends LitElement {
                       ? html`<span class="pl-input-group-text"
                           ><i class="${this.icon}"></i
                         ></span>`
+                      : this.otherContent
+                      ? html`<slot name="prepend"></slot>`  
                       : html`<span
                           class="pl-input-group-text"
                           id=${ifDefined(
@@ -252,6 +269,8 @@ class PlInputGroup extends LitElement {
                       ? html`<span class="pl-input-group-text"
                           ><i class="${this.icon}"></i
                         ></span>`
+                      : this.otherContent
+                      ? html`<slot name="append"></slot>`
                       : html`<span
                           class="pl-input-group-text"
                           id=${ifDefined(

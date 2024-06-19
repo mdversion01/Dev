@@ -18,6 +18,7 @@ class PlSelectField extends LitElement {
     return {
       custom: { type: Boolean },
       defaultTxt: { type: String },
+      defaultOptionTxt: { type: String },
       disabled: { type: Boolean },
       formLayout: { type: String },
       formId: { type: String },
@@ -32,6 +33,7 @@ class PlSelectField extends LitElement {
       validation: { type: Boolean },
       validationMessage: { type: String },
       value: { type: String },
+      withTable: { type: Boolean },
     };
   }
 
@@ -39,6 +41,7 @@ class PlSelectField extends LitElement {
     super();
     this.custom = false;
     this.defaultTxt = "";
+    this.defaultOptionTxt = "Select an option";
     this.disabled = false;
     this.formId = "";
     this.selectFieldId = "";
@@ -50,6 +53,9 @@ class PlSelectField extends LitElement {
     this.validation = false;
     this.validationMessage = "";
     this.value = "";
+    this.value = "none";
+    this.options = [];
+    this.withTable = false; // New property to determine if used with table
   }
 
   connectedCallback() {
@@ -103,6 +109,33 @@ class PlSelectField extends LitElement {
       this.formId = formComponent.formId || "";
       this.formLayout = formComponent.formLayout || "";
     }
+
+    if (this.withTable) {
+      window.addEventListener('sort-field-updated', this.updateSortField.bind(this));
+      window.addEventListener('sort-order-updated', this.updateSortOrder.bind(this));
+    }
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    if (this.withTable) {
+      window.removeEventListener('sort-field-updated', this.updateSortField.bind(this));
+      window.removeEventListener('sort-order-updated', this.updateSortOrder.bind(this));
+    }
+  }
+
+  updateSortField(event) {
+    if (this.id === 'sortField') {
+      this.value = event.detail.value || 'none';
+      this.requestUpdate();
+    }
+  }
+
+  updateSortOrder(event) {
+    if (this.id === 'sortOrder') {
+      this.value = event.detail.value || 'asc'; // Default to 'asc'
+      this.requestUpdate();
+    }
   }
 
   updated(changedProperties) {
@@ -117,6 +150,13 @@ class PlSelectField extends LitElement {
         } else {
           input.removeAttribute("form"); // Remove the form attribute if formId is a symbol
         }
+      }
+    }
+
+    if (changedProperties.has("value")) {
+      const selectElement = this.shadowRoot.querySelector("select");
+      if (selectElement) {
+        selectElement.value = this.value;
       }
     }
   }
@@ -201,12 +241,14 @@ class PlSelectField extends LitElement {
           @focus="${this.handleFocus}"
           @blur="${this.handleBlur}"
           @input=${this.handleInput}
+          @change="${this.handleChange}"
         >
+        ${this.id === 'sortField' ? html`<option value="none" aria-label="none">--none--</option>` : ''}
           ${this.options
             ? this.options.map(
                 (option) =>
                   html`<option
-                    ?selected=${this.selected}
+                    ?selected=${option.value === this.value}
                     value=${option.value}
                     aria-label=${option.name}
                   >
@@ -234,6 +276,10 @@ class PlSelectField extends LitElement {
           : ""}
       </div>
     `;
+  }
+
+  handleChange(event) {
+    this.dispatchEvent(new CustomEvent('change', { detail: { value: event.target.value } }));
   }
 
   render() {

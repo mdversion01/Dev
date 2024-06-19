@@ -129,7 +129,7 @@ class InputGroup extends LitElement {
   renderInputGroup(ids, names) {
     return html`
       <div class=${ifDefined(this.formLayout ? this.formLayout : undefined)}>
-        <div class="form-group form-input-group-basic row ${this.formLayout}">
+        <div class="form-group form-input-group-basic ${this.formLayout} ${this.formLayout === "horizontal" || this.formLayout === "inline" ? " row" : ""}">
           <label
             class="form-control-label${this.required ? " required" : ""}${this
               .labelHidden
@@ -204,8 +204,7 @@ class InputGroup extends LitElement {
                           ><i class="${this.icon}"></i
                         ></span>`
                       : this.otherContent
-                      ? html`<span class="pl-btn"
-                          ><slot name="append"></slot></span>` : 
+                      ? html`<slot name="append"></slot>` : 
                       html`<span
                           class="pl-input-group-text"
                           id=${ifDefined(
