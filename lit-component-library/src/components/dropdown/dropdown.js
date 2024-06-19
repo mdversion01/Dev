@@ -50,6 +50,8 @@ class Dropdown extends LitElement {
       styles: { type: String },
       focusedIndex: { type: Number },
       variant: { type: String },
+      listType: { type: String }, // Added listType property
+      subMenuListType: { type: String }, // Added subMenuListType property
     };
   }
 
@@ -71,6 +73,8 @@ class Dropdown extends LitElement {
     this.styles = "";
     this.focusedIndex = -1;
     this.variant = "";
+    this.listType = "default"; // Default value for listType
+    this.subMenuListType = "default"; // Default value for subMenuListType
 
     // Bind event handlers
     this.toggleDropdown = this.toggleDropdown.bind(this);
@@ -290,23 +294,41 @@ class Dropdown extends LitElement {
                           ${this.renderSubmenu(item.submenu, index)}
                         </div>
                       `
-                    : html`
-                        <a
-                          class="dropdown-item ${this.size}"
-                          href="${item.path}"
-                          @click="${() => this.handleItemClick(index)}"
-                          role="option"
-                          tabindex="${this.showDropdown ? "0" : "-1"}"
-                          @mouseenter="${() => this.handleItemHover(index)}"
-                        >
-                          ${item.name}
-                        </a>
-                      `}
+                    : this.renderDropdownItem(item, index, this.listType)}
                 `
             )
           : html``}
       </div>
     `;
+  }
+
+  renderDropdownItem(item, index, type) {
+    if (type === "links") {
+      return html`
+        <a
+          class="dropdown-item ${this.size}"
+          href="${item.path}"
+          @click="${() => this.handleItemClick(index)}"
+          role="option"
+          tabindex="${this.showDropdown ? "0" : "-1"}"
+          @mouseenter="${() => this.handleItemHover(index)}"
+        >
+          ${item.name}
+        </a>
+      `;
+    } else {
+      // Default type, which allows custom HTML
+      return html`
+        <div
+          class="dropdown-item ${this.size}"
+          role="option"
+          tabindex="${this.showDropdown ? "0" : "-1"}"
+          @mouseenter="${() => this.handleItemHover(index)}"
+        >
+          ${item.content ? item.content : item.name}
+        </div>
+      `;
+    }
   }
 
   renderSubmenu(submenuItems, parentIndex) {
@@ -326,17 +348,7 @@ class Dropdown extends LitElement {
             html`
               ${subitem.isDivider
                 ? html`<div class="dropdown-divider"></div>`
-                : html`
-                    <a
-                      class="dropdown-item ${this.size}"
-                      @click="${() =>
-                        this.handleItemClick(subIndex, parentIndex)}"
-                      role="option"
-                      tabindex="${this.showDropdown ? "0" : "-1"}"
-                    >
-                      ${subitem.name}
-                    </a>
-                  `}
+                : this.renderDropdownItem(subitem, subIndex, this.subMenuListType)}
             `
         )}
       </div>
@@ -847,6 +859,28 @@ class Dropdown extends LitElement {
       this.popper.destroy();
       this.popper = null;
     }
+  }
+
+  handleCheckboxChange(event, index) {
+    const isChecked = event.target.checked;
+    this.dispatchEvent(
+      new CustomEvent("checkbox-change", {
+        detail: { index, isChecked },
+        bubbles: true,
+        composed: true,
+      })
+    );
+  }
+
+  handleToggleChange(event, index) {
+    const isChecked = event.target.checked;
+    this.dispatchEvent(
+      new CustomEvent("toggle-change", {
+        detail: { index, isChecked },
+        bubbles: true,
+        composed: true,
+      })
+    );
   }
 }
 
