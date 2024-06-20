@@ -141,12 +141,16 @@
                   <div style="flex: 1 1 auto; margin-top: 28px">
                     <dropdown-component
                       id="dditems"
+                      tableId="table4"
                       size="sm"
+                      inputId="filterby"
+                      listType="checkboxes"
                     ></dropdown-component>
                   </div>
                 </div>
                 <table-component
                   id="table4"
+                  tableId="table4"
                   small
                   sortable
                   caption="top"
@@ -366,8 +370,6 @@
         },
       ];
 
-      // For Sorting with the Select Field component
-
       const sortField = document.getElementById("sortField");
       const sortOrder = document.getElementById("sortOrder");
 
@@ -427,9 +429,11 @@
 
       // For Filtering the Table
 
-      dropdown.items = tableFields.map(field => ({ key: field.key, name: field.label }));
-
-      console.log(dropdown.items);
+      dropdown.items = tableFields.map((field, index) => ({
+        key: field.key,
+        name: field.label,
+        index: index, // Add the index here
+      }));
 
       const filterInput = document.getElementById("filterInput");
 

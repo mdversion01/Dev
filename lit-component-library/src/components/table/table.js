@@ -37,6 +37,8 @@ class Table extends LitElement {
     sortOrder: { type: String },
     filterText: { type: String },
     sortOrderDisabled: { type: Boolean },
+    selectedFilterFields: { type: Array },
+    tableId: { type: String },
   };
 
   constructor() {
@@ -75,6 +77,7 @@ class Table extends LitElement {
     this.sortOrder = "asc";
     this.filterText = "";
     this.sortOrderDisabled = true;
+    this.selectedFilterFields = [];
   }
 
   connectedCallback() {
@@ -91,6 +94,14 @@ class Table extends LitElement {
       "filter-changed",
       this.handleFilterChanged.bind(this)
     );
+
+    // Add the event listener for filter-fields-changed
+    if (this.tableId) {
+      document.addEventListener(
+        "filter-fields-changed",
+        this.handleDropdownFilterFieldsChanged.bind(this)
+      );
+    }
   }
 
   disconnectedCallback() {
@@ -107,6 +118,23 @@ class Table extends LitElement {
       "filter-changed",
       this.handleFilterChanged.bind(this)
     );
+
+    // Remove the event listener for filter-fields-changed
+    if (this.tableId) {
+      document.removeEventListener(
+        "filter-fields-changed",
+        this.handleDropdownFilterFieldsChanged.bind(this)
+      );
+    }
+  }
+
+  handleDropdownFilterFieldsChanged(event) {
+    if (event.detail.tableId !== this.tableId) return;
+    const selectedFields = event.detail.items
+      .filter((item) => item.checked)
+      .map((item) => item.key);
+    this.selectedFilterFields = selectedFields;
+    this.applyFilter();
   }
 
   handleFieldChanged(event) {
@@ -162,10 +190,7 @@ class Table extends LitElement {
     );
     this.dispatchEvent(
       new CustomEvent("sort-changed", {
-        detail: {
-          field: this.sortField,
-          order: this.sortOrder,
-        },
+        detail: { field: this.sortField, order: this.sortOrder },
       })
     );
   }
@@ -173,16 +198,22 @@ class Table extends LitElement {
   applyFilter() {
     if (this.filterText !== undefined && this.filterText !== null) {
       const filterText = this.filterText.trim().toLowerCase();
-      this.items = filterText
-        ? this.originalItems.filter((item) => {
-            const itemString = JSON.stringify(
-              Object.fromEntries(
-                Object.entries(item).filter(([key]) => !key.startsWith("_"))
-              )
-            ).toLowerCase();
-            return itemString.includes(filterText);
-          })
-        : [...this.originalItems];
+      if (this.selectedFilterFields.length > 0) {
+        this.items = this.originalItems.filter((item) => {
+          return this.selectedFilterFields.some((field) => {
+            const fieldValue = item[field];
+            return (
+              fieldValue &&
+              fieldValue.toString().toLowerCase().includes(filterText)
+            );
+          });
+        });
+      } else {
+        this.items = this.originalItems.filter((item) => {
+          const itemString = JSON.stringify(item).toLowerCase();
+          return itemString.includes(filterText);
+        });
+      }
       this.clearSelection();
       this.requestUpdate();
     }
@@ -327,10 +358,7 @@ class Table extends LitElement {
     );
     this.dispatchEvent(
       new CustomEvent("sort-changed", {
-        detail: {
-          field: this.sortField,
-          order: this.sortOrder,
-        },
+        detail: { field: this.sortField, order: this.sortOrder },
       })
     );
   }
@@ -398,7 +426,11 @@ class Table extends LitElement {
       <tr role="row">
         ${["single", "multi", "range"].includes(this.selectMode)
           ? html`<th class="select-col" @click="${this.selectAllRows}">
-              <button class="${headerIconClass} select-row-btns"></button>
+              ${this.items.length === 0
+                ? ""
+                : html`<button
+                    class="${headerIconClass} select-row-btns"
+                  ></button>`}
             </th>`
           : ""}
         ${hasDetailsRows ? html`<th class="toggle-col"></th>` : ""}
@@ -561,6 +593,13 @@ class Table extends LitElement {
                 : null,
             ];
           })}
+          ${this.items.length === 0
+            ? html`<tr>
+                <td colspan="${this.normalizedFields.length + 1}">
+                  There are no records matching your request
+                </td>
+              </tr>`
+            : ""}
         </tbody>
         ${this.caption === "bottom"
           ? html`<caption>

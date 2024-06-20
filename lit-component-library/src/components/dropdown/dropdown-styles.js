@@ -179,6 +179,11 @@ export const dropdownStyles = css`
     background-color: #2680eb;
   }
 
+  .dropdown-item .form-group,
+  .form-group {
+    padding: 0;
+  }
+
   .dropdown-submenu {
     position: relative;
   }

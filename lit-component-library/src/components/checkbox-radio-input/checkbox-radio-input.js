@@ -85,7 +85,19 @@ class CheckboxRadioInput extends LitElement {
     this.removeEventListener("change", this.handleInputChange);
   }
 
-  handleInputChange() {
+  handleInputChange(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.checked = event.target.checked; // Update the checked property
+    // Dispatch the change event
+    this.dispatchEvent(
+      new CustomEvent("change", {
+        detail: { checked: this.checked },
+        bubbles: true,
+        composed: true,
+      })
+    );
+
     // Update the validation property to false when an input changes
     if (this.validation) {
       this.validation = false;
@@ -531,6 +543,8 @@ class CheckboxRadioInput extends LitElement {
   }
 
   handleCheckboxGroupChange(event) {
+    event.preventDefault();
+    event.stopPropagation();
     const target = event.target;
     const value = target.value;
     let newCheckedValues = [...this.checkedValues];

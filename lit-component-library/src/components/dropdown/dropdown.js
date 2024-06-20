@@ -9,9 +9,10 @@ import {
   getButtonTypeClass,
   getButtonShape,
 } from "../utilities/sharedButtonUtils.js";
-// import Popper from "popper.js";
 import { createPopper } from "@popperjs/core";
 import "../icon/icon.js";
+import "../checkbox-radio-input/checkbox-radio-input.js"; // Import CheckboxRadioInput component
+import "../toggle-switch/toggle-switch.js"; // Import ToggleSwitch component
 
 function generateUUID() {
   return "xx-4x-yx-yy".replace(/[xy]/g, function (c) {
@@ -50,14 +51,17 @@ class Dropdown extends LitElement {
       styles: { type: String },
       focusedIndex: { type: Number },
       variant: { type: String },
-      listType: { type: String }, // Added listType property
-      subMenuListType: { type: String }, // Added subMenuListType property
+      listType: { type: String },
+      subMenuListType: { type: String },
+      tableId: { type: String },
+      // checkbox-radio-input properties
+      value: { type: String },
+      inputId: { type: String },
     };
   }
 
   constructor() {
     super();
-    // Initialize default properties
     this.alignMenuRight = false;
     this.block = false;
     this.buttonText = "Dropdown";
@@ -73,23 +77,24 @@ class Dropdown extends LitElement {
     this.styles = "";
     this.focusedIndex = -1;
     this.variant = "";
-    this.listType = "default"; // Default value for listType
-    this.subMenuListType = "default"; // Default value for subMenuListType
+    this.listType = "default";
+    this.subMenuListType = "default";
+    this.tableId = "";
 
-    // Bind event handlers
     this.toggleDropdown = this.toggleDropdown.bind(this);
     this.handleOutsideClick = this.handleOutsideClick.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
     this.handleItemClick = this.handleItemClick.bind(this);
 
-    // Popper instance for dropdown positioning
     this.popper = null;
-    this.updatePopper = this.updatePopper.bind(this); // Bind updatePopper here
+    this.updatePopper = this.updatePopper.bind(this);
 
     this.instanceId = `dropdown-${generateUUID()}`;
+    // checkbox-radio-input properties
+    this.value = "";
+    this.inputId = "";
   }
 
-  // Lifecycle callbacks
   connectedCallback() {
     super.connectedCallback();
     document.addEventListener("click", this.handleOutsideClick);
@@ -108,7 +113,7 @@ class Dropdown extends LitElement {
 
   updated(changedProperties) {
     if (changedProperties.has("alignRight") && this.showDropdown) {
-      this.createPopper(); // Recreate the Popper with the new alignment
+      this.createPopper();
     }
   }
 
@@ -120,7 +125,6 @@ class Dropdown extends LitElement {
       return;
     }
 
-    // Check if the dropdown-menu-right class is present
     const placement = menu.classList.contains("dropdown-menu-right")
       ? "bottom-end"
       : "bottom-start";
@@ -129,14 +133,13 @@ class Dropdown extends LitElement {
       this.popper.destroy();
     }
 
-    // Dynamically set the placement based on the class presence
     this.popper = createPopper(button, menu, {
       placement: placement,
       modifiers: [
         {
           name: "offset",
           options: {
-            offset: [0, 0], // Adjust this offset as needed
+            offset: [0, 0],
           },
         },
         {
@@ -214,7 +217,7 @@ class Dropdown extends LitElement {
       const submenu = this.shadowRoot.querySelector(submenuSelector);
       return submenu && submenu.classList.contains("show");
     } else {
-      return false; // Assume submenu is not open if index is invalid
+      return false;
     }
   }
 
@@ -238,7 +241,6 @@ class Dropdown extends LitElement {
     if (submenu) {
       submenu.classList.add("show");
       submenu.classList.remove("hidden");
-      // Recreate Popper for the submenu
       this.createSubmenuPopper(submenuAnchor, submenu);
     }
   }
@@ -316,8 +318,142 @@ class Dropdown extends LitElement {
           ${item.name}
         </a>
       `;
+    } else if (type === "checkboxes") {
+      return html`
+        <checkbox-radio-input-component
+          checkbox
+          type="checkbox"
+          class="dropdown-item ${this.size}"
+          .labelTxt="${item.name}"
+          .inputId="${this.inputId}-${item.key}"
+          .value=${this.value}
+          ?checked="${item.checked}"
+          ?disabled="${item.disabled}"
+          ?required=${this.validation}
+          @change="${(event) => this.handleCheckboxChange(event, index)}"
+          >${item.name}</checkbox-radio-input-component
+        >
+      `;
+    } else if (type === "checkboxGroup") {
+      return html`
+        <checkbox-radio-input-component
+          checkboxGroup
+          type="checkbox"
+          class="dropdown-item ${this.size}"
+          .labelTxt="${item.name}"
+          .inputId="${this.inputId}-${item.key}"
+          .value=${this.value}
+          ?checked="${item.checked}"
+          ?disabled="${item.disabled}"
+          ?required=${this.validation}
+          @change="${(event) => this.handleCheckboxChange(event, index)}"
+          >${item.name}</checkbox-radio-input-component
+        >
+      `;
+    } else if (type === "customCheckboxes") {
+      return html`
+        <checkbox-radio-input-component
+          customCheckbox
+          type="checkbox"
+          class="dropdown-item ${this.size}"
+          .labelTxt="${item.name}"
+          .inputId="${this.inputId}-${item.key}"
+          .value=${this.value}
+          ?checked="${item.checked}"
+          ?disabled="${item.disabled}"
+          ?required=${this.validation}
+          @change="${(event) => this.handleCheckboxChange(event, index)}"
+          >${item.name}</checkbox-radio-input-component
+        >
+      `;
+    } else if (type === "customCheckboxGroup") {
+      return html`
+        <checkbox-radio-input-component
+          customCheckboxGroup
+          type="checkbox"
+          class="dropdown-item ${this.size}"
+          .labelTxt="${item.name}"
+          .inputId="${this.inputId}-${item.key}"
+          .value=${this.value}
+          ?checked="${item.checked}"
+          ?disabled="${item.disabled}"
+          ?required=${this.validation}
+          @change="${(event) => this.handleCheckboxChange(event, index)}"
+          >${item.name}</checkbox-radio-input-component
+        >
+      `;
+    } else if (type === "radios") {
+      return html`
+        <checkbox-radio-input-component
+          radio
+          type="radio"
+          class="dropdown-item ${this.size}"
+          .labelTxt="${item.name}"
+          .inputId="${this.inputId}-${item.key}"
+          .value=${this.value}
+          ?checked="${item.checked}"
+          ?disabled="${item.disabled}"
+          @change="${(event) => this.handleCheckboxChange(event, index)}"
+          >${item.name}</checkbox-radio-input-component
+        >
+      `;
+    } else if (type === "radioGroup") {
+      return html`
+        <checkbox-radio-input-component
+          radioGroup
+          type="radio"
+          class="dropdown-item ${this.size}"
+          .labelTxt="${item.name}"
+          .inputId="${this.inputId}-${item.key}"
+          .value=${this.value}
+          ?checked="${item.checked}"
+          ?disabled="${item.disabled}"
+          @change="${(event) => this.handleCheckboxChange(event, index)}"
+          >${item.name}</checkbox-radio-input-component
+        >
+      `;
+    } else if (type === "customRadios") {
+      return html`
+        <checkbox-radio-input-component
+          customRadio
+          type="radio"
+          class="dropdown-item ${this.size}"
+          .labelTxt="${item.name}"
+          .inputId="${this.inputId}-${item.key}"
+          .value=${this.value}
+          ?checked="${item.checked}"
+          ?disabled="${item.disabled}"
+          @change="${(event) => this.handleCheckboxChange(event, index)}"
+          >${item.name}</checkbox-radio-input-component
+        >
+      `;
+    } else if (type === "customRadioGroup") {
+      return html`
+        <checkbox-radio-input-component
+          customRadioGroup
+          type="radio"
+          class="dropdown-item ${this.size}"
+          .labelTxt="${item.name}"
+          .inputId="${this.inputId}-${item.key}"
+          .value=${this.value}
+          ?checked="${item.checked}"
+          ?disabled="${item.disabled}"
+          @change="${(event) => this.handleCheckboxChange(event, index)}"
+          >${item.name}</checkbox-radio-input-component
+        >
+      `;
+    } else if (type === "toggleSwitches") {
+      return html`
+        <toggle-switch
+          class="dropdown-item ${this.size}"
+          labelTxt="${item.name}"
+          ?checked="${item.checked}"
+          ?disabled="${item.disabled}"
+          @change="${(event) => this.handleToggleChange(event, index)}"
+          >${item.name}</toggle-switch
+        >
+      `;
     } else {
-      // Default type, which allows custom HTML
       return html`
         <div
           class="dropdown-item ${this.size}"
@@ -348,7 +484,11 @@ class Dropdown extends LitElement {
             html`
               ${subitem.isDivider
                 ? html`<div class="dropdown-divider"></div>`
-                : this.renderDropdownItem(subitem, subIndex, this.subMenuListType)}
+                : this.renderDropdownItem(
+                    subitem,
+                    subIndex,
+                    this.subMenuListType
+                  )}
             `
         )}
       </div>
@@ -357,7 +497,11 @@ class Dropdown extends LitElement {
 
   handleSubmenuEnter(index) {
     this.focusedIndex = index;
-    this.updatePopper(); // Update Popper on submenu hover
+    const submenuToggle = this.shadowRoot.querySelector(
+      `.dropdown-submenu-${index} .dropdown-submenu-toggle`
+    );
+
+    this.showSubmenu(submenuToggle);
   }
 
   handleOutsideClick(event) {
@@ -369,13 +513,11 @@ class Dropdown extends LitElement {
       this.focusedIndex = -1;
       this.closeAllSubmenus();
 
-      // Destroy Popper when dropdown is closed
       if (this.popper) {
         this.popper.destroy();
         this.popper = null;
       }
 
-      // Destroy Submenu Popper when main dropdown is closed
       if (this.submenuPopper) {
         this.submenuPopper.destroy();
         this.submenuPopper = null;
@@ -383,28 +525,14 @@ class Dropdown extends LitElement {
     }
   }
 
-  // Add this method to handle item hover events
   handleItemHover(index) {
     this.focusedIndex = index;
   }
 
-  // Add these methods to handle submenu hover events
-  handleSubmenuEnter(index) {
-    this.focusedIndex = index;
-
-    const submenuToggle = this.shadowRoot.querySelector(
-      `.dropdown-submenu-${index} .dropdown-submenu-toggle`
-    );
-
-    this.showSubmenu(submenuToggle);
-  }
-
   render() {
-    this.updatePopper(); // Update Popper on render
-    // Declare classAttribute before using it
+    this.updatePopper();
     let classAttribute = "";
 
-    // Construct class attribute with shared utility function
     classAttribute += constructClassAttribute({
       classNames: this.classNames,
       outlinedClass: this.outlined ? "pl-btn--outlined" : "",
@@ -472,7 +600,7 @@ class Dropdown extends LitElement {
     if (this.showDropdown) {
       this.focusedIndex = -1;
       this.blurButton();
-      this.createPopper(); // Create Popper when dropdown is opened
+      this.createPopper();
     } else {
       this.focusedIndex = -1;
     }
@@ -488,40 +616,33 @@ class Dropdown extends LitElement {
   handleKeyPress(event) {
     if (!this.showDropdown) return;
 
-    // Filter only visible items for keyboard navigation
     const items = Array.from(
       this.shadowRoot.querySelectorAll(".dropdown-item:not(.disabled)")
     ).filter((item) => {
-      // Check if the item is within a hidden submenu
       const submenu = item.closest(".dropdown-menu.sub.hidden");
-      return !submenu; // Only include items not in a hidden submenu
+      return !submenu;
     });
 
-    // let newIndex = this.focusedIndex;
-    let newIndex = -1; // Initialize newIndex
+    let newIndex = -1;
 
-    const currentItem = items[this.focusedIndex]; // The currently focused item
+    const currentItem = items[this.focusedIndex];
     const currentSubmenuIndex = currentItem
       ? this.findSubmenuIndexOf(currentItem)
-      : -1; // Index of the submenu containing the current item
+      : -1;
 
-    // Handle navigation within submenus specifically
     const openSubmenu = this.shadowRoot.querySelector(
       ".dropdown-menu.sub.show"
     );
     if (openSubmenu) {
       this.navigateSubmenu(event);
     } else {
-      // Handle keypress for main menu items
       switch (event.key) {
         case "ArrowDown":
         case "Tab":
           event.preventDefault();
           newIndex = (this.focusedIndex + 1) % items.length;
           if (newIndex === 0 && currentSubmenuIndex !== -1) {
-            // Attempting to navigate past the last item in a submenu
-            this.closeSubmenu(currentSubmenuIndex); // Close the current submenu
-            // Optionally, move focus to the next item after the submenu in the main menu
+            this.closeSubmenu(currentSubmenuIndex);
             newIndex = this.getNextFocusableItemIndexOutsideSubmenu(
               currentSubmenuIndex,
               items
@@ -535,9 +656,7 @@ class Dropdown extends LitElement {
               ? items.length - 1
               : this.focusedIndex - 1;
           if (newIndex === items.length - 1 && currentSubmenuIndex !== -1) {
-            // Attempting to navigate before the first item in a submenu
-            this.closeSubmenu(currentSubmenuIndex); // Close the current submenu
-            // Optionally, move focus to the previous item before the submenu in the main menu
+            this.closeSubmenu(currentSubmenuIndex);
             newIndex = this.getPreviousFocusableItemIndexOutsideSubmenu(
               currentSubmenuIndex,
               items
@@ -545,17 +664,14 @@ class Dropdown extends LitElement {
           }
           break;
         case "ArrowRight":
-          // Allow entering a submenu
           this.handleArrowRight(event);
           break;
         case "Enter":
-          // Activate the focused menu item
           if (this.focusedIndex !== -1) {
             this.handleItemClick(this.focusedIndex);
           }
           break;
         case "Escape":
-          // Close the dropdown
           this.handleEscape();
           break;
       }
@@ -563,14 +679,13 @@ class Dropdown extends LitElement {
 
     if (newIndex >= 0 && newIndex < items.length) {
       items[newIndex].focus();
-      this.focusedIndex = items.indexOf(items[newIndex]); // Update focusedIndex based on visible items
+      this.focusedIndex = items.indexOf(items[newIndex]);
     }
   }
 
   navigateSubmenu(event) {
-    // Identify the currently active or focused submenu
     const submenu = this.shadowRoot.querySelector(".dropdown-menu.sub.show");
-    if (!submenu) return; // Exit if no submenu is currently open
+    if (!submenu) return;
 
     const items = submenu.querySelectorAll(".dropdown-item:not(.disabled)");
     const currentIndex = Array.from(items).indexOf(
@@ -580,27 +695,25 @@ class Dropdown extends LitElement {
 
     switch (event.key) {
       case "ArrowDown":
-        event.preventDefault(); // Prevent page scroll
-        newIndex = (currentIndex + 1) % items.length; // Wrap around at the end
+        event.preventDefault();
+        newIndex = (currentIndex + 1) % items.length;
         break;
       case "ArrowUp":
-        event.preventDefault(); // Prevent page scroll
-        newIndex = (currentIndex - 1 + items.length) % items.length; // Wrap around to the end if at the start
+        event.preventDefault();
+        newIndex = (currentIndex - 1 + items.length) % items.length;
         break;
       case "ArrowLeft":
         this.handleArrowLeft();
         break;
       case "Escape":
-        // Close the dropdown
         this.handleEscape();
         break;
       default:
-        // Handle other keys (e.g., Escape or ArrowLeft for closing submenu) if needed
-        return; // Exit the function for keys we're not handling here
+        return;
     }
 
     if (newIndex >= 0 && newIndex < items.length) {
-      items[newIndex].focus(); // Move focus to the new item
+      items[newIndex].focus();
     }
   }
 
@@ -617,14 +730,12 @@ class Dropdown extends LitElement {
       newIndex = currentIndex - 1 >= 0 ? currentIndex - 1 : items.length - 1;
     }
 
-    // Update focusedIndex and focus the new item
     if (typeof newIndex === "number" && items[newIndex]) {
-      this.focusedIndex = newIndex; // Update the focusedIndex to the new index
-      items[newIndex].focus(); // Set focus on the new item
+      this.focusedIndex = newIndex;
+      items[newIndex].focus();
     }
   }
 
-  // Additional methods used in handleKeyPress
   handleArrowRight(event) {
     const currentFocus = this.shadowRoot.activeElement;
     if (
@@ -648,7 +759,7 @@ class Dropdown extends LitElement {
     );
     if (activeSubmenu) {
       this.closeSubmenu(activeSubmenu.dataset.index);
-      activeSubmenu.focus(); // Focus back to the submenu trigger
+      activeSubmenu.focus();
     }
   }
 
@@ -661,25 +772,18 @@ class Dropdown extends LitElement {
       this.popper = null;
     }
 
-    // Set focus back to the toggle button
     const toggleButton = this.shadowRoot.querySelector(".dropdown-toggle");
     if (toggleButton) {
       toggleButton.focus();
     }
   }
 
-  // Utility method to find the next focusable item index outside the current submenu
   getNextFocusableItemIndexOutsideSubmenu(currentSubmenuIndex, items) {
-    // Implement logic to find the next focusable item index in the main menu after exiting a submenu
-    // This may involve finding the parent menu item of the current submenu and moving to the next item in the main menu
-    // For simplicity, this function returns a valid index or -1 if no such item exists
-    return -1; // Placeholder return value
+    return -1;
   }
 
-  // Utility method to find the previous focusable item index outside the current submenu
   getPreviousFocusableItemIndexOutsideSubmenu(currentSubmenuIndex, items) {
-    // Implement logic similar to getNextFocusableItemIndexOutsideSubmenu for finding the previous item
-    return -1; // Placeholder return value
+    return -1;
   }
 
   findSubmenuIndexOf(element) {
@@ -694,14 +798,13 @@ class Dropdown extends LitElement {
       }
       currentElement = currentElement.parentNode;
     }
-    return -1; // Element is not in a submenu or not a valid element
+    return -1;
   }
 
   getNextFocusableItemIndex(currentIndex, direction, items) {
     let nextIndex = currentIndex + direction;
     const itemCount = items.length;
 
-    // Loop to find the next focusable item index
     while (nextIndex >= 0 && nextIndex < itemCount) {
       if (
         !items[nextIndex].hasAttribute("disabled") &&
@@ -711,7 +814,6 @@ class Dropdown extends LitElement {
       }
       nextIndex += direction;
     }
-    // If no focusable item is found, return the current index
     return currentIndex;
   }
 
@@ -724,7 +826,6 @@ class Dropdown extends LitElement {
     if (shouldShow) {
       submenu.classList.add("show");
       submenu.classList.remove("hidden");
-      // Update tabindex for submenu items to make them focusable
       submenu
         .querySelectorAll(".dropdown-item")
         .forEach((item) => item.setAttribute("tabindex", "0"));
@@ -732,7 +833,6 @@ class Dropdown extends LitElement {
     } else {
       submenu.classList.remove("show");
       submenu.classList.add("hidden");
-      // Update tabindex for submenu items to make them not focusable
       submenu
         .querySelectorAll(".dropdown-item")
         .forEach((item) => item.setAttribute("tabindex", "-1"));
@@ -748,10 +848,8 @@ class Dropdown extends LitElement {
       submenu._popper.destroy();
     }
 
-    // Determine the main menu's alignment to decide on the submenu's placement
-    const isMainDropdownRightAligned = this.alignMenuRight; // or check the class directly if not using a property
+    const isMainDropdownRightAligned = this.alignMenuRight;
 
-    // Set the placement based on the main dropdown's alignment
     const placement = isMainDropdownRightAligned ? "left-start" : "right-start";
     const submenuOffset = isMainDropdownRightAligned ? [0, 0] : [0, 0];
 
@@ -761,7 +859,7 @@ class Dropdown extends LitElement {
         {
           name: "offset",
           options: {
-            offset: submenuOffset, // Adjust this offset as needed
+            offset: submenuOffset,
           },
         },
         {
@@ -783,12 +881,10 @@ class Dropdown extends LitElement {
       if (open) {
         submenu.classList.add("show");
         submenu.classList.remove("hidden");
-        // Recreate Popper for the submenu
         this.createSubmenuPopper(submenu.previousElementSibling, submenu);
       } else {
         submenu.classList.remove("show");
         submenu.classList.add("hidden");
-        // Destroy Popper when submenu is closed
         if (this.submenuPopper) {
           this.submenuPopper.destroy();
           this.submenuPopper = null;
@@ -798,10 +894,7 @@ class Dropdown extends LitElement {
   }
 
   handleSubmenuLeave(index) {
-    // Close submenu on leave
     this.closeSubmenu(index);
-
-    // Destroy submenu Popper
     this.destroySubmenuPopper(index);
   }
 
@@ -815,7 +908,6 @@ class Dropdown extends LitElement {
     }
   }
 
-  // Add this method to close the submenu
   closeSubmenu(submenuIndex) {
     const submenu = this.shadowRoot.querySelector(
       `.dropdown-menu.sub.dropdown-submenu-${submenuIndex}`
@@ -823,9 +915,7 @@ class Dropdown extends LitElement {
     if (submenu && submenu.classList.contains("show")) {
       submenu.classList.remove("show");
       submenu.classList.add("hidden");
-      // Reset inline styles that may have been set by Popper.js
       submenu.removeAttribute("style");
-      // Destroy Popper for the submenu, if applicable
       if (this.submenuPopper) {
         this.submenuPopper.destroy();
         this.submenuPopper = null;
@@ -836,16 +926,13 @@ class Dropdown extends LitElement {
   closeAllSubmenus() {
     const submenus = this.shadowRoot.querySelectorAll(`.dropdown-menu.sub`);
     submenus.forEach((submenu) => {
-      // Remove the 'show' class to hide the submenu
       submenu.classList.remove("show");
       submenu.classList.add("hidden");
-      // Reset inline styles that may have been set by Popper.js
       submenu.removeAttribute("style");
 
-      // Check if this submenu has an associated Popper instance and destroy it
       if (submenu._popper) {
         submenu._popper.destroy();
-        submenu._popper = null; // Clear the reference to the destroyed Popper instance
+        submenu._popper = null;
       }
     });
   }
@@ -854,7 +941,6 @@ class Dropdown extends LitElement {
     this.showDropdown = false;
     this.focusedIndex = -1;
 
-    // Destroy Popper when item is clicked
     if (this.popper) {
       this.popper.destroy();
       this.popper = null;
@@ -862,15 +948,21 @@ class Dropdown extends LitElement {
   }
 
   handleCheckboxChange(event, index) {
-    const isChecked = event.target.checked;
+    const item = this.items[index];
+    item.checked = event.target.checked;
+    console.log(
+      "Checked items:",
+      this.items.filter((item) => item.checked)
+    );
     this.dispatchEvent(
-      new CustomEvent("checkbox-change", {
-        detail: { index, isChecked },
+      new CustomEvent("filter-fields-changed", {
+        detail: { items: this.items, tableId: this.tableId }, // Add tableId to the detail
         bubbles: true,
         composed: true,
       })
     );
   }
+  
 
   handleToggleChange(event, index) {
     const isChecked = event.target.checked;
