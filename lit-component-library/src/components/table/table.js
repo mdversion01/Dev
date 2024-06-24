@@ -165,6 +165,11 @@ class Table extends LitElement {
       return;
     }
 
+    // Preserve the expanded rows state
+    const expandedRowIndices = this.expandedRows.map(
+      (rowIndex) => this.items[rowIndex]
+    );
+
     this.sortCriteria = [{ key: this.sortField, order: this.sortOrder }];
     this.items = [...this.items].sort((a, b) => {
       const aValue = a[this.sortField];
@@ -175,12 +180,101 @@ class Table extends LitElement {
       if (aValue > bValue) return order;
       return 0;
     });
+
+    // Restore the expanded rows state
+    this.expandedRows = expandedRowIndices.map((row) =>
+      this.items.indexOf(row)
+    );
+
     this.clearSelection();
     this.requestUpdate();
 
     this.dispatchEvent(
       new CustomEvent("sort-field-updated", {
         detail: { value: this.sortField },
+      })
+    );
+    this.dispatchEvent(
+      new CustomEvent("sort-order-updated", {
+        detail: { value: this.sortOrder },
+      })
+    );
+    this.dispatchEvent(
+      new CustomEvent("sort-changed", {
+        detail: { field: this.sortField, order: this.sortOrder },
+      })
+    );
+  }
+
+  sortItems(event, key) {
+    if (!this.sortable) return;
+
+    const existingSort = this.sortCriteria.find(
+      (criteria) => criteria.key === key
+    );
+
+    if (event.ctrlKey || event.metaKey) {
+      if (existingSort) {
+        existingSort.order = existingSort.order === "asc" ? "desc" : "none";
+        if (existingSort.order === "none") {
+          this.sortCriteria = this.sortCriteria.filter((c) => c.key !== key);
+        }
+      } else {
+        this.sortCriteria.push({ key, order: "asc" });
+      }
+    } else {
+      this.sortCriteria = [];
+      if (existingSort) {
+        if (existingSort.order === "asc") {
+          this.sortCriteria = [{ key, order: "desc" }];
+        } else if (existingSort.order === "desc") {
+          this.sortCriteria = [];
+        } else {
+          this.sortCriteria = [{ key, order: "asc" }];
+        }
+      } else {
+        this.sortCriteria = [{ key, order: "asc" }];
+      }
+    }
+
+    if (this.sortCriteria.length === 0) {
+      this.sortField = "none";
+      this.sortOrder = "asc";
+      this.sortOrderDisabled = true;
+    } else {
+      this.sortField = this.sortCriteria[0]?.key;
+      this.sortOrder = this.sortCriteria[0]?.order;
+      this.sortOrderDisabled = false;
+    }
+
+    // Preserve the expanded rows state
+    const expandedRowIndices = this.expandedRows.map(
+      (rowIndex) => this.items[rowIndex]
+    );
+
+    this.items = [...this.items].sort((a, b) => {
+      for (const criteria of this.sortCriteria) {
+        const aValue = a[criteria.key];
+        const bValue = b[criteria.key];
+        const order = criteria.order === "asc" ? 1 : -1;
+
+        if (aValue < bValue) return -order;
+        if (aValue > bValue) return order;
+      }
+      return 0;
+    });
+
+    // Restore the expanded rows state
+    this.expandedRows = expandedRowIndices.map((row) =>
+      this.items.indexOf(row)
+    );
+
+    this.clearSelection();
+    this.requestUpdate();
+
+    this.dispatchEvent(
+      new CustomEvent("sort-field-updated", {
+        detail: { value: this.sortField || "none" },
       })
     );
     this.dispatchEvent(
@@ -288,79 +382,6 @@ class Table extends LitElement {
       .split("_")
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
       .join(" ");
-  }
-
-  sortItems(event, key) {
-    if (!this.sortable) return;
-
-    const existingSort = this.sortCriteria.find(
-      (criteria) => criteria.key === key
-    );
-
-    if (event.ctrlKey || event.metaKey) {
-      if (existingSort) {
-        existingSort.order = existingSort.order === "asc" ? "desc" : "none";
-        if (existingSort.order === "none") {
-          this.sortCriteria = this.sortCriteria.filter((c) => c.key !== key);
-        }
-      } else {
-        this.sortCriteria.push({ key, order: "asc" });
-      }
-    } else {
-      this.sortCriteria = [];
-      if (existingSort) {
-        if (existingSort.order === "asc") {
-          this.sortCriteria = [{ key, order: "desc" }];
-        } else if (existingSort.order === "desc") {
-          this.sortCriteria = [];
-        } else {
-          this.sortCriteria = [{ key, order: "asc" }];
-        }
-      } else {
-        this.sortCriteria = [{ key, order: "asc" }];
-      }
-    }
-
-    if (this.sortCriteria.length === 0) {
-      this.sortField = "none";
-      this.sortOrder = "asc";
-      this.sortOrderDisabled = true;
-    } else {
-      this.sortField = this.sortCriteria[0]?.key;
-      this.sortOrder = this.sortCriteria[0]?.order;
-      this.sortOrderDisabled = false;
-    }
-
-    this.items = [...this.items].sort((a, b) => {
-      for (const criteria of this.sortCriteria) {
-        const aValue = a[criteria.key];
-        const bValue = b[criteria.key];
-        const order = criteria.order === "asc" ? 1 : -1;
-
-        if (aValue < bValue) return -order;
-        if (aValue > bValue) return order;
-      }
-      return 0;
-    });
-
-    this.clearSelection();
-    this.requestUpdate();
-
-    this.dispatchEvent(
-      new CustomEvent("sort-field-updated", {
-        detail: { value: this.sortField || "none" },
-      })
-    );
-    this.dispatchEvent(
-      new CustomEvent("sort-order-updated", {
-        detail: { value: this.sortOrder },
-      })
-    );
-    this.dispatchEvent(
-      new CustomEvent("sort-changed", {
-        detail: { field: this.sortField, order: this.sortOrder },
-      })
-    );
   }
 
   getAriaSort(key) {
@@ -640,6 +661,7 @@ class Table extends LitElement {
     this.sortOrderDisabled = true;
     this.clearSelection();
     this.items = [...this.originalItems];
+    this.expandedRows = []; // Clear the expanded rows
     this.requestUpdate();
 
     this.dispatchEvent(
