@@ -39,6 +39,7 @@ class ToggleSwitch extends LitElement {
     validationMessage: { type: String },
     focusedSwitchId: { type: String },
     formLayout: { type: String },
+    noPadFormGroup: { type: Boolean },
   };
 
   constructor() {
@@ -59,6 +60,7 @@ class ToggleSwitch extends LitElement {
     this.validation = false;
     this.validationMessage = "";
     this.focusedSwitchId = null;
+    this.noPadFormGroup = false;
   }
 
   connectedCallback() {
@@ -82,16 +84,15 @@ class ToggleSwitch extends LitElement {
           ...this.switchesArray[index],
           checked: !this.switchesArray[index].checked,
         };
-        // Optionally reset validation for each switch here if needed
         this.requestUpdate("switchesArray", [...this.switchesArray]);
       }
     } else {
       this.checked = !this.checked;
-      // When toggling off and if required, set validation to true; otherwise, false.
-      this.validation = this.required && !this.checked;
       this.dispatchEvent(
         new CustomEvent("checked-changed", {
           detail: { checked: this.checked },
+          bubbles: true,
+          composed: true,
         })
       );
     }
@@ -188,7 +189,7 @@ class ToggleSwitch extends LitElement {
       return html` <div
         class="form-group${this.formLayout === "inline"
           ? " form-toggle-inline"
-          : ""}"
+          : ""}${this.noPadFormGroup ? " no-pad" : ""}"
       >
         <div
           role="group"
@@ -206,7 +207,7 @@ class ToggleSwitch extends LitElement {
       return html` <div
         class="form-group${this.formLayout === "inline"
           ? " form-toggle-inline"
-          : ""}"
+          : ""}${this.noPadFormGroup ? " no-pad" : ""}"
       >
         <div class="${singleSwitchFocused ? "keyboard-focused" : ""}">
           ${this.renderSwitch(

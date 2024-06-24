@@ -3,6 +3,7 @@
         "combobox",
         "describedby",
         "labelledby",
-        "multiselectable"
+        "multiselectable",
+        "noPadFormGroup"
     ]
 }

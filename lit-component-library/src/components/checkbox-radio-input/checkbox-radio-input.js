@@ -39,6 +39,7 @@ class CheckboxRadioInput extends LitElement {
       validationMessage: { type: String },
       value: { type: String },
       formLayout: { type: String },
+      noPadFormGroup: { type: Boolean },
     };
   }
 
@@ -65,6 +66,7 @@ class CheckboxRadioInput extends LitElement {
     this.validation = false;
     this.validationMessage = "";
     this.value = "";
+    this.noPadFormGroup = false;
   }
 
   camelCase(str) {
@@ -122,7 +124,7 @@ class CheckboxRadioInput extends LitElement {
       <div
         class="form-group${this.formLayout === "inline"
           ? " form-check-inline"
-          : ""}${this.validation ? " was-validated" : ""}"
+          : ""}${this.validation ? " was-validated" : ""}${this.noPadFormGroup ? " no-pad" : ""}"
       >
         <div class="form-check">
           <input

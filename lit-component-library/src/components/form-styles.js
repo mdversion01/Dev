@@ -122,6 +122,10 @@ export const formStyles = css`
     padding: 5px;
   }
 
+  .no-pad {
+    padding: 0 !important;
+  }
+
   .form-toggle-inline {
     display: inline-flex;
     align-items: center;

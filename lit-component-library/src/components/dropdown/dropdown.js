@@ -57,6 +57,7 @@ class Dropdown extends LitElement {
       // checkbox-radio-input properties
       value: { type: String },
       inputId: { type: String },
+      noPadFormGroup: { type: Boolean },
     };
   }
 
@@ -93,6 +94,7 @@ class Dropdown extends LitElement {
     // checkbox-radio-input properties
     this.value = "";
     this.inputId = "";
+    this.noPadFormGroup = true;
   }
 
   connectedCallback() {
@@ -324,6 +326,7 @@ class Dropdown extends LitElement {
           checkbox
           type="checkbox"
           class="dropdown-item ${this.size}"
+          noPadFormGroup
           .labelTxt="${item.name}"
           .inputId="${this.inputId}-${item.key}"
           .value=${this.value}
@@ -340,6 +343,7 @@ class Dropdown extends LitElement {
           checkboxGroup
           type="checkbox"
           class="dropdown-item ${this.size}"
+          noPadFormGroup
           .labelTxt="${item.name}"
           .inputId="${this.inputId}-${item.key}"
           .value=${this.value}
@@ -356,6 +360,7 @@ class Dropdown extends LitElement {
           customCheckbox
           type="checkbox"
           class="dropdown-item ${this.size}"
+          noPadFormGroup
           .labelTxt="${item.name}"
           .inputId="${this.inputId}-${item.key}"
           .value=${this.value}
@@ -372,6 +377,7 @@ class Dropdown extends LitElement {
           customCheckboxGroup
           type="checkbox"
           class="dropdown-item ${this.size}"
+          noPadFormGroup
           .labelTxt="${item.name}"
           .inputId="${this.inputId}-${item.key}"
           .value=${this.value}
@@ -388,6 +394,7 @@ class Dropdown extends LitElement {
           radio
           type="radio"
           class="dropdown-item ${this.size}"
+          noPadFormGroup
           .labelTxt="${item.name}"
           .inputId="${this.inputId}-${item.key}"
           .value=${this.value}
@@ -403,6 +410,7 @@ class Dropdown extends LitElement {
           radioGroup
           type="radio"
           class="dropdown-item ${this.size}"
+          noPadFormGroup
           .labelTxt="${item.name}"
           .inputId="${this.inputId}-${item.key}"
           .value=${this.value}
@@ -418,6 +426,7 @@ class Dropdown extends LitElement {
           customRadio
           type="radio"
           class="dropdown-item ${this.size}"
+          noPadFormGroup
           .labelTxt="${item.name}"
           .inputId="${this.inputId}-${item.key}"
           .value=${this.value}
@@ -433,6 +442,7 @@ class Dropdown extends LitElement {
           customRadioGroup
           type="radio"
           class="dropdown-item ${this.size}"
+          noPadFormGroup
           .labelTxt="${item.name}"
           .inputId="${this.inputId}-${item.key}"
           .value=${this.value}
@@ -446,10 +456,12 @@ class Dropdown extends LitElement {
       return html`
         <toggle-switch
           class="dropdown-item ${this.size}"
-          labelTxt="${item.name}"
+          noPadFormGroup
+          .labelTxt="${item.name}"
+          .inputId="${this.inputId}-${item.key}"
           ?checked="${item.checked}"
           ?disabled="${item.disabled}"
-          @change="${(event) => this.handleToggleChange(event, index)}"
+          @checked-changed="${(event) => this.handleToggleChange(event, index)}"
           >${item.name}</toggle-switch
         >
       `;
@@ -962,13 +974,17 @@ class Dropdown extends LitElement {
       })
     );
   }
-  
 
   handleToggleChange(event, index) {
-    const isChecked = event.target.checked;
+    const item = this.items[index];
+    item.checked = event.detail.checked;
+    console.log(
+      "TOGGLED items:",
+      this.items.filter((item) => item.checked)
+    );
     this.dispatchEvent(
-      new CustomEvent("toggle-change", {
-        detail: { index, isChecked },
+      new CustomEvent("filter-fields-changed", {
+        detail: { items: this.items, tableId: this.tableId },
         bubbles: true,
         composed: true,
       })
