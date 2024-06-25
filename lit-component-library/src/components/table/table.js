@@ -345,7 +345,11 @@ class Table extends LitElement {
       this.sortOrderDisabled = false;
     }
 
-    const expandedRows = [...this.expandedRows];
+    // Preserve the expanded rows state
+    const expandedRowIndices = this.expandedRows.map(
+      (rowIndex) => this.items[rowIndex]
+    );
+
     this.items = [...this.items].sort((a, b) => {
       for (const criteria of this.sortCriteria) {
         const aValue = a[criteria.key];
@@ -358,8 +362,9 @@ class Table extends LitElement {
       return 0;
     });
 
-    this.expandedRows = expandedRows.map((rowIndex) =>
-      this.items.indexOf(this.originalItems[rowIndex])
+    // Restore the expanded rows state
+    this.expandedRows = expandedRowIndices.map((row) =>
+      this.items.indexOf(row)
     );
 
     this.clearSelection();
