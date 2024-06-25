@@ -92,7 +92,7 @@
               <section class="display-box-demo">
                 <button
                   class="reset-sort-icon"
-                  onclick="resetTableSort('table4')"
+                  onclick="resetTableSort('table4', 'dditems')"
                 ></button>
                 <div style="display: flex; width: 100%; flex: 1 1 auto">
                   <div style="flex: 1 1 auto">
@@ -133,8 +133,8 @@
                         slot="append"
                         secondary
                         styles="border-radius: 0 3px 3px 0; padding: 0 8px;"
-                        onclick="clearFilter()"
                         size="sm"
+                        onclick="clearFilter('dditems')"
                       ></pl-button>
                     </input-group-component>
                   </div>
@@ -144,7 +144,7 @@
                       tableId="table4"
                       size="sm"
                       inputId="filterby"
-                      listType="checkboxes"
+                      listType="toggleSwitches"
                     ></dropdown-component>
                   </div>
                 </div>
@@ -265,10 +265,27 @@
         },
       ];
 
-      function resetTableSort(tableId) {
+      function resetTableSort(tableId, dropdownId) {
         const table = document.getElementById(tableId);
         if (table && typeof table.resetSort === "function") {
           table.resetSort();
+        }
+
+        // Clear filter input field
+        const filterInput = document.getElementById("filterInput");
+        if (filterInput) {
+          const inputElement = filterInput.shadowRoot.querySelector("input");
+          if (inputElement) {
+            inputElement.value = "";
+            filterInput.handleClear();
+          }
+        }
+
+        // Clear dropdown selections
+        const dropdown = document.getElementById(dropdownId);
+        console.log("Dropdown element:", dropdown);
+        if (dropdown && typeof dropdown.clearSelections === "function") {
+          dropdown.clearSelections();
         }
       }
 
@@ -444,11 +461,22 @@
         tableC.dispatchEvent(filterEvent);
       });
 
-      window.clearFilter = function () {
-        const inputElement = filterInput.shadowRoot.querySelector("input");
-        if (inputElement) {
-          inputElement.value = "";
-          filterInput.handleClear();
+      window.clearFilter = function (dropdownId) {
+        // Clear filter input field
+        const filterInput = document.getElementById("filterInput");
+        if (filterInput) {
+          const inputElement = filterInput.shadowRoot.querySelector("input");
+          if (inputElement) {
+            inputElement.value = "";
+            filterInput.handleClear();
+          }
+        }
+
+        // Clear dropdown selections
+        const dropdown = document.getElementById(dropdownId);
+        console.log("Dropdown element:", dropdown);
+        if (dropdown && typeof dropdown.clearSelections === "function") {
+          dropdown.clearSelections();
         }
       };
     </script>

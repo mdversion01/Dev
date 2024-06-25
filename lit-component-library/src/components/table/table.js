@@ -39,6 +39,7 @@ class Table extends LitElement {
     sortOrderDisabled: { type: Boolean },
     selectedFilterFields: { type: Array },
     tableId: { type: String },
+    dropdownId: { type: String },
   };
 
   constructor() {
@@ -78,6 +79,8 @@ class Table extends LitElement {
     this.filterText = "";
     this.sortOrderDisabled = true;
     this.selectedFilterFields = [];
+    this.tableId = "";
+    this.dropdownId = "";
   }
 
   connectedCallback() {
@@ -206,89 +209,6 @@ class Table extends LitElement {
     );
   }
 
-  sortItems(event, key) {
-    if (!this.sortable) return;
-
-    const existingSort = this.sortCriteria.find(
-      (criteria) => criteria.key === key
-    );
-
-    if (event.ctrlKey || event.metaKey) {
-      if (existingSort) {
-        existingSort.order = existingSort.order === "asc" ? "desc" : "none";
-        if (existingSort.order === "none") {
-          this.sortCriteria = this.sortCriteria.filter((c) => c.key !== key);
-        }
-      } else {
-        this.sortCriteria.push({ key, order: "asc" });
-      }
-    } else {
-      this.sortCriteria = [];
-      if (existingSort) {
-        if (existingSort.order === "asc") {
-          this.sortCriteria = [{ key, order: "desc" }];
-        } else if (existingSort.order === "desc") {
-          this.sortCriteria = [];
-        } else {
-          this.sortCriteria = [{ key, order: "asc" }];
-        }
-      } else {
-        this.sortCriteria = [{ key, order: "asc" }];
-      }
-    }
-
-    if (this.sortCriteria.length === 0) {
-      this.sortField = "none";
-      this.sortOrder = "asc";
-      this.sortOrderDisabled = true;
-    } else {
-      this.sortField = this.sortCriteria[0]?.key;
-      this.sortOrder = this.sortCriteria[0]?.order;
-      this.sortOrderDisabled = false;
-    }
-
-    // Preserve the expanded rows state
-    const expandedRowIndices = this.expandedRows.map(
-      (rowIndex) => this.items[rowIndex]
-    );
-
-    this.items = [...this.items].sort((a, b) => {
-      for (const criteria of this.sortCriteria) {
-        const aValue = a[criteria.key];
-        const bValue = b[criteria.key];
-        const order = criteria.order === "asc" ? 1 : -1;
-
-        if (aValue < bValue) return -order;
-        if (aValue > bValue) return order;
-      }
-      return 0;
-    });
-
-    // Restore the expanded rows state
-    this.expandedRows = expandedRowIndices.map((row) =>
-      this.items.indexOf(row)
-    );
-
-    this.clearSelection();
-    this.requestUpdate();
-
-    this.dispatchEvent(
-      new CustomEvent("sort-field-updated", {
-        detail: { value: this.sortField || "none" },
-      })
-    );
-    this.dispatchEvent(
-      new CustomEvent("sort-order-updated", {
-        detail: { value: this.sortOrder },
-      })
-    );
-    this.dispatchEvent(
-      new CustomEvent("sort-changed", {
-        detail: { field: this.sortField, order: this.sortOrder },
-      })
-    );
-  }
-
   applyFilter() {
     if (this.filterText !== undefined && this.filterText !== null) {
       const filterText = this.filterText.trim().toLowerCase();
@@ -382,6 +302,84 @@ class Table extends LitElement {
       .split("_")
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
       .join(" ");
+  }
+
+  sortItems(event, key) {
+    if (!this.sortable) return;
+
+    const existingSort = this.sortCriteria.find(
+      (criteria) => criteria.key === key
+    );
+
+    if (event.ctrlKey || event.metaKey) {
+      if (existingSort) {
+        existingSort.order = existingSort.order === "asc" ? "desc" : "none";
+        if (existingSort.order === "none") {
+          this.sortCriteria = this.sortCriteria.filter((c) => c.key !== key);
+        }
+      } else {
+        this.sortCriteria.push({ key, order: "asc" });
+      }
+    } else {
+      this.sortCriteria = [];
+      if (existingSort) {
+        if (existingSort.order === "asc") {
+          this.sortCriteria = [{ key, order: "desc" }];
+        } else if (existingSort.order === "desc") {
+          this.sortCriteria = [];
+        } else {
+          this.sortCriteria = [{ key, order: "asc" }];
+        }
+      } else {
+        this.sortCriteria = [{ key, order: "asc" }];
+      }
+    }
+
+    if (this.sortCriteria.length === 0) {
+      this.sortField = "none";
+      this.sortOrder = "asc";
+      this.sortOrderDisabled = true;
+    } else {
+      this.sortField = this.sortCriteria[0]?.key;
+      this.sortOrder = this.sortCriteria[0]?.order;
+      this.sortOrderDisabled = false;
+    }
+
+    const expandedRows = [...this.expandedRows];
+    this.items = [...this.items].sort((a, b) => {
+      for (const criteria of this.sortCriteria) {
+        const aValue = a[criteria.key];
+        const bValue = b[criteria.key];
+        const order = criteria.order === "asc" ? 1 : -1;
+
+        if (aValue < bValue) return -order;
+        if (aValue > bValue) return order;
+      }
+      return 0;
+    });
+
+    this.expandedRows = expandedRows.map((rowIndex) =>
+      this.items.indexOf(this.originalItems[rowIndex])
+    );
+
+    this.clearSelection();
+    this.requestUpdate();
+
+    this.dispatchEvent(
+      new CustomEvent("sort-field-updated", {
+        detail: { value: this.sortField || "none" },
+      })
+    );
+    this.dispatchEvent(
+      new CustomEvent("sort-order-updated", {
+        detail: { value: this.sortOrder },
+      })
+    );
+    this.dispatchEvent(
+      new CustomEvent("sort-changed", {
+        detail: { field: this.sortField, order: this.sortOrder },
+      })
+    );
   }
 
   getAriaSort(key) {
@@ -674,6 +672,22 @@ class Table extends LitElement {
         detail: { value: "asc" },
       })
     );
+
+    // Clear filter text and selected filter fields
+    this.filterText = "";
+    this.selectedFilterFields = [];
+    this.dispatchEvent(
+      new CustomEvent("filter-changed", {
+        detail: { value: "" },
+      })
+    );
+    this.applyFilter();
+
+    // Clear dropdown selections
+    const dropdown = document.getElementById(this.tableId + '-dropdown');
+    if (dropdown) {
+      dropdown.clearSelections();
+    }
   }
 
   toggleDetails(rowIndex) {

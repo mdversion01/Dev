@@ -33,6 +33,7 @@ class CheckboxRadioInput extends LitElement {
       radio: { type: Boolean },
       radioGroup: { type: Boolean },
       radioGroupOptions: { type: Array },
+      required: { type: Boolean },
       size: { type: String },
       selectedValue: { type: String },
       validation: { type: Boolean },
@@ -62,6 +63,7 @@ class CheckboxRadioInput extends LitElement {
     this.radio = false;
     this.radioGroup = false;
     this.radioGroupOptions = [];
+    this.required = false;
     this.selectedValue = "";
     this.validation = false;
     this.validationMessage = "";
@@ -80,6 +82,13 @@ class CheckboxRadioInput extends LitElement {
   connectedCallback() {
     super.connectedCallback();
     this.addEventListener("change", this.handleInputChange);
+
+    // Access the formId and formLayout properties from the closest form-component
+    const formComponent = this.closest("form-component");
+
+    if (formComponent) {
+      this.formLayout = formComponent.formLayout || "";
+    }
   }
 
   disconnectedCallback() {
@@ -90,32 +99,66 @@ class CheckboxRadioInput extends LitElement {
   handleInputChange(event) {
     event.preventDefault();
     event.stopPropagation();
-    this.checked = event.target.checked; // Update the checked property
-    // Dispatch the change event
-    this.dispatchEvent(
-      new CustomEvent("change", {
-        detail: { checked: this.checked },
-        bubbles: true,
-        composed: true,
-      })
-    );
 
-    // Update the validation property to false when an input changes
-    if (this.validation) {
-      this.validation = false;
-    } else {
-      this.validation = true;
+    if (event.target !== this) {
+      this.checked = event.target.checked; // Update the checked property
+      this.validation = !this.checked && this.required; // Update the validation property based on the required field
+
+      // Dispatch the change event
+      this.dispatchEvent(
+        new CustomEvent("change", {
+          detail: { checked: this.checked },
+          bubbles: true,
+          composed: true,
+        })
+      );
     }
   }
 
-  connectedCallback() {
-    super.connectedCallback();
+  handleCheckboxGroupChange(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    const target = event.target;
+    const value = target.value;
+    let newCheckedValues = [...this.checkedValues];
 
-    // Access the formId and formLayout properties from the closest form-component
-    const formComponent = this.closest("form-component");
+    if (target.checked) {
+      // Add the value to the array if it's checked and not already present
+      if (!newCheckedValues.includes(value)) {
+        newCheckedValues.push(value);
+      }
+    } else {
+      // Remove the value from the array if it's unchecked
+      newCheckedValues = newCheckedValues.filter((v) => v !== value);
+    }
 
-    if (formComponent) {
-      this.formLayout = formComponent.formLayout || "";
+    // Update the checkedValues property
+    this.checkedValues = newCheckedValues;
+
+    // Update validation state
+    this.validation = this.required && this.checkedValues.length === 0;
+
+    // Dispatch a custom event with the new array of checked values
+    this.dispatchEvent(
+      new CustomEvent("checkbox-group-change", { detail: this.checkedValues })
+    );
+  }
+
+  handleRadioGroupChange(event) {
+    const target = event.target;
+    if (target.checked) {
+      this.selectedValue = target.value;
+      this.validation = false;
+      this.dispatchEvent(
+        new CustomEvent("value-changed", { detail: this.selectedValue })
+      );
+    }
+  }
+
+  updated(changedProperties) {
+    if (changedProperties.has("radioGroupOptions")) {
+      // Trigger a re-render when radioGroupOptions changes
+      this.requestUpdate();
     }
   }
 
@@ -124,7 +167,9 @@ class CheckboxRadioInput extends LitElement {
       <div
         class="form-group${this.formLayout === "inline"
           ? " form-check-inline"
-          : ""}${this.validation ? " was-validated" : ""}${this.noPadFormGroup ? " no-pad" : ""}"
+          : ""}${this.validation ? " was-validated" : ""}${this.noPadFormGroup
+          ? " no-pad"
+          : ""}"
       >
         <div class="form-check">
           <input
@@ -137,7 +182,7 @@ class CheckboxRadioInput extends LitElement {
             aria-checked=${ifDefined(this.checked ? this.checked : undefined)}
             ?checked=${this.checked}
             ?disabled=${this.disabled}
-            ?required=${this.validation}
+            ?required=${this.required}
             @change="${this.handleInputChange}"
             tabindex="0"
             aria-invalid=${ifDefined(this.validation ? "true" : undefined)}
@@ -179,7 +224,7 @@ class CheckboxRadioInput extends LitElement {
             aria-checked=${ifDefined(this.checked ? this.checked : undefined)}
             ?checked=${this.checked}
             ?disabled=${this.disabled}
-            ?required=${this.validation}
+            ?required=${this.required}
             @change="${this.handleInputChange}"
             value=${ifDefined(this.value)}
             tabindex="0"
@@ -231,7 +276,7 @@ class CheckboxRadioInput extends LitElement {
                     value=${ifDefined(option.value)}
                     ?checked=${this.checkedValues.includes(option.value)}
                     ?disabled=${option.disabled}
-                    ?required=${this.validation}
+                    ?required=${this.required}
                     @change="${this.handleCheckboxGroupChange}"
                     tabindex="0"
                     aria-invalid=${ifDefined(
@@ -294,7 +339,7 @@ class CheckboxRadioInput extends LitElement {
                     value=${ifDefined(option.value)}
                     ?checked=${this.checkedValues.includes(option.value)}
                     ?disabled=${option.disabled}
-                    ?required=${this.validation}
+                    ?required=${this.required}
                     @change="${this.handleCheckboxGroupChange}"
                     tabindex="0"
                     aria-invalid=${ifDefined(
@@ -351,7 +396,7 @@ class CheckboxRadioInput extends LitElement {
             ?checked=${this.checked}
             aria-label=${ifDefined(!this.label ? this.labelTxt : undefined)}
             ?disabled=${this.disabled}
-            ?required=${this.validation}
+            ?required=${this.required}
             @change="${this.handleInputChange}"
           />
           ${this.noLabel
@@ -392,7 +437,7 @@ class CheckboxRadioInput extends LitElement {
             ?checked=${this.checked}
             aria-label=${ifDefined(!this.label ? this.labelTxt : undefined)}
             ?disabled=${this.disabled}
-            ?required=${this.validation}
+            ?required=${this.required}
             @change="${this.handleInputChange}"
           />
           ${this.noLabel
@@ -450,7 +495,7 @@ class CheckboxRadioInput extends LitElement {
                     )}
                     @change="${this.handleRadioGroupChange}"
                     ?disabled=${option.disabled}
-                    ?required=${this.validation}
+                    ?required=${this.required}
                   />
                   ${this.noLabel
                     ? ""
@@ -512,7 +557,7 @@ class CheckboxRadioInput extends LitElement {
                     )}
                     @change="${this.handleRadioGroupChange}"
                     ?disabled=${option.disabled}
-                    ?required=${this.validation}
+                    ?required=${this.required}
                   />
                   ${this.noLabel
                     ? ""
@@ -544,62 +589,6 @@ class CheckboxRadioInput extends LitElement {
     `;
   }
 
-  handleCheckboxGroupChange(event) {
-    event.preventDefault();
-    event.stopPropagation();
-    const target = event.target;
-    const value = target.value;
-    let newCheckedValues = [...this.checkedValues];
-
-    if (target.checked) {
-      // Add the value to the array if it's checked and not already present
-      if (!newCheckedValues.includes(value)) {
-        newCheckedValues.push(value);
-      }
-    } else {
-      // Remove the value from the array if it's unchecked
-      newCheckedValues = newCheckedValues.filter((v) => v !== value);
-    }
-
-    // Update the checkedValues property
-    this.checkedValues = newCheckedValues;
-
-    // Only update validation state if this group is intended to be validated
-    if (this.checkboxGroup && this.checkboxGroupOptions.length > 0) {
-      // Assuming validation is required only when checkboxGroup is true and options are provided
-      this.validation = this.checkedValues.length === 0;
-    }
-
-    // Only update validation state if this group is intended to be validated
-    if (this.customCheckboxGroup && this.checkboxGroupOptions.length > 0) {
-      // Assuming validation is required only when checkboxGroup is true and options are provided
-      this.validation = this.checkedValues.length === 0;
-    }
-
-    // Dispatch a custom event with the new array of checked values
-    this.dispatchEvent(
-      new CustomEvent("checkbox-group-change", { detail: this.checkedValues })
-    );
-  }
-
-  handleRadioGroupChange(event) {
-    const target = event.target;
-    if (target.checked) {
-      this.selectedValue = target.value;
-      this.validation = false;
-      this.dispatchEvent(
-        new CustomEvent("value-changed", { detail: this.selectedValue })
-      );
-    }
-  }
-
-  updated(changedProperties) {
-    if (changedProperties.has("radioGroupOptions")) {
-      // Trigger a re-render when radioGroupOptions changes
-      this.requestUpdate();
-    }
-  }
-
   render() {
     const ids = this.camelCase(this.inputId).replace(/ /g, "");
     const names = this.camelCase(this.name).replace(/ /g, "");
@@ -627,6 +616,48 @@ class CheckboxRadioInput extends LitElement {
     } else if (this.radioGroup) {
       return html`${this.renderRadioGroup(names)}`;
     }
+  }
+
+  clearSelections() {
+    if (this.checkbox || this.customCheckbox) {
+      this.checked = false;
+      const inputElement = this.shadowRoot.querySelector(
+        'input[type="checkbox"]'
+      );
+      if (inputElement) {
+        inputElement.checked = false;
+      }
+    } else if (this.checkboxGroup || this.customCheckboxGroup) {
+      this.checkedValues = [];
+      this.checkboxGroupOptions.forEach((option) => {
+        option.checked = false;
+        const inputElement = this.shadowRoot.querySelector(
+          `#${option.inputId}`
+        );
+        if (inputElement) {
+          inputElement.checked = false;
+        }
+      });
+    } else if (this.radio || this.customRadio) {
+      this.checked = false;
+      const inputElement = this.shadowRoot.querySelector('input[type="radio"]');
+      if (inputElement) {
+        inputElement.checked = false;
+      }
+    } else if (this.radioGroup || this.customRadioGroup) {
+      this.selectedValue = "";
+      this.radioGroupOptions.forEach((option) => {
+        option.checked = false;
+        const inputElement = this.shadowRoot.querySelector(
+          `#${option.inputId}`
+        );
+        if (inputElement) {
+          inputElement.checked = false;
+        }
+      });
+    }
+    console.log("Clearing selections in checkbox-radio-input", this);
+    this.requestUpdate();
   }
 
   _getClassNames() {

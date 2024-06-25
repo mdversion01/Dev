@@ -990,6 +990,33 @@ class Dropdown extends LitElement {
       })
     );
   }
+
+  clearSelections() {
+    this.items.forEach((item) => {
+      item.checked = false;
+      const inputElement = this.shadowRoot.querySelector(`#${this.inputId}-${item.key}`);
+      console.log("inputElement", inputElement);
+      if (inputElement) {
+        inputElement.checked = false;
+      }
+    });
+
+    // Additional logic to handle clearing selections in nested input components
+    const nestedInputs = this.shadowRoot.querySelectorAll("checkbox-radio-input-component, toggle-switch");
+    console.log("nestedInputs", nestedInputs);
+    nestedInputs.forEach((nestedInput) => {
+      nestedInput.clearSelections();
+    });
+
+    // Update internal state to reflect the cleared selections
+    this.dispatchEvent(new CustomEvent("filter-fields-changed", {
+      detail: { items: this.items, tableId: this.tableId },
+      bubbles: true,
+      composed: true
+    }));
+
+    this.requestUpdate();
+  }
 }
 
 customElements.define("dropdown-component", Dropdown);

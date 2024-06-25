@@ -228,6 +228,28 @@ class ToggleSwitch extends LitElement {
       </div>`;
     }
   }
+
+  clearSelections() {
+    this.checked = false;
+    if (this.switches) {
+      this.switchesArray.forEach((switchItem) => {
+        switchItem.checked = false;
+        const inputElement = this.shadowRoot.querySelector(
+          `#${this.inputId}_option_${switchItem.id}`
+        );
+        if (inputElement) {
+          inputElement.checked = false;
+        }
+      });
+    } else {
+      const inputElement = this.shadowRoot.querySelector('input[type="checkbox"]');
+      if (inputElement) {
+        inputElement.checked = false;
+      }
+    }
+    console.log('Clearing selections in toggle-switch', this);
+    this.requestUpdate();
+  }
 }
 
 customElements.define("toggle-switch", ToggleSwitch);

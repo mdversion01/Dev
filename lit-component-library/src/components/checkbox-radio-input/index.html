@@ -407,6 +407,7 @@
                         inputId="cbx-1"
                         labelTxt="Checkbox Option"
                         slot="formField"
+                        required
                         validation
                         validationMessage="This is a validation message"
                       ></checkbox-radio-input-component>
@@ -417,6 +418,7 @@
                         inputId="cbx-1"
                         labelTxt="Custom Checkbox Option"
                         slot="formField"
+                        required
                         validation
                         validationMessage="This is a validation message"
                       ></checkbox-radio-input-component>
@@ -433,6 +435,7 @@
                     id="checkbox-group-A"
                     slot="formField"
                     size="md"
+                    required
                     validation
                     validationMessage="Select one of the options"
                   ></checkbox-radio-input-component>
@@ -448,6 +451,7 @@
                     id="checkbox-group-B"
                     slot="formField"
                     size="md"
+                    required
                     validation
                     validationMessage="Select one of the options"
                   ></checkbox-radio-input-component>
@@ -465,6 +469,7 @@
                         name="radios"
                         labelTxt="Single Radio Option"
                         slot="formField"
+                        required
                         validation
                         validationMessage="This is a validation message"
                       ></checkbox-radio-input-component>
@@ -476,6 +481,7 @@
                         name="customRadios2"
                         labelTxt="Custom Radio Option "
                         slot="formField"
+                        required
                         validation
                         validationMessage="This is a validation message"
                       ></checkbox-radio-input-component>
@@ -492,6 +498,7 @@
                     id="dynamic-radio-group3"
                     slot="formField"
                     size="md"
+                    required
                     validation
                     validationMessage="Select one of the options"
                   ></checkbox-radio-input-component>
@@ -506,6 +513,7 @@
                     id="dynamic-radio-group4"
                     slot="formField"
                     size="md"
+                    required
                     validation
                     validationMessage="Select one of the options"
                   ></checkbox-radio-input-component>
@@ -728,6 +736,15 @@
                   </li>
                 </ul>
               </td>
+            </tr>
+            <tr>
+              <td>required</td>
+              <td>Boolean</td>
+              <td>False</td>
+              <td>
+                If true, the checkbox or radio button is required. If false, it
+                is not required. This is used for/with form validation.
+               </td>
             </tr>
             <tr>
               <td>size</td>
