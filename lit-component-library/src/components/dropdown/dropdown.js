@@ -329,24 +329,7 @@ class Dropdown extends LitElement {
           noPadFormGroup
           .labelTxt="${item.name}"
           .inputId="${this.inputId}-${item.key}"
-          .value=${this.value}
-          ?checked="${item.checked}"
-          ?disabled="${item.disabled}"
-          ?required=${this.validation}
-          @change="${(event) => this.handleCheckboxChange(event, index)}"
-          >${item.name}</checkbox-radio-input-component
-        >
-      `;
-    } else if (type === "checkboxGroup") {
-      return html`
-        <checkbox-radio-input-component
-          checkboxGroup
-          type="checkbox"
-          class="dropdown-item ${this.size}"
-          noPadFormGroup
-          .labelTxt="${item.name}"
-          .inputId="${this.inputId}-${item.key}"
-          .value=${this.value}
+          .value=${this.value || item.key}
           ?checked="${item.checked}"
           ?disabled="${item.disabled}"
           ?required=${this.validation}
@@ -363,7 +346,7 @@ class Dropdown extends LitElement {
           noPadFormGroup
           .labelTxt="${item.name}"
           .inputId="${this.inputId}-${item.key}"
-          .value=${this.value}
+          .value=${this.value || item.key}
           ?checked="${item.checked}"
           ?disabled="${item.disabled}"
           ?required=${this.validation}
@@ -371,94 +354,120 @@ class Dropdown extends LitElement {
           >${item.name}</checkbox-radio-input-component
         >
       `;
-    } else if (type === "customCheckboxGroup") {
-      return html`
-        <checkbox-radio-input-component
-          customCheckboxGroup
-          type="checkbox"
-          class="dropdown-item ${this.size}"
-          noPadFormGroup
-          .labelTxt="${item.name}"
-          .inputId="${this.inputId}-${item.key}"
-          .value=${this.value}
-          ?checked="${item.checked}"
-          ?disabled="${item.disabled}"
-          ?required=${this.validation}
-          @change="${(event) => this.handleCheckboxChange(event, index)}"
-          >${item.name}</checkbox-radio-input-component
-        >
-      `;
-    } else if (type === "radios") {
-      return html`
-        <checkbox-radio-input-component
-          radio
-          type="radio"
-          class="dropdown-item ${this.size}"
-          noPadFormGroup
-          .labelTxt="${item.name}"
-          .inputId="${this.inputId}-${item.key}"
-          .value=${this.value}
-          ?checked="${item.checked}"
-          ?disabled="${item.disabled}"
-          @change="${(event) => this.handleCheckboxChange(event, index)}"
-          >${item.name}</checkbox-radio-input-component
-        >
-      `;
-    } else if (type === "radioGroup") {
-      return html`
-        <checkbox-radio-input-component
-          radioGroup
-          type="radio"
-          class="dropdown-item ${this.size}"
-          noPadFormGroup
-          .labelTxt="${item.name}"
-          .inputId="${this.inputId}-${item.key}"
-          .value=${this.value}
-          ?checked="${item.checked}"
-          ?disabled="${item.disabled}"
-          @change="${(event) => this.handleCheckboxChange(event, index)}"
-          >${item.name}</checkbox-radio-input-component
-        >
-      `;
-    } else if (type === "customRadios") {
-      return html`
-        <checkbox-radio-input-component
-          customRadio
-          type="radio"
-          class="dropdown-item ${this.size}"
-          noPadFormGroup
-          .labelTxt="${item.name}"
-          .inputId="${this.inputId}-${item.key}"
-          .value=${this.value}
-          ?checked="${item.checked}"
-          ?disabled="${item.disabled}"
-          @change="${(event) => this.handleCheckboxChange(event, index)}"
-          >${item.name}</checkbox-radio-input-component
-        >
-      `;
-    } else if (type === "customRadioGroup") {
-      return html`
-        <checkbox-radio-input-component
-          customRadioGroup
-          type="radio"
-          class="dropdown-item ${this.size}"
-          noPadFormGroup
-          .labelTxt="${item.name}"
-          .inputId="${this.inputId}-${item.key}"
-          .value=${this.value}
-          ?checked="${item.checked}"
-          ?disabled="${item.disabled}"
-          @change="${(event) => this.handleCheckboxChange(event, index)}"
-          >${item.name}</checkbox-radio-input-component
-        >
-      `;
-    } else if (type === "toggleSwitches") {
+    } 
+
+    // Commented out code, until a better use case is found
+
+    // else if (type === "checkboxGroup") {
+    //   return html`
+    //     <checkbox-radio-input-component
+    //       checkboxGroup
+    //       id="${this.id}"
+    //       name="${this.name}"
+    //       type="checkbox"
+    //       class="dropdown-item ${this.size}"
+    //       noPadFormGroup
+    //       .labelTxt="${item.name}"
+    //       .inputId="${this.inputId}-${item.key}"
+    //       .value=${this.value}
+    //       ?checked="${item.checked}"
+    //       ?disabled="${item.disabled}"
+    //       ?required=${this.validation}
+    //       @change="${(event) => this.handleCheckboxChange(event, index)}"
+    //       >${item.name}</checkbox-radio-input-component
+    //     >
+    //   `;
+    // } else if (type === "customCheckboxGroup") {
+    //   return html`
+    //     <checkbox-radio-input-component
+    //       customCheckboxGroup
+    //       type="checkbox"
+    //       class="dropdown-item ${this.size}"
+    //       noPadFormGroup
+    //       .labelTxt="${item.name}"
+    //       .inputId="${this.inputId}-${item.key}"
+    //       .value=${this.value}
+    //       ?checked="${item.checked}"
+    //       ?disabled="${item.disabled}"
+    //       ?required=${this.validation}
+    //       @change="${(event) => this.handleCheckboxChange(event, index)}"
+    //       >${item.name}</checkbox-radio-input-component
+    //     >
+    //   `;
+    // } 
+    // else if (type === "radios") {
+    //   return html`
+    //     <checkbox-radio-input-component
+    //       radio
+    //       type="radio"
+    //       class="dropdown-item ${this.size}"
+    //       noPadFormGroup
+    //       .labelTxt="${item.name}"
+    //       .inputId="${this.inputId}-${item.key}"
+    //       .value=${this.value}
+    //       ?checked="${item.checked}"
+    //       ?disabled="${item.disabled}"
+    //       @change="${(event) => this.handleCheckboxChange(event, index)}"
+    //       >${item.name}</checkbox-radio-input-component
+    //     >
+    //   `;
+    // } else if (type === "radioGroup") {
+    //   return html`
+    //     <checkbox-radio-input-component
+    //       radioGroup
+    //       type="radio"
+    //       class="dropdown-item ${this.size}"
+    //       noPadFormGroup
+    //       .labelTxt="${item.name}"
+    //       .inputId="${this.inputId}-${item.key}"
+    //       .value=${this.value}
+    //       ?checked="${item.checked}"
+    //       ?disabled="${item.disabled}"
+    //       @change="${(event) => this.handleCheckboxChange(event, index)}"
+    //       >${item.name}</checkbox-radio-input-component
+    //     >
+    //   `;
+    // } else if (type === "customRadios") {
+    //   return html`
+    //     <checkbox-radio-input-component
+    //       customRadio
+    //       type="radio"
+    //       class="dropdown-item ${this.size}"
+    //       noPadFormGroup
+    //       .labelTxt="${item.name}"
+    //       .inputId="${this.inputId}-${item.key}"
+    //       .value=${this.value}
+    //       ?checked="${item.checked}"
+    //       ?disabled="${item.disabled}"
+    //       @change="${(event) => this.handleCheckboxChange(event, index)}"
+    //       >${item.name}</checkbox-radio-input-component
+    //     >
+    //   `;
+    // } else if (type === "customRadioGroup") {
+    //   return html`
+    //     <checkbox-radio-input-component
+    //       customRadioGroup
+    //       type="radio"
+    //       class="dropdown-item ${this.size}"
+    //       noPadFormGroup
+    //       .labelTxt="${item.name}"
+    //       .inputId="${this.inputId}-${item.key}"
+    //       .value=${this.value}
+    //       ?checked="${item.checked}"
+    //       ?disabled="${item.disabled}"
+    //       @change="${(event) => this.handleCheckboxChange(event, index)}"
+    //       >${item.name}</checkbox-radio-input-component
+    //     >
+    //   `;
+    // } 
+     else if (type === "toggleSwitches") {
       return html`
         <toggle-switch
-          class="dropdown-item ${this.size}"
+          class="dropdown-item toggle ${this.size}"
           noPadFormGroup
           .labelTxt="${item.name}"
           .inputId="${this.inputId}-${item.key}"
+          .value=${this.value || item.key}
           ?checked="${item.checked}"
           ?disabled="${item.disabled}"
           @checked-changed="${(event) => this.handleToggleChange(event, index)}"

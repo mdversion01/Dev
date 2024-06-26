@@ -164,6 +164,10 @@ export const dropdownStyles = css`
     font-size: 1.2rem;
   }
 
+  .dropdown-item.toggle {
+    padding: 0.5rem 0.5rem 0;
+  }
+
   .dropdown-item:focus,
   .dropdown-item:hover {
     color: #16181b;

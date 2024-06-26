@@ -19,7 +19,15 @@ document.addEventListener("touchstart", () => {
 });
 
 class ToggleSwitch extends LitElement {
-  static styles = [formStyles, toggleSwitchStyles, css``];
+  static styles = [
+    formStyles,
+    toggleSwitchStyles,
+    css`
+      :host .dropdown-item {
+        padding: 0.5rem 0.5rem 0;
+      }
+    `,
+  ];
 
   static properties = {
     checked: { type: Boolean },
@@ -218,6 +226,7 @@ class ToggleSwitch extends LitElement {
               disabled: this.disabled,
               required: this.required,
               size: this.size,
+              value: this.value,
               validation: this.validation,
               validationMessage: this.validationMessage,
               toggleTxt: this.toggleTxt,
@@ -242,12 +251,14 @@ class ToggleSwitch extends LitElement {
         }
       });
     } else {
-      const inputElement = this.shadowRoot.querySelector('input[type="checkbox"]');
+      const inputElement = this.shadowRoot.querySelector(
+        'input[type="checkbox"]'
+      );
       if (inputElement) {
         inputElement.checked = false;
       }
     }
-    console.log('Clearing selections in toggle-switch', this);
+    console.log("Clearing selections in toggle-switch", this);
     this.requestUpdate();
   }
 }
