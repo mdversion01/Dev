@@ -1,6 +1,7 @@
 import { LitElement, html, css } from "lit";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import { classMap } from "lit/directives/class-map.js";
+import "../pagination/pagination.js";
 import { tableStyles } from "./table-styles.js";
 
 class Table extends LitElement {
@@ -40,14 +41,30 @@ class Table extends LitElement {
     selectedFilterFields: { type: Array },
     tableId: { type: String },
     dropdownId: { type: String },
+    // Pagination properties
+    rowsPerPage: { type: Number },
+    currentPage: { type: Number },
+    paginationPosition: { type: String }, // 'top', 'bottom', 'both'
+    usePagination: { type: Boolean }, // new property to toggle pagination
+    totalRows: { type: Number }, // new property for total rows
+    paginationLimit: { type: Number }, // new property for pagination limit
+    hideGotoEndButtons: { type: Boolean }, // new property for hiding first/last buttons
+    hideEllipsis: { type: Boolean }, // new property for hiding ellipsis
   };
 
   constructor() {
     super();
     this.initializeProperties();
+    this.paginationPosition = "bottom";
+    this.usePagination = false; // default to false, meaning pagination is not used by default
+    this.totalRows = 0; // default total rows
+    this.paginationLimit = 5; // default pagination limit
+    this.hideGotoEndButtons = false; // default show first/last buttons
+    this.hideEllipsis = false; // default show ellipsis
   }
 
   initializeProperties() {
+    // existing initialization
     this.border = false;
     this.bordered = false;
     this.borderless = false;
@@ -81,6 +98,9 @@ class Table extends LitElement {
     this.selectedFilterFields = [];
     this.tableId = "";
     this.dropdownId = "";
+    // Pagination properties
+    this.rowsPerPage = 10;
+    this.currentPage = 1;
   }
 
   connectedCallback() {
@@ -174,7 +194,7 @@ class Table extends LitElement {
     );
 
     this.sortCriteria = [{ key: this.sortField, order: this.sortOrder }];
-    this.items = [...this.items].sort((a, b) => {
+    this.items = [...this.originalItems].sort((a, b) => {
       const aValue = a[this.sortField];
       const bValue = b[this.sortField];
       const order = this.sortOrder === "asc" ? 1 : -1;
@@ -190,6 +210,7 @@ class Table extends LitElement {
     );
 
     this.clearSelection();
+    this.updateTotalRows();
     this.requestUpdate();
 
     this.dispatchEvent(
@@ -229,6 +250,8 @@ class Table extends LitElement {
         });
       }
       this.clearSelection();
+      this.updateTotalRows();
+      this.currentPage = 1; // reset to first page when filtering
       this.requestUpdate();
     }
   }
@@ -242,7 +265,12 @@ class Table extends LitElement {
     this.sortCriteria = [];
     this.items = [...this.originalItems];
     this.clearSelection();
+    this.updateTotalRows();
     this.requestUpdate();
+  }
+
+  updateTotalRows() {
+    this.totalRows = this.items.length;
   }
 
   tableVariantColor(variant) {
@@ -350,7 +378,7 @@ class Table extends LitElement {
       (rowIndex) => this.items[rowIndex]
     );
 
-    this.items = [...this.items].sort((a, b) => {
+    this.items = [...this.originalItems].sort((a, b) => {
       for (const criteria of this.sortCriteria) {
         const aValue = a[criteria.key];
         const bValue = b[criteria.key];
@@ -368,6 +396,7 @@ class Table extends LitElement {
     );
 
     this.clearSelection();
+    this.updateTotalRows();
     this.requestUpdate();
 
     this.dispatchEvent(
@@ -486,6 +515,68 @@ class Table extends LitElement {
     `;
   }
 
+  _onPageChanged(e) {
+    this.currentPage = e.detail.page;
+    this.requestUpdate();
+  }
+
+  get paginatedItems() {
+    if (!this.usePagination) return this.filteredItems;
+    const start = (this.currentPage - 1) * this.rowsPerPage;
+    const end = start + this.rowsPerPage;
+    return this.filteredItems.slice(start, end);
+  }
+
+  get filteredItems() {
+    if (!this.filterText) return this.sortedItems;
+    const filterText = this.filterText.trim().toLowerCase();
+    return this.sortedItems.filter((item) => {
+      if (this.selectedFilterFields.length > 0) {
+        return this.selectedFilterFields.some((field) => {
+          const fieldValue = item[field];
+          return (
+            fieldValue &&
+            fieldValue.toString().toLowerCase().includes(filterText)
+          );
+        });
+      } else {
+        const itemString = JSON.stringify(item).toLowerCase();
+        return itemString.includes(filterText);
+      }
+    });
+  }
+
+  get sortedItems() {
+    if (!this.sortField || this.sortField === "none") return this.originalItems;
+    return [...this.originalItems].sort((a, b) => {
+      const aValue = a[this.sortField];
+      const bValue = b[this.sortField];
+      const order = this.sortOrder === "asc" ? 1 : -1;
+
+      if (aValue < bValue) return -order;
+      if (aValue > bValue) return order;
+      return 0;
+    });
+  }
+
+  renderPagination() {
+    if (!this.usePagination) return html``;
+    const totalPages = Math.max(
+      Math.ceil(this.filteredItems.length / this.rowsPerPage),
+      1
+    );
+    return html`
+      <pagination-component
+        .currentPage="${this.currentPage}"
+        .totalPages="${totalPages}"
+        .limit="${this.paginationLimit}"
+        .hideGotoEndButtons="${this.hideGotoEndButtons}"
+        .hideEllipsis="${this.hideEllipsis}"
+        @page-changed="${this._onPageChanged}"
+      ></pagination-component>
+    `;
+  }
+
   renderTable() {
     const tableVariantColor = this.tableVariantColor(this.tableVariant);
     const hasDetailsRows = this.items.some((row) => row._showDetails);
@@ -536,7 +627,7 @@ class Table extends LitElement {
           ${this.renderTableHeader()}
         </thead>
         <tbody role="rowgroup">
-          ${this.items.flatMap((row, rowIndex) => {
+          ${this.paginatedItems.flatMap((row, rowIndex) => {
             const rowVariantClass = row._rowVariant
               ? this.tableVariantColor(row._rowVariant)
               : "";
@@ -617,7 +708,7 @@ class Table extends LitElement {
                 : null,
             ];
           })}
-          ${this.items.length === 0
+          ${this.paginatedItems.length === 0
             ? html`<tr>
                 <td colspan="${this.normalizedFields.length + 1}">
                   There are no records matching your request
@@ -640,20 +731,31 @@ class Table extends LitElement {
   }
 
   render() {
-    if (this.responsive) {
-      return html`<div class="table-responsive">${this.renderTable()}</div>`;
-    } else if (this.sticky) {
-      return html`<div class="b-table-sticky-header">
-        ${this.renderTable()}
-      </div>`;
-    } else {
-      return this.renderTable();
-    }
+    return html`
+      ${this.usePagination &&
+      (this.paginationPosition === "top" || this.paginationPosition === "both")
+        ? this.renderPagination()
+        : ""}
+      ${this.responsive
+        ? html`<div class="table-responsive">${this.renderTable()}</div>`
+        : this.sticky
+        ? html`<div class="b-table-sticky-header">${this.renderTable()}</div>`
+        : this.renderTable()}
+      ${this.usePagination &&
+      (this.paginationPosition === "bottom" ||
+        this.paginationPosition === "both")
+        ? this.renderPagination()
+        : ""}
+    `;
   }
 
   updated(changedProperties) {
     if (changedProperties.has("items") && this.originalItems.length === 0) {
       this.originalItems = [...this.items];
+      this.updateTotalRows();
+    }
+    if (changedProperties.has("originalItems") || changedProperties.has("filterText")) {
+      this.updateTotalRows();
     }
   }
 
@@ -689,7 +791,7 @@ class Table extends LitElement {
     this.applyFilter();
 
     // Clear dropdown selections
-    const dropdown = document.getElementById(this.tableId + '-dropdown');
+    const dropdown = document.getElementById(this.tableId + "-dropdown");
     if (dropdown) {
       dropdown.clearSelections();
     }
