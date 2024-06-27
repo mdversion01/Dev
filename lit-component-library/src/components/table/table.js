@@ -41,30 +41,30 @@ class Table extends LitElement {
     selectedFilterFields: { type: Array },
     tableId: { type: String },
     dropdownId: { type: String },
-    // Pagination properties
     rowsPerPage: { type: Number },
     currentPage: { type: Number },
-    paginationPosition: { type: String }, // 'top', 'bottom', 'both'
-    usePagination: { type: Boolean }, // new property to toggle pagination
-    totalRows: { type: Number }, // new property for total rows
-    paginationLimit: { type: Number }, // new property for pagination limit
-    hideGotoEndButtons: { type: Boolean }, // new property for hiding first/last buttons
-    hideEllipsis: { type: Boolean }, // new property for hiding ellipsis
+    paginationPosition: { type: String },
+    usePagination: { type: Boolean },
+    totalRows: { type: Number },
+    paginationLimit: { type: Number },
+    hideGotoEndButtons: { type: Boolean },
+    hideEllipsis: { type: Boolean },
+    pageSizeOptions: { type: Array },
   };
 
   constructor() {
     super();
     this.initializeProperties();
     this.paginationPosition = "bottom";
-    this.usePagination = false; // default to false, meaning pagination is not used by default
-    this.totalRows = 0; // default total rows
-    this.paginationLimit = 5; // default pagination limit
-    this.hideGotoEndButtons = false; // default show first/last buttons
-    this.hideEllipsis = false; // default show ellipsis
+    this.usePagination = false;
+    this.totalRows = 0;
+    this.paginationLimit = 5;
+    this.hideGotoEndButtons = false;
+    this.hideEllipsis = false;
+    this.pageSizeOptions = [10, 20, 50, 100, "All"];
   }
 
   initializeProperties() {
-    // existing initialization
     this.border = false;
     this.bordered = false;
     this.borderless = false;
@@ -98,7 +98,6 @@ class Table extends LitElement {
     this.selectedFilterFields = [];
     this.tableId = "";
     this.dropdownId = "";
-    // Pagination properties
     this.rowsPerPage = 10;
     this.currentPage = 1;
   }
@@ -117,8 +116,11 @@ class Table extends LitElement {
       "filter-changed",
       this.handleFilterChanged.bind(this)
     );
+    this.addEventListener(
+      "page-size-changed",
+      this.handlePageSizeChanged.bind(this)
+    );
 
-    // Add the event listener for filter-fields-changed
     if (this.tableId) {
       document.addEventListener(
         "filter-fields-changed",
@@ -141,8 +143,11 @@ class Table extends LitElement {
       "filter-changed",
       this.handleFilterChanged.bind(this)
     );
+    this.removeEventListener(
+      "page-size-changed",
+      this.handlePageSizeChanged.bind(this)
+    );
 
-    // Remove the event listener for filter-fields-changed
     if (this.tableId) {
       document.removeEventListener(
         "filter-fields-changed",
@@ -182,13 +187,19 @@ class Table extends LitElement {
     this.applyFilter();
   }
 
+  handlePageSizeChanged(event) {
+    this.rowsPerPage =
+      event.detail.pageSize === "All" ? this.totalRows : event.detail.pageSize;
+    this.currentPage = 1;
+    this.requestUpdate();
+  }
+
   applySort() {
     if (!this.sortField || this.sortField === "none") {
       this.resetColumnSort();
       return;
     }
 
-    // Preserve the expanded rows state
     const expandedRowIndices = this.expandedRows.map(
       (rowIndex) => this.items[rowIndex]
     );
@@ -204,7 +215,6 @@ class Table extends LitElement {
       return 0;
     });
 
-    // Restore the expanded rows state
     this.expandedRows = expandedRowIndices.map((row) =>
       this.items.indexOf(row)
     );
@@ -251,7 +261,7 @@ class Table extends LitElement {
       }
       this.clearSelection();
       this.updateTotalRows();
-      this.currentPage = 1; // reset to first page when filtering
+      this.currentPage = 1;
       this.requestUpdate();
     }
   }
@@ -270,7 +280,7 @@ class Table extends LitElement {
   }
 
   updateTotalRows() {
-    this.totalRows = this.items.length;
+    this.totalRows = this.filteredItems.length;
   }
 
   tableVariantColor(variant) {
@@ -373,7 +383,6 @@ class Table extends LitElement {
       this.sortOrderDisabled = false;
     }
 
-    // Preserve the expanded rows state
     const expandedRowIndices = this.expandedRows.map(
       (rowIndex) => this.items[rowIndex]
     );
@@ -390,7 +399,6 @@ class Table extends LitElement {
       return 0;
     });
 
-    // Restore the expanded rows state
     this.expandedRows = expandedRowIndices.map((row) =>
       this.items.indexOf(row)
     );
@@ -521,7 +529,7 @@ class Table extends LitElement {
   }
 
   get paginatedItems() {
-    if (!this.usePagination) return this.filteredItems;
+    if (this.rowsPerPage === this.totalRows) return this.filteredItems;
     const start = (this.currentPage - 1) * this.rowsPerPage;
     const end = start + this.rowsPerPage;
     return this.filteredItems.slice(start, end);
@@ -560,7 +568,6 @@ class Table extends LitElement {
   }
 
   renderPagination() {
-    if (!this.usePagination) return html``;
     const totalPages = Math.max(
       Math.ceil(this.filteredItems.length / this.rowsPerPage),
       1
@@ -572,7 +579,13 @@ class Table extends LitElement {
         .limit="${this.paginationLimit}"
         .hideGotoEndButtons="${this.hideGotoEndButtons}"
         .hideEllipsis="${this.hideEllipsis}"
+        .pageSize="${this.rowsPerPage === this.totalRows
+          ? "All"
+          : this.rowsPerPage}"
+        .pageSizeOptions="${this.pageSizeOptions}"
+        .showSizeChanger="${true}"
         @page-changed="${this._onPageChanged}"
+        @page-size-changed="${this.handlePageSizeChanged}"
       ></pagination-component>
     `;
   }
@@ -754,7 +767,10 @@ class Table extends LitElement {
       this.originalItems = [...this.items];
       this.updateTotalRows();
     }
-    if (changedProperties.has("originalItems") || changedProperties.has("filterText")) {
+    if (
+      changedProperties.has("originalItems") ||
+      changedProperties.has("filterText")
+    ) {
       this.updateTotalRows();
     }
   }
@@ -766,7 +782,7 @@ class Table extends LitElement {
     this.sortOrderDisabled = true;
     this.clearSelection();
     this.items = [...this.originalItems];
-    this.expandedRows = []; // Clear the expanded rows
+    this.expandedRows = [];
     this.requestUpdate();
 
     this.dispatchEvent(
@@ -780,7 +796,6 @@ class Table extends LitElement {
       })
     );
 
-    // Clear filter text and selected filter fields
     this.filterText = "";
     this.selectedFilterFields = [];
     this.dispatchEvent(
@@ -790,7 +805,6 @@ class Table extends LitElement {
     );
     this.applyFilter();
 
-    // Clear dropdown selections
     const dropdown = document.getElementById(this.tableId + "-dropdown");
     if (dropdown) {
       dropdown.clearSelections();
@@ -807,8 +821,9 @@ class Table extends LitElement {
     this.requestUpdate();
   }
 
-  selectRow(event, rowIndex) {
-    const row = this.items[rowIndex];
+  selectRow(event, pageIndex) {
+    const globalIndex = (this.currentPage - 1) * this.rowsPerPage + pageIndex;
+    const row = this.filteredItems[globalIndex];
     if (this.selectMode === "single") {
       this.selectedRows = this.selectedRows.includes(row) ? [] : [row];
     } else if (this.selectMode === "multi") {
@@ -817,12 +832,12 @@ class Table extends LitElement {
         : [...this.selectedRows, row];
     } else if (this.selectMode === "range") {
       if (event.shiftKey) {
-        const lastSelectedIndex = this.items.indexOf(
+        const lastSelectedIndex = this.filteredItems.indexOf(
           this.selectedRows[this.selectedRows.length - 1]
         );
-        const rangeStart = Math.min(lastSelectedIndex, rowIndex);
-        const rangeEnd = Math.max(lastSelectedIndex, rowIndex);
-        const rangeRows = this.items.slice(rangeStart, rangeEnd + 1);
+        const rangeStart = Math.min(lastSelectedIndex, globalIndex);
+        const rangeEnd = Math.max(lastSelectedIndex, globalIndex);
+        const rangeRows = this.filteredItems.slice(rangeStart, rangeEnd + 1);
         this.selectedRows = Array.from(
           new Set([...this.selectedRows, ...rangeRows])
         );
