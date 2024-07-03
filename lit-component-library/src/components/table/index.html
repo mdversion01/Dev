@@ -43,7 +43,7 @@
           <section class="section">
             <section class="display-box" id="db-1">
               <section class="display-box-demo">
-                <table-component id="table1" sticky noBorderCollapsed>
+                <table-component id="table1" sticky noBorderCollapsed plumage>
                   <!-- <span slot="caption">This is a caption</span> -->
                 </table-component>
               </section>
@@ -140,6 +140,7 @@
                   </div>
                   <div style="flex: 1 1 auto; margin-top: 28px">
                     <dropdown-component
+                      buttonText="Filter By"
                       id="dditems"
                       tableId="table4"
                       size="sm"
@@ -153,17 +154,16 @@
                   tableId="table4"
                   small
                   sortable
-                  caption="top"
                   responsive
                   selectMode="single"
                   usePagination
                   paginationPosition="both"
-                  rowsPerPage="3"
-                  totalRows="20"
+                  totalRows="22"
                   paginationLimit="3"
-                  
+                  paginationLayout="start"
+                  showSizeChanger
+                  size="sm"
                 >
-                  <span slot="caption">Example Caption</span>
                 </table-component>
               </section>
               <section class="display-box-meta markdown">

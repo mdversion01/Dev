@@ -21,9 +21,9 @@ class Table extends LitElement {
     hover: { type: Boolean },
     items: { type: Array },
     originalItems: { type: Array },
+    plumage: { type: Boolean },
     noBorderCollapsed: { type: Boolean },
     responsive: { type: Boolean },
-    small: { type: Boolean },
     stacked: { type: Boolean },
     sticky: { type: Boolean },
     striped: { type: Boolean },
@@ -41,30 +41,46 @@ class Table extends LitElement {
     selectedFilterFields: { type: Array },
     tableId: { type: String },
     dropdownId: { type: String },
+    // Pagination properties
     rowsPerPage: { type: Number },
     currentPage: { type: Number },
-    paginationPosition: { type: String },
-    usePagination: { type: Boolean },
-    totalRows: { type: Number },
-    paginationLimit: { type: Number },
-    hideGotoEndButtons: { type: Boolean },
-    hideEllipsis: { type: Boolean },
-    pageSizeOptions: { type: Array },
+    paginationPosition: { type: String }, // 'top', 'bottom', 'both'
+    usePagination: { type: Boolean }, // new property to toggle pagination
+    totalRows: { type: Number }, // new property for total rows
+    paginationLimit: { type: Number }, // new property for pagination limit
+    hideGotoEndButtons: { type: Boolean }, // new property for hiding first/last buttons
+    hideEllipsis: { type: Boolean }, // new property for hiding ellipsis
+    pageSizeOptions: { type: Array }, // new property for page size options
+    size: { type: String },
+    paginationLayout: { type: String }, // new property for pagination layout 'center', 'end', fill OR when used with showSizeChanger 'start', 'center', 'end', 'fill', 'fill-left', 'fill-right'
+    showSizeChanger: { type: Boolean },
   };
 
   constructor() {
     super();
     this.initializeProperties();
     this.paginationPosition = "bottom";
-    this.usePagination = false;
-    this.totalRows = 0;
-    this.paginationLimit = 5;
-    this.hideGotoEndButtons = false;
-    this.hideEllipsis = false;
-    this.pageSizeOptions = [10, 20, 50, 100, "All"];
+    this.usePagination = false; // default to false, meaning pagination is not used by default
+    this.totalRows = 0; // default total rows
+    this.paginationLimit = 5; // default pagination limit
+    this.hideGotoEndButtons = false; // default show first/last buttons
+    this.hideEllipsis = false; // default show ellipsis
+    this.size = "";
+    this.pageSizeOptions = [10, 20, 50, 100, "All"]; // default page size options
+    this.paginationLayout = "";
+    this.showSizeChanger = false;
+    if (this.showSizeChanger) {
+      const lowestPageSize = this.pageSizeOptions
+        .filter((size) => size !== "All")
+        .sort((a, b) => a - b)[0];
+      this.rowsPerPage = lowestPageSize || this.pageSizeOptions[0];
+    } else {
+      this.rowsPerPage = 10; // default rows per page
+    }
   }
 
   initializeProperties() {
+    // existing initialization
     this.border = false;
     this.bordered = false;
     this.borderless = false;
@@ -78,9 +94,9 @@ class Table extends LitElement {
     this.hover = false;
     this.items = [];
     this.originalItems = [];
+    this.plumage = false;
     this.noBorderCollapsed = false;
     this.responsive = false;
-    this.small = false;
     this.stacked = false;
     this.sticky = false;
     this.striped = false;
@@ -98,6 +114,7 @@ class Table extends LitElement {
     this.selectedFilterFields = [];
     this.tableId = "";
     this.dropdownId = "";
+    // Pagination properties
     this.rowsPerPage = 10;
     this.currentPage = 1;
   }
@@ -116,17 +133,19 @@ class Table extends LitElement {
       "filter-changed",
       this.handleFilterChanged.bind(this)
     );
-    this.addEventListener(
-      "page-size-changed",
-      this.handlePageSizeChanged.bind(this)
-    );
 
+    // Add the event listener for filter-fields-changed
     if (this.tableId) {
       document.addEventListener(
         "filter-fields-changed",
         this.handleDropdownFilterFieldsChanged.bind(this)
       );
     }
+
+    this.addEventListener(
+      "page-size-changed",
+      this.handlePageSizeChanged.bind(this)
+    );
   }
 
   disconnectedCallback() {
@@ -143,17 +162,19 @@ class Table extends LitElement {
       "filter-changed",
       this.handleFilterChanged.bind(this)
     );
-    this.removeEventListener(
-      "page-size-changed",
-      this.handlePageSizeChanged.bind(this)
-    );
 
+    // Remove the event listener for filter-fields-changed
     if (this.tableId) {
       document.removeEventListener(
         "filter-fields-changed",
         this.handleDropdownFilterFieldsChanged.bind(this)
       );
     }
+
+    this.removeEventListener(
+      "page-size-changed",
+      this.handlePageSizeChanged.bind(this)
+    );
   }
 
   handleDropdownFilterFieldsChanged(event) {
@@ -187,9 +208,12 @@ class Table extends LitElement {
     this.applyFilter();
   }
 
-  handlePageSizeChanged(event) {
-    this.rowsPerPage =
-      event.detail.pageSize === "All" ? this.totalRows : event.detail.pageSize;
+  handlePageSizeChanged(e) {
+    const newSize =
+      e.detail.pageSize === "All"
+        ? this.originalItems.length
+        : e.detail.pageSize;
+    this.rowsPerPage = newSize;
     this.currentPage = 1;
     this.requestUpdate();
   }
@@ -200,6 +224,7 @@ class Table extends LitElement {
       return;
     }
 
+    // Preserve the expanded rows state
     const expandedRowIndices = this.expandedRows.map(
       (rowIndex) => this.items[rowIndex]
     );
@@ -215,6 +240,7 @@ class Table extends LitElement {
       return 0;
     });
 
+    // Restore the expanded rows state
     this.expandedRows = expandedRowIndices.map((row) =>
       this.items.indexOf(row)
     );
@@ -261,7 +287,7 @@ class Table extends LitElement {
       }
       this.clearSelection();
       this.updateTotalRows();
-      this.currentPage = 1;
+      this.currentPage = 1; // reset to first page when filtering
       this.requestUpdate();
     }
   }
@@ -383,6 +409,7 @@ class Table extends LitElement {
       this.sortOrderDisabled = false;
     }
 
+    // Preserve the expanded rows state
     const expandedRowIndices = this.expandedRows.map(
       (rowIndex) => this.items[rowIndex]
     );
@@ -399,6 +426,7 @@ class Table extends LitElement {
       return 0;
     });
 
+    // Restore the expanded rows state
     this.expandedRows = expandedRowIndices.map((row) =>
       this.items.indexOf(row)
     );
@@ -529,7 +557,7 @@ class Table extends LitElement {
   }
 
   get paginatedItems() {
-    if (this.rowsPerPage === this.totalRows) return this.filteredItems;
+    if (!this.usePagination) return this.filteredItems;
     const start = (this.currentPage - 1) * this.rowsPerPage;
     const end = start + this.rowsPerPage;
     return this.filteredItems.slice(start, end);
@@ -574,16 +602,18 @@ class Table extends LitElement {
     );
     return html`
       <pagination-component
+        .paginationLayout="${this.paginationLayout}"
+        .id="${this.tableId}"
+        .size="${this.size}"
         .currentPage="${this.currentPage}"
         .totalPages="${totalPages}"
         .limit="${this.paginationLimit}"
         .hideGotoEndButtons="${this.hideGotoEndButtons}"
         .hideEllipsis="${this.hideEllipsis}"
-        .pageSize="${this.rowsPerPage === this.totalRows
-          ? "All"
-          : this.rowsPerPage}"
+        .pageSize="${this.rowsPerPage}"
         .pageSizeOptions="${this.pageSizeOptions}"
-        .showSizeChanger="${true}"
+        .showSizeChanger="${this.showSizeChanger}"
+        .plumage="${this.plumage}"
         @page-changed="${this._onPageChanged}"
         @page-size-changed="${this.handlePageSizeChanged}"
       ></pagination-component>
@@ -608,7 +638,7 @@ class Table extends LitElement {
       "table-striped": this.striped,
       "table-bordered": this.bordered,
       "table-borderless": this.borderless,
-      "table-sm": this.small,
+      "table-sm": this.size === "sm",
       "table-dark": this.dark,
       "b-table-fixed": this.fixed,
       "b-table-no-border-collapse": this.noBorderCollapsed,
@@ -625,11 +655,12 @@ class Table extends LitElement {
     return html`
       <table
         role="table"
+        id="${this.tableId}"
         aria-colcount="${this.normalizedFields.length +
         (hasDetailsRows ? 1 : 0) +
         (["single", "multi", "range"].includes(this.selectMode) ? 1 : 0)}"
         aria-multiselectable="${this.selectMode !== "single"}"
-        class=${classMap(combinedClasses)}
+        class="${classMap(combinedClasses)}"
       >
         ${this.caption === "top"
           ? html`<caption>
@@ -745,20 +776,23 @@ class Table extends LitElement {
 
   render() {
     return html`
-      ${this.usePagination &&
-      (this.paginationPosition === "top" || this.paginationPosition === "both")
-        ? this.renderPagination()
-        : ""}
-      ${this.responsive
-        ? html`<div class="table-responsive">${this.renderTable()}</div>`
-        : this.sticky
-        ? html`<div class="b-table-sticky-header">${this.renderTable()}</div>`
-        : this.renderTable()}
-      ${this.usePagination &&
-      (this.paginationPosition === "bottom" ||
-        this.paginationPosition === "both")
-        ? this.renderPagination()
-        : ""}
+      <div class="${this.plumage ? " plumage" : ""}">
+        ${this.usePagination &&
+        (this.paginationPosition === "top" ||
+          this.paginationPosition === "both")
+          ? this.renderPagination()
+          : ""}
+        ${this.responsive
+          ? html`<div class="table-responsive">${this.renderTable()}</div>`
+          : this.sticky
+          ? html`<div class="b-table-sticky-header">${this.renderTable()}</div>`
+          : this.renderTable()}
+        ${this.usePagination &&
+        (this.paginationPosition === "bottom" ||
+          this.paginationPosition === "both")
+          ? this.renderPagination()
+          : ""}
+      </div>
     `;
   }
 
@@ -782,7 +816,7 @@ class Table extends LitElement {
     this.sortOrderDisabled = true;
     this.clearSelection();
     this.items = [...this.originalItems];
-    this.expandedRows = [];
+    this.expandedRows = []; // Clear the expanded rows
     this.requestUpdate();
 
     this.dispatchEvent(
@@ -796,6 +830,7 @@ class Table extends LitElement {
       })
     );
 
+    // Clear filter text and selected filter fields
     this.filterText = "";
     this.selectedFilterFields = [];
     this.dispatchEvent(
@@ -805,6 +840,7 @@ class Table extends LitElement {
     );
     this.applyFilter();
 
+    // Clear dropdown selections
     const dropdown = document.getElementById(this.tableId + "-dropdown");
     if (dropdown) {
       dropdown.clearSelections();

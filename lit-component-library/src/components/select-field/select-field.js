@@ -16,6 +16,7 @@ class SelectField extends LitElement {
 
   static get properties() {
     return {
+      classes: { type: String },
       custom: { type: Boolean },
       defaultTxt: { type: String },
       defaultOptionTxt: { type: String },
@@ -39,6 +40,7 @@ class SelectField extends LitElement {
 
   constructor() {
     super();
+    this.classes = "";
     this.custom = false;
     this.defaultTxt = "";
     this.defaultOptionTxt = "Select an option";
@@ -113,6 +115,9 @@ class SelectField extends LitElement {
       const selectElement = this.shadowRoot.querySelector("select");
       if (selectElement) {
         selectElement.value = this.value;
+        // Force the select element to re-render to ensure the value is correctly displayed
+        selectElement.selectedIndex = -1;
+        selectElement.value = this.value;
       }
     }
   }
@@ -155,7 +160,7 @@ class SelectField extends LitElement {
             ? " select-sm"
             : this.size === "lg"
             ? " select-lg"
-            : ""}"
+            : ""}${this.classes ? ` ${this.classes}` : ""}" 
           ?multiple=${this.multiple}
           ?disabled=${this.disabled}
           aria-label=${ifDefined(names ? names : undefined)}
@@ -193,7 +198,8 @@ class SelectField extends LitElement {
   }
 
   handleChange(event) {
-    this.dispatchEvent(new CustomEvent('change', { detail: { value: event.target.value } }));
+    this.value = event.target.value; // Update the value property
+    this.dispatchEvent(new CustomEvent('change', { detail: { value: this.value } }));
   }
 
   render() {

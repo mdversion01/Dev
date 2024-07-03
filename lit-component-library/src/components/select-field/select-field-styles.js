@@ -1,6 +1,10 @@
 import { css } from "lit";
 
 export const selectFieldStyles = css`
+  .mt-3 {
+    margin-top: 3px;
+  }
+  
   input {
     font-family: inherit;
     font-size: inherit;
@@ -157,7 +161,9 @@ export const selectFieldStyles = css`
     line-height: 1.5;
     color: #495057;
     vertical-align: middle;
-    background: #FFF url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'%3E%3Cpath fill='%23343a40' d='M2 0L0 2h4zm0 5L0 3h4z'/%3E%3C/svg%3E") no-repeat right .75rem center;
+    background: #fff
+      url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'%3E%3Cpath fill='%23343a40' d='M2 0L0 2h4zm0 5L0 3h4z'/%3E%3C/svg%3E")
+      no-repeat right 0.75rem center;
     background-size: 8px 10px;
     border: 1px solid #ced4da;
     border-radius: 0.25rem;
@@ -199,41 +205,16 @@ export const selectFieldStyles = css`
 
   .select-sm {
     height: calc(1.8125rem + 2px);
-    padding-top: 0.375rem;
+    padding-top: 0.3rem;
     padding-bottom: 0.375rem;
-    font-size: 75%;
+    font-size: 0.833rem !important;
   }
 
   .select-lg {
     height: calc(2.875rem + 2px);
     padding-top: 0.375rem;
     padding-bottom: 0.375rem;
-    font-size: 125%;
-  }
-
-  /* Underline the input */
-  .b-underline {
-    background-color: #ccc;
-    display: block;
-    height: 1px;
-    position: relative;
-    transition: 0.4s;
-    width: 100%;
-  }
-
-  .b-focus {
-    background-color: #2680eb;
-    bottom: 0;
-    height: 1px;
-    left: 50%;
-    position: absolute;
-    transition: 0.4s;
-    width: 0;
-  }
-
-  :disabled.b-focus,
-  .disabled.b-focus {
-    background-color: transparent;
+    font-size: 1.25rem !important;
   }
 
   .invalid-feedback {

@@ -217,18 +217,18 @@ export const plSelectFieldStyles = css`
     opacity: 0;
   }
 
-  .select-sm {
+  .pl-input-container .select-sm {
     height: calc(1.8125rem + 2px);
     padding-top: 0.375rem;
     padding-bottom: 0.375rem;
-    font-size: 75%;
+    font-size: 0.833rem;
   }
 
-  .select-lg {
+  .pl-input-container .select-lg {
     height: calc(2.875rem + 2px);
     padding-top: 0.375rem;
     padding-bottom: 0.375rem;
-    font-size: 125%;
+    font-size: 1.25rem;
   }
 
   /* Underline the input */

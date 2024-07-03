@@ -16,6 +16,7 @@ class PlSelectField extends LitElement {
 
   static get properties() {
     return {
+      classes: { type: String },
       custom: { type: Boolean },
       defaultTxt: { type: String },
       defaultOptionTxt: { type: String },
@@ -39,6 +40,7 @@ class PlSelectField extends LitElement {
 
   constructor() {
     super();
+    this.classes = "";
     this.custom = false;
     this.defaultTxt = "";
     this.defaultOptionTxt = "Select an option";
@@ -226,7 +228,7 @@ class PlSelectField extends LitElement {
             ? " select-sm"
             : this.size === "lg"
             ? " select-lg"
-            : ""}"
+            : ""}${this.classes ? ` ${this.classes}` : ""}"
           ?multiple=${this.multiple}
           ?disabled=${this.disabled}
           aria-label=${ifDefined(names ? names : undefined)}
