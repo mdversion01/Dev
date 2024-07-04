@@ -28,6 +28,7 @@ class PaginationComponent extends LitElement {
     onShowSizeChange: { type: Function },
     formLayout: { type: String },
     plumage: { type: Boolean },
+    totalRows: { type: Number },
   };
 
   constructor() {
@@ -40,12 +41,12 @@ class PaginationComponent extends LitElement {
     this.hideGotoEndButtons = false;
     this.hideEllipsis = false;
     this.id = "";
-    // this.pageSize = 10;
     this.pageSizeOptions = [10, 20, 50, 100, "All"];
     this.showSizeChanger = false;
     this.size = "";
     this.formLayout = "";
     this.plumage = false;
+    this.totalRows = 0;
     this.pageSize = this.showSizeChanger
       ? this.pageSizeOptions
           .filter((size) => size !== "All")
@@ -111,37 +112,33 @@ class PaginationComponent extends LitElement {
   }
 
   _renderPageButton(page) {
-    return html`
-      <li
-        role="presentation"
-        class="page-item${this.currentPage === page ? " active" : ""}${this
-          .paginationLayout === "fill" ||
+    return html`<li
+      role="presentation"
+      class="page-item${this.currentPage === page ? " active" : ""}${this
+        .paginationLayout === "fill" ||
+      this.paginationLayout === "fill-left" ||
+      this.paginationLayout === "fill-right"
+        ? " flex-fill d-flex"
+        : ""}"
+    >
+      <button
+        role="menuitemradio"
+        type="button"
+        aria-controls="${this.id}"
+        aria-label="Go to page ${page}"
+        aria-checked="${this.currentPage === page}"
+        tabindex="0"
+        class="page-link${this.paginationLayout === "fill" ||
         this.paginationLayout === "fill-left" ||
         this.paginationLayout === "fill-right"
-          ? " flex-fill d-flex"
+          ? " flex-grow-1"
           : ""}"
+        @click="${() => this._changePage(page)}"
+        ?disabled="${this.currentPage === page}"
       >
-        <button
-          role="menuitemradio"
-          type="button"
-          aria-controls="${this.id}"
-          aria-label="Go to page 1"
-          aria-checked="true"
-          aria-posinset="1"
-          aria-setsize="3"
-          tabindex="0"
-          class="page-link${this.paginationLayout === "fill" ||
-          this.paginationLayout === "fill-left" ||
-          this.paginationLayout === "fill-right"
-            ? " flex-grow-1"
-            : ""}"
-          @click="${() => this._changePage(page)}"
-          ?disabled="${this.currentPage === page}"
-        >
-          ${page}
-        </button>
-      </li>
-    `;
+        ${page}
+      </button>
+    </li>`;
   }
 
   _generatePageButtons() {
@@ -190,91 +187,85 @@ class PaginationComponent extends LitElement {
     this._changePage(1); // Trigger page change with updated page size
   }
 
-  renderSizeChanger() {
-    return html`
-      <div
-        class="size-changer${this.size === "sm"
-          ? " size-changer-sm"
-          : this.size === "lg"
-          ? " size-changer-lg"
-          : ""}"
-      >
-        <label for="pageSize">Items per page: </label>
-        <select
-          id="pageSize"
-          @change="${this._handlePageSizeChange}"
-          class="form-select form-control ${this.size === "sm"
-            ? "select-sm"
-            : this.size === "lg"
-            ? "select-lg"
-            : ""}"
-          aria-label="selectField"
-          aria-labelledby="selectField"
-          aria-invalid="false"
-          aria-multiselectable="false"
-          role="listbox"
-        >
-          ${this.pageSizeOptions.map(
-            (size) =>
-              html`<option
-                value="${size}"
-                ?selected="${this.pageSize === size}"
-              >
-                ${size}
-              </option>`
-          )}
-        </select>
-      </div>
-    `;
+  connectedCallback() {
+    super.connectedCallback();
+    this._handleDocumentClick = this.handleDocumentClick.bind(this);
+    document.addEventListener("click", this._handleDocumentClick);
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    document.removeEventListener("click", this._handleDocumentClick);
   }
 
   handleInteraction(event) {
-    // Stop the event from propagating to the document click handler
     event.stopPropagation();
+  }
 
+  handleFocus(event) {
+    this.isSelectFocused = true; // Set the flag to true when the select field is focused
     const bFocusDiv = this.shadowRoot.querySelector(".b-focus");
-    const isInputFocused =
-      event.target === this.shadowRoot.querySelector("select");
-
     if (bFocusDiv) {
-      if (isInputFocused) {
-        // Handle input focus
-        bFocusDiv.style.width = "100%";
-        bFocusDiv.style.left = "0";
-      } else {
-        // Handle input blur
+      bFocusDiv.style.width = "100%";
+      bFocusDiv.style.left = "0";
+    }
+  }
+
+  handleBlur(event) {
+    this.isSelectFocused = false; // Set the flag to false when the select field is blurred
+    // Use a timeout to delay the collapse to ensure the focus event doesn't interfere with the document click
+    setTimeout(() => {
+      if (!this.isSelectFocused) {
+        const bFocusDiv = this.shadowRoot.querySelector(".b-focus");
+        if (bFocusDiv) {
+          bFocusDiv.style.width = "0";
+          bFocusDiv.style.left = "50%";
+        }
+      }
+    }, 100);
+  }
+
+  handleDocumentClick(event) {
+    if (!this.isSelectFocused) {
+      const bFocusDiv = this.shadowRoot.querySelector(".b-focus");
+      if (bFocusDiv) {
         bFocusDiv.style.width = "0";
         bFocusDiv.style.left = "50%";
       }
     }
   }
 
-  connectedCallback() {
-    super.connectedCallback();
-    document.addEventListener("click", this.handleDocumentClick);
-  }
-
-  disconnectedCallback() {
-    super.disconnectedCallback();
-    document.removeEventListener("click", this.handleDocumentClick);
-  }
-
-  handleFocus(event) {
-    // Handle focus logic here
-    this.handleInteraction(event);
-  }
-
-  handleDocumentClick() {
-    const bFocusDiv = this.shadowRoot.querySelector(".b-focus");
-    if (bFocusDiv) {
-      bFocusDiv.style.width = "0";
-      bFocusDiv.style.left = "50%";
-    }
-  }
-
-  handleBlur(event) {
-    // Handle blur logic here
-    this.handleDocumentClick();
+  renderSizeChanger() {
+    return html`<div
+      class="size-changer${this.size === "sm"
+        ? " size-changer-sm"
+        : this.size === "lg"
+        ? " size-changer-lg"
+        : ""}"
+    >
+      <label for="pageSize">Items per page: </label>
+      <select
+        id="pageSize"
+        @change="${this._handlePageSizeChange}"
+        class="form-select form-control ${this.size === "sm"
+          ? "select-sm"
+          : this.size === "lg"
+          ? "select-lg"
+          : ""}"
+        aria-label="selectField"
+        aria-labelledby="selectField"
+        aria-invalid="false"
+        aria-multiselectable="false"
+        role="listbox"
+      >
+        ${this.pageSizeOptions.map(
+          (size) =>
+            html`<option value="${size}" ?selected="${this.pageSize === size}">
+              ${size}
+            </option>`
+        )}
+      </select>
+    </div>`;
   }
 
   renderPlumageStyleSizeChanger() {
@@ -294,7 +285,6 @@ class PaginationComponent extends LitElement {
         >
           <select
             id="pageSize"
-            @change="${this._handlePageSizeChange}"
             class="form-select form-control ${this.size === "sm"
               ? "select-sm"
               : this.size === "lg"
@@ -307,6 +297,7 @@ class PaginationComponent extends LitElement {
             role="listbox"
             @focus="${this.handleFocus}"
             @blur="${this.handleBlur}"
+            @change="${this._handlePageSizeChange}"
           >
             ${this.pageSizeOptions.map(
               (size) =>
@@ -318,167 +309,162 @@ class PaginationComponent extends LitElement {
                 </option>`
             )}
           </select>
-          <div role="presentation" class="b-underline">
-            <div
-              role="presentation"
-              aria-hidden="true"
-              class="b-focus"
-              style="width: 0px; left: 50%;"
-            ></div>
+
+          <div class="b-underline" role="presentation">
+            <div class="b-focus" role="presentation" aria-hidden="true"></div>
           </div>
         </div>
       </div>
     `;
   }
 
+  get displayRange() {
+    const startRow = (this.currentPage - 1) * this.pageSize + 1;
+    const endRow = Math.min(this.currentPage * this.pageSize, this.totalRows);
+    return `${startRow}-${endRow} of ${this.totalRows}`;
+  }
+
   renderPagination() {
-    return html`
-      <ul
-        role="menubar"
-        aria-disabled="false"
-        aria-label="Pagination"
-        class="pagination b-pagination${this.size === "sm"
-          ? " pagination-sm"
-          : this.size === "lg"
-          ? " pagination-lg"
-          : ""}${this.paginationLayout === "center"
-          ? " justify-content-center"
-          : this.paginationLayout === "end"
-          ? " justify-content-end"
-          : this.paginationLayout === "fill"
-          ? " text-center"
-          : ""}${this.plumage ? " plumage" : ""}"
-      >
-        ${!this.hideGotoEndButtons
-          ? html`
-              <li
-                role="presentation"
-                aria-hidden="true"
-                class="page-item${this.currentPage === 1
-                  ? " disabled"
-                  : ""}${this.paginationLayout === "fill" ||
+    return html`<ul
+      role="menubar"
+      aria-disabled="false"
+      aria-label="Pagination"
+      class="pagination b-pagination${this.size === "sm"
+        ? " pagination-sm"
+        : this.size === "lg"
+        ? " pagination-lg"
+        : ""}${this.paginationLayout === "center"
+        ? " justify-content-center"
+        : this.paginationLayout === "end"
+        ? " justify-content-end"
+        : this.paginationLayout === "fill"
+        ? " text-center"
+        : ""}"
+    >
+      ${!this.hideGotoEndButtons
+        ? html`<li
+              role="presentation"
+              aria-hidden="true"
+              class="page-item${this.currentPage === 1 ? " disabled" : ""}${this
+                .paginationLayout === "fill" ||
+              this.paginationLayout === "fill-left" ||
+              this.paginationLayout === "fill-right"
+                ? " flex-fill d-flex"
+                : ""}"
+            >
+              <button
+                role="menuitem"
+                type="button"
+                tabindex="-1"
+                aria-label="Go to first page"
+                aria-controls="${this.id}"
+                class="page-link${this.paginationLayout === "fill" ||
                 this.paginationLayout === "fill-left" ||
                 this.paginationLayout === "fill-right"
-                  ? " flex-fill d-flex"
+                  ? " flex-grow-1"
                   : ""}"
+                @click="${this._firstPage}"
+                ?disabled="${this.currentPage === 1}"
               >
-                <button
-                  role="menuitem"
-                  type="button"
-                  tabindex="-1"
-                  aria-label="Go to first page"
-                  aria-controls="${this.id}"
-                  class="page-link${this.paginationLayout === "fill" ||
-                  this.paginationLayout === "fill-left" ||
-                  this.paginationLayout === "fill-right"
-                    ? " flex-grow-1"
-                    : ""}"
-                  @click="${this._firstPage}"
-                  ?disabled="${this.currentPage === 1}"
-                >
-                  ${this.goToButtons === "text" ? "First" : "«"}
-                </button>
-              </li>
-              <li
-                role="presentation"
-                aria-hidden="true"
-                class="page-item${this.currentPage === 1
-                  ? " disabled"
-                  : ""}${this.paginationLayout === "fill" ||
+                ${this.goToButtons === "text" ? "First" : "«"}
+              </button>
+            </li>
+            <li
+              role="presentation"
+              aria-hidden="true"
+              class="page-item${this.currentPage === 1 ? " disabled" : ""}${this
+                .paginationLayout === "fill" ||
+              this.paginationLayout === "fill-left" ||
+              this.paginationLayout === "fill-right"
+                ? " flex-fill d-flex"
+                : ""}"
+            >
+              <button
+                role="menuitem"
+                type="button"
+                tabindex="-1"
+                aria-label="Go to previous page"
+                aria-controls="${this.id}"
+                class="page-link${this.paginationLayout === "fill" ||
                 this.paginationLayout === "fill-left" ||
                 this.paginationLayout === "fill-right"
-                  ? " flex-fill d-flex"
+                  ? " flex-grow-1"
                   : ""}"
+                @click="${this._prevPage}"
+                ?disabled="${this.currentPage === 1}"
               >
-                <button
-                  role="menuitem"
-                  type="button"
-                  tabindex="-1"
-                  aria-label="Go to previous page"
-                  aria-controls="${this.id}"
-                  class="page-link${this.paginationLayout === "fill" ||
-                  this.paginationLayout === "fill-left" ||
-                  this.paginationLayout === "fill-right"
-                    ? " flex-grow-1"
-                    : ""}"
-                  @click="${this._prevPage}"
-                  ?disabled="${this.currentPage === 1}"
-                >
-                  ${this.goToButtons === "text" ? "Prev" : "‹"}
-                </button>
-              </li>
-            `
-          : ""}
-        ${this._generatePageButtons()}
-        ${!this.hideGotoEndButtons
-          ? html`
-              <li
-                role="presentation"
-                class="page-item${this.currentPage === this.totalPages
-                  ? " disabled"
-                  : ""}${this.paginationLayout === "fill" ||
+                ${this.goToButtons === "text" ? "Prev" : "‹"}
+              </button>
+            </li>`
+        : ""}
+      ${this._generatePageButtons()}
+      ${!this.hideGotoEndButtons
+        ? html`<li
+              role="presentation"
+              class="page-item${this.currentPage === this.totalPages
+                ? " disabled"
+                : ""}${this.paginationLayout === "fill" ||
+              this.paginationLayout === "fill-left" ||
+              this.paginationLayout === "fill-right"
+                ? " flex-fill d-flex"
+                : ""}"
+              aria-hidden="true"
+            >
+              <button
+                role="menuitem"
+                type="button"
+                tabindex="-1"
+                aria-label="Go to next page"
+                aria-controls="${this.id}"
+                class="page-link${this.paginationLayout === "fill" ||
                 this.paginationLayout === "fill-left" ||
                 this.paginationLayout === "fill-right"
-                  ? " flex-fill d-flex"
+                  ? " flex-grow-1"
                   : ""}"
-                aria-hidden="true"
+                @click="${this._nextPage}"
+                ?disabled="${this.currentPage === this.totalPages}"
               >
-                <button
-                  role="menuitem"
-                  type="button"
-                  tabindex="-1"
-                  aria-label="Go to next page"
-                  aria-controls="${this.id}"
-                  class="page-link${this.paginationLayout === "fill" ||
-                  this.paginationLayout === "fill-left" ||
-                  this.paginationLayout === "fill-right"
-                    ? " flex-grow-1"
-                    : ""}"
-                  @click="${this._nextPage}"
-                  ?disabled="${this.currentPage === this.totalPages}"
-                >
-                  ${this.goToButtons === "text" ? "Next" : "›"}
-                </button>
-              </li>
-              <li
-                role="presentation"
-                class="page-item${this.currentPage === this.totalPages
-                  ? " disabled"
-                  : ""}${this.paginationLayout === "fill" ||
+                ${this.goToButtons === "text" ? "Next" : "›"}
+              </button>
+            </li>
+            <li
+              role="presentation"
+              class="page-item${this.currentPage === this.totalPages
+                ? " disabled"
+                : ""}${this.paginationLayout === "fill" ||
+              this.paginationLayout === "fill-left" ||
+              this.paginationLayout === "fill-right"
+                ? " flex-fill d-flex"
+                : ""}"
+              aria-hidden="true"
+            >
+              <button
+                role="menuitem"
+                type="button"
+                tabindex="-1"
+                aria-label="Go to last page"
+                aria-controls="${this.id}"
+                class="page-link${this.paginationLayout === "fill" ||
                 this.paginationLayout === "fill-left" ||
                 this.paginationLayout === "fill-right"
-                  ? " flex-fill d-flex"
+                  ? " flex-grow-1"
                   : ""}"
-                aria-hidden="true"
+                @click="${this._lastPage}"
+                ?disabled="${this.currentPage === this.totalPages}"
               >
-                <button
-                  role="menuitem"
-                  type="button"
-                  tabindex="-1"
-                  aria-label="Go to last page"
-                  aria-controls="${this.id}"
-                  class="page-link${this.paginationLayout === "fill" ||
-                  this.paginationLayout === "fill-left" ||
-                  this.paginationLayout === "fill-right"
-                    ? " flex-grow-1"
-                    : ""}"
-                  @click="${this._lastPage}"
-                  ?disabled="${this.currentPage === this.totalPages}"
-                >
-                  ${this.goToButtons === "text" ? "Last" : "»"}
-                </button>
-              </li>
-            `
-          : ""}
-      </ul>
-    `;
+                ${this.goToButtons === "text" ? "Last" : "»"}
+              </button>
+            </li>`
+        : ""}
+    </ul>`;
   }
 
   render() {
     if (this.showSizeChanger && this.paginationLayout === "start") {
       return html`
-        <div class="pagination-split-layout">
+        <div class="pagination-split-layout${this.plumage ? ' plumage' : ''}">
           <div class="pagination-cell start">${this.renderPagination()}</div>
+          <div class="pagination-cell row-display${this.size === 'sm' ? ' sm' : this.size === 'lg' ? ' lg' : ''}">${this.displayRange}</div>
           <div class="pagination-cell end">
             ${this.plumage
               ? this.renderPlumageStyleSizeChanger()
@@ -488,8 +474,9 @@ class PaginationComponent extends LitElement {
       `;
     } else if (this.showSizeChanger && this.paginationLayout === "center") {
       return html`
-        <div class="pagination-split-layout">
+        <div class="pagination-split-layout${this.plumage ? ' plumage' : ''}">
           <div class="pagination-cell center">${this.renderPagination()}</div>
+          <div class="pagination-cell row-display${this.size === 'sm' ? ' sm' : this.size === 'lg' ? ' lg' : ''}">${this.displayRange}</div>
           <div class="pagination-cell center">
             ${this.plumage
               ? this.renderPlumageStyleSizeChanger()
@@ -499,19 +486,21 @@ class PaginationComponent extends LitElement {
       `;
     } else if (this.showSizeChanger && this.paginationLayout === "end") {
       return html`
-        <div class="pagination-split-layout">
+        <div class="pagination-split-layout${this.plumage ? ' plumage' : ''}">
           <div class="pagination-cell start">
             ${this.plumage
               ? this.renderPlumageStyleSizeChanger()
               : this.renderSizeChanger()}
           </div>
+          <div class="pagination-cell row-display${this.size === 'sm' ? ' sm' : this.size === 'lg' ? ' lg' : ''}">${this.displayRange}</div>
           <div class="pagination-cell end">${this.renderPagination()}</div>
         </div>
       `;
     } else if (this.showSizeChanger && this.paginationLayout === "fill-left") {
       return html`
-        <div class="pagination-split-layout">
+        <div class="pagination-split-layout${this.plumage ? ' plumage' : ''}">
           <div class="pagination-cell fill">${this.renderPagination()}</div>
+          <div class="pagination-cell row-display${this.size === 'sm' ? ' sm' : this.size === 'lg' ? ' lg' : ''}">${this.displayRange}</div>
           <div class="pagination-cell end">
             ${this.plumage
               ? this.renderPlumageStyleSizeChanger()
@@ -521,18 +510,22 @@ class PaginationComponent extends LitElement {
       `;
     } else if (this.showSizeChanger && this.paginationLayout === "fill-right") {
       return html`
-        <div class="pagination-split-layout">
+        <div class="pagination-split-layout${this.plumage ? ' plumage' : ''}">
           <div class="pagination-cell start">
             ${this.plumage
               ? this.renderPlumageStyleSizeChanger()
               : this.renderSizeChanger()}
           </div>
+          <div class="pagination-cell row-display${this.size === 'sm' ? ' sm' : this.size === 'lg' ? ' lg' : ''}">${this.displayRange}</div>
           <div class="pagination-cell fill">${this.renderPagination()}</div>
         </div>
       `;
     } else {
       return html`
-        <div class="pagination-layout">${this.renderPagination()}</div>
+        <div class="pagination-layout${this.plumage ? ' plumage' : ''}">
+          ${this.renderPagination()}
+          <div class="pagination-cell row-display${this.size === 'sm' ? ' sm' : this.size === 'lg' ? ' lg' : ''}">${this.displayRange}</div>
+        </div>
       `;
     }
   }

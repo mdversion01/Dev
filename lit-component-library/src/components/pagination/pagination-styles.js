@@ -205,6 +205,20 @@ export const paginationStyles = css`
     font-size: 1rem;
   }
 
+  .row-display {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .row-display.sm {
+    font-size: 0.875rem;
+  }
+
+  .row-display.lg {
+    font-size: 1.25rem;
+  }
+
   .justify-content-center {
     -ms-flex-pack: center !important;
     justify-content: center !important;
@@ -254,8 +268,21 @@ export const paginationStyles = css`
     border-bottom: none;
   }
 
-  .plumage.pagination-sm .page-link {
+  .plumage .pagination-sm .page-link {
     padding: 0 0.5rem;
+  }
+
+  .plumage  .size-changer-sm {
+    font-size: 0.8333rem;
+    padding: 0;
+  }
+
+  .plumage .row-display.sm {
+    font-size: 0.833rem;
+  }
+
+  .plumage .row-display.lg {
+    font-size: 1.25rem;
   }
 
   @media (max-width: 575.98px) {

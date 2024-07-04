@@ -614,6 +614,7 @@ class Table extends LitElement {
         .pageSizeOptions="${this.pageSizeOptions}"
         .showSizeChanger="${this.showSizeChanger}"
         .plumage="${this.plumage}"
+        .totalRows="${this.totalRows}"
         @page-changed="${this._onPageChanged}"
         @page-size-changed="${this.handlePageSizeChanged}"
       ></pagination-component>
