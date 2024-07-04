@@ -237,9 +237,15 @@ export const paginationStyles = css`
   .text-center {
     text-align: center !important;
   }
+
   .flex-fill {
     -ms-flex: 1 1 auto !important;
     flex: 1 1 auto !important;
+  }
+
+  .flex-fill50 {
+    -ms-flex: 1 1 50% !important;
+    flex: 1 1 50% !important;
   }
 
   .d-flex {

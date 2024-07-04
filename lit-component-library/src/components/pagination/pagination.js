@@ -30,6 +30,7 @@ class PaginationComponent extends LitElement {
     formLayout: { type: String },
     plumage: { type: Boolean },
     totalRows: { type: Number },
+    useMinimizePagination: { type: Boolean }, // New property for minimized pagination
   };
 
   constructor() {
@@ -49,6 +50,7 @@ class PaginationComponent extends LitElement {
     this.formLayout = "";
     this.plumage = false;
     this.totalRows = 0;
+    this.useMinimizePagination = false; // Initialize the new property
     this.pageSize = this.showSizeChanger
       ? this.pageSizeOptions
           .filter((size) => size !== "All")
@@ -336,7 +338,7 @@ class PaginationComponent extends LitElement {
         : this.size === "lg"
         ? " pagination-lg"
         : ""}${this.paginationLayout === "center"
-        ? " justify-content-center"
+        ? " justify-content-center flex-fill50"
         : this.paginationLayout === "end"
         ? " justify-content-end"
         : this.paginationLayout === "fill"
@@ -461,12 +463,120 @@ class PaginationComponent extends LitElement {
     </ul>`;
   }
 
+  renderMinimizePagination() {
+    return html`<ul
+      role="menubar"
+      aria-disabled="false"
+      aria-label="Pagination"
+      class="pagination b-pagination${this.size === "sm"
+        ? " pagination-sm"
+        : this.size === "lg"
+        ? " pagination-lg"
+        : ""}${this.paginationLayout === "center"
+        ? " justify-content-center"
+        : this.paginationLayout === "end"
+        ? " justify-content-end"
+        : ""}"
+    >
+      <li
+        role="presentation"
+        aria-hidden="true"
+        class="page-item${this.currentPage === 1 ? " disabled" : ""}"
+      >
+        <button
+          role="menuitem"
+          type="button"
+          tabindex="-1"
+          aria-label="Go to first page"
+          aria-controls="${this.id}"
+          class="page-link"
+          @click="${this._firstPage}"
+          ?disabled="${this.currentPage === 1}"
+        >
+          ${this.goToButtons === "text" ? "First" : "«"}
+        </button>
+      </li>
+      <li
+        role="presentation"
+        aria-hidden="true"
+        class="page-item${this.currentPage === 1 ? " disabled" : ""}"
+      >
+        <button
+          role="menuitem"
+          type="button"
+          tabindex="-1"
+          aria-label="Go to previous page"
+          aria-controls="${this.id}"
+          class="page-link"
+          @click="${this._prevPage}"
+          ?disabled="${this.currentPage === 1}"
+        >
+          ${this.goToButtons === "text" ? "Prev" : "‹"}
+        </button>
+      </li>
+      <li
+        role="presentation"
+        class="page-item${this.currentPage === this.totalPages
+          ? " disabled"
+          : ""}"
+        aria-hidden="true"
+      >
+        <button
+          role="menuitem"
+          type="button"
+          tabindex="-1"
+          aria-label="Go to next page"
+          aria-controls="${this.id}"
+          class="page-link"
+          @click="${this._nextPage}"
+          ?disabled="${this.currentPage === this.totalPages}"
+        >
+          ${this.goToButtons === "text" ? "Next" : "›"}
+        </button>
+      </li>
+      <li
+        role="presentation"
+        class="page-item${this.currentPage === this.totalPages
+          ? " disabled"
+          : ""}"
+        aria-hidden="true"
+      >
+        <button
+          role="menuitem"
+          type="button"
+          tabindex="-1"
+          aria-label="Go to last page"
+          aria-controls="${this.id}"
+          class="page-link"
+          @click="${this._lastPage}"
+          ?disabled="${this.currentPage === this.totalPages}"
+        >
+          ${this.goToButtons === "text" ? "Last" : "»"}
+        </button>
+      </li>
+    </ul>`;
+  }
+
   render() {
     if (this.showSizeChanger && this.paginationLayout === "start") {
       return html`
-        <div class="pagination-split-layout${this.plumage ? ' plumage' : ''}">
-          <div class="pagination-cell start">${this.renderPagination()}</div>
-          ${this.showDisplayRange ? html`<div class="pagination-cell row-display${this.size === 'sm' ? ' sm' : this.size === 'lg' ? ' lg' : ''}">${this.displayRange}</div>` : ''}
+        <div class="pagination-split-layout${this.plumage ? " plumage" : ""}">
+          <div class="pagination-cell start">
+            ${this.useMinimizePagination
+              ? this.renderMinimizePagination()
+              : this.renderPagination()}
+          </div>
+          ${this.showDisplayRange
+            ? html`<div
+                class="pagination-cell row-display${this.size === "sm"
+                  ? " sm"
+                  : this.size === "lg"
+                  ? " lg"
+                  : ""}"
+              >
+                ${this.displayRange}
+              </div>`
+            : ""}
           <div class="pagination-cell end">
             ${this.plumage
               ? this.renderPlumageStyleSizeChanger()
@@ -476,9 +586,23 @@ class PaginationComponent extends LitElement {
       `;
     } else if (this.showSizeChanger && this.paginationLayout === "center") {
       return html`
-        <div class="pagination-split-layout${this.plumage ? ' plumage' : ''}">
-          <div class="pagination-cell center">${this.renderPagination()}</div>
-          ${this.showDisplayRange ? html`<div class="pagination-cell row-display${this.size === 'sm' ? ' sm' : this.size === 'lg' ? ' lg' : ''}">${this.displayRange}</div>` : ''}
+        <div class="pagination-split-layout${this.plumage ? " plumage" : ""}">
+          <div class="pagination-cell center">
+            ${this.useMinimizePagination
+              ? this.renderMinimizePagination()
+              : this.renderPagination()}
+          </div>
+          ${this.showDisplayRange
+            ? html`<div
+                class="pagination-cell row-display${this.size === "sm"
+                  ? " sm"
+                  : this.size === "lg"
+                  ? " lg"
+                  : ""}"
+              >
+                ${this.displayRange}
+              </div>`
+            : ""}
           <div class="pagination-cell center">
             ${this.plumage
               ? this.renderPlumageStyleSizeChanger()
@@ -488,22 +612,50 @@ class PaginationComponent extends LitElement {
       `;
     } else if (this.showSizeChanger && this.paginationLayout === "end") {
       return html`
-        <div class="pagination-split-layout${this.plumage ? ' plumage' : ''}">
+        <div class="pagination-split-layout${this.plumage ? " plumage" : ""}">
           <div class="pagination-cell start">
             ${this.plumage
               ? this.renderPlumageStyleSizeChanger()
               : this.renderSizeChanger()}
           </div>
-          ${this.showDisplayRange ? html`<div class="pagination-cell row-display${this.size === 'sm' ? ' sm' : this.size === 'lg' ? ' lg' : ''}">${this.displayRange}</div>` : ''}
-          <div class="pagination-cell end">${this.renderPagination()}</div>
+          ${this.showDisplayRange
+            ? html`<div
+                class="pagination-cell row-display${this.size === "sm"
+                  ? " sm"
+                  : this.size === "lg"
+                  ? " lg"
+                  : ""}"
+              >
+                ${this.displayRange}
+              </div>`
+            : ""}
+          <div class="pagination-cell end">
+            ${this.useMinimizePagination
+              ? this.renderMinimizePagination()
+              : this.renderPagination()}
+          </div>
         </div>
       `;
     } else if (this.showSizeChanger && this.paginationLayout === "fill-left") {
       return html`
-        <div class="pagination-split-layout${this.plumage ? ' plumage' : ''}">
-          <div class="pagination-cell fill">${this.renderPagination()}</div>
-          ${this.showDisplayRange ? html`<div class="pagination-cell row-display${this.size === 'sm' ? ' sm' : this.size === 'lg' ? ' lg' : ''}">${this.displayRange}</div>` : ''}
-          <div class="pagination-cell end">
+        <div class="pagination-split-layout${this.plumage ? " plumage" : ""}">
+          <div class="pagination-cell fill">
+            ${this.useMinimizePagination
+              ? this.renderMinimizePagination()
+              : this.renderPagination()}
+          </div>
+          ${this.showDisplayRange
+            ? html`<div
+                class="pagination-cell row-display${this.size === "sm"
+                  ? " sm"
+                  : this.size === "lg"
+                  ? " lg"
+                  : ""}"
+              >
+                ${this.displayRange}
+              </div>`
+            : ""}
+          <div class="pagination-cell">
             ${this.plumage
               ? this.renderPlumageStyleSizeChanger()
               : this.renderSizeChanger()}
@@ -512,21 +664,47 @@ class PaginationComponent extends LitElement {
       `;
     } else if (this.showSizeChanger && this.paginationLayout === "fill-right") {
       return html`
-        <div class="pagination-split-layout${this.plumage ? ' plumage' : ''}">
+        <div class="pagination-split-layout${this.plumage ? " plumage" : ""}">
           <div class="pagination-cell start">
             ${this.plumage
               ? this.renderPlumageStyleSizeChanger()
               : this.renderSizeChanger()}
           </div>
-          ${this.showDisplayRange ? html`<div class="pagination-cell row-display${this.size === 'sm' ? ' sm' : this.size === 'lg' ? ' lg' : ''}">${this.displayRange}</div>` : ''}
-          <div class="pagination-cell fill">${this.renderPagination()}</div>
+          ${this.showDisplayRange
+            ? html`<div
+                class="pagination-cell row-display${this.size === "sm"
+                  ? " sm"
+                  : this.size === "lg"
+                  ? " lg"
+                  : ""}"
+              >
+                ${this.displayRange}
+              </div>`
+            : ""}
+          <div class="pagination-cell fill d-flex end">
+            ${this.useMinimizePagination
+              ? this.renderMinimizePagination()
+              : this.renderPagination()}
+          </div>
         </div>
       `;
     } else {
       return html`
-        <div class="pagination-layout${this.plumage ? ' plumage' : ''}">
-          ${this.renderPagination()}
-          ${this.showDisplayRange ? html`<div class="pagination-cell row-display${this.size === 'sm' ? ' sm' : this.size === 'lg' ? ' lg' : ''}${this.paginationLayout === 'fill' ? " fill" : ""}">${this.displayRange}</div>` : ''}
+        <div class="pagination-layout${this.plumage ? " plumage" : ""}${this.paginationLayout === "fill" ? "" : " d-flex"}">
+          ${this.useMinimizePagination
+            ? this.renderMinimizePagination()
+            : this.renderPagination()}
+          ${this.showDisplayRange
+            ? html`<div
+                class="pagination-cell row-display${this.size === "sm"
+                  ? " sm"
+                  : this.size === "lg"
+                  ? " lg"
+                  : ""}${this.paginationLayout === "fill" ? " fill" : this.paginationLayout === "center" ? " justify-content-center flex-fill50" : this.paginationLayout === "end" || this.paginationLayout ? " justify-content-end" : ""}"
+              >
+                ${this.displayRange}
+              </div>`
+            : ""}
         </div>
       `;
     }

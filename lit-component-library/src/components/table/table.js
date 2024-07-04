@@ -42,6 +42,7 @@ class Table extends LitElement {
     tableId: { type: String },
     dropdownId: { type: String },
     // Pagination properties
+    goToButtons: { type: String },
     rowsPerPage: { type: Number },
     currentPage: { type: Number },
     paginationPosition: { type: String }, // 'top', 'bottom', 'both'
@@ -55,12 +56,14 @@ class Table extends LitElement {
     paginationLayout: { type: String }, // new property for pagination layout 'center', 'end', fill OR when used with showSizeChanger 'start', 'center', 'end', 'fill', 'fill-left', 'fill-right'
     showSizeChanger: { type: Boolean },
     showDisplayRange: { type: Boolean },
+    useMinimizePagination: { type: Boolean },
   };
 
   constructor() {
     super();
     this.initializeProperties();
     this.paginationPosition = "bottom";
+    this.goToButtons = ""; // default to both first/last buttons  
     this.usePagination = false; // default to false, meaning pagination is not used by default
     this.totalRows = 0; // default total rows
     this.paginationLimit = 5; // default pagination limit
@@ -69,6 +72,7 @@ class Table extends LitElement {
     this.size = "";
     this.pageSizeOptions = [10, 20, 50, 100, "All"]; // default page size options
     this.paginationLayout = "";
+    this.useMinimizePagination = false;
     this.showDisplayRange = false;
     this.showSizeChanger = false;
     if (this.showSizeChanger) {
@@ -607,6 +611,8 @@ class Table extends LitElement {
         .paginationLayout="${this.paginationLayout}"
         .id="${this.tableId}"
         .size="${this.size}"
+        .goToButtons="${this.goToButtons}"
+        .useMinimizePagination="${this.useMinimizePagination}"
         .currentPage="${this.currentPage}"
         .totalPages="${totalPages}"
         .limit="${this.paginationLimit}"
