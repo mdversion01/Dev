@@ -54,6 +54,7 @@ class Table extends LitElement {
     size: { type: String },
     paginationLayout: { type: String }, // new property for pagination layout 'center', 'end', fill OR when used with showSizeChanger 'start', 'center', 'end', 'fill', 'fill-left', 'fill-right'
     showSizeChanger: { type: Boolean },
+    showDisplayRange: { type: Boolean },
   };
 
   constructor() {
@@ -68,6 +69,7 @@ class Table extends LitElement {
     this.size = "";
     this.pageSizeOptions = [10, 20, 50, 100, "All"]; // default page size options
     this.paginationLayout = "";
+    this.showDisplayRange = false;
     this.showSizeChanger = false;
     if (this.showSizeChanger) {
       const lowestPageSize = this.pageSizeOptions
@@ -612,6 +614,7 @@ class Table extends LitElement {
         .hideEllipsis="${this.hideEllipsis}"
         .pageSize="${this.rowsPerPage}"
         .pageSizeOptions="${this.pageSizeOptions}"
+        .showDisplayRange="${this.showDisplayRange}"
         .showSizeChanger="${this.showSizeChanger}"
         .plumage="${this.plumage}"
         .totalRows="${this.totalRows}"

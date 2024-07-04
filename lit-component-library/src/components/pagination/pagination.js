@@ -22,6 +22,7 @@ class PaginationComponent extends LitElement {
     id: { type: String },
     pageSize: { type: Number },
     pageSizeOptions: { type: Array },
+    showDisplayRange: { type: Boolean },
     showSizeChanger: { type: Boolean },
     size: { type: String },
     onChange: { type: Function },
@@ -33,7 +34,7 @@ class PaginationComponent extends LitElement {
 
   constructor() {
     super();
-    this.paginationLayout = ""; // new property for pagination layout 'center', 'end', fill OR when used with showSizeChanger 'start', 'center', 'end', 'fill', 'fill-left', 'fill-right'
+    this.paginationLayout = ""; // new property for pagination layout 'center', 'end', 'fill' OR when used with showSizeChanger 'start', 'center', 'end', 'fill-left', 'fill-right'
     this.currentPage = 1;
     this.totalPages = 1;
     this.limit = 3;
@@ -42,6 +43,7 @@ class PaginationComponent extends LitElement {
     this.hideEllipsis = false;
     this.id = "";
     this.pageSizeOptions = [10, 20, 50, 100, "All"];
+    this.showDisplayRange = false;
     this.showSizeChanger = false;
     this.size = "";
     this.formLayout = "";
@@ -464,7 +466,7 @@ class PaginationComponent extends LitElement {
       return html`
         <div class="pagination-split-layout${this.plumage ? ' plumage' : ''}">
           <div class="pagination-cell start">${this.renderPagination()}</div>
-          <div class="pagination-cell row-display${this.size === 'sm' ? ' sm' : this.size === 'lg' ? ' lg' : ''}">${this.displayRange}</div>
+          ${this.showDisplayRange ? html`<div class="pagination-cell row-display${this.size === 'sm' ? ' sm' : this.size === 'lg' ? ' lg' : ''}">${this.displayRange}</div>` : ''}
           <div class="pagination-cell end">
             ${this.plumage
               ? this.renderPlumageStyleSizeChanger()
@@ -476,7 +478,7 @@ class PaginationComponent extends LitElement {
       return html`
         <div class="pagination-split-layout${this.plumage ? ' plumage' : ''}">
           <div class="pagination-cell center">${this.renderPagination()}</div>
-          <div class="pagination-cell row-display${this.size === 'sm' ? ' sm' : this.size === 'lg' ? ' lg' : ''}">${this.displayRange}</div>
+          ${this.showDisplayRange ? html`<div class="pagination-cell row-display${this.size === 'sm' ? ' sm' : this.size === 'lg' ? ' lg' : ''}">${this.displayRange}</div>` : ''}
           <div class="pagination-cell center">
             ${this.plumage
               ? this.renderPlumageStyleSizeChanger()
@@ -492,7 +494,7 @@ class PaginationComponent extends LitElement {
               ? this.renderPlumageStyleSizeChanger()
               : this.renderSizeChanger()}
           </div>
-          <div class="pagination-cell row-display${this.size === 'sm' ? ' sm' : this.size === 'lg' ? ' lg' : ''}">${this.displayRange}</div>
+          ${this.showDisplayRange ? html`<div class="pagination-cell row-display${this.size === 'sm' ? ' sm' : this.size === 'lg' ? ' lg' : ''}">${this.displayRange}</div>` : ''}
           <div class="pagination-cell end">${this.renderPagination()}</div>
         </div>
       `;
@@ -500,7 +502,7 @@ class PaginationComponent extends LitElement {
       return html`
         <div class="pagination-split-layout${this.plumage ? ' plumage' : ''}">
           <div class="pagination-cell fill">${this.renderPagination()}</div>
-          <div class="pagination-cell row-display${this.size === 'sm' ? ' sm' : this.size === 'lg' ? ' lg' : ''}">${this.displayRange}</div>
+          ${this.showDisplayRange ? html`<div class="pagination-cell row-display${this.size === 'sm' ? ' sm' : this.size === 'lg' ? ' lg' : ''}">${this.displayRange}</div>` : ''}
           <div class="pagination-cell end">
             ${this.plumage
               ? this.renderPlumageStyleSizeChanger()
@@ -516,7 +518,7 @@ class PaginationComponent extends LitElement {
               ? this.renderPlumageStyleSizeChanger()
               : this.renderSizeChanger()}
           </div>
-          <div class="pagination-cell row-display${this.size === 'sm' ? ' sm' : this.size === 'lg' ? ' lg' : ''}">${this.displayRange}</div>
+          ${this.showDisplayRange ? html`<div class="pagination-cell row-display${this.size === 'sm' ? ' sm' : this.size === 'lg' ? ' lg' : ''}">${this.displayRange}</div>` : ''}
           <div class="pagination-cell fill">${this.renderPagination()}</div>
         </div>
       `;
@@ -524,7 +526,7 @@ class PaginationComponent extends LitElement {
       return html`
         <div class="pagination-layout${this.plumage ? ' plumage' : ''}">
           ${this.renderPagination()}
-          <div class="pagination-cell row-display${this.size === 'sm' ? ' sm' : this.size === 'lg' ? ' lg' : ''}">${this.displayRange}</div>
+          ${this.showDisplayRange ? html`<div class="pagination-cell row-display${this.size === 'sm' ? ' sm' : this.size === 'lg' ? ' lg' : ''}${this.paginationLayout === 'fill' ? " fill" : ""}">${this.displayRange}</div>` : ''}
         </div>
       `;
     }

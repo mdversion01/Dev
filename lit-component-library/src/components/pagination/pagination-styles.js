@@ -219,6 +219,11 @@ export const paginationStyles = css`
     font-size: 1.25rem;
   }
 
+  .row-display.fill {
+    padding: 0.625rem 0;
+    text-align: center;
+  }
+
   .justify-content-center {
     -ms-flex-pack: center !important;
     justify-content: center !important;
