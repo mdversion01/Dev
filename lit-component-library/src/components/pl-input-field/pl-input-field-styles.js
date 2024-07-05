@@ -49,7 +49,7 @@ export const plInputFieldStyles = css`
     margin-bottom: 0;
   }
 
-  .form-control {
+  .pl-form-control {
     background-color: transparent;
     background-clip: padding-box;
     border: 0 solid #cacaca;

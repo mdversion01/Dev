@@ -126,6 +126,17 @@ export const paginationStyles = css`
     border-bottom-left-radius: 0.25rem;
   }
 
+  .plumage .pages {
+    padding: 0 0.75rem;
+    display: flex;
+    align-items: center;
+    font-size: 0.833rem;
+  }
+
+  .plumage .pages .page-input-wrapper {
+    margin: 0 0.25rem;
+  }
+
   .pagination-sm {
     font-size: 0.875rem;
   }

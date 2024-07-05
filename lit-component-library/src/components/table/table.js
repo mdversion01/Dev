@@ -88,7 +88,6 @@ class Table extends LitElement {
   }
 
   initializeProperties() {
-    // existing initialization
     this.border = false;
     this.bordered = false;
     this.borderless = false;
@@ -122,7 +121,6 @@ class Table extends LitElement {
     this.selectedFilterFields = [];
     this.tableId = "";
     this.dropdownId = "";
-    // Pagination properties
     this.rowsPerPage = 10;
     this.currentPage = 1;
   }
@@ -149,7 +147,6 @@ class Table extends LitElement {
         this.handleDropdownFilterFieldsChanged.bind(this)
       );
     }
-
     this.addEventListener(
       "page-size-changed",
       this.handlePageSizeChanged.bind(this)
@@ -178,7 +175,6 @@ class Table extends LitElement {
         this.handleDropdownFilterFieldsChanged.bind(this)
       );
     }
-
     this.removeEventListener(
       "page-size-changed",
       this.handlePageSizeChanged.bind(this)
@@ -723,6 +719,7 @@ class Table extends LitElement {
                           class="caret-icon ${isExpanded
                             ? "rotate-down"
                             : "rotate-up"}"
+                          aria-expanded="${isExpanded}"
                         ></button>
                       </td>`
                     : hasDetailsRows
@@ -833,27 +830,19 @@ class Table extends LitElement {
     this.requestUpdate();
 
     this.dispatchEvent(
-      new CustomEvent("sort-field-updated", {
-        detail: { value: "none" },
-      })
+      new CustomEvent("sort-field-updated", { detail: { value: "none" } })
     );
     this.dispatchEvent(
-      new CustomEvent("sort-order-updated", {
-        detail: { value: "asc" },
-      })
+      new CustomEvent("sort-order-updated", { detail: { value: "asc" } })
     );
 
-    // Clear filter text and selected filter fields
     this.filterText = "";
     this.selectedFilterFields = [];
     this.dispatchEvent(
-      new CustomEvent("filter-changed", {
-        detail: { value: "" },
-      })
+      new CustomEvent("filter-changed", { detail: { value: "" } })
     );
     this.applyFilter();
 
-    // Clear dropdown selections
     const dropdown = document.getElementById(this.tableId + "-dropdown");
     if (dropdown) {
       dropdown.clearSelections();

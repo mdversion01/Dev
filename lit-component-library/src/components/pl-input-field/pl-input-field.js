@@ -171,7 +171,7 @@ class PlInputField extends LitElement {
             >
               <input
                 type="${this.type || "text"}"
-                class="form-control${this.validation ? " is-invalid" : ""}${this
+                class="pl-form-control${this.validation ? " is-invalid" : ""}${this
                   .size === "sm"
                   ? " pl-input-sm"
                   : this.size === "lg"
