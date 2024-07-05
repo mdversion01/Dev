@@ -88,6 +88,7 @@ class Table extends LitElement {
   }
 
   initializeProperties() {
+    // existing initialization
     this.border = false;
     this.bordered = false;
     this.borderless = false;
@@ -121,6 +122,7 @@ class Table extends LitElement {
     this.selectedFilterFields = [];
     this.tableId = "";
     this.dropdownId = "";
+    // Pagination properties
     this.rowsPerPage = 10;
     this.currentPage = 1;
   }
@@ -147,6 +149,7 @@ class Table extends LitElement {
         this.handleDropdownFilterFieldsChanged.bind(this)
       );
     }
+
     this.addEventListener(
       "page-size-changed",
       this.handlePageSizeChanged.bind(this)
@@ -175,6 +178,7 @@ class Table extends LitElement {
         this.handleDropdownFilterFieldsChanged.bind(this)
       );
     }
+
     this.removeEventListener(
       "page-size-changed",
       this.handlePageSizeChanged.bind(this)
@@ -533,11 +537,13 @@ class Table extends LitElement {
               ? html`<th
                   role="columnheader"
                   scope="col"
+                  tabindex="0"
                   aria-colindex="${index + 1}"
                   aria-sort="${this.getAriaSort(key)}"
                   class="${this.tableVariantColor(variant)}"
                   data-field="${key}"
                   @click="${(event) => this.sortItems(event, key)}"
+                  @keydown="${(event) => this.handleHeaderKeyDown(event, key)}"
                   style="cursor: pointer;"
                 >
                   ${label} ${this.renderSortIndicator(key)}
@@ -553,6 +559,24 @@ class Table extends LitElement {
         )}
       </tr>
     `;
+  }
+  
+  // users can navigate to the headers using the keyboard and sort them by pressing Enter, Space, ArrowUp, or ArrowDown keys.
+  handleHeaderKeyDown(event, key) {
+    if (!this.sortable) return;
+
+    const keyActions = {
+      Enter: () => this.sortItems(event, key),
+      Space: () => this.sortItems(event, key),
+      ArrowUp: () => this.sortItems(event, key),
+      ArrowDown: () => this.sortItems(event, key),
+    };
+
+    const action = keyActions[event.key];
+    if (action) {
+      event.preventDefault();
+      action();
+    }
   }
 
   _onPageChanged(e) {
@@ -719,7 +743,6 @@ class Table extends LitElement {
                           class="caret-icon ${isExpanded
                             ? "rotate-down"
                             : "rotate-up"}"
-                          aria-expanded="${isExpanded}"
                         ></button>
                       </td>`
                     : hasDetailsRows
@@ -830,19 +853,27 @@ class Table extends LitElement {
     this.requestUpdate();
 
     this.dispatchEvent(
-      new CustomEvent("sort-field-updated", { detail: { value: "none" } })
+      new CustomEvent("sort-field-updated", {
+        detail: { value: "none" },
+      })
     );
     this.dispatchEvent(
-      new CustomEvent("sort-order-updated", { detail: { value: "asc" } })
+      new CustomEvent("sort-order-updated", {
+        detail: { value: "asc" },
+      })
     );
 
+    // Clear filter text and selected filter fields
     this.filterText = "";
     this.selectedFilterFields = [];
     this.dispatchEvent(
-      new CustomEvent("filter-changed", { detail: { value: "" } })
+      new CustomEvent("filter-changed", {
+        detail: { value: "" },
+      })
     );
     this.applyFilter();
 
+    // Clear dropdown selections
     const dropdown = document.getElementById(this.tableId + "-dropdown");
     if (dropdown) {
       dropdown.clearSelections();
