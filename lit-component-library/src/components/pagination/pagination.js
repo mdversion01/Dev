@@ -2,9 +2,11 @@ import { LitElement, html, css } from "lit";
 import { paginationStyles } from "./pagination-styles.js";
 import { selectFieldStyles } from "../select-field/select-field-styles.js"; // Import your custom select field component
 import { plSelectFieldStyles } from "../pl-select-field/pl-select-field-styles.js"; // Import your custom select field component
+import { inputFieldStyles } from "../input-field/input-field-styles.js"; // Import your custom input field component
 
 class PaginationComponent extends LitElement {
   static styles = [
+    inputFieldStyles,
     selectFieldStyles,
     plSelectFieldStyles,
     paginationStyles,
@@ -31,6 +33,7 @@ class PaginationComponent extends LitElement {
     plumage: { type: Boolean },
     totalRows: { type: Number },
     useMinimizePagination: { type: Boolean }, // New property for minimized pagination
+    useByPagePagination: { type: Boolean }, // New property for by-page pagination
   };
 
   constructor() {
@@ -51,6 +54,7 @@ class PaginationComponent extends LitElement {
     this.plumage = false;
     this.totalRows = 0;
     this.useMinimizePagination = false; // Initialize the new property
+    this.useByPagePagination = false; // Initialize the new property
     this.pageSize = this.showSizeChanger
       ? this.pageSizeOptions
           .filter((size) => size !== "All")
@@ -189,6 +193,13 @@ class PaginationComponent extends LitElement {
       this.onShowSizeChange(this.currentPage, newSize);
     }
     this._changePage(1); // Trigger page change with updated page size
+  }
+
+  _handleInputPageChange(e) {
+    const newPage = parseInt(e.target.value, 10);
+    if (!isNaN(newPage) && newPage >= 1 && newPage <= this.totalPages) {
+      this._changePage(newPage);
+    }
   }
 
   connectedCallback() {
@@ -557,6 +568,116 @@ class PaginationComponent extends LitElement {
     </ul>`;
   }
 
+  renderByPagePagination() {
+    return html`<ul
+      role="menubar"
+      aria-disabled="false"
+      aria-label="Pagination"
+      class="pagination by-page b-pagination${this.size === "sm"
+        ? " pagination-sm"
+        : this.size === "lg"
+        ? " pagination-lg"
+        : ""}${this.paginationLayout === "center"
+        ? " justify-content-center"
+        : this.paginationLayout === "end"
+        ? " justify-content-end"
+        : ""}"
+    >
+      <li
+        role="presentation"
+        aria-hidden="true"
+        class="page-item${this.currentPage === 1 ? " disabled" : ""}"
+      >
+        <button
+          role="menuitem"
+          type="button"
+          tabindex="-1"
+          aria-label="Go to first page"
+          aria-controls="${this.id}"
+          class="page-link"
+          @click="${this._firstPage}"
+          ?disabled="${this.currentPage === 1}"
+        >
+          ${this.goToButtons === "text" ? "First" : "«"}
+        </button>
+      </li>
+      <li
+        role="presentation"
+        aria-hidden="true"
+        class="page-item${this.currentPage === 1 ? " disabled" : ""}"
+      >
+        <button
+          role="menuitem"
+          type="button"
+          tabindex="-1"
+          aria-label="Go to previous page"
+          aria-controls="${this.id}"
+          class="page-link"
+          @click="${this._prevPage}"
+          ?disabled="${this.currentPage === 1}"
+        >
+          ${this.goToButtons === "text" ? "Prev" : "‹"}
+        </button>
+      </li>
+      <li role="presentation" aria-hidden="true" class="page-item">
+        <div class="pages">
+        Page
+        <input
+          type="text"
+          inputmode="numeric"
+          pattern="[0-9]*"
+          id="paginationInput"
+          aria-labelledby="paginationInputLabel paginationDescription"
+          class="form-control page-input${this.size === "sm" ? " basic-input-sm" : this.size === "lg" ? " basic-input-lg" : ""}"
+          .value="${this.currentPage}"
+          @change="${this._handleInputPageChange}"
+        />
+        of ${this.totalPages}
+        </div>
+      </li>
+      <li
+        role="presentation"
+        class="page-item${this.currentPage === this.totalPages
+          ? " disabled"
+          : ""}"
+        aria-hidden="true"
+      >
+        <button
+          role="menuitem"
+          type="button"
+          tabindex="-1"
+          aria-label="Go to next page"
+          aria-controls="${this.id}"
+          class="page-link"
+          @click="${this._nextPage}"
+          ?disabled="${this.currentPage === this.totalPages}"
+        >
+          ${this.goToButtons === "text" ? "Next" : "›"}
+        </button>
+      </li>
+      <li
+        role="presentation"
+        class="page-item${this.currentPage === this.totalPages
+          ? " disabled"
+          : ""}"
+        aria-hidden="true"
+      >
+        <button
+          role="menuitem"
+          type="button"
+          tabindex="-1"
+          aria-label="Go to last page"
+          aria-controls="${this.id}"
+          class="page-link"
+          @click="${this._lastPage}"
+          ?disabled="${this.currentPage === this.totalPages}"
+        >
+          ${this.goToButtons === "text" ? "Last" : "»"}
+        </button>
+      </li>
+    </ul>`;
+  }
+
   render() {
     if (this.showSizeChanger && this.paginationLayout === "start") {
       return html`
@@ -564,6 +685,8 @@ class PaginationComponent extends LitElement {
           <div class="pagination-cell start">
             ${this.useMinimizePagination
               ? this.renderMinimizePagination()
+              : this.useByPagePagination
+              ? this.renderByPagePagination()
               : this.renderPagination()}
           </div>
           ${this.showDisplayRange
@@ -590,6 +713,8 @@ class PaginationComponent extends LitElement {
           <div class="pagination-cell center">
             ${this.useMinimizePagination
               ? this.renderMinimizePagination()
+              : this.useByPagePagination
+              ? this.renderByPagePagination()
               : this.renderPagination()}
           </div>
           ${this.showDisplayRange
@@ -632,6 +757,8 @@ class PaginationComponent extends LitElement {
           <div class="pagination-cell end">
             ${this.useMinimizePagination
               ? this.renderMinimizePagination()
+              : this.useByPagePagination
+              ? this.renderByPagePagination()
               : this.renderPagination()}
           </div>
         </div>
@@ -642,6 +769,8 @@ class PaginationComponent extends LitElement {
           <div class="pagination-cell fill">
             ${this.useMinimizePagination
               ? this.renderMinimizePagination()
+              : this.useByPagePagination
+              ? this.renderByPagePagination()
               : this.renderPagination()}
           </div>
           ${this.showDisplayRange
@@ -684,15 +813,24 @@ class PaginationComponent extends LitElement {
           <div class="pagination-cell fill d-flex end">
             ${this.useMinimizePagination
               ? this.renderMinimizePagination()
+              : this.useByPagePagination
+              ? this.renderByPagePagination()
               : this.renderPagination()}
           </div>
         </div>
       `;
     } else {
       return html`
-        <div class="pagination-layout${this.plumage ? " plumage" : ""}${this.paginationLayout === "fill" ? "" : " d-flex"}">
+        <div
+          class="pagination-layout${this.plumage ? " plumage" : ""}${this
+            .paginationLayout === "fill"
+            ? ""
+            : " d-flex"}"
+        >
           ${this.useMinimizePagination
             ? this.renderMinimizePagination()
+            : this.useByPagePagination
+            ? this.renderByPagePagination()
             : this.renderPagination()}
           ${this.showDisplayRange
             ? html`<div
@@ -700,7 +838,13 @@ class PaginationComponent extends LitElement {
                   ? " sm"
                   : this.size === "lg"
                   ? " lg"
-                  : ""}${this.paginationLayout === "fill" ? " fill" : this.paginationLayout === "center" ? " justify-content-center flex-fill50" : this.paginationLayout === "end" || this.paginationLayout ? " justify-content-end" : ""}"
+                  : ""}${this.paginationLayout === "fill"
+                  ? " fill"
+                  : this.paginationLayout === "center"
+                  ? " justify-content-center flex-fill50"
+                  : this.paginationLayout === "end" || this.paginationLayout
+                  ? " justify-content-end"
+                  : ""}"
               >
                 ${this.displayRange}
               </div>`

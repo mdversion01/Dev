@@ -57,6 +57,7 @@ class Table extends LitElement {
     showSizeChanger: { type: Boolean },
     showDisplayRange: { type: Boolean },
     useMinimizePagination: { type: Boolean },
+    useByPagePagination: { type: Boolean },
   };
 
   constructor() {
@@ -73,6 +74,7 @@ class Table extends LitElement {
     this.pageSizeOptions = [10, 20, 50, 100, "All"]; // default page size options
     this.paginationLayout = "";
     this.useMinimizePagination = false;
+    this.useByPagePagination = false;
     this.showDisplayRange = false;
     this.showSizeChanger = false;
     if (this.showSizeChanger) {
@@ -613,6 +615,7 @@ class Table extends LitElement {
         .size="${this.size}"
         .goToButtons="${this.goToButtons}"
         .useMinimizePagination="${this.useMinimizePagination}"
+        .useByPagePagination="${this.useByPagePagination}"
         .currentPage="${this.currentPage}"
         .totalPages="${totalPages}"
         .limit="${this.paginationLimit}"

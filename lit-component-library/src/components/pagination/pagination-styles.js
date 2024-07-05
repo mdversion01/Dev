@@ -47,6 +47,7 @@ export const paginationStyles = css`
   }
 
   .pagination {
+    align-items: center;
     display: flex;
     margin: 0;
     padding-left: 0;
@@ -105,34 +106,64 @@ export const paginationStyles = css`
     border-color: #dee2e6;
   }
 
+  .by-page .pages {
+    padding: 0 0.25rem;
+  }
+
+  .by-page .pages .page-input {
+    display: inline-block;
+    margin-top: 3px;
+    width: 2.5rem;
+  }
+
+  .by-page .page-item:nth-child(2) .page-link {
+    border-top-right-radius: 0.25rem;
+    border-bottom-right-radius: 0.25rem;
+  }
+
+  .by-page .page-item:nth-child(4) .page-link {
+    border-top-left-radius: 0.25rem;
+    border-bottom-left-radius: 0.25rem;
+  }
+
+  .pagination-sm {
+    font-size: 0.875rem;
+  }
+
+  .pagination-lg {
+    font-size: 1.25rem;
+  }
+
   .pagination-lg .page-link {
     padding: 0.5rem 1.25rem;
-    font-size: 1.25rem;
     line-height: 1.5;
   }
 
-  .pagination-lg .page-item:first-child .page-link {
+  .pagination-lg .page-item:first-child .page-link,
+  .by-page.pagination-lg .page-item:nth-child(4) .page-link {
     border-top-left-radius: 0.3rem;
     border-bottom-left-radius: 0.3rem;
   }
 
-  .pagination-lg .page-item:last-child .page-link {
+  .pagination-lg .page-item:last-child .page-link,
+  .by-page.pagination-lg .page-item:nth-child(2) .page-link {
     border-top-right-radius: 0.3rem;
     border-bottom-right-radius: 0.3rem;
   }
 
   .pagination-sm .page-link {
     padding: 0.25rem 0.5rem;
-    font-size: 0.875rem;
     line-height: 1.5;
   }
 
-  .pagination-sm .page-item:first-child .page-link {
+  .pagination-sm .page-item:first-child .page-link,
+  .by-page.pagination-sm .page-item:nth-child(4) .page-link {
     border-top-left-radius: 0.2rem;
     border-bottom-left-radius: 0.2rem;
   }
 
-  .pagination-sm .page-item:last-child .page-link {
+  .pagination-sm .page-item:last-child .page-link,
+  .by-page.pagination-sm .page-item:nth-child(2) .page-link {
     border-top-right-radius: 0.2rem;
     border-bottom-right-radius: 0.2rem;
   }
@@ -283,7 +314,7 @@ export const paginationStyles = css`
     padding: 0 0.5rem;
   }
 
-  .plumage  .size-changer-sm {
+  .plumage .size-changer-sm {
     font-size: 0.8333rem;
     padding: 0;
   }
