@@ -2,22 +2,25 @@ import { LitElement, html, css } from "lit";
 import { paginationStyles } from "./pagination-styles.js";
 
 class StandardPagination extends LitElement {
+  // Define styles for the component
   static styles = [paginationStyles];
 
+  // Define properties with their types
   static properties = {
-    currentPage: { type: Number },
-    totalPages: { type: Number },
-    hideGotoEndButtons: { type: Boolean },
-    goToButtons: { type: String },
-    size: { type: String },
-    paginationLayout: { type: String },
-    hideEllipsis: { type: Boolean },
-    limit: { type: Number },
-    plumage: { type: Boolean },
+    currentPage: { type: Number }, // Current active page
+    totalPages: { type: Number }, // Total number of pages
+    hideGotoEndButtons: { type: Boolean }, // Whether to hide 'First' and 'Last' buttons
+    goToButtons: { type: String }, // Type of 'go to' buttons: text or symbols
+    size: { type: String }, // Size of pagination: sm, lg, or default
+    paginationLayout: { type: String }, // Layout of pagination: center, end, fill, etc.
+    hideEllipsis: { type: Boolean }, // Whether to hide ellipsis between page numbers
+    limit: { type: Number }, // Limit of visible page buttons
+    plumage: { type: Boolean }, // Custom style flag
   };
 
   constructor() {
     super();
+    // Initialize default property values
     this.currentPage = 1;
     this.totalPages = 1;
     this.hideGotoEndButtons = false;
@@ -29,6 +32,7 @@ class StandardPagination extends LitElement {
     this.plumage = false;
   }
 
+  // Method to dispatch a custom event when the page is changed
   _changePage(page) {
     this.dispatchEvent(
       new CustomEvent("change-page", {
@@ -37,26 +41,31 @@ class StandardPagination extends LitElement {
     );
   }
 
+  // Method to navigate to the next page
   _nextPage() {
     if (this.currentPage < this.totalPages) {
       this._changePage(this.currentPage + 1);
     }
   }
 
+  // Method to navigate to the previous page
   _prevPage() {
     if (this.currentPage > 1) {
       this._changePage(this.currentPage - 1);
     }
   }
 
+  // Method to navigate to the first page
   _firstPage() {
     this._changePage(1);
   }
 
+  // Method to navigate to the last page
   _lastPage() {
     this._changePage(this.totalPages);
   }
 
+  // Method to render ellipsis
   _renderEllipsis(key) {
     return this.hideEllipsis
       ? ""
@@ -82,6 +91,7 @@ class StandardPagination extends LitElement {
         </li>`;
   }
 
+  // Method to render a single page button
   _renderPageButton(page) {
     return html`<li
       role="presentation"
@@ -112,6 +122,7 @@ class StandardPagination extends LitElement {
     </li>`;
   }
 
+  // Method to generate the page buttons
   _generatePageButtons() {
     const buttons = [];
     const halfLimit = Math.floor((this.limit - 1) / 2);

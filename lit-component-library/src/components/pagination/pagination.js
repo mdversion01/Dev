@@ -8,6 +8,7 @@ import "./minimize-pagination.js";
 import "./by-page-pagination.js";
 
 class PaginationComponent extends LitElement {
+  // Define the styles for the component
   static styles = [
     inputFieldStyles,
     selectFieldStyles,
@@ -16,6 +17,7 @@ class PaginationComponent extends LitElement {
     css``,
   ];
 
+  // Define the properties for the component
   static properties = {
     paginationLayout: { type: String },
     currentPage: { type: Number },
@@ -65,6 +67,7 @@ class PaginationComponent extends LitElement {
       : 10;
   }
 
+  // Method to handle page change events
   _changePage(e) {
     const { page } = e.detail;
     this.currentPage = page;
@@ -78,6 +81,7 @@ class PaginationComponent extends LitElement {
     }
   }
 
+  // Method to handle page size change events
   _handlePageSizeChange(e) {
     const newSize =
       e.target.value === "All" ? "All" : parseInt(e.target.value, 10);
@@ -135,6 +139,7 @@ class PaginationComponent extends LitElement {
     }
   }
 
+  // Render the page size changer select box
   renderSizeChanger() {
     return html`<div
       class="size-changer${this.size === "sm"
@@ -168,6 +173,7 @@ class PaginationComponent extends LitElement {
     </div>`;
   }
 
+  // Render the Plumage style page size changer select box
   renderPlumageStyleSizeChanger() {
     return html`
       <div
@@ -218,6 +224,7 @@ class PaginationComponent extends LitElement {
     `;
   }
 
+  // Calculate and return the display range text
   get displayRange() {
     const startRow = (this.currentPage - 1) * this.pageSize + 1;
     const endRow = Math.min(this.currentPage * this.pageSize, this.totalRows);

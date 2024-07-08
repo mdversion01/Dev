@@ -158,9 +158,17 @@ export const tableStyles = css`
   .table-borderless thead th {
     border: 0;
   }
-  .table-striped tbody tr:nth-of-type(odd) {
+  /* .table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgba(0, 0, 0, 0.05);
+  } */
+
+  .table-striped tbody tr.striped-row {
     background-color: rgba(0, 0, 0, 0.05);
   }
+  .table-striped tbody tr.striped-row-dark {
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+
   .table-hover tbody tr:hover {
     color: #212529;
     background-color: rgba(0, 0, 0, 0.075);
@@ -1188,6 +1196,6 @@ export const tableStyles = css`
   }
 
   .plumage .table-sm .select-row-btns {
-   margin: 3px 0 0 4px;
+    margin: 3px 0 0 4px;
   }
 `;

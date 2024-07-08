@@ -5,6 +5,7 @@ import { plInputFieldStyles } from "../pl-input-field/pl-input-field-styles.js";
 import { formStyles } from "../form-styles.js";
 
 class ByPagePagination extends LitElement {
+  // Define styles for the component
   static styles = [
     formStyles,
     paginationStyles,
@@ -12,17 +13,19 @@ class ByPagePagination extends LitElement {
     plInputFieldStyles,
   ];
 
+  // Define properties with their types
   static properties = {
-    currentPage: { type: Number },
-    totalPages: { type: Number },
-    goToButtons: { type: String },
-    size: { type: String },
-    paginationLayout: { type: String },
-    plumage: { type: Boolean },
+    currentPage: { type: Number }, // Current active page
+    totalPages: { type: Number }, // Total number of pages
+    goToButtons: { type: String }, // Type of 'go to' buttons: text or symbols
+    size: { type: String }, // Size of pagination: sm, lg, or default
+    paginationLayout: { type: String }, // Layout of pagination: center, end, etc.
+    plumage: { type: Boolean }, // Custom style flag
   };
 
   constructor() {
     super();
+    // Initialize default property values
     this.currentPage = 1;
     this.totalPages = 1;
     this.goToButtons = "";
@@ -31,10 +34,12 @@ class ByPagePagination extends LitElement {
     this.plumage = false;
   }
 
+  // Method to navigate to the first page
   _firstPage() {
     this.dispatchEvent(new CustomEvent("change-page", { detail: { page: 1 } }));
   }
 
+  // Method to navigate to the previous page
   _prevPage() {
     if (this.currentPage > 1) {
       this.dispatchEvent(
@@ -45,6 +50,7 @@ class ByPagePagination extends LitElement {
     }
   }
 
+  // Method to navigate to the next page
   _nextPage() {
     if (this.currentPage < this.totalPages) {
       this.dispatchEvent(
@@ -55,12 +61,14 @@ class ByPagePagination extends LitElement {
     }
   }
 
+  // Method to navigate to the last page
   _lastPage() {
     this.dispatchEvent(
       new CustomEvent("change-page", { detail: { page: this.totalPages } })
     );
   }
 
+  // Method to handle page change input field
   _handleInputPageChange(e) {
     const newPage = parseInt(e.target.value, 10);
     if (!isNaN(newPage) && newPage >= 1 && newPage <= this.totalPages) {
@@ -70,17 +78,20 @@ class ByPagePagination extends LitElement {
     }
   }
 
+  // Lifecycle method - called when the component is connected to the DOM
   connectedCallback() {
     super.connectedCallback();
     this._handleDocumentClick = this.handleDocumentClick.bind(this);
     document.addEventListener("click", this._handleDocumentClick);
   }
 
+  // Lifecycle method - called when the component is disconnected from the DOM
   disconnectedCallback() {
     super.disconnectedCallback();
     document.removeEventListener("click", this._handleDocumentClick);
   }
 
+  // Handle focus on the input field
   handleFocus(event) {
     this.isSelectFocused = true;
     const bFocusDiv = this.shadowRoot.querySelector(".b-focus");
@@ -90,6 +101,7 @@ class ByPagePagination extends LitElement {
     }
   }
 
+  // Handle blur on the input field
   handleBlur(event) {
     this.isSelectFocused = false;
     setTimeout(() => {
@@ -103,6 +115,7 @@ class ByPagePagination extends LitElement {
     }, 100);
   }
 
+  // Handle document click to manage focus state
   handleDocumentClick(event) {
     if (!this.isSelectFocused) {
       const bFocusDiv = this.shadowRoot.querySelector(".b-focus");

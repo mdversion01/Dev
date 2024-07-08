@@ -2,19 +2,22 @@ import { LitElement, html, css } from "lit";
 import { paginationStyles } from "./pagination-styles.js";
 
 class MinimizePagination extends LitElement {
+  // Define styles for the component
   static styles = [paginationStyles];
 
+  // Define properties with their types
   static properties = {
-    currentPage: { type: Number },
-    totalPages: { type: Number },
-    goToButtons: { type: String },
-    size: { type: String },
-    paginationLayout: { type: String },
-    plumage: { type: Boolean },
+    currentPage: { type: Number }, // Current active page
+    totalPages: { type: Number }, // Total number of pages
+    goToButtons: { type: String }, // Type of 'go to' buttons: text or symbols
+    size: { type: String }, // Size of pagination: sm, lg, or default
+    paginationLayout: { type: String }, // Layout of pagination: center, end, etc.
+    plumage: { type: Boolean }, // Custom style flag
   };
 
   constructor() {
     super();
+    // Initialize default property values
     this.currentPage = 1;
     this.totalPages = 1;
     this.goToButtons = "";
@@ -23,10 +26,12 @@ class MinimizePagination extends LitElement {
     this.plumage = false;
   }
 
+  // Method to navigate to the first page
   _firstPage() {
     this.dispatchEvent(new CustomEvent("change-page", { detail: { page: 1 } }));
   }
 
+  // Method to navigate to the previous page
   _prevPage() {
     if (this.currentPage > 1) {
       this.dispatchEvent(
@@ -37,6 +42,7 @@ class MinimizePagination extends LitElement {
     }
   }
 
+  // Method to navigate to the next page
   _nextPage() {
     if (this.currentPage < this.totalPages) {
       this.dispatchEvent(
@@ -47,6 +53,7 @@ class MinimizePagination extends LitElement {
     }
   }
 
+  // Method to navigate to the last page
   _lastPage() {
     this.dispatchEvent(
       new CustomEvent("change-page", { detail: { page: this.totalPages } })

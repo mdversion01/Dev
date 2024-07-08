@@ -8,6 +8,7 @@ class Table extends LitElement {
   static styles = [tableStyles, css``];
 
   static properties = {
+    // Define component properties
     border: { type: Boolean },
     bordered: { type: Boolean },
     borderless: { type: Boolean },
@@ -88,7 +89,7 @@ class Table extends LitElement {
   }
 
   initializeProperties() {
-    // existing initialization
+    // Initializing default values for properties
     this.border = false;
     this.bordered = false;
     this.borderless = false;
@@ -129,6 +130,7 @@ class Table extends LitElement {
 
   connectedCallback() {
     super.connectedCallback();
+    // Adding event listeners for various events
     this.addEventListener(
       "sort-field-changed",
       this.handleFieldChanged.bind(this)
@@ -158,6 +160,7 @@ class Table extends LitElement {
 
   disconnectedCallback() {
     super.disconnectedCallback();
+    // Removing event listeners
     this.removeEventListener(
       "sort-field-changed",
       this.handleFieldChanged.bind(this)
@@ -257,6 +260,7 @@ class Table extends LitElement {
     this.updateTotalRows();
     this.requestUpdate();
 
+    // Dispatch events to notify that sorting has been updated
     this.dispatchEvent(
       new CustomEvent("sort-field-updated", {
         detail: { value: this.sortField },
@@ -301,11 +305,13 @@ class Table extends LitElement {
   }
 
   clearSelection() {
+    // Clear selected rows and dispatch event to notify
     this.selectedRows = [];
     this.dispatchEvent(new CustomEvent("row-selected", { detail: [] }));
   }
 
   resetColumnSort() {
+    // Reset sorting to default state
     this.sortCriteria = [];
     this.items = [...this.originalItems];
     this.clearSelection();
@@ -314,10 +320,12 @@ class Table extends LitElement {
   }
 
   updateTotalRows() {
+    // Update the total number of rows
     this.totalRows = this.filteredItems.length;
   }
 
   tableVariantColor(variant) {
+    // Map variant to corresponding CSS class
     const variantMap = {
       primary: "table-primary",
       secondary: "table-secondary",
@@ -332,6 +340,7 @@ class Table extends LitElement {
   }
 
   headertheme() {
+    // Determine header theme based on dark/light property
     return this.headerDark
       ? "thead-dark"
       : this.headerLight
@@ -340,6 +349,7 @@ class Table extends LitElement {
   }
 
   get normalizedFields() {
+    // Normalize fields for table header
     if (this.fields.length > 0) {
       return this.fields.map((field) => ({
         key: field.key || field,
@@ -370,6 +380,7 @@ class Table extends LitElement {
   }
 
   formatHeader(key) {
+    // Format header labels
     return key
       .split("_")
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
@@ -383,6 +394,7 @@ class Table extends LitElement {
       (criteria) => criteria.key === key
     );
 
+    // Handle sorting with multi-sort support using Ctrl/Meta key
     if (event.ctrlKey || event.metaKey) {
       if (existingSort) {
         existingSort.order = existingSort.order === "asc" ? "desc" : "none";
@@ -443,6 +455,7 @@ class Table extends LitElement {
     this.updateTotalRows();
     this.requestUpdate();
 
+    // Dispatch events to notify that sorting has been updated
     this.dispatchEvent(
       new CustomEvent("sort-field-updated", {
         detail: { value: this.sortField || "none" },
@@ -560,9 +573,9 @@ class Table extends LitElement {
       </tr>
     `;
   }
-  
-  // users can navigate to the headers using the keyboard and sort them by pressing Enter, Space, ArrowUp, or ArrowDown keys.
+
   handleHeaderKeyDown(event, key) {
+    // Allow sorting via keyboard navigation
     if (!this.sortable) return;
 
     const keyActions = {
@@ -685,6 +698,8 @@ class Table extends LitElement {
       [tableVariantColor]: true,
     };
 
+    let logicalRowIndex = 0;
+
     return html`
       <table
         role="table"
@@ -710,80 +725,83 @@ class Table extends LitElement {
               : "";
             const isSelected = this.selectedRows.includes(row);
             const isExpanded = this.expandedRows.includes(rowIndex);
-            return [
-              html`
-                <tr
-                  role="row"
-                  class="${rowVariantClass} ${isSelected
-                    ? "b-table-row-selected " + this.selectedVariant
-                    : ""}"
-                  tabindex="0"
-                  aria-selected="${isSelected ? "true" : "false"}"
-                >
-                  ${["single", "multi", "range"].includes(this.selectMode)
-                    ? html`<td
-                        class="select-col"
-                        @click="${(event) => this.selectRow(event, rowIndex)}"
-                      >
-                        ${isSelected
-                          ? html`<button
-                              class="check-icon select-row-btns"
-                            ></button>`
-                          : html`<button
-                              class="square-outline-icon select-row-btns"
-                            ></button>`}
-                      </td>`
-                    : ""}
-                  ${row._showDetails
-                    ? html`<td
-                        @click="${() => this.toggleDetails(rowIndex)}"
-                        style="cursor: pointer;"
-                      >
-                        <button
-                          class="caret-icon ${isExpanded
-                            ? "rotate-down"
-                            : "rotate-up"}"
-                        ></button>
-                      </td>`
-                    : hasDetailsRows
-                    ? html`<td></td>`
-                    : ""}
-                  ${this.normalizedFields.map(({ key, variant }, index) => {
-                    const cell = row[key];
-                    const cellVariant =
-                      row._cellVariants && row._cellVariants[key]
-                        ? this.tableVariantColor(row._cellVariants[key])
-                        : this.tableVariantColor(variant);
-                    return html`<td
-                      aria-colindex="${index + 1}"
-                      role="cell"
-                      class="${cellVariant}"
+            const isStriped = this.striped && logicalRowIndex % 2 === 1;
+            const stripeClass = this.dark ? 'striped-row-dark' : 'striped-row';
+            const mainRowClass = isStriped ? stripeClass : '';
+            const mainRow = html`
+              <tr
+                role="row"
+                class="${mainRowClass} ${rowVariantClass} ${isSelected
+                  ? "b-table-row-selected " + this.selectedVariant
+                  : ""}"
+                tabindex="0"
+                aria-selected="${isSelected ? "true" : "false"}"
+              >
+                ${["single", "multi", "range"].includes(this.selectMode)
+                  ? html`<td
+                      class="select-col"
+                      @click="${(event) => this.selectRow(event, rowIndex)}"
                     >
-                      ${cell}
-                    </td>`;
-                  })}
-                </tr>
-              `,
-              row._showDetails
-                ? html`
-                    <tr
-                      role="row"
-                      class="details-row"
-                      ?expanded="${isExpanded}"
+                      ${isSelected
+                        ? html`<button
+                            class="check-icon select-row-btns"
+                          ></button>`
+                        : html`<button
+                            class="square-outline-icon select-row-btns"
+                          ></button>`}
+                    </td>`
+                  : ""}
+                ${row._showDetails
+                  ? html`<td
+                      @click="${() => this.toggleDetails(rowIndex)}"
+                      style="cursor: pointer;"
                     >
-                      <td
-                        colspan="${this.normalizedFields.length +
-                        1 +
-                        (["single", "multi", "range"].includes(this.selectMode)
-                          ? 1
-                          : 0)}"
-                      >
-                        <div>${this.renderDetails(row)}</div>
-                      </td>
-                    </tr>
-                  `
-                : null,
-            ];
+                      <button
+                        class="caret-icon ${isExpanded
+                          ? "rotate-down"
+                          : "rotate-up"}"
+                      ></button>
+                    </td>`
+                  : hasDetailsRows
+                  ? html`<td></td>`
+                  : ""}
+                ${this.normalizedFields.map(({ key, variant }, index) => {
+                  const cell = row[key];
+                  const cellVariant =
+                    row._cellVariants && row._cellVariants[key]
+                      ? this.tableVariantColor(row._cellVariants[key])
+                      : this.tableVariantColor(variant);
+                  return html`<td
+                    aria-colindex="${index + 1}"
+                    role="cell"
+                    class="${cellVariant}"
+                  >
+                    ${cell}
+                  </td>`;
+                })}
+              </tr>
+            `;
+            logicalRowIndex++;
+            const detailRow = row._showDetails
+              ? html`
+                  <tr
+                    role="row"
+                    class="details-row"
+                    ?expanded="${isExpanded}"
+                  >
+                    <td
+                      colspan="${this.normalizedFields.length +
+                      1 +
+                      (["single", "multi", "range"].includes(this.selectMode)
+                        ? 1
+                        : 0)}"
+                    >
+                      <div>${this.renderDetails(row)}</div>
+                    </td>
+                  </tr>
+                `
+              : null;
+            return [mainRow, detailRow];
           })}
           ${this.paginatedItems.length === 0
             ? html`<tr>
