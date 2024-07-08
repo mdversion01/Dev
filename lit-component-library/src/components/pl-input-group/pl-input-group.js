@@ -150,7 +150,7 @@ class PlInputGroup extends LitElement {
   }
 
   handleClear() {
-    console.log("handleClear triggered");
+    
     this.value = "";
     const inputElement = this.shadowRoot.querySelector("input");
     if (inputElement) {

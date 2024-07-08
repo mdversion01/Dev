@@ -971,10 +971,7 @@ class Dropdown extends LitElement {
   handleCheckboxChange(event, index) {
     const item = this.items[index];
     item.checked = event.target.checked;
-    console.log(
-      "Checked items:",
-      this.items.filter((item) => item.checked)
-    );
+    
     this.dispatchEvent(
       new CustomEvent("filter-fields-changed", {
         detail: { items: this.items, tableId: this.tableId }, // Add tableId to the detail
@@ -987,10 +984,7 @@ class Dropdown extends LitElement {
   handleToggleChange(event, index) {
     const item = this.items[index];
     item.checked = event.detail.checked;
-    console.log(
-      "TOGGLED items:",
-      this.items.filter((item) => item.checked)
-    );
+    
     this.dispatchEvent(
       new CustomEvent("filter-fields-changed", {
         detail: { items: this.items, tableId: this.tableId },
@@ -1004,7 +998,7 @@ class Dropdown extends LitElement {
     this.items.forEach((item) => {
       item.checked = false;
       const inputElement = this.shadowRoot.querySelector(`#${this.inputId}-${item.key}`);
-      console.log("inputElement", inputElement);
+      
       if (inputElement) {
         inputElement.checked = false;
       }
@@ -1012,7 +1006,7 @@ class Dropdown extends LitElement {
 
     // Additional logic to handle clearing selections in nested input components
     const nestedInputs = this.shadowRoot.querySelectorAll("checkbox-radio-input-component, toggle-switch");
-    console.log("nestedInputs", nestedInputs);
+    
     nestedInputs.forEach((nestedInput) => {
       nestedInput.clearSelections();
     });

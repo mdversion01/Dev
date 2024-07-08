@@ -133,7 +133,7 @@ class PlAutocompleteInput extends LitElement {
         case "Enter":
           // Select the focused option
           if (this.multiSelect) {
-            console.log("multiSelect");
+            
             if (this.focusedOptionIndex !== -1) {
               this.handleMultiSelectOption(
                 this.filteredOptions[this.focusedOptionIndex]
@@ -141,7 +141,7 @@ class PlAutocompleteInput extends LitElement {
               this.focusedOptionIndex = -1; // Reset focus
             }
           } else {
-            console.log("not multiSelect");
+            
             if (this.focusedOptionIndex !== -1) {
               this.handleSelectOption(
                 this.filteredOptions[this.focusedOptionIndex]

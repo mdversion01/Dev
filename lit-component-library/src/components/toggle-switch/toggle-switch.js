@@ -258,7 +258,7 @@ class ToggleSwitch extends LitElement {
         inputElement.checked = false;
       }
     }
-    console.log("Clearing selections in toggle-switch", this);
+    
     this.requestUpdate();
   }
 }

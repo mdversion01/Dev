@@ -656,7 +656,7 @@ class CheckboxRadioInput extends LitElement {
         }
       });
     }
-    console.log("Clearing selections in checkbox-radio-input", this);
+    
     this.requestUpdate();
   }
 

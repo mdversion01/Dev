@@ -223,13 +223,11 @@ class CheckboxRadioInput extends LitElement {
 
   connectedCallback() {
     super.connectedCallback();
-    console.log("Connected to the DOM");
   }
 
   render() {
     const ids = this.camelCase(this.inputId).replace(/ /g, "");
     const names = this.camelCase(this.name).replace(/ /g, "");
-    //console.log("ids2: ", ids, names, this.radioGroupOptions, this.labelTxt);
 
     if (this.checkbox) {
       return html`${this.renderCheckbox(ids, names)}`;
