@@ -113,29 +113,41 @@ class PlSelectField extends LitElement {
     }
 
     if (this.withTable) {
-      window.addEventListener('sort-field-updated', this.updateSortField.bind(this));
-      window.addEventListener('sort-order-updated', this.updateSortOrder.bind(this));
+      window.addEventListener(
+        "sort-field-updated",
+        this.updateSortField.bind(this)
+      );
+      window.addEventListener(
+        "sort-order-updated",
+        this.updateSortOrder.bind(this)
+      );
     }
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
     if (this.withTable) {
-      window.removeEventListener('sort-field-updated', this.updateSortField.bind(this));
-      window.removeEventListener('sort-order-updated', this.updateSortOrder.bind(this));
+      window.removeEventListener(
+        "sort-field-updated",
+        this.updateSortField.bind(this)
+      );
+      window.removeEventListener(
+        "sort-order-updated",
+        this.updateSortOrder.bind(this)
+      );
     }
   }
 
   updateSortField(event) {
-    if (this.id === 'sortField') {
-      this.value = event.detail.value || 'none';
+    if (this.id.includes("sortField")) {
+      this.value = event.detail.value || "none";
       this.requestUpdate();
     }
   }
 
   updateSortOrder(event) {
-    if (this.id === 'sortOrder') {
-      this.value = event.detail.value || 'asc'; // Default to 'asc'
+    if (this.id.includes("sortOrder")) {
+      this.value = event.detail.value || "asc"; // Default to 'asc'
       this.requestUpdate();
     }
   }
@@ -245,7 +257,9 @@ class PlSelectField extends LitElement {
           @input=${this.handleInput}
           @change="${this.handleChange}"
         >
-        ${this.id === 'sortField' ? html`<option value="none" aria-label="none">--none--</option>` : ''}
+          ${this.id.includes("sortField")
+            ? html`<option value="none" aria-label="none">--none--</option>`
+            : ""}
           ${this.options
             ? this.options.map(
                 (option) =>
@@ -281,7 +295,10 @@ class PlSelectField extends LitElement {
   }
 
   handleChange(event) {
-    this.dispatchEvent(new CustomEvent('change', { detail: { value: event.target.value } }));
+    this.value = event.target.value; // Update the value property
+    this.dispatchEvent(
+      new CustomEvent("change", { detail: { value: this.value } })
+    );
   }
 
   render() {

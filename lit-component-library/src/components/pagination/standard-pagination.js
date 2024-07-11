@@ -15,6 +15,7 @@ class StandardPagination extends LitElement {
     paginationLayout: { type: String }, // Layout of pagination: center, end, fill, etc.
     hideEllipsis: { type: Boolean }, // Whether to hide ellipsis between page numbers
     limit: { type: Number }, // Limit of visible page buttons
+    paginationVariantColor: { type: String }, // Color variant of pagination
     plumage: { type: Boolean }, // Custom style flag
   };
 
@@ -29,6 +30,7 @@ class StandardPagination extends LitElement {
     this.paginationLayout = "";
     this.hideEllipsis = false;
     this.limit = 3;
+    this.paginationVariantColor = "";
     this.plumage = false;
   }
 
@@ -108,7 +110,7 @@ class StandardPagination extends LitElement {
         aria-controls="pagination"
         aria-label="Go to page ${page}"
         aria-checked="${this.currentPage === page}"
-        tabindex="${this.currentPage === page ? '-1' : '0'}"
+        tabindex="${this.currentPage === page ? "-1" : "0"}"
         class="page-link${this.paginationLayout === "fill" ||
         this.paginationLayout === "fill-left" ||
         this.paginationLayout === "fill-right"
@@ -170,7 +172,7 @@ class StandardPagination extends LitElement {
         ? " justify-content-end"
         : this.paginationLayout === "fill"
         ? " text-center"
-        : ""}${this.plumage ? " plumage" : ""}"
+        : ""}${this.paginationVariantColor ? " " + this.paginationVariantColor : ""}${this.plumage ? " plumage" : ""}"
     >
       ${!this.hideGotoEndButtons
         ? html`<li

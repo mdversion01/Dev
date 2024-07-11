@@ -19,23 +19,25 @@ class PaginationComponent extends LitElement {
 
   // Define the properties for the component
   static properties = {
-    paginationLayout: { type: String },
+   
     currentPage: { type: Number },
-    totalPages: { type: Number },
-    limit: { type: Number },
+    // formLayout: { type: String },
     goToButtons: { type: String },
-    hideGotoEndButtons: { type: Boolean },
     hideEllipsis: { type: Boolean },
+    hideGotoEndButtons: { type: Boolean },
     id: { type: String },
+    limit: { type: Number },
+    onChange: { type: Function },
+    onShowSizeChange: { type: Function },
     pageSize: { type: Number },
     pageSizeOptions: { type: Array },
+    paginationLayout: { type: String }, // property for pagination layout 'center', 'end', fill OR when used with showSizeChanger 'start', 'center', 'end', 'fill', 'fill-left', 'fill-right'
+    paginationVariantColor: { type: String },
+    plumage: { type: Boolean },
     showDisplayRange: { type: Boolean },
     showSizeChanger: { type: Boolean },
     size: { type: String },
-    onChange: { type: Function },
-    onShowSizeChange: { type: Function },
-    formLayout: { type: String },
-    plumage: { type: Boolean },
+    totalPages: { type: Number },
     totalRows: { type: Number },
     useMinimizePagination: { type: Boolean },
     useByPagePagination: { type: Boolean },
@@ -55,7 +57,8 @@ class PaginationComponent extends LitElement {
     this.showDisplayRange = false;
     this.showSizeChanger = false;
     this.size = "";
-    this.formLayout = "";
+    // this.formLayout = "";
+    this.paginationVariantColor = "";
     this.plumage = false;
     this.totalRows = 0;
     this.useMinimizePagination = false;
@@ -84,9 +87,10 @@ class PaginationComponent extends LitElement {
   // Method to handle page size change events
   _handlePageSizeChange(e) {
     const newSize =
-      e.target.value === "All" ? "All" : parseInt(e.target.value, 10);
+      e.target.value === "All" ? this.totalRows : parseInt(e.target.value, 10);
     this.pageSize = newSize;
     this.currentPage = 1;
+    this._recalculateTotalPages();
     this.dispatchEvent(
       new CustomEvent("page-size-changed", { detail: { pageSize: newSize } })
     );
@@ -231,6 +235,10 @@ class PaginationComponent extends LitElement {
     return `${startRow}-${endRow} of ${this.totalRows}`;
   }
 
+  _recalculateTotalPages() {
+    this.totalPages = Math.max(Math.ceil(this.totalRows / this.pageSize), 1);
+  }
+
   render() {
     if (this.showSizeChanger && this.paginationLayout === "start") {
       return html`
@@ -243,6 +251,7 @@ class PaginationComponent extends LitElement {
                   .goToButtons="${this.goToButtons}"
                   @change-page="${this._changePage}"
                   .size="${this.size}"
+                  .paginationVariantColor="${this.paginationVariantColor}"
                   .plumage="${this.plumage}"
                 ></minimize-pagination>`
               : this.useByPagePagination
@@ -252,6 +261,7 @@ class PaginationComponent extends LitElement {
                   .goToButtons="${this.goToButtons}"
                   @change-page="${this._changePage}"
                   .size="${this.size}"
+                  .paginationVariantColor="${this.paginationVariantColor}"
                   .plumage="${this.plumage}"
                 ></by-page-pagination>`
               : html`<standard-pagination
@@ -261,6 +271,7 @@ class PaginationComponent extends LitElement {
                   .goToButtons="${this.goToButtons}"
                   @change-page="${this._changePage}"
                   .size="${this.size}"
+                  .paginationVariantColor="${this.paginationVariantColor}"
                   .plumage="${this.plumage}"
                 ></standard-pagination>`}
           </div>
@@ -294,6 +305,8 @@ class PaginationComponent extends LitElement {
                   @change-page="${this._changePage}"
                   .size="${this.size}"
                   .plumage="${this.plumage}"
+                  .paginationVariantColor="${this.paginationVariantColor}"
+                  .paginationLayout="${this.paginationLayout}"
                 ></minimize-pagination>`
               : this.useByPagePagination
               ? html`<by-page-pagination
@@ -303,6 +316,8 @@ class PaginationComponent extends LitElement {
                   @change-page="${this._changePage}"
                   .size="${this.size}"
                   .plumage="${this.plumage}"
+                  .paginationVariantColor="${this.paginationVariantColor}"
+                  .paginationLayout="${this.paginationLayout}"
                 ></by-page-pagination>`
               : html`<standard-pagination
                   .currentPage="${this.currentPage}"
@@ -312,6 +327,8 @@ class PaginationComponent extends LitElement {
                   @change-page="${this._changePage}"
                   .size="${this.size}"
                   .plumage="${this.plumage}"
+                  .paginationVariantColor="${this.paginationVariantColor}"
+                  .paginationLayout="${this.paginationLayout}"
                 ></standard-pagination>`}
           </div>
           ${this.showDisplayRange
@@ -360,6 +377,8 @@ class PaginationComponent extends LitElement {
                   @change-page="${this._changePage}"
                   .size="${this.size}"
                   .plumage="${this.plumage}"
+                  .paginationVariantColor="${this.paginationVariantColor}"
+                  .paginationLayout="${this.paginationLayout}"
                 ></minimize-pagination>`
               : this.useByPagePagination
               ? html`<by-page-pagination
@@ -369,6 +388,8 @@ class PaginationComponent extends LitElement {
                   @change-page="${this._changePage}"
                   .plumage="${this.plumage}"
                   .size="${this.size}"
+                  .paginationVariantColor="${this.paginationVariantColor}"
+                  .paginationLayout="${this.paginationLayout}"
                 ></by-page-pagination>`
               : html`<standard-pagination
                   .currentPage="${this.currentPage}"
@@ -378,6 +399,8 @@ class PaginationComponent extends LitElement {
                   @change-page="${this._changePage}"
                   .size="${this.size}"
                   .plumage="${this.plumage}"
+                  .paginationVariantColor="${this.paginationVariantColor}"
+                  .paginationLayout="${this.paginationLayout}"
                 ></standard-pagination>`}
           </div>
         </div>
@@ -394,6 +417,8 @@ class PaginationComponent extends LitElement {
                   @change-page="${this._changePage}"
                   .size="${this.size}"
                   .plumage="${this.plumage}"
+                  .paginationVariantColor="${this.paginationVariantColor}"
+                  .paginationLayout="${this.paginationLayout}"
                 ></minimize-pagination>`
               : this.useByPagePagination
               ? html`<by-page-pagination
@@ -403,6 +428,8 @@ class PaginationComponent extends LitElement {
                   @change-page="${this._changePage}"
                   .size="${this.size}"
                   .plumage="${this.plumage}"
+                  .paginationVariantColor="${this.paginationVariantColor}"
+                  .paginationLayout="${this.paginationLayout}"
                 ></by-page-pagination>`
               : html`<standard-pagination
                   .currentPage="${this.currentPage}"
@@ -412,6 +439,8 @@ class PaginationComponent extends LitElement {
                   @change-page="${this._changePage}"
                   .size="${this.size}"
                   .plumage="${this.plumage}"
+                  .paginationVariantColor="${this.paginationVariantColor}"
+                  .paginationLayout="${this.paginationLayout}"
                 ></standard-pagination>`}
           </div>
           ${this.showDisplayRange
@@ -425,7 +454,7 @@ class PaginationComponent extends LitElement {
                 ${this.displayRange}
               </div>`
             : ""}
-          <div class="pagination-cell">
+          <div class="pagination-cell end">
             ${this.plumage
               ? this.renderPlumageStyleSizeChanger()
               : this.renderSizeChanger()}
@@ -451,7 +480,7 @@ class PaginationComponent extends LitElement {
                 ${this.displayRange}
               </div>`
             : ""}
-          <div class="pagination-cell fill d-flex end">
+          <div class="pagination-cell fill end">
             ${this.useMinimizePagination
               ? html`<minimize-pagination
                   .currentPage="${this.currentPage}"
@@ -460,6 +489,8 @@ class PaginationComponent extends LitElement {
                   @change-page="${this._changePage}"
                   .size="${this.size}"
                   .plumage="${this.plumage}"
+                  .paginationVariantColor="${this.paginationVariantColor}"
+                  .paginationLayout="${this.paginationLayout}"
                 ></minimize-pagination>`
               : this.useByPagePagination
               ? html`<by-page-pagination
@@ -469,6 +500,8 @@ class PaginationComponent extends LitElement {
                   @change-page="${this._changePage}"
                   .size="${this.size}"
                   .plumage="${this.plumage}"
+                  .paginationVariantColor="${this.paginationVariantColor}"
+                  .paginationLayout="${this.paginationLayout}"
                 ></by-page-pagination>`
               : html`<standard-pagination
                   .currentPage="${this.currentPage}"
@@ -478,37 +511,44 @@ class PaginationComponent extends LitElement {
                   @change-page="${this._changePage}"
                   .size="${this.size}"
                   .plumage="${this.plumage}"
+                  .paginationVariantColor="${this.paginationVariantColor}"
+                  .paginationLayout="${this.paginationLayout}"
                 ></standard-pagination>`}
           </div>
         </div>
       `;
-    } else {
-      return html`
+    } else if (this.showDisplayRange && this.paginationLayout === "start" && !this.showSizeChanger) {
+        return html`
         <div
-          class="pagination-layout${this.plumage ? " plumage" : ""}${this
-            .paginationLayout === "fill"
-            ? ""
-            : " d-flex"}"
+          class="pagination-layout${this.plumage ? " plumage" : ""}${this.paginationLayout === "fill" ? "" : " d-flex"}"
         >
           ${this.useMinimizePagination
-            ? html`<minimize-pagination
+            ? html`
+            <div class="pagination-cell start">
+            <minimize-pagination
                 .currentPage="${this.currentPage}"
                 .totalPages="${this.totalPages}"
                 .goToButtons="${this.goToButtons}"
                 @change-page="${this._changePage}"
                 .size="${this.size}"
                 .plumage="${this.plumage}"
-              ></minimize-pagination>`
+                .paginationVariantColor="${this.paginationVariantColor}"
+                .paginationLayout="${this.paginationLayout}"
+              ></minimize-pagination></div>`
             : this.useByPagePagination
-            ? html`<by-page-pagination
+            ? html`<div class="pagination-cell start">
+                <by-page-pagination
                 .currentPage="${this.currentPage}"
                 .totalPages="${this.totalPages}"
                 .goToButtons="${this.goToButtons}"
                 @change-page="${this._changePage}"
                 .size="${this.size}"
                 .plumage="${this.plumage}"
-              ></by-page-pagination>`
-            : html`<standard-pagination
+                .paginationVariantColor="${this.paginationVariantColor}"
+                .paginationLayout="${this.paginationLayout}"
+              ></by-page-pagination></div>`
+            : html`<div class="pagination-cell start">
+                <standard-pagination
                 .currentPage="${this.currentPage}"
                 .totalPages="${this.totalPages}"
                 .hideGotoEndButtons="${this.hideGotoEndButtons}"
@@ -516,7 +556,289 @@ class PaginationComponent extends LitElement {
                 @change-page="${this._changePage}"
                 .size="${this.size}"
                 .plumage="${this.plumage}"
-              ></standard-pagination>`}
+                .paginationVariantColor="${this.paginationVariantColor}"
+                .paginationLayout="${this.paginationLayout}"
+              ></standard-pagination></div>`}
+          ${this.showDisplayRange
+            ? html`<div
+                class="pagination-cell row-display end${this.size === "sm"
+                  ? " sm"
+                  : this.size === "lg"
+                  ? " lg"
+                  : ""}"
+              >
+                ${this.displayRange}
+              </div>`
+            : ""}
+        </div>
+        `;
+    } else if (this.showDisplayRange && this.paginationLayout === "center" && !this.showSizeChanger) {
+        return html`
+        <div
+          class="pagination-layout${this.plumage ? " plumage" : ""}${this.paginationLayout === "fill" ? "" : " d-flex"}"
+        >
+          ${this.useMinimizePagination
+            ? html`
+            <div class="pagination-cell center">
+            <minimize-pagination
+                .currentPage="${this.currentPage}"
+                .totalPages="${this.totalPages}"
+                .goToButtons="${this.goToButtons}"
+                @change-page="${this._changePage}"
+                .size="${this.size}"
+                .plumage="${this.plumage}"
+                .paginationVariantColor="${this.paginationVariantColor}"
+                .paginationLayout="${this.paginationLayout}"
+              ></minimize-pagination></div>`
+            : this.useByPagePagination
+            ? html`<div class="pagination-cell center">
+                <by-page-pagination
+                .currentPage="${this.currentPage}"
+                .totalPages="${this.totalPages}"
+                .goToButtons="${this.goToButtons}"
+                @change-page="${this._changePage}"
+                .size="${this.size}"
+                .plumage="${this.plumage}"
+                .paginationVariantColor="${this.paginationVariantColor}"
+                .paginationLayout="${this.paginationLayout}"
+              ></by-page-pagination></div>`
+            : html`<div class="pagination-cell center">
+                <standard-pagination
+                .currentPage="${this.currentPage}"
+                .totalPages="${this.totalPages}"
+                .hideGotoEndButtons="${this.hideGotoEndButtons}"
+                .goToButtons="${this.goToButtons}"
+                @change-page="${this._changePage}"
+                .size="${this.size}"
+                .plumage="${this.plumage}"
+                .paginationVariantColor="${this.paginationVariantColor}"
+                .paginationLayout="${this.paginationLayout}"
+              ></standard-pagination></div>`}
+          ${this.showDisplayRange
+            ? html`<div
+                class="pagination-cell row-display justify-content-center flex-fill50${this.size === "sm"
+                  ? " sm"
+                  : this.size === "lg"
+                  ? " lg"
+                  : ""}"
+              >
+                ${this.displayRange}
+              </div>`
+            : ""}
+        </div>
+        `;
+    } else if (this.showDisplayRange && this.paginationLayout === "end" && !this.showSizeChanger) {
+        return html`
+        <div
+          class="pagination-layout${this.plumage ? " plumage" : ""}${this.paginationLayout === "fill" ? "" : " d-flex"}"
+        >
+        ${this.showDisplayRange
+            ? html`<div
+                class="pagination-cell row-display start${this.size === "sm"
+                  ? " sm"
+                  : this.size === "lg"
+                  ? " lg"
+                  : ""}"
+              >
+                ${this.displayRange}
+              </div>`
+            : ""}
+          ${this.useMinimizePagination
+            ? html`
+            <div class="pagination-cell end">
+            <minimize-pagination
+                .currentPage="${this.currentPage}"
+                .totalPages="${this.totalPages}"
+                .goToButtons="${this.goToButtons}"
+                @change-page="${this._changePage}"
+                .size="${this.size}"
+                .plumage="${this.plumage}"
+                .paginationVariantColor="${this.paginationVariantColor}"
+                .paginationLayout="${this.paginationLayout}"
+              ></minimize-pagination></div>`
+            : this.useByPagePagination
+            ? html`<div class="pagination-cell end">
+                <by-page-pagination
+                .currentPage="${this.currentPage}"
+                .totalPages="${this.totalPages}"
+                .goToButtons="${this.goToButtons}"
+                @change-page="${this._changePage}"
+                .size="${this.size}"
+                .plumage="${this.plumage}"
+                .paginationVariantColor="${this.paginationVariantColor}"
+                .paginationLayout="${this.paginationLayout}"
+              ></by-page-pagination></div>`
+            : html`<div class="pagination-cell end">
+                <standard-pagination
+                .currentPage="${this.currentPage}"
+                .totalPages="${this.totalPages}"
+                .hideGotoEndButtons="${this.hideGotoEndButtons}"
+                .goToButtons="${this.goToButtons}"
+                @change-page="${this._changePage}"
+                .size="${this.size}"
+                .plumage="${this.plumage}"
+                .paginationVariantColor="${this.paginationVariantColor}"
+                .paginationLayout="${this.paginationLayout}"
+              ></standard-pagination></div>`}
+          
+        </div>
+        `;
+    } else if (this.showDisplayRange && this.paginationLayout === "fill-left" && !this.showSizeChanger) {
+        return html`
+        <div
+          class="pagination-layout${this.plumage ? " plumage" : ""}${this.paginationLayout === "fill" ? "" : " d-flex"}"
+        >
+          ${this.useMinimizePagination
+            ? html`
+            <div class="pagination-cell fill">
+            <minimize-pagination
+                .currentPage="${this.currentPage}"
+                .totalPages="${this.totalPages}"
+                .goToButtons="${this.goToButtons}"
+                @change-page="${this._changePage}"
+                .size="${this.size}"
+                .plumage="${this.plumage}"
+                .paginationVariantColor="${this.paginationVariantColor}"
+                .paginationLayout="${this.paginationLayout}"
+              ></minimize-pagination></div>`
+            : this.useByPagePagination
+            ? html`<div class="pagination-cell fill">
+                <by-page-pagination
+                .currentPage="${this.currentPage}"
+                .totalPages="${this.totalPages}"
+                .goToButtons="${this.goToButtons}"
+                @change-page="${this._changePage}"
+                .size="${this.size}"
+                .plumage="${this.plumage}"
+                .paginationVariantColor="${this.paginationVariantColor}"
+                .paginationLayout="${this.paginationLayout}"
+              ></by-page-pagination></div>`
+            : html`<div class="pagination-cell fill">
+                <standard-pagination
+                .currentPage="${this.currentPage}"
+                .totalPages="${this.totalPages}"
+                .hideGotoEndButtons="${this.hideGotoEndButtons}"
+                .goToButtons="${this.goToButtons}"
+                @change-page="${this._changePage}"
+                .size="${this.size}"
+                .plumage="${this.plumage}"
+                .paginationVariantColor="${this.paginationVariantColor}"
+                .paginationLayout="${this.paginationLayout}"
+              ></standard-pagination></div>`}
+          ${this.showDisplayRange
+            ? html`<div
+                class="pagination-cell row-display end${this.size === "sm"
+                  ? " sm"
+                  : this.size === "lg"
+                  ? " lg"
+                  : ""}"
+              >
+                ${this.displayRange}
+              </div>`
+            : ""}
+        </div>
+        `;
+    } else if (this.showDisplayRange && this.paginationLayout === "fill-right" && !this.showSizeChanger) {
+        return html`
+        <div
+          class="pagination-layout${this.plumage ? " plumage" : ""}${this.paginationLayout === "fill" ? "" : " d-flex"}"
+        >
+        ${this.showDisplayRange
+            ? html`<div
+                class="pagination-cell row-display start${this.size === "sm"
+                  ? " sm"
+                  : this.size === "lg"
+                  ? " lg"
+                  : ""}"
+              >
+                ${this.displayRange}
+              </div>`
+            : ""}
+          ${this.useMinimizePagination
+            ? html`
+            <div class="pagination-cell fill">
+            <minimize-pagination
+                .currentPage="${this.currentPage}"
+                .totalPages="${this.totalPages}"
+                .goToButtons="${this.goToButtons}"
+                @change-page="${this._changePage}"
+                .size="${this.size}"
+                .plumage="${this.plumage}"
+                .paginationVariantColor="${this.paginationVariantColor}"
+                .paginationLayout="${this.paginationLayout}"
+              ></minimize-pagination></div>`
+            : this.useByPagePagination
+            ? html`<div class="pagination-cell fill">
+                <by-page-pagination
+                .currentPage="${this.currentPage}"
+                .totalPages="${this.totalPages}"
+                .goToButtons="${this.goToButtons}"
+                @change-page="${this._changePage}"
+                .size="${this.size}"
+                .plumage="${this.plumage}"
+                .paginationVariantColor="${this.paginationVariantColor}"
+                .paginationLayout="${this.paginationLayout}"
+              ></by-page-pagination></div>`
+            : html`<div class="pagination-cell fill">
+                <standard-pagination
+                .currentPage="${this.currentPage}"
+                .totalPages="${this.totalPages}"
+                .hideGotoEndButtons="${this.hideGotoEndButtons}"
+                .goToButtons="${this.goToButtons}"
+                @change-page="${this._changePage}"
+                .size="${this.size}"
+                .plumage="${this.plumage}"
+                .paginationVariantColor="${this.paginationVariantColor}"
+                .paginationLayout="${this.paginationLayout}"
+              ></standard-pagination></div>`}
+          
+        </div>
+        `;
+    } else {
+      return html`
+        <div
+          class="pagination-layout${this.plumage ? " plumage" : ""}${this.paginationLayout === "fill" ? "" : " d-flex"}"
+        >
+          ${this.useMinimizePagination
+            ? html`
+            <div class="${this.paginationLayout === "start" ? "pagination-cell start" : this.paginationLayout === "center" ? "pagination-cell center"
+            : this.paginationLayout === "end" ? "pagination-cell end" : ""}">
+            <minimize-pagination
+                .currentPage="${this.currentPage}"
+                .totalPages="${this.totalPages}"
+                .goToButtons="${this.goToButtons}"
+                @change-page="${this._changePage}"
+                .size="${this.size}"
+                .plumage="${this.plumage}"
+                .paginationVariantColor="${this.paginationVariantColor}"
+                .paginationLayout="${this.paginationLayout}"
+              ></minimize-pagination></div>`
+            : this.useByPagePagination
+            ? html`<div class="${this.paginationLayout === "start" ? "pagination-cell start" : this.paginationLayout === "center" ? "pagination-cell center"
+            : this.paginationLayout === "end" ? "pagination-cell end" : ""}">
+                <by-page-pagination
+                .currentPage="${this.currentPage}"
+                .totalPages="${this.totalPages}"
+                .goToButtons="${this.goToButtons}"
+                @change-page="${this._changePage}"
+                .size="${this.size}"
+                .plumage="${this.plumage}"
+                .paginationVariantColor="${this.paginationVariantColor}"
+                .paginationLayout="${this.paginationLayout}"
+              ></by-page-pagination></div>`
+            : html`<div class="${this.paginationLayout === "start" ? "pagination-cell start" : this.paginationLayout === "center" ? "pagination-cell center"
+            : this.paginationLayout === "end" ? "pagination-cell end" : ""}">
+                <standard-pagination
+                .currentPage="${this.currentPage}"
+                .totalPages="${this.totalPages}"
+                .hideGotoEndButtons="${this.hideGotoEndButtons}"
+                .goToButtons="${this.goToButtons}"
+                @change-page="${this._changePage}"
+                .size="${this.size}"
+                .plumage="${this.plumage}"
+                .paginationVariantColor="${this.paginationVariantColor}"
+                .paginationLayout="${this.paginationLayout}"
+              ></standard-pagination></div>`}
           ${this.showDisplayRange
             ? html`<div
                 class="pagination-cell row-display${this.size === "sm"

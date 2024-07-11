@@ -9,63 +9,72 @@ class Table extends LitElement {
 
   static properties = {
     // Define component properties
+    // For Styling
     border: { type: Boolean },
     bordered: { type: Boolean },
     borderless: { type: Boolean },
-    caption: { type: String },
-    cloneFooter: { type: Boolean },
     dark: { type: Boolean },
-    fields: { type: Array },
-    fixed: { type: Boolean },
     headerDark: { type: Boolean },
     headerLight: { type: Boolean },
     hover: { type: Boolean },
-    items: { type: Array },
-    originalItems: { type: Array },
     plumage: { type: Boolean },
     noBorderCollapsed: { type: Boolean },
+    selectedVariant: { type: String },
+    size: { type: String },
+    striped: { type: Boolean },
+    tableVariant: { type: String },
+    // For Layouts
+    caption: { type: String },
+    cloneFooter: { type: Boolean },
+    expandedRows: { type: Array },
+    fields: { type: Array },
+    fixed: { type: Boolean },
     responsive: { type: Boolean },
     stacked: { type: Boolean },
     sticky: { type: Boolean },
-    striped: { type: Boolean },
-    tableVariant: { type: String },
-    sortCriteria: { type: Array },
-    sortable: { type: Boolean },
-    expandedRows: { type: Array },
-    selectMode: { type: String },
-    selectedRows: { type: Array },
-    selectedVariant: { type: String },
-    sortField: { type: String },
-    sortOrder: { type: String },
-    filterText: { type: String },
-    sortOrderDisabled: { type: Boolean },
-    selectedFilterFields: { type: Array },
-    tableId: { type: String },
+    // For Data Table
+    items: { type: Array },
+    // For Sorting and Filtering
     dropdownId: { type: String },
+    filterText: { type: String },
+    originalItems: { type: Array },
+    sortCriteria: { type: Array },
+    sortField: { type: String },
+    sortable: { type: Boolean },
+    sortOrder: { type: String },
+    sortOrderDisabled: { type: Boolean },
+    
+    // For selecting rows
+    selectedFilterFields: { type: Array },
+    selectedRows: { type: Array },
+    selectMode: { type: String },
+    tableId: { type: String },
+    // For using the Filter By Dropdown
+    
     // Pagination properties
-    goToButtons: { type: String },
-    rowsPerPage: { type: Number },
     currentPage: { type: Number },
-    paginationPosition: { type: String }, // 'top', 'bottom', 'both'
-    usePagination: { type: Boolean }, // new property to toggle pagination
-    totalRows: { type: Number }, // new property for total rows
-    paginationLimit: { type: Number }, // new property for pagination limit
-    hideGotoEndButtons: { type: Boolean }, // new property for hiding first/last buttons
+    goToButtons: { type: String },
     hideEllipsis: { type: Boolean }, // new property for hiding ellipsis
-    pageSizeOptions: { type: Array }, // new property for page size options
-    size: { type: String },
+    hideGotoEndButtons: { type: Boolean }, // new property for hiding first/last buttons
     paginationLayout: { type: String }, // new property for pagination layout 'center', 'end', fill OR when used with showSizeChanger 'start', 'center', 'end', 'fill', 'fill-left', 'fill-right'
-    showSizeChanger: { type: Boolean },
+    paginationLimit: { type: Number }, // new property for pagination limit
+    paginationPosition: { type: String }, // 'top', 'bottom', 'both'
+    paginationVariantColor: { type: String }, // new property for pagination variant color
+    pageSizeOptions: { type: Array }, // new property for page size options
+    rowsPerPage: { type: Number },
     showDisplayRange: { type: Boolean },
-    useMinimizePagination: { type: Boolean },
+    showSizeChanger: { type: Boolean },
+    totalRows: { type: Number }, // new property for total rows
     useByPagePagination: { type: Boolean },
+    useMinimizePagination: { type: Boolean },
+    usePagination: { type: Boolean }, // new property to toggle pagination
   };
 
   constructor() {
     super();
     this.initializeProperties();
     this.paginationPosition = "bottom";
-    this.goToButtons = ""; // default to both first/last buttons  
+    this.goToButtons = ""; // default to both first/last buttons
     this.usePagination = false; // default to false, meaning pagination is not used by default
     this.totalRows = 0; // default total rows
     this.paginationLimit = 5; // default pagination limit
@@ -74,6 +83,7 @@ class Table extends LitElement {
     this.size = "";
     this.pageSizeOptions = [10, 20, 50, 100, "All"]; // default page size options
     this.paginationLayout = "";
+    this.paginationVariantColor = "";
     this.useMinimizePagination = false;
     this.useByPagePagination = false;
     this.showDisplayRange = false;
@@ -656,6 +666,7 @@ class Table extends LitElement {
         .hideEllipsis="${this.hideEllipsis}"
         .pageSize="${this.rowsPerPage}"
         .pageSizeOptions="${this.pageSizeOptions}"
+        .paginationVariantColor="${this.paginationVariantColor}"
         .showDisplayRange="${this.showDisplayRange}"
         .showSizeChanger="${this.showSizeChanger}"
         .plumage="${this.plumage}"
@@ -726,8 +737,8 @@ class Table extends LitElement {
             const isSelected = this.selectedRows.includes(row);
             const isExpanded = this.expandedRows.includes(rowIndex);
             const isStriped = this.striped && logicalRowIndex % 2 === 1;
-            const stripeClass = this.dark ? 'striped-row-dark' : 'striped-row';
-            const mainRowClass = isStriped ? stripeClass : '';
+            const stripeClass = this.dark ? "striped-row-dark" : "striped-row";
+            const mainRowClass = isStriped ? "" : stripeClass;
             const mainRow = html`
               <tr
                 role="row"
@@ -784,11 +795,7 @@ class Table extends LitElement {
             logicalRowIndex++;
             const detailRow = row._showDetails
               ? html`
-                  <tr
-                    role="row"
-                    class="details-row"
-                    ?expanded="${isExpanded}"
-                  >
+                  <tr role="row" class="details-row" ?expanded="${isExpanded}">
                     <td
                       colspan="${this.normalizedFields.length +
                       1 +

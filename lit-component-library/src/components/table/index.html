@@ -6,10 +6,6 @@
       rel="stylesheet"
       href="../../../node_modules/bootstrap/dist/css/bootstrap.css"
     />
-    <!-- <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
-    /> -->
     <link
       rel="stylesheet"
       href="../../../node_modules/lit-fontawesome/css/font.css"
@@ -43,13 +39,13 @@
           <section class="section">
             <section class="display-box" id="db-1">
               <section class="display-box-demo">
-                <table-component id="table1" sticky noBorderCollapsed>
-                  <!-- <span slot="caption">This is a caption</span> -->
-                </table-component>
+                <table-component id="table1"></table-component>
               </section>
               <section class="display-box-meta markdown">
                 <div class="display-box-title">Basic Usage</div>
-                <div class="display-box-description">Text</div>
+                <div class="display-box-description">
+                  Basic Table component.
+                </div>
                 <div class=""></div>
               </section>
             </section>
@@ -58,13 +54,122 @@
           <section class="section">
             <section class="display-box" id="db-1">
               <section class="display-box-demo">
-                <table-component id="table2" caption="top" responsive>
-                  <span slot="caption">Example Caption</span>
+                <table-component
+                  id="table2"
+                  sticky
+                  noBorderCollapsed
+                ></table-component>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">
+                  Table component with sticky header.
+                </div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
+
+          <section class="section">
+            <section class="display-box" id="db-1">
+              <section class="display-box-demo">
+                <table-component
+                  id="table3"
+                  responsive
+                  bordered
+                ></table-component>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">
+                  Bordered and responsive Table component.
+                </div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
+
+          <section class="section">
+            <section class="display-box" id="db-1">
+              <section class="display-box-demo">
+                <table-component
+                  id="table4"
+                  responsive
+                  borderless
+                ></table-component>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">
+                  Borderless and responsive Table component.
+                </div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
+
+          <section class="section">
+            <section class="display-box" id="db-1">
+              <section class="display-box-demo">
+                <table-component id="table5" responsive></table-component>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">
+                  Cell and Row colors for the Table component.
+                </div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
+
+          <section class="section">
+            <section class="display-box" id="db-1">
+              <section class="display-box-demo">
+                <table-component id="table6" responsive></table-component>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">
+                  Table component with expandable and collapsible detail rows.
+                </div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
+
+          <section class="section">
+            <section class="display-box" id="db-1">
+              <section class="display-box-demo">
+                <table-component
+                  id="table7"
+                  striped
+                  hover
+                  bordered
+                ></table-component>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">
+                  Table with striped rows and hover color.
+                </div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
+
+          <section class="section">
+            <section class="display-box" id="db-1">
+              <section class="display-box-demo">
+                <table-component id="table9" stacked caption="top">
+                  <span slot="caption">This ia an Example Caption</span>
                 </table-component>
               </section>
               <section class="display-box-meta markdown">
                 <div class="display-box-title">Basic Usage</div>
-                <div class="display-box-description">Text</div>
+                <div class="display-box-description">
+                  Table using the stacked layout.
+                </div>
                 <div class=""></div>
               </section>
             </section>
@@ -75,13 +180,40 @@
           <section class="section">
             <section class="display-box" id="db-1">
               <section class="display-box-demo">
-                <table-component id="table3" caption="top" responsive>
-                  <span slot="caption">Example Caption</span>
+                <table-component id="table8" caption="top" cloneFooter fixed>
+                  <span slot="caption">This ia an Example Caption</span>
                 </table-component>
               </section>
               <section class="display-box-meta markdown">
                 <div class="display-box-title">Basic Usage</div>
-                <div class="display-box-description">Text</div>
+                <div class="display-box-description">
+                  Table with caption, fixed column headers and cloning the
+                  header to the footer.
+                </div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
+
+          <section class="section">
+            <section class="display-box" id="db-1">
+              <section class="display-box-demo">
+                <table-component
+                  id="table14"
+                  tableId="table14"
+                  striped
+                  responsive
+                  selectMode="multi"
+                  size="sm"
+                >
+                </table-component>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">
+                  Table with selectable rows, either single, multi or range
+                  options.
+                </div>
                 <div class=""></div>
               </section>
             </section>
@@ -92,12 +224,42 @@
               <section class="display-box-demo">
                 <button
                   class="reset-sort-icon"
-                  onclick="resetTableSort('table4', 'dditems')"
+                  onclick="resetTableSort('table15')"
+                ></button>
+
+                <table-component
+                  id="table15"
+                  tableId="table15"
+                  striped
+                  sortable
+                  responsive
+                  size="sm"
+                >
+                </table-component>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">
+                  Table with table column sorting and multiple column sorting
+                  (hold down CTRL + click each column for the order.) and a
+                  clear button.
+                </div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
+
+          <section class="section">
+            <section class="display-box" id="db-1">
+              <section class="display-box-demo">
+                <button
+                  class="reset-sort-icon"
+                  onclick="resetTableSort('table16')"
                 ></button>
                 <div style="display: flex; width: 100%; flex: 1 1 auto">
                   <div style="flex: 1 1 auto">
                     <select-field-component
-                      id="sortField"
+                      id="sortField-1"
                       label="Sort Field"
                       withTable
                       size="sm"
@@ -105,7 +267,7 @@
                   </div>
                   <div style="flex: 1 1 auto">
                     <select-field-component
-                      id="sortOrder"
+                      id="sortOrder-1"
                       label="Sort Order"
                       withTable
                       value="asc"
@@ -114,10 +276,39 @@
                     ></select-field-component>
                   </div>
                 </div>
+                <table-component
+                  id="table16"
+                  tableId="table16"
+                  striped
+                  sortable
+                  responsive
+                  size="sm"
+                >
+                </table-component>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">
+                  Table with table column sorting and multiple column sorting
+                  (hold down CTRL + click each column for the order.) and a
+                  clear button.
+                </div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
+
+          <section class="section">
+            <section class="display-box" id="db-1">
+              <section class="display-box-demo">
+                <button
+                  class="reset-sort-icon"
+                  onclick="resetTableSort('table17', 'filterByItems-table17')"
+                ></button>
                 <div style="display: flex; width: 100%; flex: 1 1 auto">
                   <div style="flex: 1 1 auto">
                     <input-group-component
-                      id="filterInput"
+                      id="filterInput-table17"
                       label="Filter"
                       placeholder="Type to Search..."
                       name="input-1"
@@ -134,15 +325,15 @@
                         secondary
                         styles="border-radius: 0 3px 3px 0; padding: 0 8px;"
                         size="sm"
-                        onclick="clearFilter('dditems')"
+                        onclick="clearFilter('filterByItems-table17')"
                       ></pl-button>
                     </input-group-component>
                   </div>
                   <div style="flex: 1 1 auto; margin-top: 28px">
                     <dropdown-component
                       buttonText="Filter By"
-                      id="dditems"
-                      tableId="table4"
+                      id="filterByItems-table17"
+                      tableId="table17"
                       size="sm"
                       inputId="filterby"
                       listType="checkboxes"
@@ -150,10 +341,121 @@
                   </div>
                 </div>
                 <table-component
-                  id="table4"
-                  tableId="table4"
+                  id="table17"
+                  tableId="table17"
                   striped
-                  small
+                  responsive
+                  size="sm"
+                >
+                </table-component>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">
+                  Table with Filter field, a Filter by dropdown and a clear
+                  button
+                </div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
+
+          <section class="section">
+            <section class="display-box" id="db-1">
+              <section class="display-box-demo">
+                <table-component
+                  id="table18"
+                  tableId="table18"
+                  striped
+                  responsive
+                  usePagination
+                  paginationPosition="both"
+                  totalRows="22"
+                  paginationLimit="3"
+                  paginationLayout="start"
+                  showDisplayRange
+                  showSizeChanger
+                  size="sm"
+                >
+                </table-component>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">
+                  Table with pagination.
+                </div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
+
+          <section class="section">
+            <section class="display-box" id="db-1">
+              <section class="display-box-demo">
+                <button
+                  class="reset-sort-icon"
+                  onclick="resetTableSort('table99', 'filterByItems-table99')"
+                ></button>
+                <div style="display: flex; width: 100%; flex: 1 1 auto">
+                  <div style="flex: 1 1 auto">
+                    <select-field-component
+                      id="sortField-2"
+                      label="Sort Field"
+                      withTable
+                      size="sm"
+                    ></select-field-component>
+                  </div>
+                  <div style="flex: 1 1 auto">
+                    <select-field-component
+                      id="sortOrder-2"
+                      label="Sort Order"
+                      withTable
+                      value="asc"
+                      disabled
+                      size="sm"
+                    ></select-field-component>
+                  </div>
+                </div>
+                <div style="display: flex; width: 100%; flex: 1 1 auto">
+                  <div style="flex: 1 1 auto">
+                    <input-group-component
+                      id="filterInput-table99"
+                      label="Filter"
+                      placeholder="Type to Search..."
+                      name="input-1"
+                      value=""
+                      append
+                      appendId="append-1"
+                      otherContent
+                      size="sm"
+                    >
+                      <pl-button
+                        btnText="Clear"
+                        variant="primary"
+                        slot="append"
+                        secondary
+                        styles="border-radius: 0 3px 3px 0; padding: 0 8px;"
+                        size="sm"
+                        onclick="clearFilter('filterByItems-table99')"
+                      ></pl-button>
+                    </input-group-component>
+                  </div>
+                  <div style="flex: 1 1 auto; margin-top: 28px">
+                    <dropdown-component
+                      buttonText="Filter By"
+                      id="filterByItems-table99"
+                      tableId="table99"
+                      size="sm"
+                      inputId="filterby"
+                      listType="checkboxes"
+                    ></dropdown-component>
+                  </div>
+                </div>
+                <table-component
+                  id="table99"
+                  tableId="table99"
+                  striped
+                  hover
                   sortable
                   responsive
                   selectMode="multi"
@@ -171,13 +473,839 @@
               </section>
               <section class="display-box-meta markdown">
                 <div class="display-box-title">Basic Usage</div>
-                <div class="display-box-description">Text</div>
+                <div class="display-box-description">
+                  Table with sorting, filtering, selectable rows, and
+                  pagination.
+                </div>
                 <div class=""></div>
               </section>
             </section>
           </section>
         </section>
       </div>
+    </div>
+
+    <!-- Props -->
+    <div style="margin-top: 50px">
+      <div class="title">Props</div>
+      <div style="margin: 25px 0 10px; font-weight: bold;">Styling</div>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Property</th>
+              <th>Type</th>
+              <th>Default</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td>bordered</td>
+              <td>Boolean</td>
+              <td>false</td>
+              <td>
+                Adds a border around the table. If set to true, the table will
+                have a border around it.
+              </td>
+            </tr>
+            <tr>
+              <td>borderless</td>
+              <td>Boolean</td>
+              <td>false</td>
+              <td>
+                Removes the borders from table. If set to true, the table will
+                not have any borders.
+              </td>
+            </tr>
+            <tr>
+              <td>dark</td>
+              <td>Boolean</td>
+              <td>false</td>
+              <td>
+                Adds a dark theme to the table. If set to true, the table will
+                have a dark theme.
+              </td>
+            </tr>
+            <tr>
+              <td>headerDark</td>
+              <td>Boolean</td>
+              <td>false</td>
+              <td>
+                Adds a dark theme to the table header. If set to true, the table
+                header will have a dark theme.
+              </td>
+            </tr>
+            <tr>
+              <td>headerLight</td>
+              <td>Boolean</td>
+              <td>false</td>
+              <td>
+                Adds a light theme to the table header. If set to true, the
+                table header will have a light theme.
+              </td>
+            </tr>
+            <tr>
+              <td>hover</td>
+              <td>Boolean</td>
+              <td>false</td>
+              <td>
+                Adds a hover effect to the table rows. If set to true, the table
+                rows will have a hover effect.
+              </td>
+            </tr>
+            <tr>
+              <td>plumage</td>
+              <td>Boolean</td>
+              <td>false</td>
+              <td>
+                Adds the Plumage styling to the table. If set to true, the table
+                will have the Plumage styling.
+              </td>
+            </tr>
+            <tr>
+              <td>noBorderCollapsed</td>
+              <td>Boolean</td>
+              <td>false</td>
+              <td>
+                Removes the border-collapse from the table. If set to true, the
+                table will not have any border-collapse. This is useful when
+                using sticky headers.
+              </td>
+            </tr>
+            <tr>
+              <td>selectedVariant</td>
+              <td>String</td>
+              <td>table-active</td>
+              <td>
+                Adds a selected variant to the table rows. If set, the table
+                rows will have a selected variant. This is useful when using
+                selectable rows and you want to change the selected row color to
+                a new class.
+              </td>
+            </tr>
+            <tr>
+              <td>size</td>
+              <td>String</td>
+              <td>sm, lg</td>
+              <td>
+                Changes the size of the table and the other components within
+                the table component, such as, pagination, input and select
+                fields. If set to sm, the component will have a small size. If
+                set to lg, the component will have a large size.
+              </td>
+            </tr>
+            <tr>
+              <td>striped</td>
+              <td>Boolean</td>
+              <td>false</td>
+              <td>
+                Adds a striped effect to the table rows. If set to true, the
+                table rows will have a striped effect.
+              </td>
+            </tr>
+            <tr>
+              <td>tableVariant</td>
+              <td>String</td>
+              <td>table</td>
+              <td>
+                Adds a variant to the table. If set, the table will have a
+                variant. Color options include: primary, secondary, success,
+                danger, warning, info, light, and dark.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div style="margin: 25px 0 10px; font-weight: bold;">Layout</div>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Property</th>
+              <th>Type</th>
+              <th>Default</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td>caption</td>
+              <td>String</td>
+              <td></td>
+              <td>
+                This adds and sets the placement of the table caption. It can be
+                either set to 'top' or 'bottom' and the caption text can be
+                added within the slot.
+              </td>
+            </tr>
+            <tr>
+              <td>cloneFooter</td>
+              <td>Boolean</td>
+              <td>false</td>
+              <td>
+                Clones the header row and places it at the bottom of the table.
+                If set to true, the header row will be cloned and placed at the
+                bottom of the table.
+              </td>
+            </tr>
+            <tr>
+              <td>fixed</td>
+              <td>Boolean</td>
+              <td>false</td>
+              <td>
+                This fixes all the table columns to the same width. If set to
+                true, all the table columns will have the same width.
+              </td>
+            </tr>
+            <tr>
+              <td>responsive</td>
+              <td>Boolean</td>
+              <td>false</td>
+              <td>
+                Makes the table responsive. If set to true, the table will be
+                responsive.
+              </td>
+            </tr>
+            <tr>
+              <td>stacked</td>
+              <td>Boolean</td>
+              <td>false</td>
+              <td>
+                Stacks the table columns on top of each other. If set to true,
+                the table columns will be stacked on top of each other.
+              </td>
+            </tr>
+            <tr>
+              <td>sticky</td>
+              <td>Boolean</td>
+              <td>false</td>
+              <td>
+                Makes the table header sticky. If set to true, the table header
+                will be sticky when scrolling the table.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div style="margin: 25px 0 10px; font-weight: bold;">Data</div>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Property</th>
+              <th>Type</th>
+              <th>Default</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>items</td>
+              <td>Array</td>
+              <td>[]</td>
+              <td>
+                The data to be displayed in the table. The data should be an
+                array of objects.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div style="margin: 25px 0 10px; font-weight: bold;">Sorting and Filtering</div>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Property</th>
+              <th>Type</th>
+              <th>Default</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td>dropdownId</td>
+              <td>String</td>
+              <td></td>
+              <td>
+                Used to connect the table to a dropdown component. The dropdown
+                component should have the same id as the dropdownId.
+              </td>
+            </tr>
+            <!-- <tr>
+              <td>filterText</td>
+              <td>String</td>
+              <td></td>
+              <td>
+                The text to be used for filtering the table. The text should be a string.  
+              </td>
+            </tr> -->
+            <tr>
+              <td>filterText</td>
+              <td>String</td>
+              <td></td>
+              <td>
+                The text to be used for filtering the table. The text should be
+                a string.
+              </td>
+            </tr>
+
+            <tr>
+              <td>sortCriteria</td>
+              <td>Array</td>
+              <td>[]</td>
+              <td>
+                The criteria to be used for sorting the table. The criteria
+                should be an array of objects.
+              </td>
+            </tr>
+            <tr>
+              <td>sortField</td>
+              <td>String</td>
+              <td></td>
+              <td>
+                The field to be used for sorting the table. The field should be
+                a string.
+              </td>
+            </tr>
+            <tr>
+              <td>sortable</td>
+              <td>Boolean</td>
+              <td>false</td>
+              <td>
+                The table to be sorted. If set to true, the table will be
+                sorted.
+              </td>
+            </tr>
+            <tr>
+              <td>sortOrder</td>
+              <td>String</td>
+              <td></td>
+              <td>
+                The order to be used for sorting the table. The order should be
+                a string.
+              </td>
+            </tr>
+            <tr>
+              <td>sortOrderDisabled</td>
+              <td>Boolean</td>
+              <td>false</td>
+              <td>
+                The order to be used for sorting the table. The order should be
+                a string.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div style="margin: 25px 0 10px; font-weight: bold;">Selecting rows</div>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Property</th>
+              <th>Type</th>
+              <th>Default</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td>selectedFilterFields</td>
+              <td>Array</td>
+              <td>[]</td>
+              <td>
+                The fields to be used for filtering the table. The fields should
+                be an array of objects.
+              </td>
+            </tr>
+            <tr>
+              <td>selectedRows</td>
+              <td>Array</td>
+              <td>[]</td>
+              <td>
+                The rows to be selected in the table. The rows should be an
+                array of objects.
+              </td>
+            </tr>
+            <tr>
+              <td>selectMode</td>
+              <td>String</td>
+              <td>"single", "multi", "range"</td>
+              <td>
+                The mode to be used for selecting the rows in the table. The
+                mode should be a string. Single allows only one row to be
+                selected at a time. Multi allows multiple rows to be selected at
+                a time. Range allows a range of rows to be selected at a time.
+              </td>
+            </tr>
+            <tr>
+              <td>tableId</td>
+              <td>String</td>
+              <td></td>
+              <td>
+                The id to be used for the table. The id should be a string. This
+                is used for connecting the table to other components.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div style="margin: 25px 0 10px; font-weight: bold;">Table Pagination</div>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Property</th>
+              <th>Type</th>
+              <th>Default</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td>currentPage</td>
+              <td>Number</td>
+              <td>1</td>
+              <td>
+                This sets the current page of the table. The page should be a
+                number.
+              </td>
+            </tr>
+            <tr>
+              <td>goToButtons</td>
+              <td>String</td>
+              <td></td>
+              <td>
+                By default, the 'Go to First', 'Previous', 'Next' and 'Go to
+                Last' pagination buttons are displayed as icons. If set to
+                "text", the pagination buttons will be displayed as text.
+              </td>
+            </tr>
+            <tr>
+              <td>hideEllipsis</td>
+              <td>Boolean</td>
+              <td>false</td>
+              <td>
+                Hides the ellipsis in the pagination. If set to true, the
+                ellipsis will be hidden.
+              </td>
+            </tr>
+            <tr>
+              <td>hideGotoEndButtons</td>
+              <td>Boolean</td>
+              <td>false</td>
+              <td>
+                Hides the 'Go to First', 'Previous', 'Next' and 'Go to Last'
+                pagination buttons when true. Only the page numbers will be
+                displayed.
+              </td>
+            </tr>
+            <tr>
+              <td>paginationLayout</td>
+              <td>String</td>
+              <td></td>
+              <td>
+                The layout to be used for the pagination. The layout should be a
+                string. Options include: for pagination layout 'center', 'end',
+                fill (default is start) OR when used with showSizeChanger
+                'start', 'center', 'end', 'fill', 'fill-left', 'fill-right'.
+              </td>
+            </tr>
+            <tr>
+              <td>paginationLimit</td>
+              <td>Number</td>
+              <td>5</td>
+              <td>
+                The number of pages to be displayed in the pagination at one
+                time. The limit should be a number.
+              </td>
+            </tr>
+            <tr>
+              <td>paginationPosition</td>
+              <td>String</td>
+              <td></td>
+              <td>
+                The placement to be used for the pagination. The placement
+                should be a string. Options include: 'top', 'bottom', 'both'.
+              </td>
+            </tr>
+            <tr>
+              <td>paginationVariantColor</td>
+              <td>String</td>
+              <td></td>
+              <td>
+                The color variant to be used for the pagination. The color
+                variant should be a string. The default is primary with other options: secondary, tertiary,
+                success, danger, warning, and info.
+              </td>
+            </tr>
+            <tr>
+              <td>pageSizeOptions</td>
+              <td>Array</td>
+              <td>[]</td>
+              <td>
+                The options to be used for the 'Items per page' selection. This
+                is used when showSizeChanger is set to true. The options should
+                be an array of numbers and the default array is '[10, 20, 50,
+                100, "All"]'.
+              </td>
+            </tr>
+            <tr>
+              <td>rowsPerPage</td>
+              <td>Number</td>
+              <td>10</td>
+              <td>
+                The number of rows to be displayed per page. The rows should be
+                a number and the default is 10.
+              </td>
+            </tr>
+            <tr>
+              <td>showDisplayRange</td>
+              <td>Boolean</td>
+              <td>false</td>
+              <td>
+                Shows the display range of the pagination, ex: '1-10 of 22'. If
+                set to true, the display range will be shown.
+              </td>
+            </tr>
+            <tr>
+              <td>showSizeChanger</td>
+              <td>Boolean</td>
+              <td>false</td>
+              <td>
+                Shows the 'Items per page' selection. If set to true, the 'Items
+                per page' selection will be shown.
+              </td>
+            </tr>
+            <tr>
+              <td>totalRows</td>
+              <td>Number</td>
+              <td>0</td>
+              <td>
+                The total number of rows in the table. The rows should be a
+                number.
+              </td>
+            </tr>
+            <tr>
+              <td>useByPagePagination</td>
+              <td>Boolean</td>
+              <td>false</td>
+              <td>
+                If set to true, the user can navigate through the pages using
+                the 'Go to First', 'Previous', 'Next' and 'Go to Last'
+                pagination buttons and an input filed to change the page number.
+              </td>
+            </tr>
+            <tr>
+              <td>useMinimizePagination</td>
+              <td>Boolean</td>
+              <td>false</td>
+              <td>
+                If set to true, the pagination will be minimized and only show
+                the 'Go to First', 'Previous', 'Next' and 'Go to Last' buttons.
+              </td>
+            </tr>
+            <tr>
+              <td>usePagination</td>
+              <td>Boolean</td>
+              <td>false</td>
+              <td>
+                If set to true, the pagination will be displayed. If set to
+                false, the pagination will not be displayed.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Slots -->
+    <div style="margin-top: 50px">
+      <div class="title">Slots</div>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Slot</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td>caption</td>
+              <td>
+                This is the slot for adding a caption for the table.<br />
+                Add <span class="example">slot="caption"</span> to a 'div' or 'span' in the table component.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Instructions -->
+    <div style="margin-top: 50px">
+      <div class="title">Using Component in other JavaScript Frameworks</div>
+
+      <p>
+        Integrating a Lit Element component with other JavaScript frameworks
+        like Vue, React, and Angular involves creating a wrapper component in
+        each framework to encapsulate and use the Lit Element component. Here
+        are examples for each framework:
+      </p>
+
+      <h5>Vue.js</h5>
+      <p>
+        Install the necessary dependencies:
+      </p>
+      <pre>
+        <code>
+          npm install lit
+          npm install @webcomponents/webcomponentsjs --save
+        </code>
+      </pre>
+      <p>
+        Register the Lit Element Table Component:</p>
+        <p>Create a TableComponent.vue file:
+      </p>
+      <pre>
+          <code>
+            &#60;template&#62;
+              &#60;div&#62;
+                &#60;table-component id="tableComponent" @row-selected="handleRowSelected"&#62;&#60;/table-component&#62;
+              &#60;/div&#62;
+            &#60;/template&#62;
+            
+              &#60;script&#62;
+            import 'path-to-lit-element-table-component.js';
+            
+            export default {
+              name: 'TableComponent',
+              methods: {
+                handleRowSelected(event) {
+                  console.log('Selected Rows:', event.detail);
+                },
+              },
+              mounted() {
+                const tableComponent = this.$el.querySelector('#tableComponent');
+                tableComponent.items = [
+                  { name: "John", age: 30, city: "New York" },
+                  { name: "Anna", age: 25, city: "London" },
+                  // more items...
+                ];
+                tableComponent.fields = [
+                  { key: "name", label: "Name" },
+                  { key: "age", label: "Age" },
+                  { key: "city", label: "City" },
+                ];
+              }
+            };
+            &#60;/script&#62;
+          </code>
+        </pre>
+
+        <p>Include the component in your Vue app:</p>
+        <pre>
+          <code>
+            &#60;template&#62;
+              &#60;div id="app"&#62;
+                &#60;TableComponent /&#62;
+              &#60;/div&#62;
+            &#60;/template&#62;
+            
+            &#60;script&#62;
+              import TableComponent from './components/TableComponent.vue';
+              
+              export default {
+                name: 'App',
+                components: {
+                  TableComponent
+                }
+              };
+            &#60;/script&#62;
+          </code>
+        </pre>
+
+      <h5>React</h5>
+      <p>Install the necessary dependencies:</p>
+      <pre>
+        <code>
+          // bash
+          npm install lit
+          npm install @webcomponents/webcomponentsjs --save
+        </code>
+      </pre>
+
+      <p>Create a React component for the Lit Element Table:</p>
+      <p>Create a TableComponent.jsx file:</p>
+      <pre>
+          <code>
+            // TableComponent.jsx
+            import React, { useEffect, useRef } from 'react';
+            import 'path-to-lit-element-table-component.js';
+
+            const TableComponent = () => {
+              const tableRef = useRef(null);
+
+              useEffect(() => {
+                const tableComponent = tableRef.current;
+                tableComponent.items = [
+                  { name: "John", age: 30, city: "New York" },
+                  { name: "Anna", age: 25, city: "London" },
+                  // more items...
+                ];
+                tableComponent.fields = [
+                  { key: "name", label: "Name" },
+                  { key: "age", label: "Age" },
+                  { key: "city", label: "City" },
+                ];
+                tableComponent.addEventListener('row-selected', handleRowSelected);
+                return () => {
+                  tableComponent.removeEventListener('row-selected', handleRowSelected);
+                };
+              }, []);
+
+              const handleRowSelected = (event) => {
+                console.log('Selected Rows:', event.detail);
+              };
+
+              return &#60;table-component ref={tableRef}&#62;&#60;/table-component&#62;;
+            };
+
+            export default TableComponent;
+
+          </code>
+        </pre>
+
+        <p>Include the component in your React app:</p>
+
+        <pre>
+          <code>
+            import React from 'react';
+            import ReactDOM from 'react-dom';
+            import TableComponent from './components/TableComponent';
+
+            const App = () => (
+              &#60;div&#62;
+                &#60;TableComponent /&#62;
+              &#60;/div&#62;
+            );
+
+            ReactDOM.render(<App />, document.getElementById('root'));
+          </code>
+        </pre>
+
+      <h5>Angular</h5>
+      <p>Install the necessary dependencies:</p>
+      <pre>
+        <code>
+          npm install lit
+          npm install @webcomponents/webcomponentsjs --save
+        </code>
+      </pre>
+
+      <p>Include the Web Components polyfills in polyfills.ts:</p>
+
+      <pre>
+        <code>
+          import '@webcomponents/webcomponentsjs/webcomponents-bundle.js';
+        </code>
+      </pre>
+
+      <p>Create a custom Angular component to wrap the Lit Element Table:</p>
+      <p>Create a table-component-wrapper.component.ts file:</p>
+
+      <pre>
+          <code>
+            import { Component, ElementRef, OnInit } from '@angular/core';
+            import 'path-to-lit-element-table-component.js';
+
+            @Component({
+              selector: 'app-table-component-wrapper',
+              template: '&#60;table-component id="tableComponent"&#62;&#60;/table-component&#62;',
+              styles: []
+            })
+            export class TableComponentWrapper implements OnInit {
+              constructor(private el: ElementRef) {}
+
+              ngOnInit(): void {
+                const tableComponent = this.el.nativeElement.querySelector('#tableComponent');
+                tableComponent.items = [
+                  { name: "John", age: 30, city: "New York" },
+                  { name: "Anna", age: 25, city: "London" },
+                  // more items...
+                ];
+                tableComponent.fields = [
+                  { key: "name", label: "Name" },
+                  { key: "age", label: "Age" },
+                  { key: "city", label: "City" },
+                ];
+                tableComponent.addEventListener('row-selected', this.handleRowSelected);
+              }
+
+              handleRowSelected(event) {
+                console.log('Selected Rows:', event.detail);
+              }
+            } 
+          </code>
+        </pre>
+
+        <p>Include the component in your Angular module:</p>
+
+        <pre>
+          <code>
+            import { BrowserModule } from '@angular/platform-browser';
+            import { NgModule } from '@angular/core';
+            import { AppComponent } from './app.component';
+            import { TableComponentWrapper } from './components/table-component-wrapper/table-component-wrapper.component';
+
+            @NgModule({
+              declarations: [
+                AppComponent,
+                TableComponentWrapper
+              ],
+              imports: [
+                BrowserModule
+              ],
+              providers: [],
+              bootstrap: [AppComponent]
+            })
+            export class AppModule { }
+          </code>
+        </pre>
+
+        <p>Use the component in your Angular app:</p>
+
+        <pre>
+          <code>
+            &#60;app-table-component-wrapper&#62;&#60;/app-table-component-wrapper&#62;
+          </code>
+        </pre>
+
+      <p>
+        Adjust the paths and imports based on your project structure. The
+        provided examples showcase how to create wrapper components for each
+        framework to use your Lit Element 'Table' component. 
+      </p>
+
+      <p>
+        The interoperability is possible because Web Components, once defined
+        and registered as custom elements, act like native HTML elements that
+        these frameworks can understand and interact with.
+      </p>
     </div>
 
     <script type="module" src="./table.js"></script>
@@ -193,336 +1321,491 @@
     <script type="module" src="../../components/dropdown/dropdown.js"></script>
 
     <script>
-      const tableA = document.getElementById("table1");
-      tableA.items = [
-        { name: "John", age: 30, city: "New York" },
-        { name: "Anna", age: 25, city: "London", _rowVariant: "primary" },
-        {
-          name: "Mike",
-          age: 32,
-          city: "Chicago",
-          _cellVariants: { age: "info", name: "warning" },
-        },
-        { name: "Terry", age: 21, city: "Augusta", _rowVariant: "secondary" },
-        {
-          name: "Clark",
-          age: 56,
-          city: "Tucson",
-          _cellVariants: { age: "success", city: "danger" },
-        },
-        { name: "Seth", age: 31, city: "Pittsburgh" },
-      ];
+      document.addEventListener("DOMContentLoaded", function () {
+        // Define reusable data sets
+        const basicItems = [
+          { name: "John", age: 30, city: "New York" },
+          { name: "Anna", age: 25, city: "London" },
+          { name: "Mike", age: 32, city: "Chicago" },
+          { name: "Terry", age: 21, city: "Augusta" },
+          { name: "Clark", age: 56, city: "Tucson" },
+        ];
 
-      const table = document.getElementById("table2");
+        const basicItemsLong = [
+          { name: "John", age: 30, city: "New York" },
+          { name: "Anna", age: 25, city: "London" },
+          { name: "Mike", age: 32, city: "Chicago" },
+          { name: "Terry", age: 21, city: "Augusta" },
+          { name: "Clark", age: 56, city: "Tucson" },
+          { name: "Seth", age: 31, city: "Pittsburgh" },
+          { name: "Sean", age: 18, city: "Tampa" },
+          { name: "Sally", age: 47, city: "Suffolk" },
+          { name: "Pete", age: 60, city: "Detroit" },
+          { name: "Tom", age: 51, city: "Green Bay" },
+          { name: "Veronica", age: 23, city: "Red Bank" },
+        ];
 
-      // Define the items (data)
-      table.items = [
-        {
-          age: 40,
-          first_name: "Thor",
-          last_name: "MacDonald",
-          _cellVariants: { age: "info", first_name: "warning" },
-          _rowVariant: "primary",
-          _showDetails: true,
-          _additionalInfo:
-            "<p>Hello ${this.first_name}, Age: ${this.age}</p><p>${this.first_name} is a software engineer.</p>",
-        },
-        {
-          age: 25,
-          first_name: "Anna",
-          last_name: "Smith",
-          _cellVariants: { age: "success", last_name: "danger" },
-          _rowVariant: "secondary",
-          _showDetails: true,
-          _additionalInfo:
-            "<p>Hello ${this.first_name}, Age: ${this.age}</p><p>${this.first_name} is a graphic designer.</p>",
-        },
-        {
-          age: 32,
-          first_name: "Mike",
-          last_name: "Johnson",
-          _cellVariants: { age: "info", last_name: "success" },
-          _rowVariant: "info",
-          _showDetails: false,
-        },
-      ];
+        const colorVariationsItems = [
+          { name: "John", age: 30, city: "New York" },
+          {
+            name: "Anna",
+            age: 25,
+            city: "London",
+            _cellVariants: { age: "info", city: "warning" },
+          },
+          {
+            name: "Mike",
+            age: 32,
+            city: "Chicago",
+            _cellVariants: { age: "success", city: "danger" },
+          },
+          { name: "Terry", age: 21, city: "Augusta", _rowVariant: "primary" },
+          { name: "Clark", age: 56, city: "Tucson", _rowVariant: "secondary" },
+        ];
 
-      const tableB = document.getElementById("table3");
+        const detailRowItems = [
+          {
+            name: "John",
+            age: 30,
+            city: "New York",
+            _showDetails: true,
+            _additionalInfo:
+              "<p>Hello ${this.name}, Age: ${this.age}</p><p>${this.name} is a software engineer.</p>",
+          },
+          {
+            name: "Anna",
+            age: 25,
+            city: "London",
+            _showDetails: true,
+            _additionalInfo:
+              "<p>Hello ${this.name}, Age: ${this.age}</p><p>${this.name} is a software engineer.</p>",
+          },
+          {
+            name: "Mike",
+            age: 32,
+            city: "Chicago",
+            _showDetails: true,
+            _additionalInfo:
+              "<p>Hello ${this.name}, Age: ${this.age}</p><p>${this.name} is a software engineer.</p>",
+          },
+          {
+            name: "Terry",
+            age: 21,
+            city: "Augusta",
+            _showDetails: true,
+            _additionalInfo:
+              "<p>Hello ${this.name}, Age: ${this.age}</p><p>${this.name} is a software engineer.</p>",
+          },
+          {
+            name: "Clark",
+            age: 56,
+            city: "Tucson",
+            _showDetails: true,
+            _additionalInfo:
+              "<p>Hello ${this.name}, Age: ${this.age}</p><p>${this.name} is a software engineer.</p>",
+          },
+        ];
 
-      // Define the fields to customize columns
-      tableB.fields = [
-        { key: "first_name", label: "First Name" },
-        { key: "last_name", label: "Last Name" },
-        { key: "age", label: "Person Age", sortable: true, variant: "danger" },
-      ];
+        // Define fields to be reused
+        const tableFields = [
+          { key: "last_name", label: "Last Name", sortable: true },
+          { key: "first_name", label: "First Name", sortable: true },
+          { key: "age", label: "Person Age", sortable: true },
+        ];
 
-      // Define the items (data)
-      tableB.items = [
-        {
-          age: 40,
-          first_name: "Thor",
-          last_name: "MacDonald",
-          _cellVariants: { age: "info", first_name: "warning" },
-          _rowVariant: "primary",
-        },
-        {
-          age: 25,
-          first_name: "Anna",
-          last_name: "Smith",
-          _cellVariants: { age: "success", last_name: "danger" },
-          _rowVariant: "secondary",
-        },
-      ];
+        const shortDataItems = [
+          {
+            age: 37,
+            first_name: "George",
+            last_name: "Jefferson",
+          },
+          {
+            age: 30,
+            first_name: "Patrick",
+            last_name: "Adams",
+          },
+          {
+            age: 19,
+            first_name: "Keith",
+            last_name: "Ericksen",
+          },
+          {
+            age: 28,
+            first_name: "Kelly",
+            last_name: "Parker",
+          },
+          {
+            age: 87,
+            first_name: "Robert",
+            last_name: "Mitchell",
+          },
+        ];
 
-      function resetTableSort(tableId, dropdownId) {
-        const table = document.getElementById(tableId);
-        if (table && typeof table.resetSort === "function") {
-          table.resetSort();
-        }
+        const fullDataItems = [
+          {
+            age: 40,
+            first_name: "Thor",
+            last_name: "MacDonald",
+            _showDetails: true,
+            _additionalInfo:
+              "<p>Hello ${this.first_name}, Age: ${this.age}</p><p>${this.first_name} is a software engineer.</p>",
+          },
+          {
+            age: 20,
+            first_name: "Pete",
+            last_name: "MacDonald",
+            _showDetails: true,
+            _additionalInfo:
+              "<p>Hello ${this.first_name}, Age: ${this.age}</p><p>${this.first_name} is a software engineer.</p>",
+          },
+          {
+            age: 25,
+            first_name: "Anna",
+            last_name: "Smith",
+            _showDetails: true,
+            _additionalInfo:
+              "<p>Hello ${this.first_name}, Age: ${this.age}</p><p>${this.first_name} is a software engineer.</p>",
+          },
+          {
+            age: 36,
+            first_name: "Zachary",
+            last_name: "Peterson",
+          },
+          {
+            age: 21,
+            first_name: "Ralph",
+            last_name: "MacDonald",
+          },
+          {
+            age: 34,
+            first_name: "Norma",
+            last_name: "MacDonald",
+          },
+          {
+            age: 25,
+            first_name: "Emily",
+            last_name: "Larson",
+          },
+          {
+            age: 49,
+            first_name: "Clark",
+            last_name: "Griswald",
+          },
+          {
+            age: 37,
+            first_name: "George",
+            last_name: "Jefferson",
+          },
+          {
+            age: 30,
+            first_name: "Patrick",
+            last_name: "Adams",
+          },
+          {
+            age: 19,
+            first_name: "Keith",
+            last_name: "Ericksen",
+          },
+          {
+            age: 28,
+            first_name: "Kelly",
+            last_name: "Parker",
+          },
+          {
+            age: 87,
+            first_name: "Robert",
+            last_name: "Mitchell",
+          },
+          {
+            age: 30,
+            first_name: "Derrick",
+            last_name: "Clark",
+          },
+          {
+            age: 54,
+            first_name: "Rosa",
+            last_name: "Gonzalez",
+          },
+          {
+            age: 23,
+            first_name: "Cindy",
+            last_name: "Johnson",
+          },
+          {
+            age: 18,
+            first_name: "Nolan",
+            last_name: "Smith",
+          },
+          {
+            age: 48,
+            first_name: "Tonya",
+            last_name: "Smith",
+          },
+          {
+            age: 34,
+            first_name: "Kelly",
+            last_name: "Smith",
+          },
+          {
+            age: 71,
+            first_name: "Robert",
+            last_name: "Smith",
+          },
+          {
+            age: 14,
+            first_name: "Jessica",
+            last_name: "Smith",
+          },
+          {
+            age: 23,
+            first_name: "Pat",
+            last_name: "Smith",
+          },
+        ];
 
-        // Clear filter input field
-        const filterInput = document.getElementById("filterInput");
-        if (filterInput) {
-          const inputElement = filterInput.shadowRoot.querySelector("input");
-          if (inputElement) {
-            inputElement.value = "";
-            filterInput.handleClear();
+        // Assign the common dataset to multiple tables
+        const tableA = document.getElementById("table1");
+        tableA.items = basicItems;
+
+        const tableB = document.getElementById("table2");
+        tableB.items = basicItemsLong;
+
+        const tableC = document.getElementById("table3");
+        tableC.items = basicItems;
+
+        const tableD = document.getElementById("table4");
+        tableD.items = basicItems;
+
+        const tableE = document.getElementById("table5");
+        tableE.items = colorVariationsItems;
+
+        const tableF = document.getElementById("table6");
+        tableF.items = detailRowItems;
+
+        const tableG = document.getElementById("table7");
+        tableG.items = basicItems;
+
+        const tableH = document.getElementById("table8");
+        tableH.items = basicItems;
+
+        const tableI = document.getElementById("table9");
+        tableI.items = basicItems;
+
+        const tableJ = document.getElementById("table14");
+        tableJ.items = basicItems;
+
+        const tableX = document.getElementById("table15");
+        tableX.items = shortDataItems;
+
+        const tableY = document.getElementById("table16");
+        tableY.items = shortDataItems;
+
+        const tableW = document.getElementById("table17");
+        tableW.items = shortDataItems;
+
+        const tableV = document.getElementById("table18");
+        tableV.items = fullDataItems;
+
+        const tableZ = document.getElementById("table99");
+        tableZ.items = fullDataItems;
+
+        // Define the resetTableSort function in the global scope
+        window.resetTableSort = function (tableId, dropdownId) {
+          const table = document.getElementById(tableId);
+          if (table && typeof table.resetSort === "function") {
+            table.resetSort();
           }
-        }
 
-        // Clear dropdown selections
-        const dropdown = document.getElementById(dropdownId);
-        console.log("Dropdown element:", dropdown);
-        if (dropdown && typeof dropdown.clearSelections === "function") {
-          dropdown.clearSelections();
-        }
-      }
+          // Clear filter input field
+          const filterInput = document.getElementById(`filterInput-${tableId}`);
+          if (filterInput) {
+            const inputElement = filterInput.shadowRoot.querySelector("input");
+            if (inputElement) {
+              inputElement.value = "";
+              filterInput.handleClear();
+            }
+          }
 
-      const tableFields = [
-        { key: "last_name", label: "Last Name", sortable: true },
-        { key: "first_name", label: "First Name", sortable: true },
-        { key: "age", label: "Person Age", sortable: true },
-      ];
+          // Clear dropdown selections
+          const dropdown = document.getElementById(dropdownId);
+          if (dropdown && typeof dropdown.clearSelections === "function") {
+            dropdown.clearSelections();
+          }
+        };
 
-      const tableC = document.getElementById("table4");
-      const dropdown = document.getElementById("dditems");
+        window.clearFilter = function (dropdownId) {
+          const tableId = dropdownId.replace("filterByItems", "filterInput");
 
-      tableC.fields = tableFields;
+          // Clear filter input field
+          const filterInput = document.getElementById(tableId);
+          if (filterInput) {
+            const inputElement = filterInput.shadowRoot.querySelector("input");
+            if (inputElement) {
+              inputElement.value = "";
+              filterInput.handleClear();
+            }
+          }
 
-      tableC.items = [
-        {
-          age: 40,
-          first_name: "Thor",
-          last_name: "MacDonald",
-          _showDetails: true,
-          _additionalInfo:
-            "<p>Hello ${this.first_name}, Age: ${this.age}</p><p>${this.first_name} is a software engineer.</p>",
-        },
-        {
-          age: 20,
-          first_name: "Pete",
-          last_name: "MacDonald",
-          _showDetails: true,
-          _additionalInfo:
-            "<p>Hello ${this.first_name}, Age: ${this.age}</p><p>${this.first_name} is a software engineer.</p>",
-        },
-        {
-          age: 25,
-          first_name: "Anna",
-          last_name: "Smith",
-          _showDetails: true,
-          _additionalInfo:
-            "<p>Hello ${this.first_name}, Age: ${this.age}</p><p>${this.first_name} is a software engineer.</p>",
-        },
-        {
-          age: 36,
-          first_name: "Zachary",
-          last_name: "Peterson",
-        },
-        {
-          age: 21,
-          first_name: "Ralph",
-          last_name: "MacDonald",
-        },
-        {
-          age: 34,
-          first_name: "Norma",
-          last_name: "MacDonald",
-        },
-        {
-          age: 25,
-          first_name: "Emily",
-          last_name: "Larson",
-        },
-        {
-          age: 49,
-          first_name: "Clark",
-          last_name: "Griswald",
-        },
-        {
-          age: 37,
-          first_name: "George",
-          last_name: "Jefferson",
-        },
-        {
-          age: 30,
-          first_name: "Patrick",
-          last_name: "Adams",
-        },
-        {
-          age: 19,
-          first_name: "Keith",
-          last_name: "Ericksen",
-        },
-        {
-          age: 28,
-          first_name: "Kelly",
-          last_name: "Parker",
-        },
-        {
-          age: 87,
-          first_name: "Robert",
-          last_name: "Mitchell",
-        },
-        {
-          age: 30,
-          first_name: "Derrick",
-          last_name: "Clark",
-        },
-        {
-          age: 54,
-          first_name: "Rosa",
-          last_name: "Gonzalez",
-        },
-        {
-          age: 23,
-          first_name: "Cindy",
-          last_name: "Johnson",
-        },
-        {
-          age: 18,
-          first_name: "Nolan",
-          last_name: "Smith",
-        },
-        {
-          age: 48,
-          first_name: "Tonya",
-          last_name: "Smith",
-        },
-        {
-          age: 34,
-          first_name: "Kelly",
-          last_name: "Smith",
-        },
-        {
-          age: 71,
-          first_name: "Robert",
-          last_name: "Smith",
-        },
-        {
-          age: 14,
-          first_name: "Jessica",
-          last_name: "Smith",
-        },
-        {
-          age: 23,
-          first_name: "Pat",
-          last_name: "Smith",
-        },
-      ];
+          // Clear dropdown selections
+          const dropdown = document.getElementById(dropdownId);
+          if (dropdown && typeof dropdown.clearSelections === "function") {
+            dropdown.clearSelections();
+          }
+        };
 
-      const sortField = document.getElementById("sortField");
-      const sortOrder = document.getElementById("sortOrder");
+        const dropdown1 = document.getElementById("filterByItems-table17");
+        const dropdown2 = document.getElementById("filterByItems-table99");
 
-      // Populate sort field options dynamically
-      sortField.options = tableC.fields.map((field) => ({
-        value: field.key,
-        name: field.label || field.key,
-      }));
+        tableX.fields = tableFields;
+        tableY.fields = tableFields;
+        tableZ.fields = tableFields;
 
-      // Populate sort order options
-      sortOrder.options = [
-        { value: "asc", name: "Ascending" },
-        { value: "desc", name: "Descending" },
-      ];
+        const sortField1 = document.getElementById("sortField-1");
+        const sortOrder1 = document.getElementById("sortOrder-1");
 
-      // Add event listeners for sortField and sortOrder changes
-      sortField.addEventListener("change", (event) => {
-        const sortFieldEvent = new CustomEvent("sort-field-changed", {
-          detail: { value: event.detail.value },
-        });
-        tableC.dispatchEvent(sortFieldEvent);
-        sortOrder.disabled = event.detail.value === "none";
-        if (!sortOrder.disabled) {
-          sortOrder.value = "asc";
-          const sortOrderEvent = new CustomEvent("sort-order-changed", {
-            detail: { value: "asc" },
+        const sortField2 = document.getElementById("sortField-2");
+        const sortOrder2 = document.getElementById("sortOrder-2");
+
+        // Populate sort field options dynamically
+        sortField1.options = tableY.fields.map((field) => ({
+          value: field.key,
+          name: field.label || field.key,
+        }));
+
+        sortField2.options = tableZ.fields.map((field) => ({
+          value: field.key,
+          name: field.label || field.key,
+        }));
+
+        // Populate sort order options
+        sortOrder1.options = [
+          { value: "asc", name: "Ascending" },
+          { value: "desc", name: "Descending" },
+        ];
+
+        sortOrder2.options = [
+          { value: "asc", name: "Ascending" },
+          { value: "desc", name: "Descending" },
+        ];
+
+        // Add event listeners for sortField and sortOrder changes
+        sortField1.addEventListener("change", (event) => {
+          const sortFieldEvent = new CustomEvent("sort-field-changed", {
+            detail: { value: event.detail.value },
           });
-          tableC.dispatchEvent(sortOrderEvent);
-        }
-      });
+          tableY.dispatchEvent(sortFieldEvent);
+          sortOrder1.disabled = event.detail.value === "none";
+          if (!sortOrder1.disabled) {
+            sortOrder1.value = "asc";
+            const sortOrderEvent = new CustomEvent("sort-order-changed", {
+              detail: { value: "asc" },
+            });
 
-      sortOrder.addEventListener("change", (event) => {
-        const sortOrderEvent = new CustomEvent("sort-order-changed", {
-          detail: { value: event.detail.value },
-        });
-        tableC.dispatchEvent(sortOrderEvent);
-      });
-
-      tableC.addEventListener("sort-field-updated", (event) => {
-        sortField.value = event.detail.value;
-        sortOrder.disabled = event.detail.value === "none";
-      });
-
-      tableC.addEventListener("sort-order-updated", (event) => {
-        sortOrder.value = event.detail.value;
-        if (sortField.value !== "none") {
-          sortOrder.disabled = false;
-        }
-      });
-
-      tableC.addEventListener("sort-changed", (event) => {
-        const { field, order } = event.detail;
-        sortField.value = field;
-        sortOrder.value = order;
-        sortOrder.disabled = field === "none";
-      });
-
-      // For Filtering the Table
-
-      dropdown.items = tableFields.map((field, index) => ({
-        key: field.key,
-        name: field.label,
-        index: index, // Add the index here
-      }));
-
-      const filterInput = document.getElementById("filterInput");
-
-      filterInput.addEventListener("change", (event) => {
-        const filterEvent = new CustomEvent("filter-changed", {
-          detail: { value: event.target.value },
-        });
-        tableC.dispatchEvent(filterEvent);
-      });
-
-      window.clearFilter = function (dropdownId) {
-        // Clear filter input field
-        const filterInput = document.getElementById("filterInput");
-        if (filterInput) {
-          const inputElement = filterInput.shadowRoot.querySelector("input");
-          if (inputElement) {
-            inputElement.value = "";
-            filterInput.handleClear();
+            tableY.dispatchEvent(sortOrderEvent);
           }
-        }
+        });
 
-        // Clear dropdown selections
-        const dropdown = document.getElementById(dropdownId);
-        console.log("Dropdown element:", dropdown);
-        if (dropdown && typeof dropdown.clearSelections === "function") {
-          dropdown.clearSelections();
-        }
-      };
+        sortField2.addEventListener("change", (event) => {
+          const sortFieldEvent = new CustomEvent("sort-field-changed", {
+            detail: { value: event.detail.value },
+          });
+          tableZ.dispatchEvent(sortFieldEvent);
+          sortOrder2.disabled = event.detail.value === "none";
+          if (!sortOrder2.disabled) {
+            sortOrder2.value = "asc";
+            const sortOrderEvent = new CustomEvent("sort-order-changed", {
+              detail: { value: "asc" },
+            });
+
+            tableZ.dispatchEvent(sortOrderEvent);
+          }
+        });
+
+        sortOrder1.addEventListener("change", (event) => {
+          const sortOrderEvent = new CustomEvent("sort-order-changed", {
+            detail: { value: event.detail.value },
+          });
+
+          tableY.dispatchEvent(sortOrderEvent);
+        });
+
+        sortOrder2.addEventListener("change", (event) => {
+          const sortOrderEvent = new CustomEvent("sort-order-changed", {
+            detail: { value: event.detail.value },
+          });
+
+          tableZ.dispatchEvent(sortOrderEvent);
+        });
+
+        tableY.addEventListener("sort-field-updated", (event) => {
+          sortField1.value = event.detail.value;
+          sortOrder1.disabled = event.detail.value === "none";
+        });
+
+        tableZ.addEventListener("sort-field-updated", (event) => {
+          sortField2.value = event.detail.value;
+          sortOrder2.disabled = event.detail.value === "none";
+        });
+
+        tableY.addEventListener("sort-order-updated", (event) => {
+          sortOrder1.value = event.detail.value;
+          if (sortField1.value !== "none") {
+            sortOrder1.disabled = false;
+          }
+        });
+
+        tableZ.addEventListener("sort-order-updated", (event) => {
+          sortOrder2.value = event.detail.value;
+          if (sortField2.value !== "none") {
+            sortOrder2.disabled = false;
+          }
+        });
+
+        tableY.addEventListener("sort-changed", (event) => {
+          const { field, order } = event.detail;
+          sortField1.value = field;
+          sortOrder1.value = order;
+          sortOrder1.disabled = field === "none";
+        });
+
+        tableZ.addEventListener("sort-changed", (event) => {
+          const { field, order } = event.detail;
+          sortField2.value = field;
+          sortOrder2.value = order;
+          sortOrder2.disabled = field === "none";
+        });
+
+        // For Filtering the Table
+
+        dropdown1.items = tableFields.map((field, index) => ({
+          key: field.key,
+          name: field.label,
+          index: index, // Add the index here
+        }));
+
+        dropdown2.items = tableFields.map((field, index) => ({
+          key: field.key,
+          name: field.label,
+          index: index, // Add the index here
+        }));
+
+        const filterInput1 = document.getElementById("filterInput-table17");
+        const filterInput2 = document.getElementById("filterInput-table99");
+
+        filterInput1.addEventListener("change", (event) => {
+          const filterEvent = new CustomEvent("filter-changed", {
+            detail: { value: event.target.value },
+          });
+          tableW.dispatchEvent(filterEvent);
+        });
+
+        filterInput2.addEventListener("change", (event) => {
+          const filterEvent = new CustomEvent("filter-changed", {
+            detail: { value: event.target.value },
+          });
+          tableZ.dispatchEvent(filterEvent);
+        });
+      });
     </script>
   </body>
 </html>

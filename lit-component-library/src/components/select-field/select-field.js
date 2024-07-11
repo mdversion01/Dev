@@ -1,3 +1,5 @@
+// SelectField Component
+
 import { LitElement, html, css } from "lit";
 import { ifDefined } from "lit/directives/if-defined.js";
 import { layoutStyles } from "../layout-styles.js";
@@ -70,29 +72,41 @@ class SelectField extends LitElement {
     }
 
     if (this.withTable) {
-      window.addEventListener('sort-field-updated', this.updateSortField.bind(this));
-      window.addEventListener('sort-order-updated', this.updateSortOrder.bind(this));
+      window.addEventListener(
+        "sort-field-updated",
+        this.updateSortField.bind(this)
+      );
+      window.addEventListener(
+        "sort-order-updated",
+        this.updateSortOrder.bind(this)
+      );
     }
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
     if (this.withTable) {
-      window.removeEventListener('sort-field-updated', this.updateSortField.bind(this));
-      window.removeEventListener('sort-order-updated', this.updateSortOrder.bind(this));
+      window.removeEventListener(
+        "sort-field-updated",
+        this.updateSortField.bind(this)
+      );
+      window.removeEventListener(
+        "sort-order-updated",
+        this.updateSortOrder.bind(this)
+      );
     }
   }
 
   updateSortField(event) {
-    if (this.id === 'sortField') {
-      this.value = event.detail.value || 'none';
+    if (this.id.includes("sortField")) {
+      this.value = event.detail.value || "none";
       this.requestUpdate();
     }
   }
 
   updateSortOrder(event) {
-    if (this.id === 'sortOrder') {
-      this.value = event.detail.value || 'asc'; // Default to 'asc'
+    if (this.id.includes("sortOrder")) {
+      this.value = event.detail.value || "asc"; // Default to 'asc'
       this.requestUpdate();
     }
   }
@@ -160,7 +174,7 @@ class SelectField extends LitElement {
             ? " select-sm"
             : this.size === "lg"
             ? " select-lg"
-            : ""}${this.classes ? ` ${this.classes}` : ""}" 
+            : ""}${this.classes ? ` ${this.classes}` : ""}"
           ?multiple=${this.multiple}
           ?disabled=${this.disabled}
           aria-label=${ifDefined(names ? names : undefined)}
@@ -174,7 +188,9 @@ class SelectField extends LitElement {
           role=${this.multiple ? "combobox" : "listbox"}
           @change="${this.handleChange}"
         >
-          ${this.id === 'sortField' ? html`<option value="none" aria-label="none">--none--</option>` : ''}
+          ${this.id.includes("sortField")
+            ? html`<option value="none" aria-label="none">--none--</option>`
+            : ""}
           ${this.options
             ? this.options.map(
                 (option) =>
@@ -199,7 +215,9 @@ class SelectField extends LitElement {
 
   handleChange(event) {
     this.value = event.target.value; // Update the value property
-    this.dispatchEvent(new CustomEvent('change', { detail: { value: this.value } }));
+    this.dispatchEvent(
+      new CustomEvent("change", { detail: { value: this.value } })
+    );
   }
 
   render() {
@@ -227,8 +245,7 @@ class SelectField extends LitElement {
   }
 
   _getClassNames() {
-    const excludedProperties = [
-    ];
+    const excludedProperties = [];
 
     return Array.from(this.attributes)
       .map((attr) => attr.name)

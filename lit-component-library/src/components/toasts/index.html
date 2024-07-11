@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Toast Example</title>
+  <script type="module" src="./toast-component.js"></script>
+  <style>
+    .custom-toast-content {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .custom-toast-content img {
+      width: 20px;
+      height: 20px;
+    }
+  </style>
+</head>
+<body>
+  <toast-component id="toast" position="bottom-right"></toast-component>
+
+  <button onclick="showNotification()">Show Toast</button>
+  <button onclick="showCustomNotification()">Show Custom Toast</button>
+
+  <script type="module">
+    import { html } from 'lit';
+
+    window.showNotification = function showNotification() {
+      const toast = document.getElementById('toast');
+      toast.showToast({ 
+        message: 'This is a toast message!', 
+        color: '#007BFF', 
+        textColor: 'white',
+        duration: 5000
+      });
+    };
+
+    window.showCustomNotification = function showCustomNotification() {
+      const toast = document.getElementById('toast');
+      toast.showToast({ 
+        customContent: html`
+          <div class="custom-toast-content">
+            <img src="icon.png" alt="Icon" />
+            <span>This is a custom toast with an icon!</span>
+          </div>`,
+        color: '#28A745', 
+        textColor: 'white',
+        duration: 7000
+      });
+    };
+  </script>
+</body>
+</html>
