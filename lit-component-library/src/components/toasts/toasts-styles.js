@@ -667,7 +667,7 @@ export const toastStyles = css`
   a.close.disabled {
     pointer-events: none;
   }
-
+  
   @keyframes fadein {
     from {
       opacity: 0;

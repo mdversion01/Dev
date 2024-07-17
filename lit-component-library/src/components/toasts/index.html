@@ -1,361 +1,347 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Toasts Component</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Toasts Component</title>
 
-  <link
-    rel="stylesheet"
-    href="../../../node_modules/bootstrap/dist/css/bootstrap.css"
-  />
+    <link
+      rel="stylesheet"
+      href="../../../node_modules/bootstrap/dist/css/bootstrap.css"
+    />
 
-  <link
-    rel="stylesheet"
-    href="../../../node_modules/lit-fontawesome/css/font.css"
-  />
+    <link
+      rel="stylesheet"
+      href="../../../node_modules/lit-fontawesome/css/font.css"
+    />
 
-  <link
-    rel="stylesheet"
-    href="../../../node_modules/font-awesome/css/font-awesome.min.css"
-  />
+    <link
+      rel="stylesheet"
+      href="../../../node_modules/font-awesome/css/font-awesome.min.css"
+    />
 
-  <link rel="stylesheet" href="../../styles/components.css" />
+    <link rel="stylesheet" href="../../styles/components.css" />
 
-  <style>
-    .custom-toast-content {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .custom-toast-content img {
-      width: 20px;
-      height: 20px;
-    }
-  </style>
-</head>
-<body>
-  <div class="title">Toasts</div>
-  <div class="demo-wrapper">
-    <div class="main">
-      <section>
-        <section class="section">
-          <section class="display-box" id="db-1">
-            <section class="display-box-demo">
-              <button
-                class="btn btn-secondary btn-sm"
-                onclick="showNotification1c()"
-              >
-                Show Toast
-              </button>
-              <button
-                class="btn btn-secondary btn-sm"
-                onclick="showCustomNotification1d()"
-              >
-                Show Custom Toast
-              </button>
-              <!-- <button
-                class="btn btn-secondary btn-sm"
-                onclick="simulateRealTimeNotifications()"
-              >
-                Simulate Real-Time Notifications
-              </button> -->
-              <button
-                class="btn btn-secondary btn-sm"
-                onclick="simulateStackedNotifications()"
-              >
-                Simulate RealTime Stacked Notifications
-              </button>
-              <toast-component
-                id="toast1c"
-                position="bottom-left"
-                appendToast
-              ></toast-component>
-              <div style="margin-top: 15px">
-                <div style="margin-bottom: 5px; font-size: 0.75rem">
-                  Toast Styling Example:
+    <style>
+      .custom-toast-content {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .custom-toast-content img {
+        width: 20px;
+        height: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="title">Toasts</div>
+    <div class="demo-wrapper">
+      <div class="main">
+        <section>
+          <section class="section">
+            <section class="display-box" id="db-1">
+              <section class="display-box-demo">
+                <button
+                  class="btn btn-secondary btn-sm"
+                  onclick="showNotification1c()"
+                >
+                  Show Toast
+                </button>
+                <button
+                  class="btn btn-secondary btn-sm"
+                  onclick="showCustomNotification1d()"
+                >
+                  Show Custom Toast
+                </button>
+                <button
+                  class="btn btn-secondary btn-sm"
+                  onclick="simulateStackedNotifications()"
+                >
+                  Simulate RealTime Stacked Notifications
+                </button>
+                <toast-component
+                  id="toast1c"
+                  position="bottom-left"
+                  appendToast
+                ></toast-component>
+                <div style="margin-top: 15px">
+                  <div style="margin-bottom: 5px; font-size: 0.75rem">
+                    Toast Styling Example:
+                  </div>
+                  <toast-component id="toast3" position=""></toast-component>
                 </div>
-                <toast-component id="toast3" position=""></toast-component>
-              </div>
-            </section>
-            <section class="display-box-meta markdown">
-              <div class="display-box-title">Basic Usage</div>
-              <div class="display-box-description">Text</div>
-              <div class=""></div>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">Text</div>
+                <div class=""></div>
+              </section>
             </section>
           </section>
-        </section>
 
-        <section class="section">
-          <section class="display-box" id="db-1">
-            <section class="display-box-demo">
-              <button
-                class="btn btn-secondary btn-sm"
-                onclick="showNotification2a()"
-              >
-                Show Plumage Toast
-              </button>
-              <toast-component
-                id="toast2a"
-                position="top-right"
-                plumageToast
-              ></toast-component>
-              <div style="margin-top: 15px">
-                <div style="margin-bottom: 5px; font-size: 0.75rem">
-                  Plumage Toast Styling Example:
-                </div>
+          <section class="section">
+            <section class="display-box" id="db-1">
+              <section class="display-box-demo">
+                <button
+                  class="btn btn-secondary btn-sm"
+                  onclick="showNotification2a()"
+                >
+                  Show Plumage Toast
+                </button>
                 <toast-component
-                  id="toast2"
-                  position=""
+                  id="toast2a"
+                  position="top-right"
                   plumageToast
                 ></toast-component>
-              </div>
-            </section>
-            <section class="display-box-meta markdown">
-              <div class="display-box-title">Basic Usage</div>
-              <div class="display-box-description">Text</div>
-              <div class=""></div>
+                <div style="margin-top: 15px">
+                  <div style="margin-bottom: 5px; font-size: 0.75rem">
+                    Plumage Toast Styling Example:
+                  </div>
+                  <toast-component
+                    id="toast2"
+                    position=""
+                    plumageToast
+                  ></toast-component>
+                </div>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">Text</div>
+                <div class=""></div>
+              </section>
             </section>
           </section>
         </section>
-      </section>
 
-      <!-- Next column -->
+        <!-- Next column -->
 
-      <section>
-        <section class="section">
-          <section class="display-box" id="db-1">
-            <section class="display-box-demo">
-              <button
-                class="btn btn-secondary btn-sm"
-                onclick="showNotification1a()"
-              >
-                Show Toast
-              </button>
-              <button
-                class="btn btn-secondary btn-sm"
-                onclick="showCustomNotification1b()"
-              >
-                Show Custom Toast
-              </button>
-              <toast-component
-                id="toast1a"
-                position="bottom-right"
-                solidToast
-              ></toast-component>
-
-              <toast-component
-                id="toast1b"
-                position="bottom-right"
-                solidToast
-              ></toast-component>
-
-              <div style="margin-top: 15px">
-                <div style="margin-bottom: 5px; font-size: 0.75rem">
-                  Single Toast Styling Example:
-                </div>
+        <section>
+          <section class="section">
+            <section class="display-box" id="db-1">
+              <section class="display-box-demo">
+                <button
+                  class="btn btn-secondary btn-sm"
+                  onclick="showNotification1a()"
+                >
+                  Show Toast
+                </button>
+                <button
+                  class="btn btn-secondary btn-sm"
+                  onclick="showCustomNotification1b()"
+                >
+                  Show Custom Toast
+                </button>
                 <toast-component
-                  id="toast1"
-                  position=""
+                  id="toast1a"
+                  position="bottom-right"
                   solidToast
-                  append-toast
                 ></toast-component>
-              </div>
-            </section>
-            <section class="display-box-meta markdown">
-              <div class="display-box-title">Basic Usage</div>
-              <div class="display-box-description">Text</div>
-              <div class=""></div>
+
+                <toast-component
+                  id="toast1b"
+                  position="bottom-right"
+                  solidToast
+                ></toast-component>
+
+                <div style="margin-top: 15px">
+                  <div style="margin-bottom: 5px; font-size: 0.75rem">
+                    Single Toast Styling Example:
+                  </div>
+                  <toast-component
+                    id="toast1"
+                    position=""
+                    solidToast
+                    append-toast
+                  ></toast-component>
+                </div>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">Text</div>
+                <div class=""></div>
+              </section>
             </section>
           </section>
-        </section>
 
-        <section class="section">
-          <section class="display-box" id="db-1">
-            <section class="display-box-demo">
-              <button
-                class="btn btn-secondary btn-sm"
-                onclick="showNotification2b()"
-              >
-                Show Plumage Toast 2
-              </button>
+          <section class="section">
+            <section class="display-box" id="db-1">
+              <section class="display-box-demo">
+                <button
+                  class="btn btn-secondary btn-sm"
+                  onclick="showNotification2b()"
+                >
+                  Show Plumage Toast 2
+                </button>
 
-              <toast-component id="toast2b" position="bottom-center" plumageToast plumageTemplate2></toast-component>
-
-              <div style="margin-top: 15px">
-                <div style="margin-bottom: 5px; font-size: 0.75rem">
-                  Plumage Toast 2nd Styling Example:
-                </div>
                 <toast-component
-                  id="toast4"
-                  position=""
+                  id="toast2b"
+                  position="bottom-center"
                   plumageToast
                   plumageTemplate2
-                  append-toast
                 ></toast-component>
-              </div>
-            </section>
-            <section class="display-box-meta markdown">
-              <div class="display-box-title">Basic Usage</div>
-              <div class="display-box-description">Text</div>
-              <div class=""></div>
+
+                <div style="margin-top: 15px">
+                  <div style="margin-bottom: 5px; font-size: 0.75rem">
+                    Plumage Toast 2nd Styling Example:
+                  </div>
+                  <toast-component
+                    id="toast4"
+                    position=""
+                    plumageToast
+                    plumageTemplate2
+                    append-toast
+                  ></toast-component>
+                </div>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">Text</div>
+                <div class=""></div>
+              </section>
             </section>
           </section>
         </section>
-      </section>
+      </div>
     </div>
-  </div>
 
-  <script type="module" src="./toast-component.js"></script>
-  <script type="module">
-    import { html } from "lit";
+    <script type="module" src="./toast-component.js"></script>
+    <script type="module">
+      import { html } from "lit";
 
-    // Automatically show toast examples
-    window.addEventListener("DOMContentLoaded", () => {
-      const toast1 = document.getElementById("toast1");
-      toast1.showToast({
-        message: "This is a solid toast example!",
-        variant: "primary",
-        duration: 5000,
-        svgIcon: "exclamation-triangle-outline",
-        persistent: true,
-        title: "Solid Toast",
-        closeBtn: true,
-      });
+      // Automatically show toast examples
+      window.addEventListener("DOMContentLoaded", () => {
+        const toast1 = document.getElementById("toast1");
+        toast1.message = "This is a solid toast example!";
+        toast1.variant = "primary";
+        toast1.duration = 5000;
+        toast1.svgIcon = "exclamation-triangle-outline";
+        toast1.persistent = true;
+        toast1.title = "Solid Toast";
+        toast1.showToast();
 
-      const toast2 = document.getElementById("toast2");
-      toast2.showToast({
-        message: "This is a Plumage styled toast example!",
-        variant: "info",
-        duration: 5000,
-        svgIcon: "exclamation-circle-fill",
-        persistent: true,
-        title: "Plumage Toast",
-        closeBtn: false,
-        iconPlumageStyle: true,
-      });
+        const toast2 = document.getElementById("toast2");
+        toast2.message = "This is a Plumage styled toast example!";
+        toast2.variant = "info";
+        toast2.duration = 5000;
+        toast2.svgIcon = "exclamation-circle-fill";
+        toast2.persistent = true;
+        toast2.title = "Plumage Toast";
+        toast2.noCloseButton = true;
+        toast2.iconPlumageStyle = true;
+        toast2.showToast();
 
-      const toast3 = document.getElementById("toast3");
-      toast3.showToast({
-        title: "Default Toast",
-        message: "This is a default toast example!",
-        secondaryMessage: "43 seconds ago",
-        duration: 5000,
-        svgIcon: "exclamation-triangle-outline",
-        persistent: true,
-        closeBtn: true,
-      });
+        const toast3 = document.getElementById("toast3");
+        toast3.message = "This is a default toast example!";
+        toast3.secondaryMessage = "43 seconds ago";
+        toast3.variant = "secondary";
+        toast3.duration = 5000;
+        toast3.svgIcon = "exclamation-triangle-outline";
+        toast3.persistent = true;
+        toast3.showToast();
 
-      const toast4 = document.getElementById("toast4");
-      toast4.showToast({
-        title: "Plumage Template 2 Toast",
-        customContent: html`
+        const toast4 = document.getElementById("toast4");
+        toast4.title = "Plumage Template 2 Toast";
+        toast4.customContent = html`
           <div slot="custom-content">
             <div>This is data</div>
             <div>This is data</div>
           </div>
-        `,
-        variant: "danger",
-        duration: 7000,
-        svgIcon: "exclamation-circle-fill",
-        persistent: true,
-        closeBtn: true,
-        iconPlumageStyle: true,
+        `;
+        toast4.variant = "danger";
+        toast4.duration = 7000;
+        toast4.svgIcon = "exclamation-circle-fill";
+        toast4.persistent = true;
+        toast4.iconPlumageStyle = true;
+        toast4.showToast();
       });
-    });
 
-    window.showNotification1a = function showNotification1a() {
-      const toast = document.getElementById("toast1a");
-      toast.showToast({
-        message: "This is a toast message!",
-        variant: "primary",
-        duration: 5000,
-        svgIcon: "exclamation-triangle-outline",
-        persistent: false, // Make the toast non-persistent
-      });
-    };
+      window.showNotification1a = function showNotification1a() {
+        const toast = document.getElementById("toast1a");
+        toast.message = "This is a toast message!";
+        toast.variant = "primary";
+        toast.duration = 5000;
+        toast.svgIcon = "exclamation-triangle-outline";
+        toast.persistent = false; // Make the toast non-persistent
+        toast.showToast();
+        toast.noHoverPause = true;
+      };
 
-    window.showCustomNotification1b = function showCustomNotification1b() {
-      const toast = document.getElementById("toast1a");
-      toast.showToast({
-        customContent: html`
+      window.showCustomNotification1b = function showCustomNotification1b() {
+        const toast = document.getElementById("toast1a");
+        toast.customContent = html`
           <div class="custom-toast-content">
             <span>This is a custom toast with an icon!</span>
           </div>
-        `,
-        variant: "light",
-        duration: 7000,
-        svgIcon: "info-fill",
-        persistent: false, // Make the toast non-persistent
-      });
-    };
+        `;
+        toast.variant = "light";
+        toast.duration = 7000;
+        toast.svgIcon = "info-fill";
+        toast.persistent = false; // Make the toast non-persistent
+        toast.showToast();
+      };
 
-    window.showNotification1c = function showNotification1c() {
-      const toast = document.getElementById("toast1c");
-      toast.showToast({
-        title: "Title Text",
-        message: "This is a toast message!",
-        secondaryMessage: "43 seconds ago",
-        variant: "primary",
-        duration: 5000,
-        svgIcon: "exclamation-triangle-outline",
-        persistent: false, // Make the toast non-persistent
-      });
-    };
+      window.showNotification1c = function showNotification1c() {
+        const toast = document.getElementById("toast1c");
+        toast.title = "Title Text";
+        toast.message = "This is a toast message!";
+        toast.secondaryMessage = "43 seconds ago";
+        toast.variant = "primary";
+        toast.duration = 5000;
+        toast.svgIcon = "exclamation-triangle-outline";
+        toast.persistent = false; // Make the toast non-persistent
+        toast.showToast();
+      };
 
-    window.showCustomNotification1d = function showCustomNotification1d() {
-      const toast = document.getElementById("toast1c");
-      toast.showToast({
-        title: "Title Text",
-        secondaryMessage: "43 seconds ago",
-        customContent: html`
+      window.showCustomNotification1d = function showCustomNotification1d() {
+        const toast = document.getElementById("toast1c");
+        toast.title = "Title Text";
+        toast.secondaryMessage = "43 seconds ago";
+        toast.customContent = html`
           <div slot="custom-content">
             <div>This is data</div>
             <div>This is data</div>
           </div>
-        `,
-        variant: "danger",
-        duration: 5000,
-        svgIcon: "exclamation-triangle-outline",
-        persistent: false, // Make the toast non-persistent
-      });
-    };
+        `;
+        toast.variant = "danger";
+        toast.duration = 5000;
+        toast.svgIcon = "exclamation-triangle-outline";
+        toast.persistent = false; // Make the toast non-persistent
+        toast.showToast();
+      };
 
-    window.showNotification2a = function showNotification2a() {
-      const toast = document.getElementById("toast2a");
-      toast.showToast({
-        title: "Title Text",
-        message: "This is a Plumage Styled toast message!",
-        duration: 5000,
-        svgIcon: "exclamation-circle-fill",
-        persistent: false, // Make the toast non-persistent
-        closeBtn: false,
-        iconPlumageStyle: true,
-        variant: "danger",
-      });
-    };
+      window.showNotification2a = function showNotification2a() {
+        const toast = document.getElementById("toast2a");
+        toast.title = "Title Text";
+        toast.message = "This is a Plumage Styled toast message!";
+        toast.duration = 5000;
+        toast.svgIcon = "exclamation-circle-fill";
+        toast.persistent = false; // Make the toast non-persistent
+        toast.noCloseButton = true;
+        toast.iconPlumageStyle = true;
+        toast.variant = "danger";
+        toast.showToast();
+      };
 
-    window.showNotification2b = function showNotification2b() {
-      const toast = document.getElementById("toast2b");
-      toast.showToast({
-        title: "Plumage Template 2 Toast",
-        customContent: html`
+      window.showNotification2b = function showNotification2b() {
+        const toast = document.getElementById("toast2b");
+        toast.title = "Plumage Template 2 Toast";
+        toast.customContent = html`
           <div slot="custom-content">
             <div>This is data</div>
             <div>This is data</div>
           </div>
-        `,
-        variant: "danger",
-        duration: 7000,
-        svgIcon: "exclamation-circle-fill",
-        persistent: false,
-        closeBtn: true,
-        iconPlumageStyle: true,
-      });
-    };
+        `;
+        toast.variant = "danger";
+        toast.duration = 7000;
+        toast.svgIcon = "exclamation-circle-fill";
+        toast.persistent = false;
+        toast.iconPlumageStyle = true;
+        toast.showToast();
+      };
 
-    // Simulate real-time notifications
-    function simulateRealTimeNotifications() {
+      // Simulate real-time notifications
+      function simulateRealTimeNotifications() {
         const types = ["error", "update", "news"];
         const messages = {
           error: "An error occurred!",
@@ -376,68 +362,53 @@
         setInterval(() => {
           const type = types[Math.floor(Math.random() * types.length)];
           const toast = document.getElementById("toast1a");
-          toast.showToast({
-            title: type.charAt(0).toUpperCase() + type.slice(1),
-            message: messages[type],
-            variant: variants[type],
-            duration: 5000,
-            svgIcon: icons[type],
-            persistent: false,
-          });
+          toast.title = type.charAt(0).toUpperCase() + type.slice(1);
+          toast.message = messages[type];
+          toast.variant = variants[type];
+          toast.duration = 5000;
+          toast.svgIcon = icons[type];
+          toast.persistent = false;
+          toast.showToast();
         }, 10000); // Show a toast every 10 seconds
       }
 
       simulateRealTimeNotifications();
 
-    // window.simulateRealTimeNotifications = function simulateRealTimeNotifications() {
-    //   const toast = document.getElementById("toast1c");
-    //   let count = 0;
-    //   const notifications = [
-    //     {title: "Title Text 1", message: "Notification 1", variant: "primary" },
-    //     {title: "Title Text 2", message: "Notification 2", variant: "success" },
-    //     {title: "Title Text 2", message: "Notification 3", variant: "warning" },
-    //   ];
+      window.simulateStackedNotifications =
+        function simulateStackedNotifications() {
+          const toast = document.getElementById("toast1c");
+          const notifications = [
+            {
+              title: "Title Text 1",
+              message: "Stacked Notification 1",
+              variant: "info",
+            },
+            {
+              title: "Title Text 2",
+              message: "Stacked Notification 2",
+              variant: "danger",
+            },
+            {
+              title: "Title Text 3",
+              message: "Stacked Notification 3",
+              variant: "success",
+            },
+          ];
 
-    //   const interval = setInterval(() => {
-    //     if (count < notifications.length) {
-    //       toast.showToast({
-    //         title: notifications[count].title,
-    //         message: notifications[count].message,
-    //         variant: notifications[count].variant,
-    //         duration: 5000,
-    //         svgIcon: "exclamation-triangle-outline",
-    //         persistent: false,
-    //       });
-    //       count++;
-    //     } else {
-    //       clearInterval(interval);
-    //     }
-    //   }, 3000);
-    // };
-
-    window.simulateStackedNotifications = function simulateStackedNotifications() {
-      const toast = document.getElementById("toast1c");
-      const notifications = [
-        { title: "Title Text 1", message: "Stacked Notification 1", variant: "info" },
-        { title: "Title Text 2", message: "Stacked Notification 2", variant: "danger" },
-        { title: "Title Text 3", message: "Stacked Notification 3", variant: "success" },
-      ];
-
-      let delay = 0;
-      notifications.forEach((notification, index) => {
-        setTimeout(() => {
-          toast.showToast({
-            title: notification.title,
-            message: notification.message,
-            variant: notification.variant,
-            duration: 5000,
-            svgIcon: "exclamation-triangle-outline",
-            persistent: false,
+          let delay = 0;
+          notifications.forEach((notification) => {
+            setTimeout(() => {
+              toast.title = notification.title;
+              toast.message = notification.message;
+              toast.variant = notification.variant;
+              toast.duration = 5000;
+              toast.svgIcon = "exclamation-triangle-outline";
+              toast.persistent = false;
+              toast.showToast();
+            }, delay);
+            delay += 2000;
           });
-        }, delay);
-        delay += 2000;
-      });
-    };
-  </script>
-</body>
+        };
+    </script>
+  </body>
 </html>

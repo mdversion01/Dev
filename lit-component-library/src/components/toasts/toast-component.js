@@ -14,6 +14,21 @@ class ToastComponent extends LitElement {
     solidToast: { type: Boolean },
     appendToast: { type: Boolean },
     toasts: { type: Array },
+    message: { type: String },
+    secondaryMessage: { type: String },
+    variant: { type: String },
+    customContent: { type: Object },
+    secContent: { type: Object },
+    svgIcon: { type: String },
+    persistent: { type: Boolean },
+    title: { type: String },
+    time: { type: String },
+    noCloseButton: { type: Boolean },
+    iconPlumageStyle: { type: Boolean },
+    bodyClass: { type: String },
+    headerClass: { type: String },
+    isStatus: { type: Boolean },
+    noHoverPause: { type: Boolean },
   };
 
   constructor() {
@@ -26,54 +41,47 @@ class ToastComponent extends LitElement {
     this.solidToast = false;
     this.appendToast = false; // Default to prepending toasts
     this.toasts = [];
+    this.noHoverPause = false; // Default to allowing hover to pause auto-hide
   }
 
-  showToast({
-    message,
-    secondaryMessage,
-    variant = "",
-    duration = this.duration,
-    customContent = null,
-    secContent = null,
-    svgIcon = "exclamation-triangle-fill",
-    persistent = false,
-    title = "",
-    time = new Date().toISOString().split("T")[1].split(".")[0] + "Z",
-    closeBtn = true,
-    iconPlumageStyle = false,
-  }) {
-    const variantClass = this.getColor(variant);
+  showToast() {
+    const variantClass = this.getColor(this.variant);
     const id = new Date().getTime();
-    const content = customContent ? customContent : html`${message}`;
-    const secondaryContent = secContent
-      ? secContent
-      : html`${secondaryMessage}`;
+    const content = this.customContent
+      ? this.customContent
+      : html`${this.message}`;
+    const secondaryContent = this.secContent
+      ? this.secContent
+      : html`${this.secondaryMessage}`;
     const newToast = {
       id,
       content,
       secondaryContent,
       variantClass,
-      duration,
-      svgIcon,
-      persistent,
-      title,
-      time,
-      closeBtn,
-      iconPlumageStyle,
+      duration: this.duration,
+      svgIcon: this.svgIcon,
+      persistent: this.persistent,
+      title: this.title,
+      time: this.time,
+      noCloseButton: this.noCloseButton,
+      iconPlumageStyle: this.iconPlumageStyle,
+      bodyClass: this.bodyClass,
+      headerClass: this.headerClass,
+      isStatus: this.isStatus,
+      noHoverPause: this.noHoverPause,
     };
 
     this.toasts = this.appendToast
       ? [...this.toasts, newToast] // Append to the end
       : [newToast, ...this.toasts]; // Prepend to the beginning
 
-    console.log("Toast added:", newToast);
-
-    if (!persistent) {
-      setTimeout(() => {
-        console.log("Starting to remove toast id:", id);
+    if (!this.persistent) {
+      newToast.hideTimeout = setTimeout(() => {
         this.startRemoveToast(id);
-      }, duration);
+      }, this.duration);
     }
+
+    this.requestUpdate();
   }
 
   startRemoveToast(id) {
@@ -87,6 +95,20 @@ class ToastComponent extends LitElement {
 
   removeToast(id) {
     this.toasts = this.toasts.filter((toast) => toast.id !== id);
+  }
+
+  handleMouseEnter(toast) {
+    if (!toast.noHoverPause && toast.hideTimeout) {
+      clearTimeout(toast.hideTimeout);
+    }
+  }
+
+  handleMouseLeave(toast) {
+    if (!toast.noHoverPause && !toast.persistent) {
+      toast.hideTimeout = setTimeout(() => {
+        this.startRemoveToast(toast.id);
+      }, toast.duration);
+    }
   }
 
   renderSvgIcons() {
@@ -186,8 +208,8 @@ class ToastComponent extends LitElement {
         (toast) => html`
           <div
             id="${this.id}__toast_outer"
-            role="alert"
-            aria-live="assertive"
+            role="${toast.isStatus ? "status" : "alert"}"
+            aria-live="${toast.isStatus ? "polite" : "assertive"}"
             aria-atomic="true"
             class="toast toast-solid${toast.fadeOut
               ? " fade-out"
@@ -195,13 +217,11 @@ class ToastComponent extends LitElement {
               ? " toast-" + toast.variantClass
               : ""}"
             style=" --toast-duration: ${toast.duration / 1000}s;"
+            @mouseenter="${() => this.handleMouseEnter(toast)}"
+            @mouseleave="${() => this.handleMouseLeave(toast)}"
           >
-            <div
-              id="${this.id}"
-              tabindex="0"
-              @keydown="${(e) => this.handleKeydown(e, toast.id)}"
-            >
-              <header class="toast-header">
+            <div id="${this.id}" tabindex="0">
+              <header class="toast-header ${toast.headerClass}">
                 <div class="d-flex flex-grow-1 align-items-center">
                   <svg
                     class="toast-svg flex-shrink-0 me-2"
@@ -216,16 +236,19 @@ class ToastComponent extends LitElement {
                     >${toast.secondaryContent}</small
                   >
                 </div>
-                <button
-                  type="button"
-                  aria-label="Close"
-                  class="close ml-auto m1"
-                  @click="${() => this.startRemoveToast(toast.id)}"
-                >
-                  ×
-                </button>
+
+                ${toast.noCloseButton
+                  ? ""
+                  : html` <button
+                      type="button"
+                      aria-label="Close"
+                      class="close ml-auto m1"
+                      @click="${() => this.startRemoveToast(toast.id)}"
+                    >
+                      ×
+                    </button>`}
               </header>
-              <div class="toast-body">${toast.content}</div>
+              <div class="toast-body ${toast.bodyClass}">${toast.content}</div>
             </div>
           </div>
         `
@@ -244,12 +267,16 @@ class ToastComponent extends LitElement {
               ? " text-bg-" + toast.variantClass
               : ""}"
             style=" --toast-duration: ${toast.duration / 1000}s;"
-            role="alert"
-            aria-live="assertive"
+            role="${toast.isStatus ? "status" : "alert"}"
+            aria-live="${toast.isStatus ? "polite" : "assertive"}"
             aria-atomic="true"
+            @mouseenter="${() => this.handleMouseEnter(toast)}"
+            @mouseleave="${() => this.handleMouseLeave(toast)}"
           >
             <div class="d-flex">
-              <div class="toast-body d-flex align-items-center">
+              <div
+                class="toast-body d-flex align-items-center ${toast.bodyClass}"
+              >
                 <svg
                   class="toast-svg flex-shrink-0 me-2"
                   role="img"
@@ -260,14 +287,17 @@ class ToastComponent extends LitElement {
                 </svg>
                 ${toast.content}
               </div>
-              <button
-                type="button"
-                aria-label="Close"
-                class="close mr-2 ml-auto"
-                @click="${() => this.startRemoveToast(toast.id)}"
-              >
-                ×
-              </button>
+
+              ${toast.noCloseButton
+                ? ""
+                : html` <button
+                    type="button"
+                    aria-label="Close"
+                    class="close  mr-2 ml-auto"
+                    @click="${() => this.startRemoveToast(toast.id)}"
+                  >
+                    ×
+                  </button>`}
             </div>
           </div>
         `
@@ -281,13 +311,15 @@ class ToastComponent extends LitElement {
         (toast) => html`
           <div
             id="${this.id}__toast_outer"
-            role="alert"
-            aria-live="assertive"
+            role="${toast.isStatus ? "status" : "alert"}"
+            aria-live="${toast.isStatus ? "polite" : "assertive"}"
             aria-atomic="true"
             class="pl-toast${toast.fadeOut ? " fade-out" : ""}${toast.persistent
               ? " persistent"
               : ""}${toast.variantClass ? " toast-" + toast.variantClass : ""}"
             style=" --toast-duration: ${toast.duration / 1000}s;"
+            @mouseenter="${() => this.handleMouseEnter(toast)}"
+            @mouseleave="${() => this.handleMouseLeave(toast)}"
           >
             ${this.plumageTemplate2
               ? html`
@@ -310,20 +342,26 @@ class ToastComponent extends LitElement {
                         </div>
                         <div class="toast-title w-100">
                           <div class="d-flex justify-content-between">
-                            <div class="header">${toast.title}</div>
+                            <div class="header ${toast.headerClass}">
+                              ${toast.title}
+                            </div>
                             <div class="toast-buttons d-flex">
-                              <button
-                                type="button"
-                                aria-label="Close this alert"
-                                class="close ml-3"
-                                @click="${() =>
-                                  this.startRemoveToast(toast.id)}"
-                              >
-                                ×
-                              </button>
+                              ${toast.noCloseButton
+                                ? ""
+                                : html` <button
+                                    type="button"
+                                    aria-label="Close"
+                                    class="close ml-3"
+                                    @click="${() =>
+                                      this.startRemoveToast(toast.id)}"
+                                  >
+                                    ×
+                                  </button>`}
                             </div>
                           </div>
-                          <div class="d-flex flex-column toast-data">
+                          <div
+                            class="d-flex flex-column toast-data ${toast.bodyClass}"
+                          >
                             <slot name="custom-content">${toast.content}</slot>
                           </div>
                         </div>
@@ -351,15 +389,18 @@ class ToastComponent extends LitElement {
                             </svg>
                           </div>
                           <div class="pl-toast-content">
-                            <header class="pl-toast-header">
+                            <header
+                              class="pl-toast-header ${toast.headerClass}"
+                            >
                               <div
                                 class="d-flex flex-grow-1 align-items-center"
                               >
                                 <div class="mr-auto mb-0">${toast.title}</div>
                                 <div>${toast.time}</div>
                               </div>
-                              ${toast.closeBtn
-                                ? html` <button
+                              ${toast.noCloseButton
+                                ? ""
+                                : html` <button
                                     type="button"
                                     aria-label="Close"
                                     class="close ml-3"
@@ -367,32 +408,31 @@ class ToastComponent extends LitElement {
                                       this.startRemoveToast(toast.id)}"
                                   >
                                     ×
-                                  </button>`
-                                : html``}
+                                  </button>`}
                             </header>
-                            <div class="pl-toast-body">
+                            <div class="pl-toast-body ${toast.bodyClass}">
                               <em>${toast.content}</em>
                             </div>
                           </div>`
                       : html`
-                          <header class="pl-toast-header">
+                          <header class="pl-toast-header ${toast.headerClass}">
                             <div class="d-flex flex-grow-1 align-items-center">
                               <div class="mr-auto mb-0">${toast.title}</div>
                               <div>${toast.time}</div>
                             </div>
-                            ${toast.closeBtn
-                              ? html` <button
+                            ${toast.noCloseButton
+                              ? ""
+                              : html` <button
                                   type="button"
                                   aria-label="Close"
-                                  class="close close ml-3 mr-1"
+                                  class="close ml-3"
                                   @click="${() =>
                                     this.startRemoveToast(toast.id)}"
                                 >
                                   ×
-                                </button>`
-                              : html``}
+                                </button>`}
                           </header>
-                          <div class="pl-toast-body">
+                          <div class="pl-toast-body ${toast.bodyClass}">
                             <em>${toast.content}</em>
                           </div>
                         `}
@@ -402,12 +442,6 @@ class ToastComponent extends LitElement {
         `
       )}
     `;
-  }
-
-  handleKeydown(event, id) {
-    if (event.key === "Escape") {
-      this.startRemoveToast(id);
-    }
   }
 
   render() {
