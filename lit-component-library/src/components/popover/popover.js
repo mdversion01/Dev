@@ -26,7 +26,7 @@ class PopoverComponent extends LitElement {
     this.customClass = "";
     this.title = "";
     this.content =
-      "And here's some amazing content. It's very engaging. Right?";
+      "Default popover content. Use the 'content' attribute to change this text.";
     this.placement = "auto";
     this.plumage = false;
     this.variant = "";
