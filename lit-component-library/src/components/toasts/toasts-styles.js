@@ -86,6 +86,7 @@ export const toastStyles = css`
   .toast.fade-out,
   .pl-toast.fade-out {
     animation: fadeout 0.5s forwards;
+    pointer-events: none; /* Disable interactions during fade-out */
   }
 
   .toast.hide,

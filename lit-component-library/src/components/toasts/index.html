@@ -232,8 +232,9 @@
         toast2.showToast();
 
         const toast3 = document.getElementById("toast3");
+        toast3.title = "Title Text";
         toast3.message = "This is a default toast example!";
-        toast3.secondaryMessage = "43 seconds ago";
+        toast3.additionalHeaderContent = "43 seconds ago";
         toast3.variant = "secondary";
         toast3.duration = 5000;
         toast3.svgIcon = "exclamation-triangle-outline";
@@ -285,7 +286,7 @@
         const toast = document.getElementById("toast1c");
         toast.title = "Title Text";
         toast.message = "This is a toast message!";
-        toast.secondaryMessage = "43 seconds ago";
+        toast.additionalHeaderContent = "43 seconds ago";
         toast.variant = "primary";
         toast.duration = 5000;
         toast.svgIcon = "exclamation-triangle-outline";
@@ -296,7 +297,7 @@
       window.showCustomNotification1d = function showCustomNotification1d() {
         const toast = document.getElementById("toast1c");
         toast.title = "Title Text";
-        toast.secondaryMessage = "43 seconds ago";
+        toast.additionalHeaderContent = "43 seconds ago";
         toast.customContent = html`
           <div slot="custom-content">
             <div>This is data</div>
@@ -382,6 +383,7 @@
               title: "Title Text 1",
               message: "Stacked Notification 1",
               variant: "info",
+              additionalHeaderContent: "43 seconds ago",
             },
             {
               title: "Title Text 2",
@@ -401,6 +403,8 @@
               toast.title = notification.title;
               toast.message = notification.message;
               toast.variant = notification.variant;
+              toast.additionalHeaderContent =
+                notification.additionalHeaderContent;
               toast.duration = 5000;
               toast.svgIcon = "exclamation-triangle-outline";
               toast.persistent = false;

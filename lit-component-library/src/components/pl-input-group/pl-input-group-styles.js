@@ -79,6 +79,7 @@ export const plInputGroupStyles = css`
     flex: 1 1 auto;
     width: 1%;
     margin-bottom: 0;
+    border: none;
   }
 
   .pl-input-group > .form-control:not(first-child) {

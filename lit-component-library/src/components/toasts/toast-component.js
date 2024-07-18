@@ -15,10 +15,10 @@ class ToastComponent extends LitElement {
     appendToast: { type: Boolean },
     toasts: { type: Array },
     message: { type: String },
-    secondaryMessage: { type: String },
+    additionalHeaderContent: { type: String },
     variant: { type: String },
     customContent: { type: Object },
-    secContent: { type: Object },
+    addHeaderContent: { type: Object },
     svgIcon: { type: String },
     persistent: { type: Boolean },
     title: { type: String },
@@ -50,13 +50,13 @@ class ToastComponent extends LitElement {
     const content = this.customContent
       ? this.customContent
       : html`${this.message}`;
-    const secondaryContent = this.secContent
-      ? this.secContent
-      : html`${this.secondaryMessage}`;
+    const additionalHdrContent = this.addHeaderContent
+      ? this.addHeaderContent
+      : html`${this.additionalHeaderContent}`;
     const newToast = {
       id,
       content,
-      secondaryContent,
+      additionalHdrContent,
       variantClass,
       duration: this.duration,
       svgIcon: this.svgIcon,
@@ -87,15 +87,16 @@ class ToastComponent extends LitElement {
   startRemoveToast(id) {
     const toastIndex = this.toasts.findIndex((toast) => toast.id === id);
     if (toastIndex >= 0) {
-      this.toasts[toastIndex].fadeOut = true;
-      this.requestUpdate();
-      setTimeout(() => this.removeToast(id), 500); // Delay to match fadeout animation
+        this.toasts[toastIndex].fadeOut = true;
+        this.requestUpdate();
+        setTimeout(() => this.removeToast(id), 500); // Delay to match fadeout animation
     }
-  }
+}
 
-  removeToast(id) {
+removeToast(id) {
     this.toasts = this.toasts.filter((toast) => toast.id !== id);
-  }
+    this.requestUpdate(); // Ensure the DOM updates after removal
+}
 
   handleMouseEnter(toast) {
     if (!toast.noHoverPause && toast.hideTimeout) {
@@ -233,7 +234,7 @@ class ToastComponent extends LitElement {
                   </svg>
                   <strong class="mr-auto">${toast.title}</strong>
                   <small class="text-muted mr-2"
-                    >${toast.secondaryContent}</small
+                    >${toast.additionalHdrContent}</small
                   >
                 </div>
 
