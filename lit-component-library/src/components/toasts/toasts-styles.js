@@ -71,7 +71,7 @@ export const toastStyles = css`
     opacity: 0;
     border-radius: 0.25rem;
     animation: fadein 0.5s forwards;
-    background-color: var(--toast-background-color, #FFF);
+    background-color: var(--toast-background-color, #fff);
     /* color: var(--toast-color, white); */
     z-index: 1;
     display: block;
@@ -81,6 +81,11 @@ export const toastStyles = css`
   .toast.persistent {
     animation: fadein 0.5s forwards !important; /* Only apply fade-in animation */
     opacity: 1 !important; /* Ensure it stays visible */
+  }
+
+  .toast.fade-in,
+  .pl-toast.fade-in {
+    animation: fadein 0.5s forwards;
   }
 
   .toast.fade-out,
@@ -295,7 +300,7 @@ export const toastStyles = css`
   .text-bg-danger .close,
   .text-bg-success .close,
   .text-bg-dark .close {
-    color: #FFF;
+    color: #fff;
     opacity: 1;
   }
 
@@ -309,7 +314,7 @@ export const toastStyles = css`
   }
 
   .text-bg-warning .close,
-  .text-bg-info .close, 
+  .text-bg-info .close,
   .text-bg-light .close {
     color: #000;
     opacity: 1;
@@ -358,11 +363,11 @@ export const toastStyles = css`
   }
 
   .pl-toast-content .toast-title {
-    padding: 0.25rem 0 0.25rem 0.5rem !important; 
+    padding: 0.25rem 0 0.25rem 0.5rem !important;
   }
 
   .pl-toast-content .toast-title .header {
-    font-size: .9375rem;
+    font-size: 0.9375rem;
   }
 
   .pl-toast-content .toast-title .toast-body-text {
@@ -423,7 +428,7 @@ export const toastStyles = css`
   }
 
   .toaster .toaster-slot,
-  .pl-toaster .toaster-slot{
+  .pl-toaster .toaster-slot {
     position: relative;
     display: block;
   }
@@ -668,7 +673,7 @@ export const toastStyles = css`
   a.close.disabled {
     pointer-events: none;
   }
-  
+
   @keyframes fadein {
     from {
       opacity: 0;

@@ -69,6 +69,8 @@ class ToastComponent extends LitElement {
       headerClass: this.headerClass,
       isStatus: this.isStatus,
       noHoverPause: this.noHoverPause,
+      fadeIn: true,
+      fadeOut: false
     };
 
     this.toasts = this.appendToast
@@ -81,22 +83,27 @@ class ToastComponent extends LitElement {
       }, this.duration);
     }
 
+    setTimeout(() => {
+      newToast.fadeIn = false;
+      this.requestUpdate();
+    }, 500); // Adjust this duration to match the fade-in animation time
+
     this.requestUpdate();
   }
 
   startRemoveToast(id) {
     const toastIndex = this.toasts.findIndex((toast) => toast.id === id);
     if (toastIndex >= 0) {
-        this.toasts[toastIndex].fadeOut = true;
-        this.requestUpdate();
-        setTimeout(() => this.removeToast(id), 500); // Delay to match fadeout animation
+      this.toasts[toastIndex].fadeOut = true;
+      this.requestUpdate();
+      setTimeout(() => this.removeToast(id), 5000); // Delay to match fadeout animation
     }
-}
+  }
 
-removeToast(id) {
+  removeToast(id) {
     this.toasts = this.toasts.filter((toast) => toast.id !== id);
     this.requestUpdate(); // Ensure the DOM updates after removal
-}
+  }
 
   handleMouseEnter(toast) {
     if (!toast.noHoverPause && toast.hideTimeout) {
