@@ -1,4 +1,5 @@
 import { LitElement, html, css, svg } from "lit";
+import { ifDefined } from "lit/directives/if-defined.js";
 import { toastStyles } from "./toasts-styles.js";
 import { utilitiesStyles } from "../utilities-styles.js"; // Import the utilities styles
 
@@ -29,6 +30,7 @@ class ToastComponent extends LitElement {
     headerClass: { type: String },
     isStatus: { type: Boolean },
     noHoverPause: { type: Boolean },
+    noAnimation: { type: Boolean },
   };
 
   constructor() {
@@ -42,6 +44,7 @@ class ToastComponent extends LitElement {
     this.appendToast = false; // Default to prepending toasts
     this.toasts = [];
     this.noHoverPause = false; // Default to allowing hover to pause auto-hide
+    this.noAnimation = false; // Default to allowing animations
   }
 
   showToast() {
@@ -69,34 +72,33 @@ class ToastComponent extends LitElement {
       headerClass: this.headerClass,
       isStatus: this.isStatus,
       noHoverPause: this.noHoverPause,
-      fadeIn: true,
-      fadeOut: false
+      state: "fade" // initial state for fade in
     };
 
     this.toasts = this.appendToast
-      ? [...this.toasts, newToast] // Append to the end
-      : [newToast, ...this.toasts]; // Prepend to the beginning
+      ? [...this.toasts, newToast]
+      : [newToast, ...this.toasts];
+
+    this.requestUpdate();
+
+    setTimeout(() => {
+      newToast.state = "show"; // change state to trigger fade in
+      this.requestUpdate();
+    }, 10); // Slight delay to trigger the transition
 
     if (!this.persistent) {
       newToast.hideTimeout = setTimeout(() => {
         this.startRemoveToast(id);
       }, this.duration);
     }
-
-    setTimeout(() => {
-      newToast.fadeIn = false;
-      this.requestUpdate();
-    }, 500); // Adjust this duration to match the fade-in animation time
-
-    this.requestUpdate();
   }
 
   startRemoveToast(id) {
     const toastIndex = this.toasts.findIndex((toast) => toast.id === id);
     if (toastIndex >= 0) {
-      this.toasts[toastIndex].fadeOut = true;
+      this.toasts[toastIndex].state = "fade"; // Change state to start fade out
       this.requestUpdate();
-      setTimeout(() => this.removeToast(id), 5000); // Delay to match fadeout animation
+      setTimeout(() => this.removeToast(id), 500); // Delay to match fadeout animation
     }
   }
 
@@ -219,12 +221,10 @@ class ToastComponent extends LitElement {
             role="${toast.isStatus ? "status" : "alert"}"
             aria-live="${toast.isStatus ? "polite" : "assertive"}"
             aria-atomic="true"
-            class="toast toast-solid${toast.fadeOut
-              ? " fade-out"
-              : ""}${toast.persistent ? " persistent" : ""}${toast.variantClass
-              ? " toast-" + toast.variantClass
-              : ""}"
-            style=" --toast-duration: ${toast.duration / 1000}s;"
+            class="toast toast-solid fade ${toast.state} ${toast.persistent
+              ? " persistent"
+              : ""}${toast.variantClass ? " toast-" + toast.variantClass : ""}"
+            style="--toast-duration: ${toast.duration / 1000}s;"
             @mouseenter="${() => this.handleMouseEnter(toast)}"
             @mouseleave="${() => this.handleMouseLeave(toast)}"
           >
@@ -269,12 +269,12 @@ class ToastComponent extends LitElement {
       ${this.toasts.map(
         (toast) => html`
           <div
-            class="toast align-items-center border-0${toast.fadeOut
-              ? " fade-out"
-              : ""}${toast.persistent ? " persistent" : ""}${toast.variantClass
+            class="toast align-items-center border-0 fade ${toast.state} ${toast.persistent
+              ? " persistent"
+              : ""}${toast.variantClass
               ? " text-bg-" + toast.variantClass
               : ""}"
-            style=" --toast-duration: ${toast.duration / 1000}s;"
+            style="--toast-duration: ${toast.duration / 1000}s;"
             role="${toast.isStatus ? "status" : "alert"}"
             aria-live="${toast.isStatus ? "polite" : "assertive"}"
             aria-atomic="true"
@@ -322,16 +322,16 @@ class ToastComponent extends LitElement {
             role="${toast.isStatus ? "status" : "alert"}"
             aria-live="${toast.isStatus ? "polite" : "assertive"}"
             aria-atomic="true"
-            class="pl-toast${toast.fadeOut ? " fade-out" : ""}${toast.persistent
+            class="pl-toast fade ${toast.state} ${toast.persistent
               ? " persistent"
               : ""}${toast.variantClass ? " toast-" + toast.variantClass : ""}"
-            style=" --toast-duration: ${toast.duration / 1000}s;"
+            style="--toast-duration: ${toast.duration / 1000}s;"
             @mouseenter="${() => this.handleMouseEnter(toast)}"
             @mouseleave="${() => this.handleMouseLeave(toast)}"
           >
             ${this.plumageTemplate2
               ? html`
-                  <div class="pl-toast-2">
+                  <div class="pl-toast-2" id="${this.id}" tabindex="0">
                     <div class="pl-toast-body">
                       <div title="" class="pl-toast-content d-flex">
                         <div class="align-self-center">

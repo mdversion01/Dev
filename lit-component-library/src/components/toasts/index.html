@@ -63,7 +63,7 @@
                 <toast-component
                   id="toast1c"
                   position="bottom-left"
-                  appendToast
+                   noAnimation
                 ></toast-component>
                 <div style="margin-top: 15px">
                   <div style="margin-bottom: 5px; font-size: 0.75rem">
@@ -74,7 +74,37 @@
               </section>
               <section class="display-box-meta markdown">
                 <div class="display-box-title">Basic Usage</div>
-                <div class="display-box-description">Text</div>
+                <div class="display-box-description">Default Toast notification.</div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
+
+          <section class="section">
+            <section class="display-box" id="db-1">
+              <section class="display-box-demo">
+                <div style="margin-top: 15px">
+                  <div style="margin-bottom: 5px; font-size: 0.75rem">
+                    Toast Variant Colors Example:
+                  </div>
+
+                  <div style="display: flex;">
+                    <div style="flex: 1 1 auto;">
+                  <toast-component id="toast3a" position=""></toast-component>
+
+                  <toast-component id="toast3b" position=""></toast-component>
+                </div>
+                  <div style="flex: 1 1 auto;">
+                  <toast-component id="toast3c" position=""></toast-component>
+
+                  <toast-component id="toast3d" position=""></toast-component>
+                </div>
+                </div>
+                </div>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">Variant colors are: primary, secondary, danger, warning, info, dark and light.</div>
                 <div class=""></div>
               </section>
             </section>
@@ -107,7 +137,7 @@
               </section>
               <section class="display-box-meta markdown">
                 <div class="display-box-title">Basic Usage</div>
-                <div class="display-box-description">Text</div>
+                <div class="display-box-description">Plumage style guide toast notification.</div>
                 <div class=""></div>
               </section>
             </section>
@@ -152,13 +182,42 @@
                     id="toast1"
                     position=""
                     solidToast
-                    append-toast
                   ></toast-component>
                 </div>
               </section>
               <section class="display-box-meta markdown">
                 <div class="display-box-title">Basic Usage</div>
-                <div class="display-box-description">Text</div>
+                <div class="display-box-description">Solid minimal toast notification.</div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
+
+          <section class="section">
+            <section class="display-box" id="db-1">
+              <section class="display-box-demo">
+                <div style="margin-top: 15px">
+                  <div style="margin-bottom: 5px; font-size: 0.75rem">
+                    Toast Variant Colors Example:
+                  </div>
+
+                  <div style="display: flex;">
+                    <div style="flex: 1 1 auto;">
+                  <toast-component id="toast1g" solidToast position=""></toast-component>
+
+                  <toast-component id="toast1d" solidToast position=""></toast-component>
+                </div>
+                  <div style="flex: 1 1 auto;">
+                  <toast-component id="toast1e" solidToast position=""></toast-component>
+
+                  <toast-component id="toast1f" solidToast position=""></toast-component>
+                </div>
+                </div>
+                </div>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">Variant colors are: primary, secondary, danger, warning, info, dark and light.</div>
                 <div class=""></div>
               </section>
             </section>
@@ -176,9 +235,10 @@
 
                 <toast-component
                   id="toast2b"
-                  position="bottom-center"
+                  position="top-full"
                   plumageToast
                   plumageTemplate2
+                  appendToast
                 ></toast-component>
 
                 <div style="margin-top: 15px">
@@ -196,7 +256,7 @@
               </section>
               <section class="display-box-meta markdown">
                 <div class="display-box-title">Basic Usage</div>
-                <div class="display-box-description">Text</div>
+                <div class="display-box-description">Plumage style guide toast notification 2.</div>
                 <div class=""></div>
               </section>
             </section>
@@ -213,12 +273,47 @@
       window.addEventListener("DOMContentLoaded", () => {
         const toast1 = document.getElementById("toast1");
         toast1.message = "This is a solid toast example!";
-        toast1.variant = "primary";
         toast1.duration = 5000;
         toast1.svgIcon = "exclamation-triangle-outline";
         toast1.persistent = true;
         toast1.title = "Solid Toast";
         toast1.showToast();
+
+        const toast1g = document.getElementById("toast1g");
+        toast1g.message = "This is a solid toast example!";
+        toast1g.variant = "primary";
+        toast1g.duration = 5000;
+        toast1g.svgIcon = "exclamation-triangle-outline";
+        toast1g.persistent = true;
+        toast1g.title = "Solid Toast";
+        toast1g.showToast();
+
+        const toast1d = document.getElementById("toast1d");
+        toast1d.message = "This is a solid toast example!";
+        toast1d.variant = "secondary";
+        toast1d.duration = 5000;
+        toast1d.svgIcon = "exclamation-triangle-outline";
+        toast1d.persistent = true;
+        toast1d.title = "Solid Toast";
+        toast1d.showToast();
+
+        const toast1e = document.getElementById("toast1e");
+        toast1e.message = "This is a solid toast example!";
+        toast1e.variant = "danger";
+        toast1e.duration = 5000;
+        toast1e.svgIcon = "exclamation-triangle-outline";
+        toast1e.persistent = true;
+        toast1e.title = "Solid Toast";
+        toast1e.showToast();
+
+        const toast1f = document.getElementById("toast1f");
+        toast1f.message = "This is a solid toast example!";
+        toast1f.variant = "success";
+        toast1f.duration = 5000;
+        toast1f.svgIcon = "exclamation-triangle-outline";
+        toast1f.persistent = true;
+        toast1f.title = "Solid Toast";
+        toast1f.showToast();
 
         const toast2 = document.getElementById("toast2");
         toast2.message = "This is a Plumage styled toast example!";
@@ -235,11 +330,50 @@
         toast3.title = "Title Text";
         toast3.message = "This is a default toast example!";
         toast3.additionalHeaderContent = "43 seconds ago";
-        toast3.variant = "secondary";
         toast3.duration = 5000;
         toast3.svgIcon = "exclamation-triangle-outline";
         toast3.persistent = true;
         toast3.showToast();
+
+        const toast3a = document.getElementById("toast3a");
+        toast3a.title = "Title Text";
+        toast3a.message = "This is a default toast example!";
+        toast3a.additionalHeaderContent = "43 seconds ago";
+        toast3a.variant = "primary";
+        toast3a.duration = 5000;
+        toast3a.svgIcon = "exclamation-triangle-outline";
+        toast3a.persistent = true;
+        toast3a.showToast();
+
+        const toast3b = document.getElementById("toast3b");
+        toast3b.title = "Title Text";
+        toast3b.message = "This is a default toast example!";
+        toast3b.additionalHeaderContent = "43 seconds ago";
+        toast3b.variant = "danger";
+        toast3b.duration = 5000;
+        toast3b.svgIcon = "exclamation-triangle-outline";
+        toast3b.persistent = true;
+        toast3b.showToast();
+
+        const toast3c = document.getElementById("toast3c");
+        toast3c.title = "Title Text";
+        toast3c.message = "This is a default toast example!";
+        toast3c.additionalHeaderContent = "43 seconds ago";
+        toast3c.variant = "warning";
+        toast3c.duration = 5000;
+        toast3c.svgIcon = "exclamation-triangle-outline";
+        toast3c.persistent = true;
+        toast3c.showToast();
+
+        const toast3d = document.getElementById("toast3d");
+        toast3d.title = "Title Text";
+        toast3d.message = "This is a default toast example!";
+        toast3d.additionalHeaderContent = "43 seconds ago";
+        toast3d.variant = "success";
+        toast3d.duration = 5000;
+        toast3d.svgIcon = "exclamation-triangle-outline";
+        toast3d.persistent = true;
+        toast3d.showToast();
 
         const toast4 = document.getElementById("toast4");
         toast4.title = "Plumage Template 2 Toast";
@@ -345,9 +479,9 @@
       function simulateRealTimeNotifications() {
         const types = ["error", "update", "news"];
         const messages = {
-          error: "An error occurred!",
-          update: "System update available!",
-          news: "Breaking news alert!",
+          error: "An error toast example!",
+          update: "System update toast example!",
+          news: "Breaking news alert/toast example !",
         };
         const variants = {
           error: "danger",
@@ -366,7 +500,7 @@
           toast.title = type.charAt(0).toUpperCase() + type.slice(1);
           toast.message = messages[type];
           toast.variant = variants[type];
-          toast.duration = 5000;
+          toast.duration = 7000;
           toast.svgIcon = icons[type];
           toast.persistent = false;
           toast.showToast();
@@ -405,7 +539,7 @@
               toast.variant = notification.variant;
               toast.additionalHeaderContent =
                 notification.additionalHeaderContent;
-              toast.duration = 5000;
+              toast.duration = 10000;
               toast.svgIcon = "exclamation-triangle-outline";
               toast.persistent = false;
               toast.showToast();

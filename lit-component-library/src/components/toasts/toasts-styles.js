@@ -57,6 +57,10 @@ export const toastStyles = css`
     padding: 0.75rem;
   }
 
+  .toast.fade {
+    transition: opacity 0.5s linear;
+  }
+
   .toast {
     flex-basis: 350px;
     max-width: 350px;
@@ -70,49 +74,35 @@ export const toastStyles = css`
       Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
     opacity: 0;
     border-radius: 0.25rem;
-    animation: fadein 0.5s forwards;
     background-color: var(--toast-background-color, #fff);
     /* color: var(--toast-color, white); */
     z-index: 1;
     display: block;
     position: relative;
+    margin-bottom: 0.25rem;
   }
 
-  .toast.persistent {
-    animation: fadein 0.5s forwards !important; /* Only apply fade-in animation */
-    opacity: 1 !important; /* Ensure it stays visible */
+  .toast.showing {
+    opacity: 1;
   }
 
-  .toast.fade-in,
-  .pl-toast.fade-in {
-    animation: fadein 0.5s forwards;
-  }
-
-  .toast.fade-out,
-  .pl-toast.fade-out {
-    animation: fadeout 0.5s forwards;
-    pointer-events: none; /* Disable interactions during fade-out */
-  }
-
-  .toast.hide,
-  .pl-toast.hide {
-    display: none;
-  }
-
-  .toast.show,
-  .pl-toast.show {
+  .toast.show {
     display: block;
     opacity: 1;
   }
 
-  .toast.showing,
-  .pl-toast.showing {
-    opacity: 1;
+  .toast.hide {
+    display: none;
+  }
+
+  .toast.persistent {
+    //animation: fadein 0.5s forwards !important; /* Only apply fade-in animation */
+    opacity: 1 !important; /* Ensure it stays visible */
   }
 
   .toast:not(:last-child),
   .pl-toast:not(:last-child) {
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.25rem;
   }
 
   .toast-header {
@@ -343,6 +333,7 @@ export const toastStyles = css`
     position: relative;
     display: block;
     z-index: 1;
+    margin-bottom: 0.25rem;
   }
 
   .pl-toast {
@@ -351,7 +342,19 @@ export const toastStyles = css`
     box-shadow: unset;
     max-width: unset;
     min-width: 34.375rem;
-    animation: fadein 0.5s forwards;
+  }
+
+  .pl-toast.showing {
+    opacity: 1;
+  }
+
+  .pl-toast.show {
+    display: block;
+    opacity: 1;
+  }
+
+  .pl-toast.hide {
+    display: none;
   }
 
   .pl-toast-display {
@@ -672,23 +675,5 @@ export const toastStyles = css`
 
   a.close.disabled {
     pointer-events: none;
-  }
-
-  @keyframes fadein {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
-  }
-
-  @keyframes fadeout {
-    from {
-      opacity: 1;
-    }
-    to {
-      opacity: 0;
-    }
   }
 `;
