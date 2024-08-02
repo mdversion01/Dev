@@ -97,7 +97,7 @@ export const plInputGroupStyles = css`
   .pl-input-group-sm > .pl-input-group-prepend > .pl-btn,
   .pl-input-group-sm > .pl-input-group-prepend > .pl-input-group-text {
     padding: 0.25rem 0.5rem;
-    font-size: 0.75rem;
+    font-size: 0.833rem;
     line-height: 1.5;
     min-height: 0;
   }

@@ -1,28 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <!-- <link
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Time Picker</title>
+
+    <link
       rel="stylesheet"
       href="../../../node_modules/bootstrap/dist/css/bootstrap.css"
-    /> -->
+    />
+
     <link
-    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-    rel="stylesheet"
-    integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
-    crossorigin="anonymous"
-  />
-  <link
-    href="https://pro.fontawesome.com/releases/v6.0.0-beta1/css/all.css"
-    rel="stylesheet"
-  />
-    <!-- <link rel="stylesheet" href="./timepicker.css" /> -->
+      rel="stylesheet"
+      href="../../../node_modules/lit-fontawesome/css/font.css"
+    />
+
+    <link
+      rel="stylesheet"
+      href="../../../node_modules/font-awesome/css/font-awesome.min.css"
+    />
+
+    <link rel="stylesheet" href="../../styles/components.css" />
+
+    <style></style>
   </head>
   <body>
-    <div class="timepicker-wrapper">
-    <time-picker></time-picker>
-</div>
+    <div class="title">Time Picker</div>
+    <div class="demo-wrapper">
+      <div class="main">
+        <section>
+          <section class="section">
+            <section class="display-box" id="db-1">
+              <section class="display-box-demo">
+                <div class="timepicker-wrapper">
+                  <time-picker hideSeconds></time-picker>
+                </div>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">
+                  Default Time Picker.
+                </div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
+        </section>
+      </div>
+    </div>
 
-    <script src="./timepicker4.js" type="module"></script>
+    
+
+    <script src="./timepicker.js" type="module"></script>
     <script src="../../../node_modules/bootstrap/dist/js/bootstrap.js"></script>
   </body>
 </html>

@@ -7,30 +7,30 @@ class ToastComponent extends LitElement {
   static styles = [utilitiesStyles, toastStyles, css``];
 
   static properties = {
+    addHeaderContent: { type: Object },
+    additionalHeaderContent: { type: String },
+    appendToast: { type: Boolean },
+    bodyClass: { type: String },
+    customContent: { type: Object },
     duration: { type: Number },
+    headerClass: { type: String },
     id: { type: String },
+    iconPlumageStyle: { type: Boolean },
+    isStatus: { type: Boolean },
+    message: { type: String },
+    noAnimation: { type: Boolean },
+    noCloseButton: { type: Boolean },
+    noHoverPause: { type: Boolean },
+    persistent: { type: Boolean },
     position: { type: String, reflect: true },
     plumageToast: { type: Boolean },
-    plumageTemplate2: { type: Boolean },
+    plumageToastMax: { type: Boolean },
     solidToast: { type: Boolean },
-    appendToast: { type: Boolean },
-    toasts: { type: Array },
-    message: { type: String },
-    additionalHeaderContent: { type: String },
-    variant: { type: String },
-    customContent: { type: Object },
-    addHeaderContent: { type: Object },
     svgIcon: { type: String },
-    persistent: { type: Boolean },
-    title: { type: String },
     time: { type: String },
-    noCloseButton: { type: Boolean },
-    iconPlumageStyle: { type: Boolean },
-    bodyClass: { type: String },
-    headerClass: { type: String },
-    isStatus: { type: Boolean },
-    noHoverPause: { type: Boolean },
-    noAnimation: { type: Boolean },
+    title: { type: String },
+    toasts: { type: Array },
+    variant: { type: String },
   };
 
   constructor() {
@@ -39,12 +39,18 @@ class ToastComponent extends LitElement {
     this.id = "toast-component";
     this.position = "bottom-right";
     this.plumageToast = false;
-    this.plumageTemplate2 = false;
+    this.plumageToastMax = false;
     this.solidToast = false;
     this.appendToast = false; // Default to prepending toasts
     this.toasts = [];
     this.noHoverPause = false; // Default to allowing hover to pause auto-hide
     this.noAnimation = false; // Default to allowing animations
+    this.time = this.getCurrentZuluTime(); // Set the default time in 24-hour ZULU format
+  }
+
+  getCurrentZuluTime() {
+    const now = new Date();
+    return now.toISOString().substring(11, 19) + "Z"; // Extract time in HH:MM:SSZ format
   }
 
   showToast() {
@@ -72,7 +78,7 @@ class ToastComponent extends LitElement {
       headerClass: this.headerClass,
       isStatus: this.isStatus,
       noHoverPause: this.noHoverPause,
-      state: "fade" // initial state for fade in
+      state: "fade", // initial state for fade in
     };
 
     this.toasts = this.appendToast
@@ -96,7 +102,7 @@ class ToastComponent extends LitElement {
   startRemoveToast(id) {
     const toastIndex = this.toasts.findIndex((toast) => toast.id === id);
     if (toastIndex >= 0) {
-      this.toasts[toastIndex].state = "fade"; // Change state to start fade out
+      this.toasts[toastIndex].state = !this.noAnimation ? "fade" : ""; // Change state to start fade out
       this.requestUpdate();
       setTimeout(() => this.removeToast(id), 500); // Delay to match fadeout animation
     }
@@ -221,10 +227,16 @@ class ToastComponent extends LitElement {
             role="${toast.isStatus ? "status" : "alert"}"
             aria-live="${toast.isStatus ? "polite" : "assertive"}"
             aria-atomic="true"
-            class="toast toast-solid fade ${toast.state} ${toast.persistent
+            class="toast toast-solid ${!this.noAnimation
+              ? "fade"
+              : ""} ${toast.state} ${toast.persistent
               ? " persistent"
               : ""}${toast.variantClass ? " toast-" + toast.variantClass : ""}"
-            style="--toast-duration: ${toast.duration / 1000}s;"
+            style=${ifDefined(
+              !this.noAnimation
+                ? "--toast-duration: ${toast.duration / 1000}s;"
+                : undefined
+            )}
             @mouseenter="${() => this.handleMouseEnter(toast)}"
             @mouseleave="${() => this.handleMouseLeave(toast)}"
           >
@@ -329,7 +341,7 @@ class ToastComponent extends LitElement {
             @mouseenter="${() => this.handleMouseEnter(toast)}"
             @mouseleave="${() => this.handleMouseLeave(toast)}"
           >
-            ${this.plumageTemplate2
+            ${this.plumageToastMax
               ? html`
                   <div class="pl-toast-2" id="${this.id}" tabindex="0">
                     <div class="pl-toast-body">

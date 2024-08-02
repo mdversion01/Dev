@@ -63,7 +63,6 @@
                 <toast-component
                   id="toast1c"
                   position="bottom-left"
-                   noAnimation
                 ></toast-component>
                 <div style="margin-top: 15px">
                   <div style="margin-bottom: 5px; font-size: 0.75rem">
@@ -74,7 +73,9 @@
               </section>
               <section class="display-box-meta markdown">
                 <div class="display-box-title">Basic Usage</div>
-                <div class="display-box-description">Default Toast notification.</div>
+                <div class="display-box-description">
+                  Default Toast notification.
+                </div>
                 <div class=""></div>
               </section>
             </section>
@@ -88,23 +89,38 @@
                     Toast Variant Colors Example:
                   </div>
 
-                  <div style="display: flex;">
-                    <div style="flex: 1 1 auto;">
-                  <toast-component id="toast3a" position=""></toast-component>
+                  <div style="display: flex">
+                    <div style="flex: 1 1 auto">
+                      <toast-component
+                        id="toast3a"
+                        position=""
+                      ></toast-component>
 
-                  <toast-component id="toast3b" position=""></toast-component>
-                </div>
-                  <div style="flex: 1 1 auto;">
-                  <toast-component id="toast3c" position=""></toast-component>
+                      <toast-component
+                        id="toast3b"
+                        position=""
+                      ></toast-component>
+                    </div>
+                    <div style="flex: 1 1 auto">
+                      <toast-component
+                        id="toast3c"
+                        position=""
+                      ></toast-component>
 
-                  <toast-component id="toast3d" position=""></toast-component>
-                </div>
-                </div>
+                      <toast-component
+                        id="toast3d"
+                        position=""
+                      ></toast-component>
+                    </div>
+                  </div>
                 </div>
               </section>
               <section class="display-box-meta markdown">
                 <div class="display-box-title">Basic Usage</div>
-                <div class="display-box-description">Variant colors are: primary, secondary, danger, warning, info, dark and light.</div>
+                <div class="display-box-description">
+                  Variant colors are: primary, secondary, danger, warning, info,
+                  dark and light.
+                </div>
                 <div class=""></div>
               </section>
             </section>
@@ -137,7 +153,9 @@
               </section>
               <section class="display-box-meta markdown">
                 <div class="display-box-title">Basic Usage</div>
-                <div class="display-box-description">Plumage style guide toast notification.</div>
+                <div class="display-box-description">
+                  Plumage style guide toast notification.
+                </div>
                 <div class=""></div>
               </section>
             </section>
@@ -187,7 +205,9 @@
               </section>
               <section class="display-box-meta markdown">
                 <div class="display-box-title">Basic Usage</div>
-                <div class="display-box-description">Solid minimal toast notification.</div>
+                <div class="display-box-description">
+                  Solid minimal toast notification.
+                </div>
                 <div class=""></div>
               </section>
             </section>
@@ -201,23 +221,42 @@
                     Toast Variant Colors Example:
                   </div>
 
-                  <div style="display: flex;">
-                    <div style="flex: 1 1 auto;">
-                  <toast-component id="toast1g" solidToast position=""></toast-component>
+                  <div style="display: flex">
+                    <div style="flex: 1 1 auto">
+                      <toast-component
+                        id="toast1g"
+                        solidToast
+                        position=""
+                      ></toast-component>
 
-                  <toast-component id="toast1d" solidToast position=""></toast-component>
-                </div>
-                  <div style="flex: 1 1 auto;">
-                  <toast-component id="toast1e" solidToast position=""></toast-component>
+                      <toast-component
+                        id="toast1d"
+                        solidToast
+                        position=""
+                      ></toast-component>
+                    </div>
+                    <div style="flex: 1 1 auto">
+                      <toast-component
+                        id="toast1e"
+                        solidToast
+                        position=""
+                      ></toast-component>
 
-                  <toast-component id="toast1f" solidToast position=""></toast-component>
-                </div>
-                </div>
+                      <toast-component
+                        id="toast1f"
+                        solidToast
+                        position=""
+                      ></toast-component>
+                    </div>
+                  </div>
                 </div>
               </section>
               <section class="display-box-meta markdown">
                 <div class="display-box-title">Basic Usage</div>
-                <div class="display-box-description">Variant colors are: primary, secondary, danger, warning, info, dark and light.</div>
+                <div class="display-box-description">
+                  Variant colors are: primary, secondary, danger, warning, info,
+                  dark and light.
+                </div>
                 <div class=""></div>
               </section>
             </section>
@@ -230,39 +269,493 @@
                   class="btn btn-secondary btn-sm"
                   onclick="showNotification2b()"
                 >
-                  Show Plumage Toast 2
+                  Show Plumage Toast Max
                 </button>
 
                 <toast-component
                   id="toast2b"
-                  position="top-full"
+                  position="bottom-center"
                   plumageToast
-                  plumageTemplate2
+                  plumageToastMax
                   appendToast
                 ></toast-component>
 
                 <div style="margin-top: 15px">
                   <div style="margin-bottom: 5px; font-size: 0.75rem">
-                    Plumage Toast 2nd Styling Example:
+                    Plumage Toast Max Styling Example:
                   </div>
                   <toast-component
                     id="toast4"
                     position=""
                     plumageToast
-                    plumageTemplate2
-                    append-toast
+                    plumageToastMax
                   ></toast-component>
                 </div>
               </section>
               <section class="display-box-meta markdown">
                 <div class="display-box-title">Basic Usage</div>
-                <div class="display-box-description">Plumage style guide toast notification 2.</div>
+                <div class="display-box-description">
+                  Plumage style guide toast notification 2.
+                </div>
                 <div class=""></div>
               </section>
             </section>
           </section>
         </section>
       </div>
+    </div>
+
+    <!-- Props -->
+    <div style="margin-top: 50px">
+      <div class="title">Props</div>
+      <div style="margin: 25px 0 10px; font-weight: bold">Styling</div>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Property</th>
+              <th>Type</th>
+              <th>Default</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>additionalHeaderContent</td>
+              <td>String</td>
+              <td></td>
+              <td>
+                Additional content to be added to the header of the toast. An
+                example of this would be "43 seconds ago" in the Toast examples
+                above.
+              </td>
+            </tr>
+            <tr>
+              <td>appendToast</td>
+              <td>Boolean</td>
+              <td>false</td>
+              <td>
+                Appends the toast to the end of the toast stack. This is useful
+                for Plumage styled toasts.
+              </td>
+            </tr>
+            <tr>
+              <td>bodyClass</td>
+              <td>String</td>
+              <td></td>
+              <td>Adds a class to the body of the toast.</td>
+            </tr>
+            <tr>
+              <td>duration</td>
+              <td>Number</td>
+              <td>5000</td>
+              <td>
+                The duration in milliseconds that the toast will be displayed.
+              </td>
+            </tr>
+            <tr>
+              <td>headerClass</td>
+              <td>String</td>
+              <td></td>
+              <td>Adds a class to the header of the toast.</td>
+            </tr>
+            <tr>
+              <td>iconPlumageStyle</td>
+              <td>Boolean</td>
+              <td>false</td>
+              <td>
+                Adds Plumage style to the toast icon for Plumage styled toasts.
+              </td>
+            </tr>
+            <tr>
+              <td>id</td>
+              <td>String</td>
+              <td></td>
+              <td>
+                The id of the toast. This is used to identify the toast when
+                calling the showToast method.
+              </td>
+            </tr>
+            <tr>
+              <td>isStatus</td>
+              <td>Boolean</td>
+              <td>false</td>
+              <td>
+                If true, this sets the role of the toast from "alert" to
+                "status" which is an ARIA role that is used to communicate the
+                status of a process to screen readers. It also sets the
+                aria-live attribute from "assertive" to "polite".
+              </td>
+            </tr>
+            <tr>
+              <td>message</td>
+              <td>String</td>
+              <td></td>
+              <td>
+                The message to be displayed in the toast. This is the main
+                content of the toast.
+              </td>
+            </tr>
+            <tr>
+              <td>noAnimation</td>
+              <td>Boolean</td>
+              <td>false</td>
+              <td>
+                If true, this will disable the animation of the toast when it is
+                shown or hidden.
+              </td>
+            </tr>
+            <tr>
+              <td>noCloseButton</td>
+              <td>Boolean</td>
+              <td>false</td>
+              <td>
+                If true, this will remove the close button from the toast.
+              </td>
+            </tr>
+            <tr>
+              <td>noHoverPause</td>
+              <td>Boolean</td>
+              <td>false</td>
+              <td>
+                If true, this will prevent the toast from pausing the duration
+                when the mouse hovers over it.
+              </td>
+            </tr>
+            <tr>
+              <td>persistent</td>
+              <td>Boolean</td>
+              <td>false</td>
+              <td>
+                If true, this will make the toast persistent and it will not
+                automatically hide after the duration has passed.
+              </td>
+            </tr>
+            <tr>
+              <td>position</td>
+              <td>String</td>
+              <td>bottom-right</td>
+              <td>
+                The position of the toast. This can be set to "top-left",
+                "top-center", "top-right", "bottom-left", "bottom-center",
+                "bottom-right", "top-full", or "bottom-full".
+              </td>
+            </tr>
+            <tr>
+              <td>plumageToast</td>
+              <td>Boolean</td>
+              <td>false</td>
+              <td>
+                If true, this will style the toast according to the Plumage
+                style guide.
+              </td>
+            </tr>
+            <tr>
+              <td>plumageToastMax</td>
+              <td>Boolean</td>
+              <td>false</td>
+              <td>
+                If true, this changes the styling of the Plumage toast so that
+                more content can be displayed and adds the close button to the
+                toast. To be used with the plumageToast prop.
+              </td>
+            </tr>
+            <tr>
+              <td>solidToast</td>
+              <td>Boolean</td>
+              <td>false</td>
+              <td>
+                If true, this will style the toast as a solid minimal toast.
+              </td>
+            </tr>
+            <tr>
+              <td>svgIcon</td>
+              <td>String</td>
+              <td></td>
+              <td>
+                This uses predefined SVG icons included in the component,
+                "check-circle-fill", "check-circle-outline", "info-fill",
+                "info-outlined", "exclamation-triangle-fill",
+                "exclamation-triangle-outline", "exclamation-circle-fill" or
+                "exclamation-circle-outline".
+              </td>
+            </tr>
+            <tr>
+              <td>time</td>
+              <td>String</td>
+              <td></td>
+              <td>
+                The current ZULU formatted time to be displayed in the toast.
+                This is used for Plumage styled toasts.
+              </td>
+            </tr>
+            <tr>
+              <td>title</td>
+              <td>String</td>
+              <td></td>
+              <td>
+                The title of the toast. This is displayed in the header of the
+                toast.
+              </td>
+            </tr>
+            <tr>
+              <td>variant</td>
+              <td>String</td>
+              <td></td>
+              <td>
+                The variant color of the toast. This can be set to "primary",
+                "secondary", "danger", "warning", "info", "dark" or "light". For
+                Plumage styled toasts, this is applied to the icon.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Slots -->
+    <div style="margin-top: 50px">
+      <div class="title">Slots</div>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Slot</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td>custom-content</td>
+              <td>
+                This is the slot for adding content to the toast.<br />
+                Add <span class="example">slot="custom-content"</span> to a
+                'div' or 'span' in the toast component.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Instructions -->
+    <div style="margin-top: 50px">
+      <div class="title">Using Component in other JavaScript Frameworks</div>
+
+      <p>
+        Integrating a Lit Element component with other JavaScript frameworks
+        like Vue, React, and Angular involves creating a wrapper component in
+        each framework to encapsulate and use the Lit Element component. Here
+        are examples for each framework:
+      </p>
+
+      <h5>Vue.js</h5>
+      <p>Install the necessary dependencies:</p>
+      <pre>
+        <code>
+          npm install @vue/web-component-wrapper
+        </code>
+      </pre>
+      <p>Register the Lit Element Toast Component:</p>
+      <p>Create a file registerToastComponent.js:</p>
+      <pre>
+          <code>
+            import Vue from 'vue';
+            import wrap from '@vue/web-component-wrapper';
+            import ToastComponent from './path/to/toast-component.js';
+
+            const CustomElement = wrap(Vue, ToastComponent);
+            window.customElements.define('toast-component', CustomElement);
+          </code>
+        </pre>
+
+      <p>Import and use in your Vue component:</p>
+      <p>In your main entry file (e.g., main.js):</p>
+      <pre>
+            <code>
+              import Vue from 'vue';
+              import App from './App.vue';
+              import './registerToastComponent';
+
+              new Vue({
+                render: (h) => h(App),
+              }).$mount('#app');
+            </code>
+          </pre>
+
+      <p>Using in a Vue component:</p>
+      <pre>
+          <code>
+            &#60;template&#62;
+            &#60;div&#62;
+            &#60;button @click="showToast"&#62;Show Toast&#60;/button&#62;
+            &#60;toast-component id="toast" position="bottom-right"&#62;&#60;/toast-component&#62;
+            &#60;/div&#62;
+            &#60;/template&#62;
+            
+            &#60;script&#62;
+            export default {
+              methods: {
+                showToast() {
+                  const toast = document.getElementById('toast');
+                  toast.message = "This is a toast message!";
+                  toast.variant = "primary";
+                  toast.showToast();
+                },
+              },
+            };
+            &#60;/script&#62;
+          </code>
+        </pre>
+
+      <h5>React</h5>
+      <p>Install the necessary dependencies:</p>
+      <pre>
+        <code>
+          // bash
+          npm install @lit-labs/react
+        </code>
+      </pre>
+
+      <p>Register the custom element:</p>
+      <p>Create a file registerToastComponent.js:</p>
+      <pre>
+          <code>
+            import { createComponent } from '@lit-labs/react';
+            import * as React from 'react';
+            import { ToastComponent } from './path/to/toast-component.js';
+
+            export const ToastComponentReact = createComponent({
+              tagName: 'toast-component',
+              elementClass: ToastComponent,
+              react: React,
+              events: {},
+            });
+          </code>
+        </pre>
+
+      <p>Import and use in your React component:</p>
+
+      <pre>
+          <code>
+            import React from 'react';
+            import { ToastComponentReact } from './registerToastComponent';
+
+            function App() {
+              const showToast = () => {
+                const toast = document.querySelector('toast-component');
+                toast.message = "This is a toast message!";
+                toast.variant = "primary";
+                toast.showToast();
+              };
+
+              return (
+                &#60;div&#62;
+                &#60;button onClick={showToast}&#62;Show Toast&#60;/button&#62;
+                &#60;ToastComponentReact id="toast" position="bottom-right" /&#62;
+                &#60;/div&#62;
+              );
+            }
+
+            export default App;
+          </code>
+        </pre>
+
+      <h5>Angular</h5>
+      <p>Install the necessary dependencies:</p>
+      <pre>
+        <code>
+          ng add @angular/elements
+        </code>
+      </pre>
+
+      <p>Register the custom element:</p>
+      <p>Create a file registerToastComponent.ts:</p>
+
+      <pre>
+        <code>
+          import { Injector } from '@angular/core';
+          import { createCustomElement } from '@angular/elements';
+          import { ToastComponent } from './path/to/toast-component.js';
+
+          export function registerCustomElements(injector: Injector) {
+            const ToastElement = createCustomElement(ToastComponent, { injector });
+            customElements.define('toast-component', ToastElement);
+          }
+        </code>
+      </pre>
+
+      <p>Import and use in your Angular module:</p>
+      <p>In your app.module.ts:</p>
+
+      <pre>
+          <code>
+            import { NgModule, Injector } from '@angular/core';
+            import { BrowserModule } from '@angular/platform-browser';
+            import { AppComponent } from './app.component';
+            import { registerCustomElements } from './registerToastComponent';
+
+            @NgModule({
+              declarations: [AppComponent],
+              imports: [BrowserModule],
+              providers: [],
+              bootstrap: [AppComponent],
+            })
+            export class AppModule {
+              constructor(private injector: Injector) {
+                registerCustomElements(injector);
+              }
+
+              ngDoBootstrap() {}
+            }
+          </code>
+        </pre>
+
+      <p>Using in an Angular component:</p>
+      <pre>
+        <code>
+          // html
+          &#60;!-- app.component.html --&#62;
+          &#60;div&#62;
+          &#60;button (click)="showToast()"&#62;Show Toast&#60;/button&#62;
+          &#60;toast-component id="toast" position="bottom-right"&#62;&#60;/toast-component&#62;
+          &#60;/div&#62;
+        </code>
+      </pre>
+
+      <pre>
+          <code>
+            // app.component.ts
+            import { Component } from '@angular/core';
+
+            @Component({
+              selector: 'app-root',
+              templateUrl: './app.component.html',
+            })
+            export class AppComponent {
+              showToast() {
+                const toast = document.getElementById('toast') as any;
+                toast.message = "This is a toast message!";
+                toast.variant = "primary";
+                toast.showToast();
+              }
+            }
+          </code>
+        </pre>
+
+      
+      <p>
+        Adjust the paths and imports based on your project structure. The
+        provided examples showcase how to create wrapper components for each
+        framework to use your Lit Element 'Table' component.
+      </p>
+
+      <p>
+        The interoperability is possible because Web Components, once defined
+        and registered as custom elements, act like native HTML elements that
+        these frameworks can understand and interact with.
+      </p>
     </div>
 
     <script type="module" src="./toast-component.js"></script>
@@ -376,7 +869,7 @@
         toast3d.showToast();
 
         const toast4 = document.getElementById("toast4");
-        toast4.title = "Plumage Template 2 Toast";
+        toast4.title = "Plumage Toast Max";
         toast4.customContent = html`
           <div slot="custom-content">
             <div>This is data</div>
@@ -460,7 +953,7 @@
 
       window.showNotification2b = function showNotification2b() {
         const toast = document.getElementById("toast2b");
-        toast.title = "Plumage Template 2 Toast";
+        toast.title = "Plumage Toast Max";
         toast.customContent = html`
           <div slot="custom-content">
             <div>This is data</div>
