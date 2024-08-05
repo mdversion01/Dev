@@ -161,6 +161,7 @@ export const timepickerStyles = css`
     cursor: pointer;
     color: #959595;
     margin-left: 0;
+    min-height: 38px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -171,6 +172,10 @@ export const timepickerStyles = css`
     user-select: none;
     transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
       border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  }
+
+  .pl-input-group-sm .clear-button {
+    min-height: 30px;
   }
 
   .time-picker .pl-input-group-append button:last-child {
@@ -203,7 +208,10 @@ export const timepickerStyles = css`
     font-size: 1.125rem !important;
   }
 
-  .clear-button:hover {
+  .clear-button:hover,
+  .clear-button:focus,
+  .plumage .clear-button:hover,
+  .plumage .clear-button:focus {
     color: #ac0000;
   }
 
@@ -241,5 +249,84 @@ export const timepickerStyles = css`
     clip: rect(0, 0, 0, 0);
     white-space: nowrap;
     border-width: 0;
+  }
+
+  .plumage .clear-button {
+    background-color: transparent;
+    border-width: initial;
+    border-style: none;
+    border-color: initial;
+    border-radius: 0px;
+    cursor: pointer;
+    color: rgb(149, 149, 149);
+    margin-left: 0px;
+    min-height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.375rem 0.5rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    user-select: none;
+    transition: color 0.15s ease-in-out 0s,
+      background-color 0.15s ease-in-out 0s, border-color 0.15s ease-in-out 0s,
+      box-shadow 0.15s ease-in-out 0s;
+  }
+
+  .plumage .pl-input-group-sm .clear-button {
+    min-height: 30px;
+  }
+
+  .plumage .time-icon-btn {
+    background-color: transparent;
+    font-weight: 400;
+    line-height: 1.5;
+    padding: 0px !important;
+    color: rgb(149, 149, 149) !important;
+    border: none !important;
+    align-items: center;
+    border-radius: 50% !important;
+    cursor: pointer;
+    display: flex;
+    font-size: 1rem !important;
+    justify-content: center;
+  }
+
+  .plumage .time-icon-btn:hover,
+  .plumage .time-icon-btn:focus {
+    background-color: transparent;
+    text-decoration: none;
+    color: rgb(82, 82, 82) !important;
+  }
+
+  .plumage .time-icon-btn:focus {
+    outline: 0;
+    box-shadow: rgb(142, 142, 142) 0 0 0 0 !important;
+  }
+
+  .plumage .time-picker .pl-input-group-append button:last-child {
+    border: none;
+    border-radius: 0 !important;
+  }
+
+  /* Underline the input */
+  .plumage .b-underline {
+    background-color: #ccc;
+    display: block;
+    height: 1px;
+    position: relative;
+    transition: 0.4s;
+    width: 100%;
+  }
+
+  .plumage .b-focus {
+    background-color: #2680eb;
+    bottom: 0;
+    height: 1px;
+    left: 50%;
+    position: absolute;
+    transition: 0.4s;
+    width: 0;
   }
 `;

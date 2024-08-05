@@ -6,7 +6,7 @@ import { plInputGroupStyles } from "../pl-input-group/pl-input-group-styles";
 import { utilitiesStyles } from "../utilities-styles";
 import { timepickerStyles } from "./timepicker-styles";
 
-class TimePicker extends LitElement {
+class PlTimePicker extends LitElement {
   static styles = [
     Fontawesome,
     utilitiesStyles,
@@ -61,7 +61,9 @@ class TimePicker extends LitElement {
   }
 
   _handleFocusAndInteraction(event) {
-    event.stopPropagation();
+    if (event.stopPropagation) {
+      event.stopPropagation();
+    }
     const bFocusDiv = this.shadowRoot.querySelector(".b-focus");
     const isInputFocused =
       event.target === this.shadowRoot.querySelector("input");
@@ -99,9 +101,8 @@ class TimePicker extends LitElement {
       "aria-hidden",
       timeDropdown.classList.contains("hidden").toString()
     );
-    this._handleFocusAndInteraction({
-      target: this.shadowRoot.querySelector(".time-input"),
-    });
+    const fakeEvent = { target: this.shadowRoot.querySelector(".time-input") };
+    this._handleFocusAndInteraction(fakeEvent);
   }
 
   _hideDropdown() {
@@ -860,4 +861,4 @@ class TimePicker extends LitElement {
   }
 }
 
-customElements.define("time-picker", TimePicker);
+customElements.define("pl-time-picker", PlTimePicker);

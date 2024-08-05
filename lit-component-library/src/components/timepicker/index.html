@@ -33,13 +33,154 @@
             <section class="display-box" id="db-1">
               <section class="display-box-demo">
                 <div class="timepicker-wrapper">
-                  <time-picker hideSeconds></time-picker>
+                  <timepicker-manager></timepicker-manager>
                 </div>
               </section>
               <section class="display-box-meta markdown">
                 <div class="display-box-title">Basic Usage</div>
                 <div class="display-box-description">
-                  Default Time Picker.
+                  Default Time Picker. Change time by typing into the input field or using the timepicker dropdown.
+                </div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
+
+          <section class="section">
+            <section class="display-box" id="db-1">
+              <section class="display-box-demo">
+                <div class="timepicker-wrapper" style="margin-bottom: 20px;">
+                  <timepicker-manager display24HourOnly></timepicker-manager>
+                </div>
+
+                <div class="timepicker-wrapper">
+                  <timepicker-manager display12HourOnly></timepicker-manager>
+                </div>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">
+                  Hide the Switch Format button. Change time by typing into the input field or using the Open Timepicker dropdown.
+                </div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
+
+          <section class="section">
+            <section class="display-box" id="db-1">
+              <section class="display-box-demo">
+                <div class="timepicker-wrapper">
+                  <timepicker-manager hideTimepickerBtn></timepicker-manager>
+                </div>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">
+                  Hide/remove the Open Timepicker button and dropdown. Change time by typing into the input field.
+                </div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
+
+          <section class="section">
+            <section class="display-box" id="db-1">
+              <section class="display-box-demo">
+                <div class="timepicker-wrapper" style="margin-bottom: 20px;">
+                  <timepicker-manager size="sm"></timepicker-manager>
+                </div>
+                <div class="timepicker-wrapper" style="margin-bottom: 20px;">
+                  <timepicker-manager></timepicker-manager>
+                </div>
+                <div class="timepicker-wrapper" style="margin-bottom: 20px;">
+                  <timepicker-manager size="lg"></timepicker-manager>
+                </div>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">
+                  Set the size of the timepicker. Available sizes are sm and lg. No size property required for default size.
+                </div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
+        </section>
+
+        <section>
+          <section class="section">
+            <section class="display-box" id="db-1">
+              <section class="display-box-demo">
+                <div class="timepicker-wrapper">
+                  <timepicker-manager usePlTimepicker></timepicker-manager>
+                </div>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">
+                  Default Plumage Time Picker. Change time by typing into the input field or using the timepicker dropdown.
+                </div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
+
+          <section class="section">
+            <section class="display-box" id="db-1">
+              <section class="display-box-demo">
+                <div class="timepicker-wrapper" style="margin-bottom: 20px;">
+                  <timepicker-manager usePlTimepicker display24HourOnly></timepicker-manager>
+                </div>
+
+                <div class="timepicker-wrapper">
+                  <timepicker-manager usePlTimepicker display12HourOnly></timepicker-manager>
+                </div>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">
+                  Hide the Switch Format button. Change time by typing into the input field or using the Open Timepicker dropdown.
+                </div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
+
+          <section class="section">
+            <section class="display-box" id="db-1">
+              <section class="display-box-demo">
+                <div class="timepicker-wrapper">
+                  <timepicker-manager usePlTimepicker hideTimepickerBtn></timepicker-manager>
+                </div>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">
+                  Hide/remove the Open Timepicker button and dropdown. Change time by typing into the input field.
+                </div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
+
+          <section class="section">
+            <section class="display-box" id="db-1">
+              <section class="display-box-demo">
+                <div class="timepicker-wrapper" style="margin-bottom: 20px;">
+                  <timepicker-manager usePlTimepicker size="sm"></timepicker-manager>
+                </div>
+                <div class="timepicker-wrapper" style="margin-bottom: 20px;">
+                  <timepicker-manager usePlTimepicker></timepicker-manager>
+                </div>
+                <div class="timepicker-wrapper" style="margin-bottom: 20px;">
+                  <timepicker-manager usePlTimepicker size="lg"></timepicker-manager>
+                </div>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">
+                  Set the size of the timepicker. Available sizes are sm and lg. No size property required for default size.
                 </div>
                 <div class=""></div>
               </section>
@@ -51,7 +192,7 @@
 
     
 
-    <script src="./timepicker.js" type="module"></script>
+    <script src="./timepicker-manager.js" type="module"></script>
     <script src="../../../node_modules/bootstrap/dist/js/bootstrap.js"></script>
   </body>
 </html>
