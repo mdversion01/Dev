@@ -600,8 +600,23 @@ class DatePicker extends LitElement {
           direction === "next" ? currentIndex + 1 : currentIndex - 1;
 
         if (newIndex >= 0 && newIndex < calendarCells.length) {
-          const targetDate = calendarCells[newIndex].dataset.date;
-          this.updateActiveDateElements(targetDate);
+          const targetCell = calendarCells[newIndex];
+          const targetSpan = targetCell.querySelector("span");
+
+          // Remove the focus class from the previously focused element
+          const previousFocusedSpan = this.shadowRoot.querySelector(
+            ".calendar-grid-item span.focus"
+          );
+          if (previousFocusedSpan) {
+            previousFocusedSpan.classList.remove("focus");
+          }
+
+          // Add the focus class to the newly focused element
+          targetSpan.classList.add("focus");
+
+          // Ensure the new cell is focused
+          targetCell.focus();
+          this.updateActiveDateElements();
         }
       }
     }
@@ -859,8 +874,22 @@ class DatePicker extends LitElement {
           newIndex = Math.min(index + 1, calendarCells.length - 1);
         }
 
-        calendarCells[newIndex].focus();
-        calendarCells[newIndex].querySelector("span").classList.add("focus");
+        const targetCell = calendarCells[newIndex];
+        const targetSpan = targetCell.querySelector("span");
+
+        // Remove the focus class from the previously focused element
+        const previousFocusedSpan = this.shadowRoot.querySelector(
+          ".calendar-grid-item span.focus"
+        );
+        if (previousFocusedSpan) {
+          previousFocusedSpan.classList.remove("focus");
+        }
+
+        // Add the focus class to the newly focused element
+        targetSpan.classList.add("focus");
+
+        // Ensure the new cell is focused
+        targetCell.focus();
         this.updateActiveDateElements();
       }
     } else if (event.key === "Enter" || event.key === " ") {
