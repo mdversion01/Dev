@@ -591,7 +591,6 @@ class DatePicker extends LitElement {
     const calendarGrid = this.shadowRoot.querySelector(".calendar-grid");
     calendarGrid.innerHTML = "";
 
-    // Convert zero-based month index to one-based for display
     const displayMonth = month0b + 1;
 
     const previousMonthLastDate = new Date(
@@ -606,7 +605,7 @@ class DatePicker extends LitElement {
 
     const options = {
       year: "numeric",
-      month: "long", // Display full month name
+      month: "long",
     };
 
     const formattedMonthYear = new Intl.DateTimeFormat("en-US", {
@@ -754,6 +753,13 @@ class DatePicker extends LitElement {
         }
 
         dayItem.appendChild(dayNumberSpan);
+
+        // Add the focus event listener to the calendar-grid-item
+        dayItem.addEventListener("focus", (event) => {
+          dayNumberSpan.classList.add("focus");
+        });
+
+        // Add click and keydown event listeners
         dayNumberSpan.addEventListener("click", this.handleDayClick.bind(this));
         dayNumberSpan.addEventListener(
           "keydown",
@@ -764,6 +770,7 @@ class DatePicker extends LitElement {
     }
     this.setActiveState();
   }
+
 
   prevMonth() {
     this.currentMonth--;
