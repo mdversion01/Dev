@@ -203,7 +203,8 @@ export const datepickerStyles = css`
     border-color: #6c757d;
   }
 
-  .btn-outline-secondary:hover {
+  .btn-outline-secondary:hover,
+  .btn-outline-secondary:focus {
     color: #fff;
     background-color: #6c757d;
     border-color: #6c757d;

@@ -443,15 +443,16 @@ class DatePicker extends LitElement {
         this.shadowRoot
           .querySelector(".calendar")
           .setAttribute("aria-activedescendant", newFocusCell.id);
-
-        setTimeout(() => {
-          newFocusCell?.querySelector("span")?.focus();
-        }, 0);
       }
 
       this.setActiveState();
       this.updateSelectedDateElements(formattedDate);
       this.updateActiveDateElements();
+
+      // Ensure the focus remains on the selected day
+      setTimeout(() => {
+        newFocusCell?.querySelector("span")?.focus();
+      }, 0);
     }
 
     this.setActiveState();
@@ -493,18 +494,28 @@ class DatePicker extends LitElement {
         let newIndex =
           direction === "next" ? currentIndex + 1 : currentIndex - 1;
 
-        if (newIndex < 0) {
+        if (direction === "up" && currentIndex < 7) {
+          // Move to the previous month and set focus on the correct day
           this.prevMonth();
+          const daysInPrevMonth = new Date(
+            this.currentYear,
+            this.currentMonth + 1,
+            0
+          ).getUTCDate();
+          newIndex = daysInPrevMonth - (7 - currentIndex);
           calendarCells = this.shadowRoot.querySelectorAll(
             ".calendar-grid-item"
-          ); // Update after rendering new month
-          newIndex = calendarCells.length - 1; // Move focus to the last day of the previous month
-        } else if (newIndex >= calendarCells.length) {
+          );
+        } else if (
+          direction === "down" &&
+          currentIndex >= calendarCells.length - 7
+        ) {
+          // Move to the next month and set focus on the correct day
           this.nextMonth();
+          newIndex = currentIndex % 7;
           calendarCells = this.shadowRoot.querySelectorAll(
             ".calendar-grid-item"
-          ); // Update after rendering new month
-          newIndex = 0; // Move focus to the first day of the next month
+          );
         }
 
         const targetCell = calendarCells[newIndex];
@@ -803,9 +814,34 @@ class DatePicker extends LitElement {
         let newIndex = index;
 
         if (event.key === "ArrowUp") {
-          newIndex = Math.max(index - 7, 0);
+          if (index < 7) {
+            // If in the first row, move to the previous month
+            const prevMonthLastDay = new Date(
+              this.currentYear,
+              this.currentMonth,
+              0
+            ).getUTCDate();
+            const offset = 7 - index;
+            this.prevMonth();
+            calendarCells = this.shadowRoot.querySelectorAll(
+              ".calendar-grid-item"
+            );
+            newIndex = calendarCells.length - offset;
+          } else {
+            newIndex = Math.max(index - 7, 0); // Move up within the current month
+          }
         } else if (event.key === "ArrowDown") {
-          newIndex = Math.min(index + 7, calendarCells.length - 1);
+          if (index >= calendarCells.length - 7) {
+            // If in the last row, move to the next month
+            const offset = index % 7;
+            this.nextMonth();
+            calendarCells = this.shadowRoot.querySelectorAll(
+              ".calendar-grid-item"
+            );
+            newIndex = offset;
+          } else {
+            newIndex = Math.min(index + 7, calendarCells.length - 1); // Move down within the current month
+          }
         } else if (event.key === "ArrowLeft") {
           newIndex = index - 1;
           if (newIndex < 0) {
