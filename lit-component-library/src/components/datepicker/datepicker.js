@@ -51,7 +51,11 @@ class DatePicker extends LitElement {
           class="calendar-nav d-flex"
           aria-label="Calendar Navigation"
           role="group"
+          aria-labelledby="calendar-navigation"
         >
+          <span id="calendar-navigation" class="sr-only"
+            >Calendar Navigation</span
+          >
           <button
             aria-label="Previous year"
             aria-keyshortcuts="Alt+PageDown"
@@ -109,8 +113,11 @@ class DatePicker extends LitElement {
           aria-labelledby="calendar-grid-caption"
           aria-roledescription="Calendar"
           class="calendar form-control h-auto text-center pt-2"
-          role="application"
+          role="region"
+          aria-label="Calendar"
           tabindex="0"
+          @focus=${this.handleCalendarFocus}
+          @focusout=${this.handleCalendarFocusOut}
         >
           <div
             aria-live="polite"
@@ -169,8 +176,8 @@ class DatePicker extends LitElement {
         </div>
       </div>
 
-      <div class="context">
-        <div>Context:</div>
+      <div class="context" role="region" aria-labelledby="context-title">
+        <div id="context-title">Context:</div>
         <div>
           selectedYMD: "<span class="selected-date-Ymd">Date not selected</span
           >"
@@ -194,6 +201,30 @@ class DatePicker extends LitElement {
         </div>
       </div>
     `;
+  }
+
+  handleCalendarFocus() {
+    const firstCalendarGridItem = this.shadowRoot.querySelector(
+      ".calendar-grid-item span"
+    );
+    if (firstCalendarGridItem) {
+      firstCalendarGridItem.classList.add("focus");
+      firstCalendarGridItem.parentElement.focus(); // Move focus to the parent element
+      this.shadowRoot.querySelector(".calendar").classList.add("focus");
+    }
+  }
+
+  handleCalendarFocusOut(event) {
+    const calendarDiv = this.shadowRoot.querySelector(".calendar");
+    // If the newly focused element is not within the calendar, remove all focus classes
+    if (!this.shadowRoot.querySelector(".calendar").contains(event.relatedTarget)) {
+
+      const allFocusedItems = this.shadowRoot.querySelectorAll(".calendar-grid-item span.focus");
+      allFocusedItems.forEach((span) => {
+        span.classList.remove("focus");
+        calendarDiv.classList.remove("focus");
+      });
+    }
   }
 
   getFirstDayOfMonth(year, month) {
@@ -592,13 +623,11 @@ class DatePicker extends LitElement {
     calendarGrid.innerHTML = "";
 
     const displayMonth = month0b + 1;
-
     const previousMonthLastDate = new Date(
       Date.UTC(year, month0b, 0)
     ).getUTCDate();
     const firstDay = this.getFirstDayOfMonth(year, month0b);
     const daysInMonth = new Date(Date.UTC(year, month0b + 1, 0)).getUTCDate();
-
     const firstDayOfWeek = firstDay === 0 ? 0 : firstDay;
     let date = 1;
     const totalWeeks = Math.ceil((firstDayOfWeek + daysInMonth) / 7);
@@ -621,7 +650,7 @@ class DatePicker extends LitElement {
         const dayItem = document.createElement("div");
         dayItem.classList.add("calendar-grid-item");
         dayItem.setAttribute("role", "button");
-        dayItem.setAttribute("tabindex", "0");
+        dayItem.setAttribute("tabindex", "-1"); // Disable tabbing
 
         const currentDate = new Date(Date.UTC(year, month0b, date));
         const today = new Date();
@@ -757,6 +786,7 @@ class DatePicker extends LitElement {
         // Add the focus event listener to the calendar-grid-item
         dayItem.addEventListener("focus", (event) => {
           dayNumberSpan.classList.add("focus");
+          this.shadowRoot.querySelector(".calendar").classList.add("focus");
         });
 
         // Add click and keydown event listeners
@@ -770,7 +800,6 @@ class DatePicker extends LitElement {
     }
     this.setActiveState();
   }
-
 
   prevMonth() {
     this.currentMonth--;

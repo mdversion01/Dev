@@ -192,11 +192,12 @@ export const datepickerStyles = css`
     border-color: #f8f9fa;
   }
 
-  .btn-outline-light.focus, .btn-outline-light:focus {
+  .btn-outline-light.focus,
+  .btn-outline-light:focus {
     outline: none !important;
     background-color: #e2e6ea !important;
     box-shadow: 0 0 0 0.2rem rgb(224 224 224 / 20%) !important;
-}
+  }
 
   .btn-outline-secondary {
     color: #6c757d;
@@ -274,6 +275,7 @@ export const datepickerStyles = css`
     -ms-flex: 1 1 auto !important;
     flex: 1 1 auto !important;
   }
+
   .border-0 {
     border: 0 !important;
   }
@@ -281,18 +283,29 @@ export const datepickerStyles = css`
   .dp-calendar {
     width: 270px;
   }
+
   .calendar {
     padding: 0;
     margin: 0;
     overflow: hidden;
   }
+
+  .calendar.focus,
+  .calendar:focus {
+    outline: none !important;
+    background-color: transparent !important;
+    box-shadow: rgb(38 143 255 / 25%) 0px 0px 0px 0.2rem !important;
+  }
+
   .calendar-inner {
     min-width: 250px;
   }
+
   .calendar-grid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
   }
+
   .calendar-grid-weekdays {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
@@ -300,6 +313,7 @@ export const datepickerStyles = css`
     margin-top: 10px;
     border-bottom: 1px solid #dee2e6 !important;
   }
+  
   .calendar-grid-day {
     text-align: center;
     padding: 0 5px;
