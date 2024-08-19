@@ -320,82 +320,82 @@ class DateRangePicker extends LitElement {
   handleKeyDown(event) {
     const calendarGrids = this.shadowRoot.querySelectorAll(".calendar-grid");
     let currentFocus = this.shadowRoot.activeElement;
-    let calendarCells = Array.from(calendarGrids).flatMap(grid =>
-        Array.from(grid.querySelectorAll(".calendar-grid-item"))
+    let calendarCells = Array.from(calendarGrids).flatMap((grid) =>
+      Array.from(grid.querySelectorAll(".calendar-grid-item"))
     );
 
     if (event.key.startsWith("Arrow")) {
-        event.preventDefault();
-        let index = Array.from(calendarCells).indexOf(currentFocus);
+      event.preventDefault();
+      let index = Array.from(calendarCells).indexOf(currentFocus);
 
-        if (index !== -1) {
-            let newIndex = index;
+      if (index !== -1) {
+        let newIndex = index;
 
-            if (event.key === "ArrowUp") {
-                if (index < 7) {
-                    // Move to the last day of the previous month
-                    this.prevMonth();
-                    calendarCells = Array.from(calendarGrids).flatMap(grid =>
-                        Array.from(grid.querySelectorAll(".calendar-grid-item"))
-                    );
-                    newIndex = calendarCells.length - 1; // Focus on the last day of the previous month
-                } else {
-                    newIndex = Math.max(index - 7, 0);
-                }
-            } else if (event.key === "ArrowDown") {
-                if (index >= calendarCells.length - 7) {
-                    // Move to the first day of the next month
-                    this.nextMonth();
-                    calendarCells = Array.from(calendarGrids).flatMap(grid =>
-                        Array.from(grid.querySelectorAll(".calendar-grid-item"))
-                    );
-                    newIndex = 0; // Focus on the first day of the next month
-                } else {
-                    newIndex = Math.min(index + 7, calendarCells.length - 1);
-                }
-            } else if (event.key === "ArrowLeft") {
-                newIndex = index - 1;
-                if (newIndex < 0) {
-                    // Move to the last day of the previous month
-                    this.prevMonth();
-                    calendarCells = Array.from(calendarGrids).flatMap(grid =>
-                        Array.from(grid.querySelectorAll(".calendar-grid-item"))
-                    );
-                    newIndex = calendarCells.length - 1; // Focus on the last day of the previous month
-                }
-            } else if (event.key === "ArrowRight") {
-                newIndex = index + 1;
-                if (newIndex >= calendarCells.length) {
-                    // Move to the first day of the next month
-                    this.nextMonth();
-                    calendarCells = Array.from(calendarGrids).flatMap(grid =>
-                        Array.from(grid.querySelectorAll(".calendar-grid-item"))
-                    );
-                    newIndex = 0; // Focus on the first day of the next month
-                }
-            }
-
-            const targetCell = calendarCells[newIndex];
-            if (targetCell) {
-                const targetSpan = targetCell.querySelector("span");
-
-                const previousFocusedSpan = this.shadowRoot.querySelector(
-                    ".calendar-grid-item span.focus"
-                );
-                if (previousFocusedSpan) {
-                    previousFocusedSpan.classList.remove("focus");
-                }
-
-                targetSpan.classList.add("focus");
-                targetCell.focus();
-                this.updateActiveDateElements();
-            }
+        if (event.key === "ArrowUp") {
+          if (index < 7) {
+            // If in the first row, move to the previous month
+            this.prevMonth();
+            calendarCells = Array.from(calendarGrids).flatMap((grid) =>
+              Array.from(grid.querySelectorAll(".calendar-grid-item"))
+            );
+            newIndex = calendarCells.length - (7 - index);
+          } else {
+            newIndex = Math.max(index - 7, 0); // Move up within the current month
+          }
+        } else if (event.key === "ArrowDown") {
+          if (index >= calendarCells.length - 7) {
+            // If in the last row, move to the next month
+            this.nextMonth();
+            calendarCells = Array.from(calendarGrids).flatMap((grid) =>
+              Array.from(grid.querySelectorAll(".calendar-grid-item"))
+            );
+            newIndex = index % 7;
+          } else {
+            newIndex = Math.min(index + 7, calendarCells.length - 1); // Move down within the current month
+          }
+        } else if (event.key === "ArrowLeft") {
+          newIndex = index - 1;
+          if (newIndex < 0) {
+            this.prevMonth();
+            calendarCells = Array.from(calendarGrids).flatMap((grid) =>
+              Array.from(grid.querySelectorAll(".calendar-grid-item"))
+            );
+            newIndex = calendarCells.length - 1; // Move focus to the last day of the previous month
+          }
+        } else if (event.key === "ArrowRight") {
+          newIndex = index + 1;
+          if (newIndex >= calendarCells.length) {
+            this.nextMonth();
+            calendarCells = Array.from(calendarGrids).flatMap((grid) =>
+              Array.from(grid.querySelectorAll(".calendar-grid-item"))
+            );
+            newIndex = 0; // Move focus to the first day of the next month
+          }
         }
-    } else if (event.key === "Enter" || event.key === " ") {
-        this.handleEnterKeyPress(event);
-    }
-}
 
+        const targetCell = calendarCells[newIndex];
+        if (targetCell) {
+          const targetSpan = targetCell.querySelector("span");
+
+          const previousFocusedSpan = this.shadowRoot.querySelector(
+            ".calendar-grid-item span.focus"
+          );
+          if (previousFocusedSpan) {
+            previousFocusedSpan.classList.remove("focus");
+          }
+
+          targetSpan.classList.add("focus");
+
+          targetSpan.focus(); // Explicitly set focus on the span
+          targetCell.focus(); // Also, focus the targetCell to ensure correct keyboard navigation
+
+          this.updateActiveDateElements();
+        }
+      }
+    } else if (event.key === "Enter" || event.key === " ") {
+      this.handleEnterKeyPress(event);
+    }
+  }
 
   selectDate(date) {
     if (!this.startDate || (this.startDate && this.endDate)) {
