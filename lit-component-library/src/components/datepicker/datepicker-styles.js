@@ -22,7 +22,7 @@ export const datepickerStyles = css`
 
   .small,
   small {
-    font-size: 0.875em;
+    font-size: 0.875rem;
     font-weight: 400;
   }
 
@@ -313,7 +313,7 @@ export const datepickerStyles = css`
     margin-top: 10px;
     border-bottom: 1px solid #dee2e6 !important;
   }
-  
+
   .calendar-grid-day {
     text-align: center;
     padding: 0 5px;
@@ -366,5 +366,54 @@ export const datepickerStyles = css`
   .context {
     margin: 1rem;
     font-size: 14px;
+  }
+
+  .range-picker-wrapper {
+    max-width: 554px;
+  }
+
+  .range-picker-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 10px;
+  }
+
+  .range-picker-nav-btn {
+    background: transparent;
+    border: none;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .range-picker {
+    display: inline-block;
+  }
+
+  .selected-range {
+    background-color: rgba(0, 123, 255, 0.25);
+    border-radius: 0 !important;
+  }
+
+  .selected-range-active {
+    color: rgb(255, 255, 255) !important;
+    background-color: rgb(0, 98, 204);
+  }
+
+  .selected-range-active .btn {
+    color: rgb(255, 255, 255) !important;
+  }
+
+  .selected-range .focus {
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    background-color: rgba(38, 143, 255, 0.25) !important;
+  }
+
+  .selected-range .rounded-circle {
+    border-radius: 0 !important;
   }
 `;

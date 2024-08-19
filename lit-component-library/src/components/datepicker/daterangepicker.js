@@ -33,9 +33,10 @@ class DateRangePicker extends LitElement {
         border-radius: 0 0 0.25rem 0.25rem;
       }
 
-      .date-range-picker {
-        display: inline-block;
+      footer .small {
+        font-size: 80%;
       }
+
       .calendar-wrapper {
         display: flex;
         border-width: 1px 1px 0;
@@ -43,22 +44,23 @@ class DateRangePicker extends LitElement {
         border-color: #ccc;
         border-radius: 0.25rem 0.25rem 0 0;
       }
-      .selected-range {
-        background-color: rgba(0, 123, 255, 0.25); /* Light blue background for selected range */
+
+      .calendar-wrapper.focus,
+      .calendar-wrapper:focus {
+        outline: none !important;
+        background-color: transparent !important;
+        box-shadow: rgb(38 143 255 / 25%) 0px 0px 0px 0.2rem !important;
         border-radius: 0 !important;
-      }
-
-      .selected-range-active {
-        color: rgb(255, 255, 255) !important;
-        background-color: rgb(0, 98, 204);
-      }
-
-      .selected-range-active .btn {
-        color: rgb(255, 255, 255) !important;
       }
 
       .empty-cell {
         visibility: hidden;
+      }
+
+      .focus {
+        outline: none;
+        background-color: #e0e0e0;
+        border-radius: 50%;
       }
     `,
   ];
@@ -71,6 +73,7 @@ class DateRangePicker extends LitElement {
     this.currentStartYear = new Date().getFullYear();
     this.currentEndMonth = this.currentStartMonth + 1; // Default to the next month
     this.currentEndYear = this.currentStartYear;
+    this.focusedDate = new Date();
 
     if (this.currentEndMonth > 11) {
       this.currentEndMonth = 0;
@@ -80,18 +83,35 @@ class DateRangePicker extends LitElement {
 
   render() {
     return html`
-      <div class="calendar-nav mb-2">
-        <button @click=${this.prevMonth}>Previous</button>
-        <button @click=${this.nextMonth}>Next</button>
-      </div>
-      <div class="date-range-picker">
-        <div class="calendar-wrapper">
-          ${this.renderCalendar(this.currentStartMonth, this.currentStartYear)}
-          ${this.renderCalendar(this.currentEndMonth, this.currentEndYear)}
+      <div class="range-picker-wrapper">
+        <div class="range-picker-nav mb-1">
+          <button @click=${this.prevMonth} class="range-picker-nav-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+              <path
+                d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"
+              />
+            </svg>
+          </button>
+          <button @click=${this.nextMonth} class="range-picker-nav-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+              <path
+                d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"
+              />
+            </svg>
+          </button>
         </div>
-        <footer class="border-top small text-muted text-center bg-light">
-          <div class="small">Use cursor keys to navigate calendar dates</div>
-        </footer>
+        <div class="range-picker">
+          <div class="calendar-wrapper">
+            ${this.renderCalendar(
+              this.currentStartMonth,
+              this.currentStartYear
+            )}
+            ${this.renderCalendar(this.currentEndMonth, this.currentEndYear)}
+          </div>
+          <footer class="border-top small text-muted text-center bg-light">
+            <div class="small">Use cursor keys to navigate calendar dates</div>
+          </footer>
+        </div>
       </div>
     `;
   }
@@ -113,6 +133,7 @@ class DateRangePicker extends LitElement {
         role="region"
         aria-label="Calendar"
         tabindex="0"
+        @keydown=${this.handleKeyDown}
         @focus=${this.handleCalendarFocus}
         @focusout=${this.handleCalendarFocusOut}
       >
@@ -177,7 +198,9 @@ class DateRangePicker extends LitElement {
 
   renderCalendarDays(month0b, year) {
     const displayMonth = month0b + 1;
-    const previousMonthLastDate = new Date(Date.UTC(year, month0b, 0)).getUTCDate();
+    const previousMonthLastDate = new Date(
+      Date.UTC(year, month0b, 0)
+    ).getUTCDate();
     const firstDay = this.getFirstDayOfMonth(year, month0b);
     const daysInMonth = new Date(Date.UTC(year, month0b + 1, 0)).getUTCDate();
     const firstDayOfWeek = firstDay === 0 ? 0 : firstDay;
@@ -186,13 +209,17 @@ class DateRangePicker extends LitElement {
     let rows = []; // Array to store all the weeks (rows) of the calendar
     let currentRow = []; // Store the current row (week) of the calendar
 
-    // Iterate through the calendar cells
     for (let cellIndex = 0; cellIndex < 42; cellIndex++) {
       let day = null;
       let dataMonth = displayMonth;
       let dataYear = year;
       const itemClasses = ["calendar-grid-item"];
-      let dayNumberSpanClasses = ["btn", "border-0", "rounded-circle", "text-nowrap"];
+      let dayNumberSpanClasses = [
+        "btn",
+        "border-0",
+        "rounded-circle",
+        "text-nowrap",
+      ];
       let ariaLabel = "";
 
       if (cellIndex < firstDayOfWeek) {
@@ -216,6 +243,9 @@ class DateRangePicker extends LitElement {
         if (this.isStartOrEndDate(currentDate)) {
           itemClasses.push("selected-range-active");
         }
+        if (this.isFocusedDate(currentDate)) {
+          dayNumberSpanClasses.push("focus");
+        }
       } else {
         // Next month days
         day = nextMonthDay++;
@@ -226,7 +256,10 @@ class DateRangePicker extends LitElement {
       }
 
       // Remove btn-outline-light if the grid item has selected-range or selected-range-active
-      if (!itemClasses.includes("selected-range") && !itemClasses.includes("selected-range-active")) {
+      if (
+        !itemClasses.includes("selected-range") &&
+        !itemClasses.includes("selected-range-active")
+      ) {
         dayNumberSpanClasses.push("btn-outline-light");
       }
 
@@ -239,7 +272,9 @@ class DateRangePicker extends LitElement {
         : "";
 
       const dataDate = day
-        ? `${dataYear}-${String(dataMonth).padStart(2, "0")}-${String(day).padStart(2, "0")}`
+        ? `${dataYear}-${String(dataMonth).padStart(2, "0")}-${String(
+            day
+          ).padStart(2, "0")}`
         : "";
 
       const calendarCell = {
@@ -254,7 +289,11 @@ class DateRangePicker extends LitElement {
             data-date="${dataDate}"
             id="${day ? `cell-${dataDate}` : ""}"
             aria-label="${ariaLabel}"
-            @click=${() => day && this.handleDayClick(new Date(Date.UTC(dataYear, dataMonth - 1, day)))}
+            @click=${() =>
+              day &&
+              this.handleDayClick(
+                new Date(Date.UTC(dataYear, dataMonth - 1, day))
+              )}
           >
             <span class="${dayNumberSpanClasses.join(" ")}">${day || ""}</span>
           </div>
@@ -267,9 +306,9 @@ class DateRangePicker extends LitElement {
       // Every 7 cells, we've completed a row (week)
       if (currentRow.length === 7) {
         // Check if the row contains only next-month-day cells
-        const isNextMonthRow = currentRow.every(cell => cell.isNextMonth);
+        const isNextMonthRow = currentRow.every((cell) => cell.isNextMonth);
         if (!isNextMonthRow) {
-          rows.push(html`${currentRow.map(c => c.cell)}`);
+          rows.push(html`${currentRow.map((c) => c.cell)}`);
         }
         currentRow = [];
       }
@@ -278,50 +317,174 @@ class DateRangePicker extends LitElement {
     return html`${rows}`;
   }
 
-  prevMonth() {
-    this.currentStartMonth--;
-    this.currentEndMonth--;
+  handleKeyDown(event) {
+    const calendarGrids = this.shadowRoot.querySelectorAll(".calendar-grid");
+    let currentFocus = this.shadowRoot.activeElement;
+    let calendarCells = Array.from(calendarGrids).flatMap(grid =>
+        Array.from(grid.querySelectorAll(".calendar-grid-item"))
+    );
 
-    if (this.currentStartMonth < 0) {
-      this.currentStartMonth = 11;
-      this.currentStartYear--;
+    if (event.key.startsWith("Arrow")) {
+        event.preventDefault();
+        let index = Array.from(calendarCells).indexOf(currentFocus);
+
+        if (index !== -1) {
+            let newIndex = index;
+
+            if (event.key === "ArrowUp") {
+                if (index < 7) {
+                    // Move to the last day of the previous month
+                    this.prevMonth();
+                    calendarCells = Array.from(calendarGrids).flatMap(grid =>
+                        Array.from(grid.querySelectorAll(".calendar-grid-item"))
+                    );
+                    newIndex = calendarCells.length - 1; // Focus on the last day of the previous month
+                } else {
+                    newIndex = Math.max(index - 7, 0);
+                }
+            } else if (event.key === "ArrowDown") {
+                if (index >= calendarCells.length - 7) {
+                    // Move to the first day of the next month
+                    this.nextMonth();
+                    calendarCells = Array.from(calendarGrids).flatMap(grid =>
+                        Array.from(grid.querySelectorAll(".calendar-grid-item"))
+                    );
+                    newIndex = 0; // Focus on the first day of the next month
+                } else {
+                    newIndex = Math.min(index + 7, calendarCells.length - 1);
+                }
+            } else if (event.key === "ArrowLeft") {
+                newIndex = index - 1;
+                if (newIndex < 0) {
+                    // Move to the last day of the previous month
+                    this.prevMonth();
+                    calendarCells = Array.from(calendarGrids).flatMap(grid =>
+                        Array.from(grid.querySelectorAll(".calendar-grid-item"))
+                    );
+                    newIndex = calendarCells.length - 1; // Focus on the last day of the previous month
+                }
+            } else if (event.key === "ArrowRight") {
+                newIndex = index + 1;
+                if (newIndex >= calendarCells.length) {
+                    // Move to the first day of the next month
+                    this.nextMonth();
+                    calendarCells = Array.from(calendarGrids).flatMap(grid =>
+                        Array.from(grid.querySelectorAll(".calendar-grid-item"))
+                    );
+                    newIndex = 0; // Focus on the first day of the next month
+                }
+            }
+
+            const targetCell = calendarCells[newIndex];
+            if (targetCell) {
+                const targetSpan = targetCell.querySelector("span");
+
+                const previousFocusedSpan = this.shadowRoot.querySelector(
+                    ".calendar-grid-item span.focus"
+                );
+                if (previousFocusedSpan) {
+                    previousFocusedSpan.classList.remove("focus");
+                }
+
+                targetSpan.classList.add("focus");
+                targetCell.focus();
+                this.updateActiveDateElements();
+            }
+        }
+    } else if (event.key === "Enter" || event.key === " ") {
+        this.handleEnterKeyPress(event);
     }
+}
 
-    if (this.currentEndMonth < 0) {
-      this.currentEndMonth = 11;
-      this.currentEndYear--;
-    }
 
-    this.requestUpdate();
-  }
-
-  nextMonth() {
-    this.currentStartMonth++;
-    this.currentEndMonth++;
-
-    if (this.currentStartMonth > 11) {
-      this.currentStartMonth = 0;
-      this.currentStartYear++;
-    }
-
-    if (this.currentEndMonth > 11) {
-      this.currentEndMonth = 0;
-      this.currentEndYear++;
-    }
-
-    this.requestUpdate();
-  }
-
-  handleDayClick(date) {
+  selectDate(date) {
     if (!this.startDate || (this.startDate && this.endDate)) {
       this.startDate = date;
-      this.endDate = null; // Clear end date if it's already selected
+      this.endDate = null;
     } else {
       if (date >= this.startDate) {
         this.endDate = date;
+      } else {
+        // Handle case where user selects an end date earlier than the start date
+        this.startDate = date;
+        this.endDate = null;
       }
     }
+
+    this.updateSelectedRange();
     this.requestUpdate();
+  }
+
+  updateSelectedRange() {
+    const allItems = this.shadowRoot.querySelectorAll(".calendar-grid-item");
+
+    allItems.forEach((item) => {
+      const itemDate = new Date(item.getAttribute("data-date"));
+      const spanElement = item.querySelector("span");
+
+      // Clear previous range classes
+      item.classList.remove("selected-range", "selected-range-active");
+      spanElement.classList.remove("focus");
+
+      if (this.isDateInRange(itemDate)) {
+        item.classList.add("selected-range");
+      }
+
+      if (this.isStartOrEndDate(itemDate)) {
+        item.classList.add("selected-range-active");
+      }
+
+      if (this.isFocusedDate(itemDate)) {
+        spanElement.classList.add("focus");
+      }
+    });
+  }
+
+  handleDayClick(date) {
+    this.selectDate(date);
+  }
+
+  handleEnterKeyPress(event) {
+    const focusedElement = this.shadowRoot.querySelector(
+      ".calendar-grid-item span.focus"
+    );
+    if (focusedElement) {
+      const date = new Date(
+        focusedElement.parentElement.getAttribute("data-date")
+      );
+      this.selectDate(date);
+    }
+  }
+
+  updateActiveDateElements() {
+    const focusedSpan = this.shadowRoot.querySelector(
+      ".calendar-grid-item span.focus"
+    );
+
+    if (focusedSpan) {
+      const dataDate = focusedSpan.parentElement.getAttribute("data-date");
+      const date = new Date(`${dataDate}T00:00:00Z`);
+
+      const selectedDateYmd =
+        this.shadowRoot.querySelector(".selected-date-Ymd");
+      const selectedFormatted = this.shadowRoot.querySelector(
+        ".selected-formatted-date"
+      );
+      const selectedIsoFormatted = this.shadowRoot.querySelector(
+        ".selected-formatted-iso"
+      );
+
+      // Check if the elements exist before trying to update their content
+      if (selectedDateYmd) {
+        selectedDateYmd.textContent = this.formatDateYmd(date);
+      }
+      if (selectedFormatted) {
+        selectedFormatted.textContent = this.formatDateLong(date);
+      }
+      if (selectedIsoFormatted) {
+        selectedIsoFormatted.textContent = this.formatISODate(date);
+      }
+    }
   }
 
   isToday(date) {
@@ -349,16 +512,98 @@ class DateRangePicker extends LitElement {
     );
   }
 
-  handleCalendarFocus() {
-    // Handle calendar focus event if necessary
+  isFocusedDate(date) {
+    return this.focusedDate && date.getTime() === this.focusedDate.getTime();
   }
 
-  handleCalendarFocusOut() {
-    // Handle calendar focus out event if necessary
+  handleCalendarFocus() {
+    const firstCalendarGridItem = this.shadowRoot.querySelector(
+      ".calendar-grid-item span"
+    );
+    if (firstCalendarGridItem) {
+      firstCalendarGridItem.classList.add("focus");
+      firstCalendarGridItem.parentElement.focus(); // Move focus to the parent element
+      this.shadowRoot.querySelector(".calendar-wrapper").classList.add("focus");
+    }
+  }
+
+  handleCalendarFocusOut(event) {
+    const calendarDiv = this.shadowRoot.querySelector(".calendar-wrapper");
+    // If the newly focused element is not within the calendar, remove all focus classes
+    if (
+      !this.shadowRoot
+        .querySelector(".calendar-wrapper")
+        .contains(event.relatedTarget)
+    ) {
+      const allFocusedItems = this.shadowRoot.querySelectorAll(
+        ".calendar-grid-item span.focus"
+      );
+      allFocusedItems.forEach((span) => {
+        span.classList.remove("focus");
+        calendarDiv.classList.remove("focus");
+      });
+    }
+  }
+
+  prevMonth() {
+    this.currentStartMonth--;
+    this.currentEndMonth--;
+
+    if (this.currentStartMonth < 0) {
+      this.currentStartMonth = 11;
+      this.currentStartYear--;
+    }
+
+    if (this.currentEndMonth < 0) {
+      this.currentEndMonth = 11;
+      this.currentEndYear--;
+    }
+
+    this.focusedDate.setUTCMonth(this.currentStartMonth);
+    this.focusedDate.setUTCFullYear(this.currentStartYear);
+    this.requestUpdate();
+  }
+
+  nextMonth() {
+    this.currentStartMonth++;
+    this.currentEndMonth++;
+
+    if (this.currentStartMonth > 11) {
+      this.currentStartMonth = 0;
+      this.currentStartYear++;
+    }
+
+    if (this.currentEndMonth > 11) {
+      this.currentEndMonth = 0;
+      this.currentEndYear++;
+    }
+
+    this.focusedDate.setUTCMonth(this.currentStartMonth);
+    this.focusedDate.setUTCFullYear(this.currentStartYear);
+    this.requestUpdate();
   }
 
   getFirstDayOfMonth(year, month) {
     return new Date(Date.UTC(year, month, 1)).getUTCDay();
+  }
+
+  formatDateYmd(date) {
+    return date.toISOString().split("T")[0];
+  }
+
+  formatDateLong(date) {
+    const options = {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      timeZone: "UTC",
+    };
+    return date.toLocaleDateString("en-US", options);
+  }
+
+  formatISODate(date) {
+    return date.toISOString();
   }
 }
 
