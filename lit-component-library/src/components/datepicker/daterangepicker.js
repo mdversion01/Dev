@@ -53,10 +53,6 @@ class DateRangePicker extends LitElement {
         border-radius: 0 !important;
       }
 
-      .empty-cell {
-        visibility: hidden;
-      }
-
       .focus {
         outline: none;
         background-color: #e0e0e0;
@@ -331,69 +327,208 @@ class DateRangePicker extends LitElement {
       if (index !== -1) {
         let newIndex = index;
 
+        const focusedDate = new Date(currentFocus.getAttribute("data-date"));
+
         if (event.key === "ArrowUp") {
           if (index < 7) {
-            // If in the first row, move to the previous month
-            this.prevMonth();
-            calendarCells = Array.from(calendarGrids).flatMap((grid) =>
-              Array.from(grid.querySelectorAll(".calendar-grid-item"))
-            );
-            newIndex = calendarCells.length - (7 - index);
+            this.prevMonth(focusedDate).then(() => {
+              this.focusOnDate(focusedDate, "currentStartMonth");
+            });
           } else {
-            newIndex = Math.max(index - 7, 0); // Move up within the current month
+            newIndex = Math.max(index - 7, 0);
+            this.moveFocusToNewIndex(calendarCells, newIndex);
           }
         } else if (event.key === "ArrowDown") {
           if (index >= calendarCells.length - 7) {
-            // If in the last row, move to the next month
-            this.nextMonth();
-            calendarCells = Array.from(calendarGrids).flatMap((grid) =>
-              Array.from(grid.querySelectorAll(".calendar-grid-item"))
-            );
-            newIndex = index % 7;
+            this.nextMonth(focusedDate).then(() => {
+              this.focusOnDate(focusedDate, "currentEndMonth");
+            });
           } else {
-            newIndex = Math.min(index + 7, calendarCells.length - 1); // Move down within the current month
+            newIndex = Math.min(index + 7, calendarCells.length - 1);
+            this.moveFocusToNewIndex(calendarCells, newIndex);
           }
         } else if (event.key === "ArrowLeft") {
-          newIndex = index - 1;
-          if (newIndex < 0) {
-            this.prevMonth();
-            calendarCells = Array.from(calendarGrids).flatMap((grid) =>
-              Array.from(grid.querySelectorAll(".calendar-grid-item"))
-            );
-            newIndex = calendarCells.length - 1; // Move focus to the last day of the previous month
+          if (index === 0) {
+            this.prevMonth(focusedDate).then(() => {
+              this.focusOnDate(focusedDate, "currentStartMonth");
+            });
+          } else {
+            newIndex = Math.max(index - 1, 0);
+            this.moveFocusToNewIndex(calendarCells, newIndex);
           }
         } else if (event.key === "ArrowRight") {
-          newIndex = index + 1;
-          if (newIndex >= calendarCells.length) {
-            this.nextMonth();
-            calendarCells = Array.from(calendarGrids).flatMap((grid) =>
-              Array.from(grid.querySelectorAll(".calendar-grid-item"))
-            );
-            newIndex = 0; // Move focus to the first day of the next month
+          if (index === calendarCells.length - 1) {
+            this.nextMonth(focusedDate).then(() => {
+              this.focusOnDate(focusedDate, "currentEndMonth");
+            });
+          } else {
+            newIndex = Math.min(index + 1, calendarCells.length - 1);
+            this.moveFocusToNewIndex(calendarCells, newIndex);
           }
-        }
-
-        const targetCell = calendarCells[newIndex];
-        if (targetCell) {
-          const targetSpan = targetCell.querySelector("span");
-
-          const previousFocusedSpan = this.shadowRoot.querySelector(
-            ".calendar-grid-item span.focus"
-          );
-          if (previousFocusedSpan) {
-            previousFocusedSpan.classList.remove("focus");
-          }
-
-          targetSpan.classList.add("focus");
-
-          targetSpan.focus(); // Explicitly set focus on the span
-          targetCell.focus(); // Also, focus the targetCell to ensure correct keyboard navigation
-
-          this.updateActiveDateElements();
         }
       }
     } else if (event.key === "Enter" || event.key === " ") {
       this.handleEnterKeyPress(event);
+    }
+  }
+
+  moveFocusToNewIndex(calendarCells, newIndex) {
+    // Clear any previous focus
+    this.clearAllFocus();
+
+    const targetCell = calendarCells[newIndex];
+    if (targetCell) {
+      const targetSpan = targetCell.querySelector("span");
+      targetSpan.classList.add("focus");
+      targetCell.focus();
+      this.updateActiveDateElements();
+    }
+  }
+
+  prevMonth(focusedDate) {
+    // Clear any previous focus
+    this.clearAllFocus();
+
+    this.currentStartMonth--;
+    this.currentEndMonth--;
+
+    if (this.currentStartMonth < 0) {
+      this.currentStartMonth = 11;
+      this.currentStartYear--;
+    }
+
+    if (this.currentEndMonth < 0) {
+      this.currentEndMonth = 11;
+      this.currentEndYear--;
+    }
+
+    this.focusedDate.setUTCMonth(this.currentStartMonth);
+    this.focusedDate.setUTCFullYear(this.currentStartYear);
+    return Promise.resolve(this.requestUpdate());
+  }
+
+  nextMonth(focusedDate) {
+    // Clear any previous focus
+    this.clearAllFocus();
+
+    this.currentStartMonth++;
+    this.currentEndMonth++;
+
+    if (this.currentStartMonth > 11) {
+      this.currentStartMonth = 0;
+      this.currentStartYear++;
+    }
+
+    if (this.currentEndMonth > 11) {
+      this.currentEndMonth = 0;
+      this.currentEndYear++;
+    }
+
+    this.focusedDate.setUTCMonth(this.currentStartMonth);
+    this.focusedDate.setUTCFullYear(this.currentStartYear);
+    return Promise.resolve(this.requestUpdate());
+  }
+
+  focusOnDate(focusedDate, monthType) {
+    // Clear any previous focus
+    this.clearAllFocus();
+
+    const calendarGrid = this.shadowRoot.querySelectorAll(
+      monthType === "currentStartMonth"
+        ? ".dp-calendar:first-child .calendar-grid"
+        : ".dp-calendar:last-child .calendar-grid"
+    );
+
+    const dayToFocus = new Date(
+      focusedDate.getFullYear(),
+      focusedDate.getMonth(),
+      focusedDate.getDate()
+    );
+    const targetSpan = calendarGrid[0].querySelector(
+      `[data-date="${dayToFocus.toISOString().split("T")[0]}"] span`
+    );
+
+    if (targetSpan) {
+      targetSpan.classList.add("focus");
+      targetSpan.parentElement.focus(); // Move focus to the parent element
+    } else {
+      // If the same date doesn't exist in the new month, focus on the last day of the month
+      const lastDay = new Date(
+        focusedDate.getFullYear(),
+        focusedDate.getMonth() + 1,
+        0
+      );
+      const lastDaySpan = calendarGrid[0].querySelector(
+        `[data-date="${lastDay.toISOString().split("T")[0]}"] span`
+      );
+      if (lastDaySpan) {
+        lastDaySpan.classList.add("focus");
+        lastDaySpan.parentElement.focus();
+      }
+    }
+  }
+
+  clearAllFocus() {
+    const focusedElements = this.shadowRoot.querySelectorAll(
+      ".calendar-grid-item span.focus"
+    );
+    focusedElements.forEach((el) => el.classList.remove("focus"));
+  }
+
+  focusOnFirstOrLastDay(dayClass, monthType) {
+    const calendarGrid = this.shadowRoot.querySelectorAll(
+      monthType === "currentStartMonth"
+        ? ".dp-calendar:first-child .calendar-grid"
+        : ".dp-calendar:last-child .calendar-grid"
+    );
+    const daySpan = calendarGrid[0].querySelector(`.${dayClass}`);
+
+    if (daySpan) {
+      this.clearAllFocus();
+      daySpan.classList.add("focus");
+      daySpan.parentElement.focus(); // Move focus to the parent element
+    }
+  }
+
+  handleDayClick(date) {
+    this.selectDate(date);
+  }
+
+  handleEnterKeyPress(event) {
+    const focusedElement = this.shadowRoot.querySelector(
+      ".calendar-grid-item span.focus"
+    );
+    if (focusedElement) {
+      const date = new Date(
+        focusedElement.parentElement.getAttribute("data-date")
+      );
+      this.selectDate(date);
+    }
+  }
+
+  handleCalendarFocus() {
+    this.clearAllFocus();
+
+    const firstCalendarGridItem = this.shadowRoot.querySelector(
+      ".calendar-grid-item span"
+    );
+    if (firstCalendarGridItem) {
+      firstCalendarGridItem.classList.add("focus");
+      firstCalendarGridItem.parentElement.focus(); // Move focus to the parent element
+      this.shadowRoot.querySelector(".calendar-wrapper").classList.add("focus");
+    }
+  }
+
+  handleCalendarFocusOut(event) {
+    const calendarDiv = this.shadowRoot.querySelector(".calendar-wrapper");
+    // If the newly focused element is not within the calendar, remove all focus classes
+    if (
+      !this.shadowRoot
+        .querySelector(".calendar-wrapper")
+        .contains(event.relatedTarget)
+    ) {
+      this.clearAllFocus();
+      calendarDiv.classList.remove("focus");
     }
   }
 
@@ -428,32 +563,45 @@ class DateRangePicker extends LitElement {
 
       if (this.isDateInRange(itemDate)) {
         item.classList.add("selected-range");
+        spanElement.classList.remove("btn-outline-light");
       }
 
       if (this.isStartOrEndDate(itemDate)) {
         item.classList.add("selected-range-active");
-      }
-
-      if (this.isFocusedDate(itemDate)) {
-        spanElement.classList.add("focus");
+        spanElement.classList.remove("btn-outline-light");
       }
     });
   }
 
-  handleDayClick(date) {
-    this.selectDate(date);
+  isToday(date) {
+    const today = new Date();
+    return (
+      date.getUTCFullYear() === today.getUTCFullYear() &&
+      date.getUTCMonth() === today.getUTCMonth() &&
+      date.getUTCDate() === today.getUTCDate()
+    );
   }
 
-  handleEnterKeyPress(event) {
-    const focusedElement = this.shadowRoot.querySelector(
-      ".calendar-grid-item span.focus"
+  isDateInRange(date) {
+    // Ensuring the date is within the range, inclusive of start and end dates
+    return (
+      this.startDate &&
+      this.endDate &&
+      date >= this.startDate &&
+      date <= this.endDate
     );
-    if (focusedElement) {
-      const date = new Date(
-        focusedElement.parentElement.getAttribute("data-date")
-      );
-      this.selectDate(date);
-    }
+  }
+
+  isStartOrEndDate(date) {
+    // Check if the date is either the start date or the end date
+    return (
+      (this.startDate && date.getTime() === this.startDate.getTime()) ||
+      (this.endDate && date.getTime() === this.endDate.getTime())
+    );
+  }
+
+  isFocusedDate(date) {
+    return this.focusedDate && date.getTime() === this.focusedDate.getTime();
   }
 
   updateActiveDateElements() {
@@ -474,7 +622,6 @@ class DateRangePicker extends LitElement {
         ".selected-formatted-iso"
       );
 
-      // Check if the elements exist before trying to update their content
       if (selectedDateYmd) {
         selectedDateYmd.textContent = this.formatDateYmd(date);
       }
@@ -485,102 +632,6 @@ class DateRangePicker extends LitElement {
         selectedIsoFormatted.textContent = this.formatISODate(date);
       }
     }
-  }
-
-  isToday(date) {
-    const today = new Date();
-    return (
-      date.getUTCFullYear() === today.getUTCFullYear() &&
-      date.getUTCMonth() === today.getUTCMonth() &&
-      date.getUTCDate() === today.getUTCDate()
-    );
-  }
-
-  isDateInRange(date) {
-    return (
-      this.startDate &&
-      this.endDate &&
-      date >= this.startDate &&
-      date <= this.endDate
-    );
-  }
-
-  isStartOrEndDate(date) {
-    return (
-      (this.startDate && date.getTime() === this.startDate.getTime()) ||
-      (this.endDate && date.getTime() === this.endDate.getTime())
-    );
-  }
-
-  isFocusedDate(date) {
-    return this.focusedDate && date.getTime() === this.focusedDate.getTime();
-  }
-
-  handleCalendarFocus() {
-    const firstCalendarGridItem = this.shadowRoot.querySelector(
-      ".calendar-grid-item span"
-    );
-    if (firstCalendarGridItem) {
-      firstCalendarGridItem.classList.add("focus");
-      firstCalendarGridItem.parentElement.focus(); // Move focus to the parent element
-      this.shadowRoot.querySelector(".calendar-wrapper").classList.add("focus");
-    }
-  }
-
-  handleCalendarFocusOut(event) {
-    const calendarDiv = this.shadowRoot.querySelector(".calendar-wrapper");
-    // If the newly focused element is not within the calendar, remove all focus classes
-    if (
-      !this.shadowRoot
-        .querySelector(".calendar-wrapper")
-        .contains(event.relatedTarget)
-    ) {
-      const allFocusedItems = this.shadowRoot.querySelectorAll(
-        ".calendar-grid-item span.focus"
-      );
-      allFocusedItems.forEach((span) => {
-        span.classList.remove("focus");
-        calendarDiv.classList.remove("focus");
-      });
-    }
-  }
-
-  prevMonth() {
-    this.currentStartMonth--;
-    this.currentEndMonth--;
-
-    if (this.currentStartMonth < 0) {
-      this.currentStartMonth = 11;
-      this.currentStartYear--;
-    }
-
-    if (this.currentEndMonth < 0) {
-      this.currentEndMonth = 11;
-      this.currentEndYear--;
-    }
-
-    this.focusedDate.setUTCMonth(this.currentStartMonth);
-    this.focusedDate.setUTCFullYear(this.currentStartYear);
-    this.requestUpdate();
-  }
-
-  nextMonth() {
-    this.currentStartMonth++;
-    this.currentEndMonth++;
-
-    if (this.currentStartMonth > 11) {
-      this.currentStartMonth = 0;
-      this.currentStartYear++;
-    }
-
-    if (this.currentEndMonth > 11) {
-      this.currentEndMonth = 0;
-      this.currentEndYear++;
-    }
-
-    this.focusedDate.setUTCMonth(this.currentStartMonth);
-    this.focusedDate.setUTCFullYear(this.currentStartYear);
-    this.requestUpdate();
   }
 
   getFirstDayOfMonth(year, month) {

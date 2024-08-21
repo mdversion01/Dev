@@ -45,7 +45,7 @@ export const datepickerStyles = css`
   }
 
   .text-muted {
-    color: #6c757d !important;
+    color: #c1c1c1 !important;
   }
   .text-center {
     text-align: center !important;
@@ -294,7 +294,7 @@ export const datepickerStyles = css`
   .calendar:focus {
     outline: none !important;
     background-color: transparent !important;
-    box-shadow: rgb(38 143 255 / 25%) 0px 0px 0px 0.2rem !important;
+    box-shadow: none !important;
   }
 
   .calendar-inner {
@@ -407,7 +407,8 @@ export const datepickerStyles = css`
     color: rgb(255, 255, 255) !important;
   }
 
-  .selected-range .focus {
+  .selected-range .focus,
+  .selected-range span:focus {
     border-radius: 0 !important;
     box-shadow: none !important;
     background-color: rgba(38, 143, 255, 0.25) !important;
@@ -416,4 +417,13 @@ export const datepickerStyles = css`
   .selected-range .rounded-circle {
     border-radius: 0 !important;
   }
+
+  .calendar-grid-item.selected-range span:hover,
+  .calendar-grid-item.selected-range-active span:hover {
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    background-color: rgba(38, 143, 255, 0.25) !important;
+    cursor: pointer;
+  }
+
 `;
