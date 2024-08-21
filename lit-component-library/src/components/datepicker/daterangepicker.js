@@ -332,7 +332,7 @@ class DateRangePicker extends LitElement {
         if (event.key === "ArrowUp") {
           if (index < 7) {
             this.prevMonth(focusedDate).then(() => {
-              this.focusOnDate(focusedDate, "currentStartMonth");
+              this.focusOnDate(focusedDate, "currentStartMonth", -1);  // +1 for previous month
             });
           } else {
             newIndex = Math.max(index - 7, 0);
@@ -341,7 +341,7 @@ class DateRangePicker extends LitElement {
         } else if (event.key === "ArrowDown") {
           if (index >= calendarCells.length - 7) {
             this.nextMonth(focusedDate).then(() => {
-              this.focusOnDate(focusedDate, "currentEndMonth");
+              this.focusOnDate(focusedDate, "currentEndMonth", 1);  // +1 for next month
             });
           } else {
             newIndex = Math.min(index + 7, calendarCells.length - 1);
@@ -350,7 +350,7 @@ class DateRangePicker extends LitElement {
         } else if (event.key === "ArrowLeft") {
           if (index === 0) {
             this.prevMonth(focusedDate).then(() => {
-              this.focusOnDate(focusedDate, "currentStartMonth");
+              this.focusOnDate(focusedDate, "currentStartMonth", -1);  // +1 for previous month
             });
           } else {
             newIndex = Math.max(index - 1, 0);
@@ -359,7 +359,7 @@ class DateRangePicker extends LitElement {
         } else if (event.key === "ArrowRight") {
           if (index === calendarCells.length - 1) {
             this.nextMonth(focusedDate).then(() => {
-              this.focusOnDate(focusedDate, "currentEndMonth");
+              this.focusOnDate(focusedDate, "currentEndMonth", 1);  // +1 for next month
             });
           } else {
             newIndex = Math.min(index + 1, calendarCells.length - 1);
@@ -429,9 +429,22 @@ class DateRangePicker extends LitElement {
     return Promise.resolve(this.requestUpdate());
   }
 
-  focusOnDate(focusedDate, monthType) {
+  focusOnDate(focusedDate, monthType, direction = 0) {
     // Clear any previous focus
     this.clearAllFocus();
+
+    // Adjust the date based on the navigation direction
+    const adjustedDate = new Date(focusedDate);
+    const day = adjustedDate.getDate();
+
+    if (direction === 1) {
+      // Navigate to the next month
+      const lastDayOfMonth = new Date(adjustedDate.getFullYear(), adjustedDate.getMonth() + 1, 0).getDate();
+      adjustedDate.setDate(day === lastDayOfMonth ? 1 : day);
+    } else if (direction === -1) {
+      // Navigate to the previous month
+      adjustedDate.setDate(day === 1 ? new Date(adjustedDate.getFullYear(), adjustedDate.getMonth(), 0).getDate() : day);
+    }
 
     const calendarGrid = this.shadowRoot.querySelectorAll(
       monthType === "currentStartMonth"
@@ -439,13 +452,8 @@ class DateRangePicker extends LitElement {
         : ".dp-calendar:last-child .calendar-grid"
     );
 
-    const dayToFocus = new Date(
-      focusedDate.getFullYear(),
-      focusedDate.getMonth(),
-      focusedDate.getDate()
-    );
     const targetSpan = calendarGrid[0].querySelector(
-      `[data-date="${dayToFocus.toISOString().split("T")[0]}"] span`
+      `[data-date="${adjustedDate.toISOString().split("T")[0]}"] span`
     );
 
     if (targetSpan) {
@@ -453,13 +461,8 @@ class DateRangePicker extends LitElement {
       targetSpan.parentElement.focus(); // Move focus to the parent element
     } else {
       // If the same date doesn't exist in the new month, focus on the last day of the month
-      const lastDay = new Date(
-        focusedDate.getFullYear(),
-        focusedDate.getMonth() + 1,
-        0
-      );
       const lastDaySpan = calendarGrid[0].querySelector(
-        `[data-date="${lastDay.toISOString().split("T")[0]}"] span`
+        `[data-date="${new Date(adjustedDate.getFullYear(), adjustedDate.getMonth() + 1, 0).toISOString().split("T")[0]}"] span`
       );
       if (lastDaySpan) {
         lastDaySpan.classList.add("focus");
