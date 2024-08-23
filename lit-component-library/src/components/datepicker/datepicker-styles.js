@@ -369,7 +369,7 @@ export const datepickerStyles = css`
 
   .range-picker-wrapper {
     padding: 5px;
-    max-width: 564px;
+    /* max-width: 558px; */
     border: 1px solid #ccc;
     border-radius: 5px;
     background-color: #f5f5f5;

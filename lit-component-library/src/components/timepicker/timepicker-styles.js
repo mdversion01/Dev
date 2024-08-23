@@ -260,7 +260,7 @@ export const timepickerStyles = css`
     cursor: pointer;
     color: rgb(149, 149, 149);
     margin-left: 0px;
-    min-height: 38px;
+    min-height: 28px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -275,7 +275,7 @@ export const timepickerStyles = css`
   }
 
   .plumage .pl-input-group-sm .clear-button {
-    min-height: 30px;
+    min-height: 28px;
   }
 
   .plumage .time-icon-btn {
@@ -291,6 +291,7 @@ export const timepickerStyles = css`
     display: flex;
     font-size: 1rem !important;
     justify-content: center;
+    min-height: 28px;
   }
 
   .plumage .time-icon-btn:hover,
