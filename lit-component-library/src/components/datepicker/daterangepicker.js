@@ -62,6 +62,11 @@ class DateRangePicker extends LitElement {
         background-color: #e0e0e0;
         border-radius: 50%;
       }
+
+      .selected-range {
+        font-size: 1rem;
+        margin-top: 0.5rem;
+      }
     `,
   ];
 
@@ -124,21 +129,23 @@ class DateRangePicker extends LitElement {
             </button>
           </div>
           <button @click=${this.nextMonth} class="range-picker-nav-btn btn-outline-secondary" aria-label="Next Month">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg>
           </button>
         </div>
         <div class="range-picker">
           <div class="calendar-wrapper" role="application" aria-label="Calendars">
-            ${this.renderCalendar(
-              this.currentStartMonth,
-              this.currentStartYear
-            )}
+            ${this.renderCalendar(this.currentStartMonth, this.currentStartYear)}
             ${this.renderCalendar(this.currentEndMonth, this.currentEndYear)}
           </div>
           <footer class="border-top small text-center">
             <div class="small" aria-live="polite">Use cursor keys to navigate calendar dates</div>
           </footer>
         </div>
+      </div>
+
+      <div class="context" role="region" aria-labelledby="context-title">
+        <div id="context-title">Context:</div>
+        <div class="start-end-ranges"></div>
       </div>
     `;
   }
@@ -211,7 +218,6 @@ class DateRangePicker extends LitElement {
       console.error("Error in resetCalendar:", error);
     });
   }
-  
 
   renderCalendar(month0b, year) {
     const calendarGridId = `calendar-grid-${month0b}-${year}`;
@@ -654,6 +660,15 @@ class DateRangePicker extends LitElement {
         spanElement.classList.remove("btn-outline-light");
       }
     });
+
+    this.updateDisplayedDateRange();
+  }
+
+  updateDisplayedDateRange() {
+    const selectedRangeElement = this.shadowRoot.querySelector(".start-end-ranges");
+    const formattedStartDate = this.startDate ? this.formatDateYmd(this.startDate) : "N/A";
+    const formattedEndDate = this.endDate ? this.formatDateYmd(this.endDate) : "N/A";
+    selectedRangeElement.textContent = `${formattedStartDate} to ${formattedEndDate}`;
   }
 
   isToday(date) {
