@@ -13,13 +13,13 @@ class DateRangePicker extends LitElement {
         margin-right: 5px;
         border: none;
         border-right: 1px solid #ccc;
-        border-radius: 0;
+        border-radius: 0.25rem 0 0 0;
       }
       .dp-calendar:last-child {
         margin-left: 5px;
         border: none;
         border-left: 1px solid #ccc;
-        border-radius: 0;
+        border-radius: 0 0.25rem 0 0;
       }
 
       .border-top {
@@ -50,7 +50,7 @@ class DateRangePicker extends LitElement {
         outline: none !important;
         background-color: transparent !important;
         box-shadow: rgb(38 143 255 / 25%) 0px 0px 0px 0.2rem !important;
-        border-radius: 0 !important;
+        border-radius: 0.25rem 0.25rem 0 0 !important;
       }
 
       .focus {
@@ -81,20 +81,66 @@ class DateRangePicker extends LitElement {
     return html`
       <div class="range-picker-wrapper">
         <div class="range-picker-nav mb-1">
-          <button @click=${this.prevMonth} class="range-picker-nav-btn">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
-              <path
-                d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c-12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"
-              />
-            </svg>
-          </button>
-          <button @click=${this.nextMonth} class="range-picker-nav-btn">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
-              <path
-                d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"
-              />
-            </svg>
-          </button>
+          <div>
+            <button @click=${this.prevMonth} class="range-picker-nav-btn">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+                <path
+                  d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c-12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"
+                />
+              </svg>
+            </button>
+          </div>
+          <div>
+            <!-- Month Selector -->
+            <select>
+              <option value="0">January</option>
+              <option value="1">February</option>
+              <option value="2">March</option>
+              <option value="3">April</option>
+              <option value="4">May</option>
+              <option value="5">June</option>
+              <option value="6">July</option>
+              <option value="7">August</option>
+              <option value="8">September</option>
+              <option value="9">October</option>
+              <option value="10">November</option>
+              <option value="11">December</option>
+            </select>
+
+            <!-- Year Selector -->
+            <select>
+              <option value="2014">2014</option>
+              <option value="2015">2015</option>
+              <option value="2016">2016</option>
+              <option value="2017">2017</option>
+              <option value="2018">2018</option>
+              <option value="2019">2019</option>
+              <option value="2020">2020</option>
+              <option value="2021">2021</option>
+              <option value="2022">2022</option>
+              <option value="2023">2023</option>
+              <option value="2024">2024</option>
+              <option value="2025">2025</option>
+              <option value="2026">2026</option>
+              <option value="2027">2027</option>
+              <option value="2028">2028</option>
+              <option value="2029">2029</option>
+              <option value="2030">2030</option>
+              <option value="2031">2031</option>
+              <option value="2032">2032</option>
+              <option value="2033">2033</option>
+              <option value="2034">2034</option>
+            </select>
+          </div>
+          <div>
+            <button @click=${this.nextMonth} class="range-picker-nav-btn">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+                <path
+                  d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"
+                />
+              </svg>
+            </button>
+          </div>
         </div>
         <div class="range-picker">
           <div class="calendar-wrapper">
@@ -238,16 +284,23 @@ class DateRangePicker extends LitElement {
           itemClasses.push(
             month0b === this.currentStartMonth ? "csm-last-day" : "cem-last-day"
           );
-          console.log("Last day class applied to:", day); // Logging to verify class application
         }
 
         if (this.isToday(currentDate)) {
           dayNumberSpanClasses.push("current-day");
         }
-        if (this.isDateInRange(currentDate)) {
+        if (
+          this.isDateInRange(currentDate) &&
+          !itemClasses.includes("previous-month-day") &&
+          !itemClasses.includes("next-month-day")
+        ) {
           itemClasses.push("selected-range");
         }
-        if (this.isStartOrEndDate(currentDate)) {
+        if (
+          this.isStartOrEndDate(currentDate) &&
+          !itemClasses.includes("previous-month-day") &&
+          !itemClasses.includes("next-month-day")
+        ) {
           itemClasses.push("selected-range-active");
         }
         if (this.isFocusedDate(currentDate)) {
@@ -330,23 +383,21 @@ class DateRangePicker extends LitElement {
         )
       )
     );
-  
+
     if (event.key.startsWith("Arrow")) {
       event.preventDefault();
       let index = Array.from(calendarCells).indexOf(currentFocus);
-  
+
       if (index !== -1) {
         let newIndex = index;
-  
-        
-        
+
         if (event.key === "ArrowUp") {
-            newIndex = Math.max(index - 7, 0);
-            this.moveFocusToNewIndex(calendarCells, newIndex);
-          } else if (event.key === "ArrowDown") {
-            newIndex = Math.min(index + 7, calendarCells.length - 1);
-            this.moveFocusToNewIndex(calendarCells, newIndex);
-          } else if (event.key === "ArrowLeft") {
+          newIndex = Math.max(index - 7, 0);
+          this.moveFocusToNewIndex(calendarCells, newIndex);
+        } else if (event.key === "ArrowDown") {
+          newIndex = Math.min(index + 7, calendarCells.length - 1);
+          this.moveFocusToNewIndex(calendarCells, newIndex);
+        } else if (event.key === "ArrowLeft") {
           if (currentFocus.classList.contains("csm-first-day")) {
             this.prevMonth().then(() => {
               const lastDayElement = this.shadowRoot.querySelector(
@@ -384,7 +435,6 @@ class DateRangePicker extends LitElement {
       this.handleEnterKeyPress(event);
     }
   }
-  
 
   moveFocusToNewIndex(calendarCells, newIndex) {
     // Clear any previous focus
@@ -410,26 +460,25 @@ class DateRangePicker extends LitElement {
     // Decrement the month values
     this.currentStartMonth--;
     this.currentEndMonth--;
-  
+
     // Handle year rollover
     if (this.currentStartMonth < 0) {
       this.currentStartMonth = 11;
       this.currentStartYear--;
     }
-  
+
     if (this.currentEndMonth < 0) {
       this.currentEndMonth = 11;
       this.currentEndYear--;
     }
-  
+
     // Update the focusedDate to reflect the new month
     this.focusedDate.setUTCMonth(this.currentStartMonth);
     this.focusedDate.setUTCFullYear(this.currentStartYear);
-  
+
     // Return the promise from requestUpdate()
     return Promise.resolve(this.requestUpdate());
   }
-  
 
   nextMonth(focusedDate) {
     this.currentStartMonth++;
@@ -517,12 +566,13 @@ class DateRangePicker extends LitElement {
   handleCalendarFocus() {
     this.clearAllFocus();
 
-    const firstCalendarGridItem = this.shadowRoot.querySelector(
-      ".calendar-grid-item span"
+    const firstDayElement = this.shadowRoot.querySelector(
+      ".dp-calendar:first-child .calendar-grid-item.csm-first-day span"
     );
-    if (firstCalendarGridItem) {
-      firstCalendarGridItem.classList.add("focus");
-      firstCalendarGridItem.parentElement.focus(); // Move focus to the parent element
+
+    if (firstDayElement) {
+      firstDayElement.classList.add("focus");
+      firstDayElement.parentElement.focus(); // Move focus to the parent element
       this.shadowRoot.querySelector(".calendar-wrapper").classList.add("focus");
     }
   }
@@ -569,12 +619,21 @@ class DateRangePicker extends LitElement {
       item.classList.remove("selected-range", "selected-range-active");
       spanElement.classList.remove("focus");
 
-      if (this.isDateInRange(itemDate)) {
+      // Apply range classes only to dates within the range that are not in previous or next months
+      if (
+        this.isDateInRange(itemDate) &&
+        !item.classList.contains("previous-month-day") &&
+        !item.classList.contains("next-month-day")
+      ) {
         item.classList.add("selected-range");
         spanElement.classList.remove("btn-outline-light");
       }
 
-      if (this.isStartOrEndDate(itemDate)) {
+      if (
+        this.isStartOrEndDate(itemDate) &&
+        !item.classList.contains("previous-month-day") &&
+        !item.classList.contains("next-month-day")
+      ) {
         item.classList.add("selected-range-active");
         spanElement.classList.remove("btn-outline-light");
       }

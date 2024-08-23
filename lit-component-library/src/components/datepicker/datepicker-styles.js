@@ -317,7 +317,7 @@ export const datepickerStyles = css`
   .calendar-grid-day {
     text-align: center;
     padding: 0 5px;
-    border-bottom: 1px solid #ccc;
+    /* border-bottom: 1px solid #ccc; */
   }
   .calendar-grid-item {
     text-align: center;
