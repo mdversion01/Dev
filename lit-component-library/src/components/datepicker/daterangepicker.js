@@ -2,10 +2,14 @@ import { LitElement, html, css } from "lit";
 import Fontawesome from "lit-fontawesome";
 import { datepickerStyles } from "./datepicker-styles.js";
 import { utilitiesStyles } from "../utilities-styles.js";
+import { formStyles } from "../form-styles.js";
+import { selectFieldStyles } from "../select-field/select-field-styles.js";
 
 class DateRangePicker extends LitElement {
   static styles = [
     Fontawesome,
+    formStyles,
+    selectFieldStyles,
     utilitiesStyles,
     datepickerStyles,
     css`
@@ -65,9 +69,9 @@ class DateRangePicker extends LitElement {
     super();
     this.startDate = null;
     this.endDate = null;
-    this.currentStartMonth = new Date().getMonth(); // Default to the current month
+    this.currentStartMonth = new Date().getMonth();
     this.currentStartYear = new Date().getFullYear();
-    this.currentEndMonth = this.currentStartMonth + 1; // Default to the next month
+    this.currentEndMonth = this.currentStartMonth + 1;
     this.currentEndYear = this.currentStartYear;
     this.focusedDate = new Date();
 
@@ -77,86 +81,137 @@ class DateRangePicker extends LitElement {
     }
   }
 
+  firstUpdated() {
+    this.syncMonthYearSelectors();
+  }
+
   render() {
     return html`
-      <div class="range-picker-wrapper">
-        <div class="range-picker-nav mb-1">
-          <div>
-            <button @click=${this.prevMonth} class="range-picker-nav-btn">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
-                <path
-                  d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c-12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"
-                />
-              </svg>
-            </button>
-          </div>
-          <div>
-            <!-- Month Selector -->
-            <select>
-              <option value="0">January</option>
-              <option value="1">February</option>
-              <option value="2">March</option>
-              <option value="3">April</option>
-              <option value="4">May</option>
-              <option value="5">June</option>
-              <option value="6">July</option>
-              <option value="7">August</option>
-              <option value="8">September</option>
-              <option value="9">October</option>
-              <option value="10">November</option>
-              <option value="11">December</option>
+      <div class="range-picker-wrapper" role="region" aria-label="Date Range Picker">
+        <div class="range-picker-nav mb-1" aria-label="Navigation Controls">
+          <button @click=${this.prevMonth} class="range-picker-nav-btn btn-outline-secondary" aria-label="Previous Month">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+              <path
+                d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c-12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"
+              />
+            </svg>
+          </button>
+          <div class="selectors">
+            <label id="monthSelectField" class="sr-only visually-hidden" for="months">Select Month</label>
+            <select id="months" class="form-select form-control select-sm months" aria-label="Select Month" aria-labelledby="monthSelectField" role="listbox" @change=${this.handleMonthChange}>
+              ${Array.from({ length: 12 }, (_, i) => {
+                const month = new Date(0, i).toLocaleString("en-US", {
+                  month: "long",
+                });
+                return html`<option value="${i}">${month}</option>`;
+              })}
             </select>
 
-            <!-- Year Selector -->
-            <select>
-              <option value="2014">2014</option>
-              <option value="2015">2015</option>
-              <option value="2016">2016</option>
-              <option value="2017">2017</option>
-              <option value="2018">2018</option>
-              <option value="2019">2019</option>
-              <option value="2020">2020</option>
-              <option value="2021">2021</option>
-              <option value="2022">2022</option>
-              <option value="2023">2023</option>
-              <option value="2024">2024</option>
-              <option value="2025">2025</option>
-              <option value="2026">2026</option>
-              <option value="2027">2027</option>
-              <option value="2028">2028</option>
-              <option value="2029">2029</option>
-              <option value="2030">2030</option>
-              <option value="2031">2031</option>
-              <option value="2032">2032</option>
-              <option value="2033">2033</option>
-              <option value="2034">2034</option>
+            <label id="yearSelectField" class="sr-only visually-hidden" for="year">Select Year</label>
+            <select id="year" class="form-select form-control select-sm years" aria-label="Select Year" aria-labelledby="yearSelectField" role="listbox" @change=${this.handleYearChange}>
+              ${Array.from({ length: 21 }, (_, i) => {
+                const year = i + 2014;
+                return html`<option value="${year}">${year}</option>`;
+              })}
             </select>
-          </div>
-          <div>
-            <button @click=${this.nextMonth} class="range-picker-nav-btn">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+
+            <button @click=${this.resetCalendar} class="reset-btn" aria-label="Reset Calendar">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                 <path
-                  d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"
+                  d="M48.5 224L40 224c-13.3 0-24-10.7-24-24L16 72c0-9.7 5.8-18.5 14.8-22.2s19.3-1.7 26.2 5.2L98.6 96.6c87.6-86.5 228.7-86.2 315.8 1c87.5 87.5 87.5 229.3 0 316.8s-229.3 87.5-316.8 0c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0c62.5 62.5 163.8 62.5 226.3 0s62.5-163.8 0-226.3c-62.2-62.2-162.7-62.5-225.3-1L185 183c6.9 6.9 8.9 17.2 5.2 26.2s-12.5 14.8-22.2 14.8L48.5 224z"
                 />
               </svg>
             </button>
           </div>
+          <button @click=${this.nextMonth} class="range-picker-nav-btn btn-outline-secondary" aria-label="Next Month">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg>
+          </button>
         </div>
         <div class="range-picker">
-          <div class="calendar-wrapper">
+          <div class="calendar-wrapper" role="application" aria-label="Calendars">
             ${this.renderCalendar(
               this.currentStartMonth,
               this.currentStartYear
             )}
             ${this.renderCalendar(this.currentEndMonth, this.currentEndYear)}
           </div>
-          <footer class="border-top small text-muted text-center bg-light">
-            <div class="small">Use cursor keys to navigate calendar dates</div>
+          <footer class="border-top small text-center">
+            <div class="small" aria-live="polite">Use cursor keys to navigate calendar dates</div>
           </footer>
         </div>
       </div>
     `;
   }
+
+  handleMonthChange(event) {
+    const selectedMonth = parseInt(event.target.value, 10);
+    this.currentStartMonth = selectedMonth;
+    this.currentEndMonth = (selectedMonth + 1) % 12;
+  
+    if (this.currentStartMonth === 11) {
+      this.currentEndYear = this.currentStartYear + 1;
+    } else {
+      this.currentEndYear = this.currentStartYear;
+    }
+  
+    Promise.resolve(this.requestUpdate()).then(() => {
+      this.syncMonthYearSelectors();
+    }).catch(error => {
+      console.error("Error in handleMonthChange:", error);
+    });
+  }
+
+  handleYearChange(event) {
+    const selectedYear = parseInt(event.target.value, 10);
+    this.currentStartYear = selectedYear;
+
+    if (this.currentStartMonth === 11) {
+      this.currentEndYear = selectedYear + 1;
+    } else {
+      this.currentEndYear = selectedYear;
+    }
+
+    Promise.resolve(this.requestUpdate()).then(() => {
+        this.syncMonthYearSelectors();
+      }).catch(error => {
+        console.error("Error in handleMonthChange:", error);
+      });
+  }
+
+  syncMonthYearSelectors() {
+    const monthSelect = this.shadowRoot.getElementById("months");
+    const yearSelect = this.shadowRoot.getElementById("year");
+
+    if (monthSelect) {
+      monthSelect.value = this.currentStartMonth.toString();
+    }
+    if (yearSelect) {
+      yearSelect.value = this.currentStartYear.toString();
+    }
+  }
+
+  resetCalendar() {
+    const now = new Date();
+    this.startDate = null;
+    this.endDate = null;
+    this.currentStartMonth = now.getMonth();
+    this.currentStartYear = now.getFullYear();
+    this.currentEndMonth = this.currentStartMonth + 1;
+    this.currentEndYear = this.currentStartYear;
+  
+    if (this.currentEndMonth > 11) {
+      this.currentEndMonth = 0;
+      this.currentEndYear++;
+    }
+  
+    Promise.resolve(this.requestUpdate()).then(() => {
+      this.updateSelectedRange();
+      this.syncMonthYearSelectors();
+    }).catch((error) => {
+      console.error("Error in resetCalendar:", error);
+    });
+  }
+  
 
   renderCalendar(month0b, year) {
     const calendarGridId = `calendar-grid-${month0b}-${year}`;
@@ -171,8 +226,8 @@ class DateRangePicker extends LitElement {
         aria-labelledby="calendar-grid-caption"
         aria-roledescription="Calendar"
         class="calendar dp-calendar form-control h-auto text-center pt-2"
-        role="region"
-        aria-label="Calendar"
+        role="grid"
+        aria-label="Calendar for ${formattedMonthYear}"
         tabindex="0"
         @keydown=${this.handleKeyDown}
         @focus=${this.handleCalendarFocus}
@@ -186,51 +241,16 @@ class DateRangePicker extends LitElement {
         >
           ${formattedMonthYear}
         </div>
-        <div aria-hidden="true" class="calendar-grid-weekdays">
-          <small
-            aria-label="Sunday"
-            title="Sunday"
-            class="calendar-grid-day col"
-            >Sun</small
-          >
-          <small
-            aria-label="Monday"
-            title="Monday"
-            class="calendar-grid-day col"
-            >Mon</small
-          >
-          <small
-            aria-label="Tuesday"
-            title="Tuesday"
-            class="calendar-grid-day col"
-            >Tue</small
-          >
-          <small
-            aria-label="Wednesday"
-            title="Wednesday"
-            class="calendar-grid-day col"
-            >Wed</small
-          >
-          <small
-            aria-label="Thursday"
-            title="Thursday"
-            class="calendar-grid-day col"
-            >Thu</small
-          >
-          <small
-            aria-label="Friday"
-            title="Friday"
-            class="calendar-grid-day col"
-            >Fri</small
-          >
-          <small
-            aria-label="Saturday"
-            title="Saturday"
-            class="calendar-grid-day col"
-            >Sat</small
-          >
+        <div aria-hidden="true" class="calendar-grid-weekdays" role="row">
+          <small aria-label="Sunday" title="Sunday" class="calendar-grid-day col" role="columnheader">Sun</small>
+          <small aria-label="Monday" title="Monday" class="calendar-grid-day col" role="columnheader">Mon</small>
+          <small aria-label="Tuesday" title="Tuesday" class="calendar-grid-day col" role="columnheader">Tue</small>
+          <small aria-label="Wednesday" title="Wednesday" class="calendar-grid-day col" role="columnheader">Wed</small>
+          <small aria-label="Thursday" title="Thursday" class="calendar-grid-day col" role="columnheader">Thu</small>
+          <small aria-label="Friday" title="Friday" class="calendar-grid-day col" role="columnheader">Fri</small>
+          <small aria-label="Saturday" title="Saturday" class="calendar-grid-day col" role="columnheader">Sat</small>
         </div>
-        <div class="calendar-grid" id="${calendarGridId}">
+        <div class="calendar-grid" id="${calendarGridId}" role="grid">
           ${this.renderCalendarDays(month0b, year)}
         </div>
       </div>
@@ -339,7 +359,7 @@ class DateRangePicker extends LitElement {
         cell: html`
           <div
             class="${itemClasses.join(" ")}"
-            role="button"
+            role="gridcell"
             tabindex="-1"
             data-month="${dataMonth}"
             data-year="${dataYear}"
@@ -437,7 +457,6 @@ class DateRangePicker extends LitElement {
   }
 
   moveFocusToNewIndex(calendarCells, newIndex) {
-    // Clear any previous focus
     this.clearAllFocus();
 
     const targetCell = calendarCells[newIndex];
@@ -446,7 +465,7 @@ class DateRangePicker extends LitElement {
         targetCell.classList.contains("previous-month-day") ||
         targetCell.classList.contains("next-month-day")
       ) {
-        return; // Skip focus if the day belongs to the previous or next month
+        return;
       }
 
       const targetSpan = targetCell.querySelector("span");
@@ -457,11 +476,9 @@ class DateRangePicker extends LitElement {
   }
 
   prevMonth() {
-    // Decrement the month values
     this.currentStartMonth--;
     this.currentEndMonth--;
 
-    // Handle year rollover
     if (this.currentStartMonth < 0) {
       this.currentStartMonth = 11;
       this.currentStartYear--;
@@ -472,15 +489,15 @@ class DateRangePicker extends LitElement {
       this.currentEndYear--;
     }
 
-    // Update the focusedDate to reflect the new month
     this.focusedDate.setUTCMonth(this.currentStartMonth);
     this.focusedDate.setUTCFullYear(this.currentStartYear);
 
-    // Return the promise from requestUpdate()
-    return Promise.resolve(this.requestUpdate());
+    return Promise.resolve(this.requestUpdate()).then(() => {
+      this.syncMonthYearSelectors();
+    });
   }
 
-  nextMonth(focusedDate) {
+  nextMonth() {
     this.currentStartMonth++;
     this.currentEndMonth++;
 
@@ -496,7 +513,10 @@ class DateRangePicker extends LitElement {
 
     this.focusedDate.setUTCMonth(this.currentStartMonth);
     this.focusedDate.setUTCFullYear(this.currentStartYear);
-    return Promise.resolve(this.requestUpdate());
+
+    return Promise.resolve(this.requestUpdate()).then(() => {
+      this.syncMonthYearSelectors();
+    });
   }
 
   focusOnFirstDay(monthType) {
@@ -572,14 +592,13 @@ class DateRangePicker extends LitElement {
 
     if (firstDayElement) {
       firstDayElement.classList.add("focus");
-      firstDayElement.parentElement.focus(); // Move focus to the parent element
+      firstDayElement.parentElement.focus();
       this.shadowRoot.querySelector(".calendar-wrapper").classList.add("focus");
     }
   }
 
   handleCalendarFocusOut(event) {
     const calendarDiv = this.shadowRoot.querySelector(".calendar-wrapper");
-    // If the newly focused element is not within the calendar, remove all focus classes
     if (
       !this.shadowRoot
         .querySelector(".calendar-wrapper")
@@ -598,7 +617,6 @@ class DateRangePicker extends LitElement {
       if (date >= this.startDate) {
         this.endDate = date;
       } else {
-        // Handle case where user selects an end date earlier than the start date
         this.startDate = date;
         this.endDate = null;
       }
@@ -615,11 +633,9 @@ class DateRangePicker extends LitElement {
       const itemDate = new Date(item.getAttribute("data-date"));
       const spanElement = item.querySelector("span");
 
-      // Clear previous range classes
       item.classList.remove("selected-range", "selected-range-active");
       spanElement.classList.remove("focus");
 
-      // Apply range classes only to dates within the range that are not in previous or next months
       if (
         this.isDateInRange(itemDate) &&
         !item.classList.contains("previous-month-day") &&
@@ -650,7 +666,6 @@ class DateRangePicker extends LitElement {
   }
 
   isDateInRange(date) {
-    // Ensuring the date is within the range, inclusive of start and end dates
     return (
       this.startDate &&
       this.endDate &&
@@ -660,7 +675,6 @@ class DateRangePicker extends LitElement {
   }
 
   isStartOrEndDate(date) {
-    // Check if the date is either the start date or the end date
     return (
       (this.startDate && date.getTime() === this.startDate.getTime()) ||
       (this.endDate && date.getTime() === this.endDate.getTime())

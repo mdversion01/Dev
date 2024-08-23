@@ -54,7 +54,7 @@ export const datepickerStyles = css`
   .form-control {
     display: block;
     width: 100%;
-    height: calc(1.5em + 0.75rem + 2px);
+    /* height: calc(1.5em + 0.75rem + 2px); */
     padding: 0.375rem 0.75rem;
     font-size: 1rem;
     font-weight: 400;
@@ -207,6 +207,7 @@ export const datepickerStyles = css`
   .btn-outline-secondary:hover,
   .btn-outline-secondary:focus {
     color: #fff;
+    fill: #fff;
     background-color: #6c757d;
     border-color: #6c757d;
   }
@@ -223,53 +224,51 @@ export const datepickerStyles = css`
     cursor: pointer;
   }
 
-  /* .btn-outline-secondary {
-    color: #6c757d;
-    border-color: #6c757d;
+  .selectors {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin: 0 10px;
+    justify-content: center;
+    padding: 0 10px;
   }
 
-  .btn-outline-secondary:hover {
-    color: #fff;
-    background-color: #6c757d;
-    border-color: #6c757d;
+  .selectors .form-control {
+    padding: 0.375rem 0.25rem;
   }
 
-  .btn-primary.focus,
-  .btn-primary:focus {
-    color: #fff;
-    background-color: #0069d9;
-    border-color: #0062cc;
-    box-shadow: 0 0 0 0.2rem rgb(38 143 255 / 50%);
+  .selectors .months {
+    width: 150px;
+    margin-right: 10px;
   }
 
-  .btn-primary:not(:disabled):not(.disabled).active,
-  .btn-primary:not(:disabled):not(.disabled):active,
-  .show > .btn-primary.dropdown-toggle {
-    color: #fff;
-    background-color: #0062cc;
-    border-color: #005cbf;
+  .selectors .years {
+    width: 100px;
+    margin-right: 10px;
   }
 
-  .btn.focus,
-  .btn:focus,
-  .form-control.focus {
-    outline: none !important;
-    box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.25) !important;
+  .selectors .reset-btn {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgb(255, 255, 255);
+    border: 1px solid rgb(204, 204, 204);
+    border-radius: 3px;
   }
 
-  .btn-outline-light.focus,
-  .btn-outline-light:focus {
-    outline: none !important;
-    background-color: #e2e6ea !important;
-    box-shadow: 0 0 0 0.2rem rgba(224, 224, 224, 0.2) !important;
+  .selectors .reset-btn:hover,
+  .selectors .reset-btn:focus {
+    color: rgb(255, 255, 255);
+    fill: rgb(255, 255, 255);
+    background-color: rgb(108, 117, 125);
+    border-color: rgb(108, 117, 125);
   }
 
-  [type="button"]:not(:disabled),
-  [type="reset"]:not(:disabled),
-  [type="submit"]:not(:disabled),
-  button:not(:disabled) {
-    cursor: pointer;
-  } */
+  .selectors .reset-btn svg {
+    fill: inherit;
+  }
 
   .flex-fill {
     -ms-flex: 1 1 auto !important;
@@ -369,7 +368,16 @@ export const datepickerStyles = css`
   }
 
   .range-picker-wrapper {
-    max-width: 554px;
+    padding: 5px;
+    max-width: 564px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f5f5f5;
+  }
+
+  .range-picker-wrapper footer {
+    color: #6a6a6a;
+    background-color: rgb(204, 204, 204);
   }
 
   .range-picker-nav {
@@ -380,13 +388,19 @@ export const datepickerStyles = css`
   }
 
   .range-picker-nav-btn {
-    background: transparent;
-    border: none;
-    width: 24px;
+    background: rgb(255, 255, 255);
+    border: 1px solid rgb(204, 204, 204);
+    border-radius: 3px;
+    width: 38px;
     height: 24px;
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+
+  .range-picker-nav-btn svg {
+    fill: inherit;
+    height: 18px;
   }
 
   .range-picker {
@@ -425,5 +439,4 @@ export const datepickerStyles = css`
     background-color: rgba(38, 143, 255, 0.25) !important;
     cursor: pointer;
   }
-
 `;

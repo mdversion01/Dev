@@ -3,7 +3,15 @@ import Fontawesome from "lit-fontawesome";
 import { datepickerStyles } from "./datepicker-styles.js";
 
 class DatePicker extends LitElement {
-  static styles = [Fontawesome, datepickerStyles, css``];
+  static styles = [
+    Fontawesome,
+    datepickerStyles,
+    css`
+      footer .small {
+        font-size: 80%;
+      }
+    `,
+  ];
 
   constructor() {
     super();
@@ -217,9 +225,12 @@ class DatePicker extends LitElement {
   handleCalendarFocusOut(event) {
     const calendarDiv = this.shadowRoot.querySelector(".calendar");
     // If the newly focused element is not within the calendar, remove all focus classes
-    if (!this.shadowRoot.querySelector(".calendar").contains(event.relatedTarget)) {
-
-      const allFocusedItems = this.shadowRoot.querySelectorAll(".calendar-grid-item span.focus");
+    if (
+      !this.shadowRoot.querySelector(".calendar").contains(event.relatedTarget)
+    ) {
+      const allFocusedItems = this.shadowRoot.querySelectorAll(
+        ".calendar-grid-item span.focus"
+      );
       allFocusedItems.forEach((span) => {
         span.classList.remove("focus");
         calendarDiv.classList.remove("focus");
