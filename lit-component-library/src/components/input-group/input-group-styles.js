@@ -68,17 +68,17 @@ export const inputGroupStyles = css`
     height: 100%;
   }
 
-  .pl-input-group > .pl-input-group-append:not(:last-child) > .pl-input-group-text {
+  .pl-input-group
+    > .pl-input-group-append:not(:last-child)
+    > .pl-input-group-text {
     border-left: none;
     border-right: none;
   }
 
-  .pl-input-group
-    > .pl-input-group-append:last-child > .pl-input-group-btn {
+  .pl-input-group > .pl-input-group-append:last-child > .pl-input-group-btn {
     border-right: 1px solid #ced4da;
     border-left: none;
   }
-
 
   .pl-input-group
     > .pl-input-group-append:last-child
@@ -126,6 +126,7 @@ export const inputGroupStyles = css`
     flex: 1 1 auto;
     width: 1%;
     margin-bottom: 0;
+    padding: 0.375rem 0.75rem;
   }
 
   .pl-input-group > .custom-select:not(:first-child),

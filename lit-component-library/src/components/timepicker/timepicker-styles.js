@@ -256,6 +256,14 @@ export const timepickerStyles = css`
     border-width: 0;
   }
 
+  .plumage .time-dropdown {
+    top: 29px
+  }
+
+  .plumage .time-dropdown.lg {
+    top: 44px
+  }
+
   .plumage .clear-button {
     background-color: transparent;
     border-width: initial;
