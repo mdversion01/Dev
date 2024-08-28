@@ -1,4 +1,5 @@
 import { LitElement, html, css } from "lit";
+import { ifDefined } from "lit/directives/if-defined.js";
 import Fontawesome from "lit-fontawesome";
 import { buttonStyles } from "../button/button-styles";
 import { plInputFieldStyles } from "../pl-input-field/pl-input-field-styles";
@@ -31,6 +32,7 @@ class PlTimePicker extends LitElement {
       hideTimepickerBtn: { type: Boolean },
       isValid: { type: Boolean },
       hideSeconds: { type: Boolean },
+      inputWidth: { type: Number },
     };
   }
 
@@ -48,6 +50,7 @@ class PlTimePicker extends LitElement {
     this.hideTimepickerBtn = false;
     this.isValid = true;
     this.hideSeconds = false;
+    this.inputWidth = "";
   }
 
   connectedCallback() {
@@ -523,9 +526,10 @@ class PlTimePicker extends LitElement {
   }
 
   _hideWarningMessage() {
-    const warningMessageElement =
-      this.shadowRoot.querySelector(".warning-message");
-    warningMessageElement.classList.add("hidden");
+    const warningMessageElement = this.shadowRoot.querySelector(".warning-message");
+    if (warningMessageElement) {
+      warningMessageElement.classList.add("hidden");
+    }
   }
 
   _setDefaultTime() {
@@ -599,6 +603,7 @@ class PlTimePicker extends LitElement {
                 id="${this.id}"
                 name="${this.inputName}"
                 class="form-control time-input"
+                style=${ifDefined(this.inputWidth ? `width: ${this.inputWidth}px` : undefined)}
                 placeholder="Enter Time"
                 value="${this._getFormattedTime()}"
                 role="textbox"

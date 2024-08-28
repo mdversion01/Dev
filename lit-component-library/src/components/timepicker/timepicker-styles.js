@@ -6,6 +6,10 @@ export const timepickerStyles = css`
     visibility: hidden !important;
   }
 
+  .wd-40 {
+    width: 40px;
+  }
+
   .time-picker {
     position: relative;
   }
@@ -176,6 +180,7 @@ export const timepickerStyles = css`
 
   .pl-input-group-sm .clear-button {
     min-height: 30px;
+    font-size: 0.875rem;
   }
 
   .time-picker .pl-input-group-append button:last-child {
@@ -276,6 +281,8 @@ export const timepickerStyles = css`
 
   .plumage .pl-input-group-sm .clear-button {
     min-height: 28px;
+    font-size: 0.875rem;
+    padding: 0.1rem 0.3rem 0 0 !important;
   }
 
   .plumage .time-icon-btn {
@@ -289,7 +296,7 @@ export const timepickerStyles = css`
     border-radius: 50% !important;
     cursor: pointer;
     display: flex;
-    font-size: 1rem !important;
+    font-size: 1rem;
     justify-content: center;
     min-height: 28px;
   }
@@ -309,6 +316,12 @@ export const timepickerStyles = css`
   .plumage .time-picker .pl-input-group-append button:last-child {
     border: none;
     border-radius: 0 !important;
+  }
+
+  .plumage .pl-input-group-sm .time-icon {
+    min-height: 28px;
+    font-size: 0.875rem !important;
+    padding: 0.1rem 0 0 0.3rem !important;
   }
 
   /* Underline the input */

@@ -19,6 +19,7 @@ class TimepickerManager extends LitElement {
       isValid: { type: Boolean },
       hideSeconds: { type: Boolean },
       usePlTimePicker: { type: Boolean },
+      inputWidth: { type: Number },
     };
   }
 
@@ -37,6 +38,7 @@ class TimepickerManager extends LitElement {
     this.isValid = true;
     this.hideSeconds = false;
     this.usePlTimePicker = false; // Default to TimePicker
+    this.inputWidth = 100;
   }
 
   render() {
@@ -55,6 +57,7 @@ class TimepickerManager extends LitElement {
         .hideTimepickerBtn="${this.hideTimepickerBtn}"
         .isValid="${this.isValid}"
         .hideSeconds="${this.hideSeconds}"
+        .inputWidth="${this.inputWidth}"
         ></pl-time-picker>`
         : html`<time-picker
         .ariaLabel="${this.ariaLabel}"
@@ -69,6 +72,7 @@ class TimepickerManager extends LitElement {
         .hideTimepickerBtn="${this.hideTimepickerBtn}"
         .isValid="${this.isValid}"
         .hideSeconds="${this.hideSeconds}"
+        .inputWidth="${this.inputWidth}"
         ></time-picker>`}
     `;
   }

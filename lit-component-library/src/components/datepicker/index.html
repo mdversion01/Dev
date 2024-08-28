@@ -1,55 +1,107 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Datepicker</title>
-  <link
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Datepicker</title>
+    <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
       integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N"
       crossorigin="anonymous"
     />
-  <link rel="stylesheet" href="../../../node_modules/lit-fontawesome/css/font.css">
-  <link rel="stylesheet" href="../../styles/components.css">
-</head>
-<body>
-  <div class="title">Datepicker Component</div>
+    <link
+      rel="stylesheet"
+      href="../../../node_modules/lit-fontawesome/css/font.css"
+    />
+    <link rel="stylesheet" href="../../styles/components.css" />
+  </head>
+  <body>
+    <div class="title">Datepicker Component</div>
 
-  <div class="demo-wrapper">
-    <div class="main">
-      <section>
-        <section class="section">
-          <section class="display-box" id="db-1">
-            <section class="display-box-demo">
-              <date-picker></date-picker>
+    <div class="demo-wrapper">
+      <div class="main">
+        <section>
+          <section class="section">
+            <section class="display-box" id="db-1">
+              <section class="display-box-demo">
+                <date-picker></date-picker>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">Date picker calendar</div>
+                <div class=""></div>
+              </section>
             </section>
-            <section class="display-box-meta markdown">
-              <div class="display-box-title">Basic Usage</div>
-              <div class="display-box-description">Basic Divider</div>
-              <div class=""></div>
+          </section>
+
+          <section class="section">
+            <section class="display-box" id="db-1">
+              <section
+                class="display-box-demo"
+                style="display: flex; justify-content: center"
+              >
+                <date-range-picker id="dateRangePicker"></date-range-picker>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">Date Range Picker</div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
+
+          <section class="section">
+            <section class="display-box" id="db-1">
+              <section
+                class="display-box-demo"
+                style="display: flex; justify-content: center"
+              >
+                <date-range-time-picker
+                  id="dateRangeTimePicker"
+                ></date-range-time-picker>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">
+                  Date Range Time Picker
+                </div>
+                <div class=""></div>
+              </section>
             </section>
           </section>
         </section>
-
-        <section class="section">
-          <section class="display-box" id="db-1">
-            <section class="display-box-demo" style="display: flex;
-            justify-content: center;">
-              <date-range-picker></date-range-picker>
-            </section>
-            <section class="display-box-meta markdown">
-              <div class="display-box-title">Basic Usage</div>
-              <div class="display-box-description">Basic Divider</div>
-              <div class=""></div>
-            </section>
-          </section>
-        </section>
-      </section>
+      </div>
     </div>
-  </div>
 
-  <script type="module" src="./datepicker.js"></script>
-  <script type="module" src="./daterangepicker.js"></script>
-</body>
+    <script type="module" src="./datepicker.js"></script>
+    <script type="module" src="./daterangepicker.js"></script>
+    <script type="module" src="./dateRangeTimePicker.js"></script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const datePicker = document.getElementById("dateRangePicker");
+if (datePicker) {
+    console.log("DateRangePicker element found and listener attached"); // Log to confirm listener attachment
+    datePicker.addEventListener("date-range-updated", function (event) {
+        console.log("Event detail received in listener:", event.detail); // Second log
+    });
+} else {
+    console.log("DateRangePicker element not found"); // Log if the element is not found
+}
+
+
+    const dateTimePicker = document.getElementById("dateRangeTimePicker");
+    if (dateTimePicker) {
+        console.log("DateRangeTimePicker element found and listener attached"); // Log to confirm listener attachment
+        dateTimePicker.addEventListener("date-time-updated", function (event) {
+            console.log("Event detail received in listener:", event.detail); // Second log
+        });
+    } else {
+        console.log("DateRangeTimePicker element not found"); // Log if the element is not found
+    }
+});
+
+    </script>
+  </body>
 </html>

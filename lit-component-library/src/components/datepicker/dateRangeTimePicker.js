@@ -5,7 +5,7 @@ import { utilitiesStyles } from "../utilities-styles.js";
 import { formStyles } from "../form-styles.js";
 import { selectFieldStyles } from "../select-field/select-field-styles.js";
 
-class DateRangePicker extends LitElement {
+class DateRangeTimePicker extends LitElement {
   static styles = [
     Fontawesome,
     formStyles,
@@ -62,6 +62,19 @@ class DateRangePicker extends LitElement {
         border-radius: 50%;
       }
 
+      .time-input {
+        width: 50px;
+        padding: 0.05rem 0.4rem;
+        font-size: 0.833rem;
+        margin: 0 5px 0 0;
+      }
+
+      .am-pm-toggle {
+        width: 28px;
+        cursor: pointer;
+        margin-left: 5px;
+      }
+
       .to-spacing {
         padding: 0 0.5rem;
       }
@@ -72,6 +85,9 @@ class DateRangePicker extends LitElement {
     return {
       ariaLabel: { type: String },
       dateFormat: { type: String },
+      startTime: { type: String },
+      endTime: { type: String },
+      is24HourFormat: { type: Boolean },
       okButtonDisabled: { type: Boolean },
     };
   }
@@ -79,20 +95,45 @@ class DateRangePicker extends LitElement {
   constructor() {
     super();
     this.ariaLabel = "";
-    this.dateFormat = "Y-m-d"; // Other options: "M-d-Y", "Long Date", "ISO"
+    this.dateFormat = "Y-m-d";
     this.startDate = null;
     this.endDate = null;
+    this.is24HourFormat = true; // Default to 24-hour format
+    this._setDefaultTimes();
     this.currentStartMonth = new Date().getMonth();
     this.currentStartYear = new Date().getFullYear();
     this.currentEndMonth = this.currentStartMonth + 1;
     this.currentEndYear = this.currentStartYear;
     this.focusedDate = new Date();
-    this.okButtonDisabled = true; // Initialize the OK button as disabled
+    this.okButtonDisabled = true;
 
     if (this.currentEndMonth > 11) {
       this.currentEndMonth = 0;
       this.currentEndYear += 1;
     }
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+    this.is24HourFormat = this.getAttribute("is24HourFormat") !== "false";
+    this._setDefaultTimes();
+  }
+
+  updated(changedProperties) {
+    if (changedProperties.has("is24HourFormat")) {
+      this._setDefaultTimes(); // Set default times when format changes
+    }
+  }
+
+  _setDefaultTimes() {
+    if (this.is24HourFormat) {
+      this.startTime = "00:00";
+      this.endTime = "00:00";
+    } else {
+      this.startTime = "12:00";
+      this.endTime = "12:00";
+    }
+    this.requestUpdate();
   }
 
   firstUpdated() {
@@ -202,19 +243,58 @@ class DateRangePicker extends LitElement {
               Use cursor keys to navigate calendar dates
             </div>
           </footer>
+
           <div
             class="date-range-display"
             role="region"
             aria-labelledby="date-ranges"
-            tabindex="0"
           >
             <div id="date-ranges" class="date-ranges">
-              <span class="start-end-ranges"
-                ><span class="start-date">N/A</span>
-                <span class="to-spacing">to</span
-                ><span class="end-date">N/A</span></span
-              >
+              <span class="start-end-ranges">
+                <span class="start-date">N/A</span>
+                <input
+                  type="text"
+                  class="form-control time-input"
+                  .value="${this.is24HourFormat
+                    ? this.startTime
+                    : this.formatTime(this.startTime)}"
+                  @input="${this._handleTimeInputChange}"
+                  data-type="start"
+                  maxlength="5"
+                />
+                ${!this.is24HourFormat
+                  ? html`<span
+                      class="am-pm-toggle"
+                      @click="${this._toggleAmPm}"
+                      data-type="start"
+                    >
+                      ${this._getAmPm(this.startTime)}
+                    </span>`
+                  : ""}
+                <span class="to-spacing">to</span>
+                <span class="end-date">N/A</span>
+                <input
+                  type="text"
+                  class="form-control time-input"
+                  .value="${this.is24HourFormat
+                    ? this.endTime
+                    : this.formatTime(this.endTime)}"
+                  @input="${this._handleTimeInputChange}"
+                  data-type="end"
+                  maxlength="5"
+                />
+                ${!this.is24HourFormat
+                  ? html`<span
+                      class="am-pm-toggle"
+                      @click="${this._toggleAmPm}"
+                      data-type="end"
+                    >
+                      ${this._getAmPm(this.endTime)}
+                    </span>`
+                  : ""}
+              </span>
             </div>
+            <div class="warning-message hide" aria-live="assertive"></div>
           </div>
         </div>
 
@@ -231,7 +311,205 @@ class DateRangePicker extends LitElement {
     `;
   }
 
+  _handleTimeInputChange(event) {
+    const inputType = event.target.dataset.type;
+    let timeValue = event.target.value.replace(/[^0-9]/g, ""); // Clean the input
+
+    // If the input is empty, set the corresponding time to an empty string and return
+    if (timeValue.length === 0) {
+      if (inputType === "start") {
+        this.startTime = "";
+      } else if (inputType === "end") {
+        this.endTime = "";
+      }
+      this._validateTime(); // Validate and show warning if necessary
+      this._updateOkButtonState(); // Update OK button state
+      this.requestUpdate();
+      return;
+    }
+
+    // If the input is less than 3 characters (not a complete time), just update the input field
+    if (timeValue.length < 3) {
+      event.target.value = timeValue;
+      return;
+    }
+
+    // Format the time as hh:mm
+    if (timeValue.length >= 3) {
+      timeValue = `${timeValue.slice(0, 2)}:${timeValue.slice(2, 4)}`;
+    }
+
+    // Ensure we only keep the first 5 characters (hh:mm)
+    timeValue = timeValue.slice(0, 5);
+
+    // Update the time based on the input type
+    if (inputType === "start") {
+      this.startTime = timeValue;
+    } else if (inputType === "end") {
+      this.endTime = timeValue;
+    }
+
+    // Validate the time and display a warning if necessary
+    const timesValid = this._validateTime();
+
+    // Reflect the update in the input field
+    event.target.value = timeValue;
+
+    // Update the OK button state
+    this._updateOkButtonState();
+  }
+
+  _validateTime() {
+    const warningMessageElement =
+      this.shadowRoot.querySelector(".warning-message");
+    warningMessageElement.classList.add("hide"); // Hide by default
+    warningMessageElement.textContent = ""; // Clear previous warnings
+
+    // Check if either startTime or endTime is empty
+    if (!this.startTime || !this.endTime) {
+      warningMessageElement.textContent = "Times cannot be empty.";
+      warningMessageElement.classList.remove("hide");
+      return false;
+    }
+
+    // Validate the start time
+    if (this.startTime && !this._isValidTime(this.startTime)) {
+      warningMessageElement.textContent =
+        "Start time is invalid. Format - HH:MM and values cannot exceed the limits.";
+      warningMessageElement.classList.remove("hide");
+      return false;
+    }
+
+    // Validate the end time
+    if (this.endTime && !this._isValidTime(this.endTime)) {
+      warningMessageElement.textContent =
+        "End time is invalid. Format - HH:MM and values cannot exceed the limits.";
+      warningMessageElement.classList.remove("hide");
+      return false;
+    }
+
+    return true; // Return true if both times are valid
+  }
+
+  _isValidTime(time) {
+    const timePattern24 = /^([01]\d|2[0-3]):([0-5]\d)$/;
+    const timePattern12 = /^(0[1-9]|1[0-2]):([0-5]\d)$/;
+    return this.is24HourFormat
+      ? timePattern24.test(time)
+      : timePattern12.test(time);
+  }
+
+  _getAmPm(time) {
+    const hours = parseInt(time.split(":")[0], 10);
+    return hours >= 12 ? "PM" : "AM";
+  }
+
+  _toggleAmPm(event) {
+    const inputType = event.target.dataset.type;
+    let time = inputType === "start" ? this.startTime : this.endTime;
+
+    // Parse the time without AM/PM
+    let [hours, minutes] = time.split(":");
+
+    // Get the current period (AM/PM)
+    let period = this._getAmPm(time);
+
+    // Toggle AM/PM without modifying the time value itself
+    if (period === "AM") {
+      period = "PM";
+    } else {
+      period = "AM";
+    }
+
+    // Adjust hours only if needed when switching periods
+    if (hours === "12") {
+      // 12:xx AM becomes 00:xx in 24-hour format, 12:xx PM remains the same
+      hours = period === "AM" ? "00" : "12";
+    } else {
+      // Any other hour switches between AM and PM by adjusting 12-hour format
+      if (period === "PM" && hours !== "12") {
+        hours = (parseInt(hours, 10) + 12).toString().padStart(2, "0");
+      } else if (period === "AM" && hours !== "12") {
+        hours = (parseInt(hours, 10) - 12).toString().padStart(2, "0");
+      }
+    }
+
+    // Reconstruct the time without adding "AM" or "PM" to the input field value
+    const updatedTime = `${hours}:${minutes}`;
+
+    // Update the time value
+    if (inputType === "start") {
+      this.startTime = updatedTime;
+    } else if (inputType === "end") {
+      this.endTime = updatedTime;
+    }
+
+    // Request an update to reflect the change
+    this.requestUpdate();
+  }
+
+  _toggleTimeAmPm(time) {
+    let [hours, minutes] = time.split(":");
+    hours = parseInt(hours, 10);
+
+    if (!this.is24HourFormat) {
+      // Convert to 12-hour format toggle logic
+      if (hours === 12) {
+        hours = 0; // 12:xx AM
+      } else if (hours === 0) {
+        hours = 12; // 12:xx PM
+      } else {
+        hours = hours >= 12 ? hours - 12 : hours + 12;
+      }
+    } else {
+      // Toggle between AM/PM in 24-hour format
+      hours = hours >= 12 ? hours - 12 : hours + 12;
+    }
+
+    return `${hours.toString().padStart(2, "0")}:${minutes}`;
+  }
+
+  formatTime(time) {
+    if (!time) return ""; // Return an empty string if time is empty
+
+    let [hours, minutes] = time.split(":");
+    hours = parseInt(hours, 10);
+
+    if (!this.is24HourFormat) {
+      const ampm = this._getAmPm(time);
+      if (hours === 0) {
+        hours = 12;
+      } else if (hours > 12) {
+        hours -= 12;
+      }
+      return `${hours.toString().padStart(2, "0")}:${minutes}`;
+    }
+
+    return `${hours.toString().padStart(2, "0")}:${minutes}`;
+  }
+
+  _convertTo24HourFormat(time, ampm) {
+    let [hours, minutes] = time.split(":");
+    hours = parseInt(hours, 10);
+    if (ampm === "PM" && hours !== 12) {
+      hours += 12;
+    } else if (ampm === "AM" && hours === 12) {
+      hours = 0;
+    }
+    return `${hours.toString().padStart(2, "0")}:${minutes}`;
+  }
+
   _handleOkClick() {
+    const warningMessageElement =
+      this.shadowRoot.querySelector(".warning-message");
+    warningMessageElement.textContent = ""; // Clear previous warnings
+
+    // Check if either startTime or endTime is empty
+    if (!this.startTime || !this.endTime) {
+      warningMessageElement.textContent = "Times cannot be empty.";
+      return; // Prevent further execution
+    }
+
     const formattedStartDate = this.startDate
       ? this.dateFormat === "Y-m-d"
         ? this.formatDateYmd(this.startDate)
@@ -256,11 +534,21 @@ class DateRangePicker extends LitElement {
         : "N/A"
       : "N/A";
 
+    const formattedStartTime = this.is24HourFormat
+      ? this.startTime
+      : `${this.formatTime(this.startTime)} ${this._getAmPm(this.startTime)}`;
+
+    const formattedEndTime = this.is24HourFormat
+      ? this.endTime
+      : `${this.formatTime(this.endTime)} ${this._getAmPm(this.endTime)}`;
+
     this.dispatchEvent(
-      new CustomEvent("date-range-updated", {
+      new CustomEvent("date-time-updated", {
         detail: {
           startDate: formattedStartDate,
           endDate: formattedEndDate,
+          startTime: formattedStartTime,
+          endTime: formattedEndTime,
         },
       })
     );
@@ -321,6 +609,7 @@ class DateRangePicker extends LitElement {
     const now = new Date();
     this.startDate = null;
     this.endDate = null;
+    this._setDefaultTimes();
     this.currentStartMonth = now.getMonth();
     this.currentStartYear = now.getFullYear();
     this.currentEndMonth = this.currentStartMonth + 1;
@@ -576,16 +865,16 @@ class DateRangePicker extends LitElement {
     );
   
     if (event.key === "Tab") {
-        // If the Tab key is pressed
-        if (!event.shiftKey) {
-          // If Tab is pressed (not Shift+Tab), focus on the next focusable element outside the calendar
-          event.preventDefault();
-          this.shadowRoot.querySelector('.date-range-display')?.focus(); // Focus on the first time input
-        } else {
-          // Handle Shift+Tab if needed
-          // You can define behavior if Shift+Tab is pressed and should navigate to the previous focusable element
-        }
-      } else if (event.key.startsWith("Arrow")) {
+      // If the Tab key is pressed
+      if (!event.shiftKey) {
+        // If Tab is pressed (not Shift+Tab), focus on the next focusable element outside the calendar
+        event.preventDefault();
+        this.shadowRoot.querySelector('.time-input')?.focus(); // Focus on the first time input
+      } else {
+        // Handle Shift+Tab if needed
+        // You can define behavior if Shift+Tab is pressed and should navigate to the previous focusable element
+      }
+    } else if (event.key.startsWith("Arrow")) {
       event.preventDefault();
       let index = Array.from(calendarCells).indexOf(currentFocus);
   
@@ -636,6 +925,7 @@ class DateRangePicker extends LitElement {
       this.handleEnterKeyPress(event);
     }
   }
+  
 
   moveFocusToNewIndex(calendarCells, newIndex) {
     this.clearAllFocus();
@@ -804,7 +1094,7 @@ class DateRangePicker extends LitElement {
     }
 
     this.updateSelectedRange();
-    this._updateOkButtonState(); // Update the OK button state
+    this._updateOkButtonState();
     this.requestUpdate();
   }
 
@@ -824,7 +1114,6 @@ class DateRangePicker extends LitElement {
         !item.classList.contains("next-month-day")
       ) {
         item.classList.add("selected-range");
-        spanElement.classList.remove("btn-outline-light");
       }
 
       if (
@@ -833,7 +1122,6 @@ class DateRangePicker extends LitElement {
         !item.classList.contains("next-month-day")
       ) {
         item.classList.add("selected-range-active");
-        spanElement.classList.remove("btn-outline-light");
       }
     });
 
@@ -966,9 +1254,10 @@ class DateRangePicker extends LitElement {
       this.startDate && this.formatDateYmd(this.startDate) !== "N/A";
     const endDateValid =
       this.endDate && this.formatDateYmd(this.endDate) !== "N/A";
+    const timesValid = this._validateTime(); // Check if the times are valid
 
-    this.okButtonDisabled = !(startDateValid && endDateValid); // Disable OK button if any condition is not met
+    this.okButtonDisabled = !(startDateValid && endDateValid && timesValid); // Disable OK button if any condition is not met
   }
 }
 
-customElements.define("date-range-picker", DateRangePicker);
+customElements.define("date-range-time-picker", DateRangeTimePicker);

@@ -20,6 +20,11 @@ export const datepickerStyles = css`
     box-sizing: border-box;
   }
 
+  .hide {
+    display: none !important;
+    visibility: hidden !important;
+  }
+
   .small,
   small {
     font-size: 0.875rem;
@@ -372,12 +377,10 @@ export const datepickerStyles = css`
     /* max-width: 558px; */
     border: 1px solid #ccc;
     border-radius: 5px;
-    background-color: #f5f5f5;
   }
 
   .range-picker-wrapper footer {
-    color: #6a6a6a;
-    background-color: rgb(204, 204, 204);
+    color: #a7a7a7;
   }
 
   .range-picker-nav {
@@ -438,5 +441,72 @@ export const datepickerStyles = css`
     box-shadow: none !important;
     background-color: rgba(38, 143, 255, 0.25) !important;
     cursor: pointer;
+  }
+
+  .date-ranges {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .date-range-display {
+    font-size: 0.8333rem;
+    align-items: center;
+    justify-content: center;
+    padding: 4px;
+    margin: 0;
+    background-color: #fff;
+    border-width: 0 1px 1px 1px;
+    border-style: solid;
+    border-color: #ccc;
+    border-radius: 0 0 5px 5px;
+  }
+
+  .date-range-display:focus-visible {
+    outline: 1px solid #777777;
+  }
+
+  .date-range-display .start-end-ranges {
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+  }
+
+  .date-range-display .start-end-ranges .start-date,
+  .date-range-display .start-end-ranges .end-date {
+    padding: 0 5px;
+  }
+
+  .ok-button {
+    text-align: right;
+    padding: 0 5px;
+    width: 100%;
+  }
+
+  .ok-button .btn {
+    font-size: 0.8333rem;
+    padding: 5px 8px;
+    height: auto;
+    width: 40px;
+  }
+
+  .ok-button .btn.btn-primary:hover {
+    background-color: rgb(20, 109, 215);
+    border-color: rgb(20, 109, 215);
+    color: rgb(255, 255, 255);
+  }
+
+  .ok-button .btn.disabled,
+  .ok-button .btn:disabled {
+    cursor: default;
+    opacity: 0.65;
+    pointer-events: none;
+  }
+
+  .warning-message {
+    color: #dc3545;
+    font-size: 0.8333rem;
+    margin: 0.5rem 0 0;
+    text-align: center;
   }
 `;

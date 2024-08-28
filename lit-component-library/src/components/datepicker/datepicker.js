@@ -184,7 +184,7 @@ class DatePicker extends LitElement {
         </div>
       </div>
 
-      <div class="context" role="region" aria-labelledby="context-title">
+      <div class="context" role="region" aria-labelledby="context-title" tabindex="0">
         <div id="context-title">Context:</div>
         <div>
           selectedYMD: "<span class="selected-date-Ymd">Date not selected</span
