@@ -180,7 +180,7 @@ class DateRangePicker extends LitElement {
           >
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
               <path
-                d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s-32.8-12.5 45.3 0l160 160z"
+                d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s-32.8-12.5 45.3 0l160 160z"
               />
             </svg>
           </button>
@@ -233,37 +233,42 @@ class DateRangePicker extends LitElement {
 
   _handleOkClick() {
     const formattedStartDate = this.startDate
-      ? this.dateFormat === "Y-m-d"
-        ? this.formatDateYmd(this.startDate)
-        : this.dateFormat === "M-d-Y"
-        ? this.formatDateMDY(this.startDate)
-        : this.dateFormat === "Long Date"
-        ? this.formatDateLong(this.startDate)
-        : this.dateFormat === "ISO"
-        ? this.formatISODate(this.startDate)
-        : "N/A"
-      : "N/A";
+      ? this.formatDateAccordingToSelectedFormat(this.startDate)
+      : null;
 
     const formattedEndDate = this.endDate
-      ? this.dateFormat === "Y-m-d"
-        ? this.formatDateYmd(this.endDate)
-        : this.dateFormat === "M-d-Y"
-        ? this.formatDateMDY(this.endDate)
-        : this.dateFormat === "Long Date"
-        ? this.formatDateLong(this.endDate)
-        : this.dateFormat === "ISO"
-        ? this.formatISODate(this.endDate)
-        : "N/A"
-      : "N/A";
+      ? this.formatDateAccordingToSelectedFormat(this.endDate)
+      : null;
 
-    this.dispatchEvent(
-      new CustomEvent("date-range-updated", {
-        detail: {
-          startDate: formattedStartDate,
-          endDate: formattedEndDate,
-        },
-      })
-    );
+    if (formattedStartDate && formattedEndDate) {
+      this.dispatchEvent(
+        new CustomEvent("date-range-updated", {
+          detail: {
+            startDate: formattedStartDate,
+            endDate: formattedEndDate,
+          },
+        })
+      );
+    } else {
+      console.error("Invalid date range selection");
+    }
+  }
+
+  formatDateAccordingToSelectedFormat(date) {
+    if (!date) return null;
+
+    switch (this.dateFormat) {
+      case "Y-m-d":
+        return this.formatDateYmd(date);
+      case "M-d-Y":
+        return this.formatDateMDY(date);
+      case "Long Date":
+        return this.formatDateLong(date);
+      case "ISO":
+        return this.formatISODate(date);
+      default:
+        return this.formatDateYmd(date); // Fallback to a default format
+    }
   }
 
   handleMonthChange(event) {
@@ -331,6 +336,14 @@ class DateRangePicker extends LitElement {
       this.currentEndMonth = 0;
       this.currentEndYear++;
     }
+
+    // Dispatch the reset event to clear the input field in the DatePickerManager
+    this.dispatchEvent(
+      new CustomEvent("reset-picker", {
+        bubbles: true,
+        composed: true,
+      })
+    );
 
     Promise.resolve(this.requestUpdate())
       .then(() => {
@@ -574,24 +587,24 @@ class DateRangePicker extends LitElement {
         )
       )
     );
-  
+
     if (event.key === "Tab") {
-        // If the Tab key is pressed
-        if (!event.shiftKey) {
-          // If Tab is pressed (not Shift+Tab), focus on the next focusable element outside the calendar
-          event.preventDefault();
-          this.shadowRoot.querySelector('.date-range-display')?.focus(); // Focus on the first time input
-        } else {
-          // Handle Shift+Tab if needed
-          // You can define behavior if Shift+Tab is pressed and should navigate to the previous focusable element
-        }
-      } else if (event.key.startsWith("Arrow")) {
+      // If the Tab key is pressed
+      if (!event.shiftKey) {
+        // If Tab is pressed (not Shift+Tab), focus on the next focusable element outside the calendar
+        event.preventDefault();
+        this.shadowRoot.querySelector(".date-range-display")?.focus(); // Focus on the first time input
+      } else {
+        // Handle Shift+Tab if needed
+        // You can define behavior if Shift+Tab is pressed and should navigate to the previous focusable element
+      }
+    } else if (event.key.startsWith("Arrow")) {
       event.preventDefault();
       let index = Array.from(calendarCells).indexOf(currentFocus);
-  
+
       if (index !== -1) {
         let newIndex = index;
-  
+
         if (event.key === "ArrowUp") {
           newIndex = Math.max(index - 7, 0);
           this.moveFocusToNewIndex(calendarCells, newIndex);
@@ -845,27 +858,11 @@ class DateRangePicker extends LitElement {
     const endDateElement = this.shadowRoot.querySelector(".end-date");
 
     const formattedStartDate = this.startDate
-      ? this.dateFormat === "Y-m-d"
-        ? this.formatDateYmd(this.startDate)
-        : this.dateFormat === "M-d-Y"
-        ? this.formatDateMDY(this.startDate)
-        : this.dateFormat === "Long Date"
-        ? this.formatDateLong(this.startDate)
-        : this.dateFormat === "ISO"
-        ? this.formatISODate(this.startDate)
-        : "N/A"
+      ? this.formatDateAccordingToSelectedFormat(this.startDate)
       : "N/A";
 
     const formattedEndDate = this.endDate
-      ? this.dateFormat === "Y-m-d"
-        ? this.formatDateYmd(this.endDate)
-        : this.dateFormat === "M-d-Y"
-        ? this.formatDateMDY(this.endDate)
-        : this.dateFormat === "Long Date"
-        ? this.formatDateLong(this.endDate)
-        : this.dateFormat === "ISO"
-        ? this.formatISODate(this.endDate)
-        : "N/A"
+      ? this.formatDateAccordingToSelectedFormat(this.endDate)
       : "N/A";
 
     startDateElement.textContent = formattedStartDate;

@@ -25,7 +25,7 @@
           <section class="section">
             <section class="display-box" id="db-1">
               <section class="display-box-demo">
-                <date-picker></date-picker>
+                <date-picker displayContextExamples></date-picker>
               </section>
               <section class="display-box-meta markdown">
                 <div class="display-box-title">Basic Usage</div>
@@ -59,6 +59,7 @@
               >
                 <date-range-time-picker
                   id="dateRangeTimePicker"
+                  is24HourFormat="false"
                 ></date-range-time-picker>
               </section>
               <section class="display-box-meta markdown">
@@ -76,7 +77,11 @@
           <section class="section">
             <section class="display-box" id="db-1">
               <section class="display-box-demo">
-                <datepicker-manager></datepicker-manager>
+                <div style="width: 210px">
+                  <datepicker-manager
+                    dateFormat="MM-DD-YYYY"
+                  ></datepicker-manager>
+                </div>
               </section>
               <section class="display-box-meta markdown">
                 <div class="display-box-title">Basic Usage</div>
@@ -89,10 +94,14 @@
           <section class="section">
             <section class="display-box" id="db-1">
               <section
-                class="display-box-demo"
-                style="display: flex; justify-content: center"
-              >
-                
+                class="display-box-demo">
+                <div style="width: 295px">
+                  <datepicker-manager
+                  dateFormat="MM-DD-YYYY"
+                  selectedPicker="daterange"
+                  ></datepicker-manager>
+                </div>
+              
               </section>
               <section class="display-box-meta markdown">
                 <div class="display-box-title">Basic Usage</div>
@@ -105,10 +114,15 @@
           <section class="section">
             <section class="display-box" id="db-1">
               <section
-                class="display-box-demo"
-                style="display: flex; justify-content: center"
-              >
-                
+                class="display-box-demo">
+                <div style="width: 405px">
+                  <datepicker-manager
+                  dateFormat="MM-DD-YYYY"
+                  selectedPicker="daterangetime"
+                  joinBy="to"
+                  is24HourFormat="true"
+                  ></datepicker-manager>
+                </div>
               </section>
               <section class="display-box-meta markdown">
                 <div class="display-box-title">Basic Usage</div>
@@ -131,27 +145,30 @@
     <script>
       document.addEventListener("DOMContentLoaded", () => {
         const datePicker = document.getElementById("dateRangePicker");
-if (datePicker) {
-    console.log("DateRangePicker element found and listener attached"); // Log to confirm listener attachment
-    datePicker.addEventListener("date-range-updated", function (event) {
-        console.log("Event detail received in listener:", event.detail); // Second log
-    });
-} else {
-    console.log("DateRangePicker element not found"); // Log if the element is not found
-}
-
-
-    const dateTimePicker = document.getElementById("dateRangeTimePicker");
-    if (dateTimePicker) {
-        console.log("DateRangeTimePicker element found and listener attached"); // Log to confirm listener attachment
-        dateTimePicker.addEventListener("date-time-updated", function (event) {
+        if (datePicker) {
+          console.log("DateRangePicker element found and listener attached"); // Log to confirm listener attachment
+          datePicker.addEventListener("date-range-updated", function (event) {
             console.log("Event detail received in listener:", event.detail); // Second log
-        });
-    } else {
-        console.log("DateRangeTimePicker element not found"); // Log if the element is not found
-    }
-});
+          });
+        } else {
+          console.log("DateRangePicker element not found"); // Log if the element is not found
+        }
 
+        const dateTimePicker = document.getElementById("dateRangeTimePicker");
+        if (dateTimePicker) {
+          console.log(
+            "DateRangeTimePicker element found and listener attached"
+          ); // Log to confirm listener attachment
+          dateTimePicker.addEventListener(
+            "date-time-updated",
+            function (event) {
+              console.log("Event detail received in listener:", event.detail); // Second log
+            }
+          );
+        } else {
+          console.log("DateRangeTimePicker element not found"); // Log if the element is not found
+        }
+      });
     </script>
   </body>
 </html>

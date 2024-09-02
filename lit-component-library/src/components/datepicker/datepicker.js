@@ -13,6 +13,22 @@ class DatePicker extends LitElement {
     `,
   ];
 
+  static get properties() {
+    return {
+      selectedDate: { type: Object },
+      selectedMonth: { type: Number },
+      selectedYear: { type: Number },
+      previousSelectedDayElement: { type: Object },
+      currentSelectedDate: { type: Object },
+      shouldClearSelectedDate: { type: Boolean },
+      isCalendarFocused: { type: Boolean },
+      currentMonth: { type: Number },
+      currentYear: { type: Number },
+      displayContextExamples: { type: Boolean },
+      dateFormat: { type: String }, // New property for date format
+    };
+  }
+
   constructor() {
     super();
     this.selectedDate = null;
@@ -24,12 +40,17 @@ class DatePicker extends LitElement {
     this.isCalendarFocused = false;
     this.currentMonth = this.currentSelectedDate.getMonth();
     this.currentYear = this.currentSelectedDate.getFullYear();
+    this.displayContextExamples = false;
+    this.dateFormat = "YYYY-MM-DD"; // Default to YYYY-MM-DD format
   }
 
   firstUpdated() {
     this.renderCalendar(this.currentMonth, this.currentYear);
     this.updateSelectedDateDisplay("No date selected");
-    this.updateInitialContext();
+
+    if (this.displayContextExamples) {
+      this.updateInitialContext();
+    }
   }
 
   render() {
@@ -183,31 +204,45 @@ class DatePicker extends LitElement {
           </footer>
         </div>
       </div>
-
-      <div class="context" role="region" aria-labelledby="context-title" tabindex="0">
-        <div id="context-title">Context:</div>
-        <div>
-          selectedYMD: "<span class="selected-date-Ymd">Date not selected</span
-          >"
-        </div>
-        <div>
-          selectedFormatted: "<span class="selected-formatted-date"
-            >Date not selected</span
-          >"
-        </div>
-        <div>
-          selectedIsoFormatted: "<span class="selected-formatted-iso"
-            >Date not selected</span
-          >"
-        </div>
-        <div>activeYMD: "<span class="active-date-ymd"></span>"</div>
-        <div>
-          activeFormatted: "<span class="active-formatted-date-long"></span>"
-        </div>
-        <div>
-          activeIsoFormatted: "<span class="active-formatted-iso"></span>"
-        </div>
-      </div>
+      ${this.displayContextExamples
+        ? html` <div
+            class="context"
+            role="region"
+            aria-labelledby="context-title"
+            tabindex="0"
+          >
+            <div id="context-title">Context:</div>
+            <div>
+              selectedYMD: "<span class="selected-date-Ymd"
+                >Date not selected</span
+              >"
+            </div>
+            <div>
+              selectedMDY: "<span class="selected-date-Mdy"
+                >Date not selected</span
+              >"
+            </div>
+            <div>
+              selectedFormatted: "<span class="selected-formatted-date"
+                >Date not selected</span
+              >"
+            </div>
+            <div>
+              selectedIsoFormatted: "<span class="selected-formatted-iso"
+                >Date not selected</span
+              >"
+            </div>
+            <div>activeYMD: "<span class="active-date-ymd"></span>"</div>
+            <div>activeMDY: "<span class="active-date-mdy"></span>"</div>
+            <div>
+              activeFormatted: "<span class="active-formatted-date-long"></span
+              >"
+            </div>
+            <div>
+              activeIsoFormatted: "<span class="active-formatted-iso"></span>"
+            </div>
+          </div>`
+        : ""}
     `;
   }
 
@@ -285,6 +320,13 @@ class DatePicker extends LitElement {
     return date.toISOString().split("T")[0];
   }
 
+  formatDateMdy(date) {
+    const month = String(date.getUTCMonth() + 1).padStart(2, "0");
+    const day = String(date.getUTCDate()).padStart(2, "0");
+    const year = date.getUTCFullYear();
+    return `${month}-${day}-${year}`;
+  }
+
   formatDateLong(date) {
     if (!(date instanceof Date)) {
       date = new Date(date);
@@ -306,6 +348,18 @@ class DatePicker extends LitElement {
     return date.toISOString();
   }
 
+   // Function to map format strings to their corresponding functions
+   getFormattedDate(date, format) {
+    switch (format) {
+      case 'YYYY-MM-DD':
+        return this.formatDateYmd(date);
+      case 'MM-DD-YYYY':
+        return this.formatDateMdy(date);
+      default:
+        return this.formatDateYmd(date); // Default to YYYY-MM-DD if unrecognized
+    }
+  }
+
   updateSelectedDateDisplay(formattedDate) {
     const selectedDateDisplay =
       this.shadowRoot.querySelector(".selected-date bdi");
@@ -313,13 +367,20 @@ class DatePicker extends LitElement {
   }
 
   updateSelectedDateElements(formattedDate) {
+    if (!this.displayContextExamples) {
+      return; // Do nothing if context examples are not displayed
+    }
+
     const date = new Date(`${formattedDate}T00:00:00Z`);
     const selectedDateYmd = this.formatDateYmd(date);
+    const selectedDateMdy = this.formatDateMdy(date);
     const selectedFormatted = this.formatDateLong(date);
     const selectedIsoFormatted = this.formatISODate(date);
 
     const selectedDateDisplayYmd =
       this.shadowRoot.querySelector(".selected-date-Ymd");
+    const selectedDateDisplayMdy =
+      this.shadowRoot.querySelector(".selected-date-Mdy");
     const selectedDateDisplayFull = this.shadowRoot.querySelector(
       ".selected-formatted-date"
     );
@@ -327,18 +388,45 @@ class DatePicker extends LitElement {
       ".selected-formatted-iso"
     );
 
-    selectedDateDisplayYmd.textContent = selectedDateYmd;
-    selectedDateDisplayFull.textContent = selectedFormatted;
-    selectedDateDisplayIso.textContent = selectedIsoFormatted;
+    if (selectedDateDisplayYmd) {
+      selectedDateDisplayYmd.textContent = selectedDateYmd;
+    } else {
+      console.warn("Element with class .selected-date-Ymd not found.");
+    }
+
+    if (selectedDateDisplayMdy) {
+      selectedDateDisplayMdy.textContent = selectedDateMdy;
+    } else {
+      console.warn("Element with class .selected-date-Myd not found.");
+    }
+
+    if (selectedDateDisplayFull) {
+      selectedDateDisplayFull.textContent = selectedFormatted;
+    } else {
+      console.warn("Element with class .selected-formatted-date not found.");
+    }
+
+    if (selectedDateDisplayIso) {
+      selectedDateDisplayIso.textContent = selectedIsoFormatted;
+    } else {
+      console.warn("Element with class .selected-formatted-iso not found.");
+    }
 
     this.updateSelectedDateDisplay(selectedFormatted);
   }
 
   updateActiveDateElements() {
+    if (!this.displayContextExamples) {
+      return; // Do nothing if context examples are not displayed
+    }
+
     const focusedSpan = this.shadowRoot.querySelector(
       ".calendar-grid-item span.focus"
     );
     const activeDateYMD = this.shadowRoot.querySelector(".active-date-ymd");
+
+    const activeDateMDY = this.shadowRoot.querySelector(".active-date-mdy");
+
     const activeLongDate = this.shadowRoot.querySelector(
       ".active-formatted-date-long"
     );
@@ -346,7 +434,7 @@ class DatePicker extends LitElement {
       ".active-formatted-iso"
     );
 
-    if (!activeDateYMD || !activeLongDate || !activeIsoDate) {
+    if (!activeDateYMD || !activeDateMDY || !activeLongDate || !activeIsoDate) {
       console.error("One or more active date elements are missing");
       return;
     }
@@ -355,10 +443,12 @@ class DatePicker extends LitElement {
       const dataDate = focusedSpan.parentElement.getAttribute("data-date");
       const date = new Date(`${dataDate}T00:00:00Z`);
       activeDateYMD.textContent = dataDate;
+      activeDateMDY.textContent = dataDate;
       activeLongDate.textContent = this.formatDateLong(date);
       activeIsoDate.textContent = this.formatISODate(date);
     } else {
       activeDateYMD.textContent = "Date not selected";
+      activeDateMDY.textContent = "Date not selected";
       activeLongDate.textContent = "Date not selected";
       activeIsoDate.textContent = "Date not selected";
     }
@@ -402,45 +492,16 @@ class DatePicker extends LitElement {
         Date.UTC(this.selectedYear, this.selectedMonth - 1, selectedDay)
       );
 
-      const formattedSelectedDate = this.formatDate(
-        this.selectedYear,
-        this.selectedMonth,
-        selectedDay
-      );
+      const formattedSelectedDate = this.getFormattedDate(this.selectedDate, this.dateFormat); // Use the selected date format
       this.updateSelectedDateDisplay(formattedSelectedDate);
-      this.updateSelectedDateElements(
-        this.selectedDate.toISOString().split("T")[0]
+
+      this.dispatchEvent(
+        new CustomEvent("date-selected", {
+          detail: { formattedDate: formattedSelectedDate },
+          bubbles: true,
+          composed: true,
+        })
       );
-      this.updateActiveDateElements();
-
-      this.currentSelectedDate = new Date(
-        Date.UTC(this.selectedYear, this.selectedMonth - 1, selectedDay)
-      );
-
-      const formattedCurrentDate = this.formatDate(
-        this.currentSelectedDate.getUTCFullYear(),
-        this.currentSelectedDate.getUTCMonth() + 1,
-        this.currentSelectedDate.getUTCDate()
-      );
-
-      this.updateSelectedDateElements(
-        this.currentSelectedDate.toISOString().split("T")[0]
-      );
-
-      this.shadowRoot.querySelector(".calendar").classList.add("focus");
-      this.isCalendarFocused = true;
-
-      const formattedDate = `${this.selectedDate.getUTCFullYear()}-${(
-        this.selectedDate.getUTCMonth() + 1
-      )
-        .toString()
-        .padStart(2, "0")}-${this.selectedDate
-        .getUTCDate()
-        .toString()
-        .padStart(2, "0")}`;
-      this.shadowRoot
-        .querySelector(".calendar")
-        .setAttribute("aria-activedescendant", `cell-${formattedDate}`);
     } else {
       if (isPreviousMonthDay) {
         this.currentMonth--;
@@ -465,14 +526,7 @@ class DatePicker extends LitElement {
 
       this.renderCalendar(this.currentMonth, this.currentYear);
 
-      const formattedDate = `${this.selectedDate.getUTCFullYear()}-${(
-        this.selectedDate.getUTCMonth() + 1
-      )
-        .toString()
-        .padStart(2, "0")}-${this.selectedDate
-        .getUTCDate()
-        .toString()
-        .padStart(2, "0")}`;
+      const formattedDate = this.getFormattedDate(this.selectedDate, this.dateFormat);
       this.shadowRoot
         .querySelector(".calendar")
         .setAttribute("aria-activedescendant", `cell-${formattedDate}`);
@@ -942,8 +996,13 @@ class DatePicker extends LitElement {
   }
 
   updateInitialContext() {
+    if (!this.displayContextExamples) {
+      return; // Skip updating the context if not displaying context examples
+    }
+
     const today = new Date();
     const activeDateYMD = this.shadowRoot.querySelector(".active-date-ymd");
+    const activeDateMDY = this.shadowRoot.querySelector(".active-date-mdy");
     const activeLongDate = this.shadowRoot.querySelector(
       ".active-formatted-date-long"
     );
@@ -951,7 +1010,13 @@ class DatePicker extends LitElement {
       ".active-formatted-iso"
     );
 
+    if (!activeDateYMD || !activeDateMDY || !activeLongDate || !activeIsoDate) {
+      console.error("One or more active date elements are missing");
+      return;
+    }
+
     activeDateYMD.textContent = this.formatDateYmd(today);
+    activeDateMDY.textContent = this.formatDateMdy(today);
     activeLongDate.textContent = this.formatDateLong(today);
     activeIsoDate.textContent = this.formatISODate(today);
   }

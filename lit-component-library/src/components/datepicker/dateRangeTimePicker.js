@@ -121,6 +121,7 @@ class DateRangeTimePicker extends LitElement {
 
   updated(changedProperties) {
     if (changedProperties.has("is24HourFormat")) {
+      console.log("is24HourFormat changed to:", this.is24HourFormat);
       this._setDefaultTimes(); // Set default times when format changes
     }
   }
@@ -511,28 +512,25 @@ class DateRangeTimePicker extends LitElement {
     }
 
     const formattedStartDate = this.startDate
-      ? this.dateFormat === "Y-m-d"
-        ? this.formatDateYmd(this.startDate)
-        : this.dateFormat === "M-d-Y"
-        ? this.formatDateMDY(this.startDate)
-        : this.dateFormat === "Long Date"
-        ? this.formatDateLong(this.startDate)
-        : this.dateFormat === "ISO"
-        ? this.formatISODate(this.startDate)
-        : "N/A"
-      : "N/A";
+      ? this.formatDateAccordingToSelectedFormat(this.startDate)
+      : null;
 
     const formattedEndDate = this.endDate
-      ? this.dateFormat === "Y-m-d"
-        ? this.formatDateYmd(this.endDate)
-        : this.dateFormat === "M-d-Y"
-        ? this.formatDateMDY(this.endDate)
-        : this.dateFormat === "Long Date"
-        ? this.formatDateLong(this.endDate)
-        : this.dateFormat === "ISO"
-        ? this.formatISODate(this.endDate)
-        : "N/A"
-      : "N/A";
+      ? this.formatDateAccordingToSelectedFormat(this.endDate)
+      : null;
+
+    if (formattedStartDate && formattedEndDate) {
+      this.dispatchEvent(
+        new CustomEvent("date-range-updated", {
+          detail: {
+            startDate: formattedStartDate,
+            endDate: formattedEndDate,
+          },
+        })
+      );
+    } else {
+      console.error("Invalid date range selection");
+    }
 
     const formattedStartTime = this.is24HourFormat
       ? this.startTime
@@ -542,16 +540,37 @@ class DateRangeTimePicker extends LitElement {
       ? this.endTime
       : `${this.formatTime(this.endTime)} ${this._getAmPm(this.endTime)}`;
 
-    this.dispatchEvent(
-      new CustomEvent("date-time-updated", {
-        detail: {
-          startDate: formattedStartDate,
-          endDate: formattedEndDate,
-          startTime: formattedStartTime,
-          endTime: formattedEndTime,
-        },
-      })
-    );
+    if (formattedStartDate && formattedEndDate) {
+      this.dispatchEvent(
+        new CustomEvent("date-time-updated", {
+          detail: {
+            startDate: formattedStartDate,
+            endDate: formattedEndDate,
+            startTime: formattedStartTime,
+            endTime: formattedEndTime,
+          },
+        })
+      );
+    } else {
+      console.error("Invalid date range selection");
+    }
+  }
+
+  formatDateAccordingToSelectedFormat(date) {
+    if (!date) return null;
+
+    switch (this.dateFormat) {
+      case "Y-m-d":
+        return this.formatDateYmd(date);
+      case "M-d-Y":
+        return this.formatDateMDY(date);
+      case "Long Date":
+        return this.formatDateLong(date);
+      case "ISO":
+        return this.formatISODate(date);
+      default:
+        return this.formatDateYmd(date); // Fallback to a default format
+    }
   }
 
   handleMonthChange(event) {
@@ -609,7 +628,7 @@ class DateRangeTimePicker extends LitElement {
     const now = new Date();
     this.startDate = null;
     this.endDate = null;
-    this._setDefaultTimes();
+    this._setDefaultTimes(); // This remains for daterangetimepicker
     this.currentStartMonth = now.getMonth();
     this.currentStartYear = now.getFullYear();
     this.currentEndMonth = this.currentStartMonth + 1;
@@ -620,6 +639,14 @@ class DateRangeTimePicker extends LitElement {
       this.currentEndMonth = 0;
       this.currentEndYear++;
     }
+
+    // Dispatch the reset event to clear the input field in the DatePickerManager
+    this.dispatchEvent(
+      new CustomEvent("reset-picker", {
+        bubbles: true,
+        composed: true,
+      })
+    );
 
     Promise.resolve(this.requestUpdate())
       .then(() => {
@@ -863,13 +890,13 @@ class DateRangeTimePicker extends LitElement {
         )
       )
     );
-  
+
     if (event.key === "Tab") {
       // If the Tab key is pressed
       if (!event.shiftKey) {
         // If Tab is pressed (not Shift+Tab), focus on the next focusable element outside the calendar
         event.preventDefault();
-        this.shadowRoot.querySelector('.time-input')?.focus(); // Focus on the first time input
+        this.shadowRoot.querySelector(".time-input")?.focus(); // Focus on the first time input
       } else {
         // Handle Shift+Tab if needed
         // You can define behavior if Shift+Tab is pressed and should navigate to the previous focusable element
@@ -877,10 +904,10 @@ class DateRangeTimePicker extends LitElement {
     } else if (event.key.startsWith("Arrow")) {
       event.preventDefault();
       let index = Array.from(calendarCells).indexOf(currentFocus);
-  
+
       if (index !== -1) {
         let newIndex = index;
-  
+
         if (event.key === "ArrowUp") {
           newIndex = Math.max(index - 7, 0);
           this.moveFocusToNewIndex(calendarCells, newIndex);
@@ -925,7 +952,6 @@ class DateRangeTimePicker extends LitElement {
       this.handleEnterKeyPress(event);
     }
   }
-  
 
   moveFocusToNewIndex(calendarCells, newIndex) {
     this.clearAllFocus();
@@ -1093,9 +1119,9 @@ class DateRangeTimePicker extends LitElement {
       }
     }
 
-    this.updateSelectedRange();
-    this._updateOkButtonState();
-    this.requestUpdate();
+    this.updateSelectedRange(); // Ensure this is called to update the UI
+    this._updateOkButtonState(); // Check if OK button should be enabled
+    this.requestUpdate(); // Request LitElement to re-render the component
   }
 
   updateSelectedRange() {
@@ -1125,7 +1151,7 @@ class DateRangeTimePicker extends LitElement {
       }
     });
 
-    this.updateDisplayedDateRange();
+    this.updateDisplayedDateRange(); // Ensure dates are updated in the display
   }
 
   updateDisplayedDateRange() {
@@ -1133,27 +1159,11 @@ class DateRangeTimePicker extends LitElement {
     const endDateElement = this.shadowRoot.querySelector(".end-date");
 
     const formattedStartDate = this.startDate
-      ? this.dateFormat === "Y-m-d"
-        ? this.formatDateYmd(this.startDate)
-        : this.dateFormat === "M-d-Y"
-        ? this.formatDateMDY(this.startDate)
-        : this.dateFormat === "Long Date"
-        ? this.formatDateLong(this.startDate)
-        : this.dateFormat === "ISO"
-        ? this.formatISODate(this.startDate)
-        : "N/A"
+      ? this.formatDateAccordingToSelectedFormat(this.startDate)
       : "N/A";
 
     const formattedEndDate = this.endDate
-      ? this.dateFormat === "Y-m-d"
-        ? this.formatDateYmd(this.endDate)
-        : this.dateFormat === "M-d-Y"
-        ? this.formatDateMDY(this.endDate)
-        : this.dateFormat === "Long Date"
-        ? this.formatDateLong(this.endDate)
-        : this.dateFormat === "ISO"
-        ? this.formatISODate(this.endDate)
-        : "N/A"
+      ? this.formatDateAccordingToSelectedFormat(this.endDate)
       : "N/A";
 
     startDateElement.textContent = formattedStartDate;
