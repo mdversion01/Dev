@@ -59,7 +59,7 @@
               >
                 <date-range-time-picker
                   id="dateRangeTimePicker"
-                  is24HourFormat="false"
+                  showDuration
                 ></date-range-time-picker>
               </section>
               <section class="display-box-meta markdown">
@@ -97,8 +97,8 @@
                 class="display-box-demo">
                 <div style="width: 295px">
                   <datepicker-manager
-                  dateFormat="MM-DD-YYYY"
                   selectedPicker="daterange"
+                  joinBy="to"
                   ></datepicker-manager>
                 </div>
               
@@ -121,6 +121,7 @@
                   selectedPicker="daterangetime"
                   joinBy="to"
                   is24HourFormat="true"
+                  showDuration
                   ></datepicker-manager>
                 </div>
               </section>

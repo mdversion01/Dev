@@ -4,11 +4,11 @@ import { formStyles } from "../form-styles.js";
 import { inputFieldStyles } from "../input-field/input-field-styles";
 import { inputGroupStyles } from "../input-group/input-group-styles.js";
 import { buttonStyles } from "../button/button-styles";
+import { createPopper } from "@popperjs/core";
 
-// Import the date-picker, date-range-picker, and date-range-time-picker components
 import "./datepicker";
 import "./daterangepicker";
-import "./dateRangeTimePicker"; // Import the new component
+import "./dateRangeTimePicker";
 
 class DatePickerManager extends LitElement {
   static styles = [
@@ -47,38 +47,45 @@ class DatePickerManager extends LitElement {
           border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
       }
 
-      .dropdown {
+      .dropdown-wrapper {
         position: relative;
+      }
+
+      .dropdown {
+        z-index: 1;
+        width: inherit;
       }
 
       .dropdown-content {
         display: none;
-        position: absolute;
         background-color: white;
         box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-        z-index: 1;
         padding: 5px;
         border-radius: 3px;
       }
 
       .dropdown.open .dropdown-content {
         display: block;
+        width: inherit;
       }
     `,
   ];
 
   static get properties() {
     return {
-      selectedPicker: { type: String }, // "datepicker", "daterange", or "daterangetime"
+      selectedPicker: { type: String },
       dropdownOpen: { type: Boolean },
-      selectedDate: { type: String }, // For single date
-      selectedStartDate: { type: String }, // For date range start
-      selectedEndDate: { type: String }, // For date range end
-      startTime: { type: String }, // For time in date range time picker
-      endTime: { type: String }, // For time in date range time picker
-      dateFormat: { type: String }, // Property for date format
-      joinBy: { type: String }, // Property for date range separator
-      is24HourFormat: { type: Boolean }, // Property for 24-hour time format
+      selectedDate: { type: String },
+      selectedStartDate: { type: String },
+      selectedEndDate: { type: String },
+      startTime: { type: String },
+      endTime: { type: String },
+      dateFormat: { type: String },
+      joinBy: { type: String },
+      is24HourFormat: { type: Boolean },
+      showDuration: { type: Boolean },
+      duration: { type: String },
+      inputId: { type: String },
     };
   }
 
@@ -86,48 +93,31 @@ class DatePickerManager extends LitElement {
     super();
     this.selectedPicker = "datepicker"; // Default to datepicker
     this.dropdownOpen = false;
-    this.selectedDate = ""; // For single date picker
-    this.selectedStartDate = ""; // For date range picker
-    this.selectedEndDate = ""; // For date range picker
-    this.startTime = ""; // For start time in date range time picker
-    this.endTime = ""; // For end time in date range time picker
-    this.dateFormat = "YYYY-MM-DD"; // Default to YYYY-MM-DD format
-    this.inputElement = null; // To store the reference to the input element
+    this.selectedDate = "";
+    this.selectedStartDate = "";
+    this.selectedEndDate = "";
+    this.startTime = "";
+    this.endTime = "";
+    this.dateFormat = "YYYY-MM-DD";
+    this.inputElement = null;
+    this.popperInstance = null;
     this.handleOutsideClick = this.handleOutsideClick.bind(this);
-    this.preventClose = false; // To prevent immediate close on button click
-    this.joinBy = " - "; // Default separator for date range
-    this.is24HourFormat = true; // Default to 24-hour time
-  }
-
-  set is24HourFormat(value) {
-    const oldValue = this._is24HourFormat;
-    this._is24HourFormat = value;
-    console.log("is24HourFormat set to:", value);
-    this.requestUpdate("is24HourFormat", oldValue);
-  }
-
-  get is24HourFormat() {
-    return this._is24HourFormat;
+    this.preventClose = false;
+    this.joinBy = " - ";
+    this.is24HourFormat = true;
+    this.showDuration = false;
+    this.duration = "";
+    this.inputId = "datepicker";
   }
 
   firstUpdated() {
     this.inputElement = this.shadowRoot.querySelector(".form-control");
     document.addEventListener("click", this.handleOutsideClick);
 
-    // Listen for the reset event from the date pickers
     this.shadowRoot.addEventListener(
       "reset-picker",
       this.clearInputField.bind(this)
     );
-
-    // Toggle the is24HourFormat after 2 seconds to test if the property is being observed correctly
-    setTimeout(() => {
-      this.is24HourFormat = !this.is24HourFormat;
-      console.log(
-        "Toggled is24HourFormat in DatePickerManager:",
-        this.is24HourFormat
-      );
-    }, 2000);
   }
 
   disconnectedCallback() {
@@ -135,7 +125,7 @@ class DatePickerManager extends LitElement {
     document.removeEventListener("click", this.handleOutsideClick);
   }
 
-  clearInputField() {
+  clearInputField(event) {
     if (this.inputElement) {
       this.inputElement.value = "";
       this.selectedDate = "";
@@ -143,6 +133,10 @@ class DatePickerManager extends LitElement {
       this.selectedEndDate = "";
       this.startTime = "";
       this.endTime = "";
+
+      if (event && event.detail && event.detail.clearDuration) {
+        this.duration = ""; // Clear the duration
+      }
     }
   }
 
@@ -151,6 +145,7 @@ class DatePickerManager extends LitElement {
       const dropdown = this.shadowRoot.querySelector(".dropdown");
       if (dropdown && !dropdown.contains(event.target)) {
         this.dropdownOpen = false;
+        this.destroyPopper();
       }
     }
     this.preventClose = false;
@@ -159,6 +154,39 @@ class DatePickerManager extends LitElement {
   toggleDropdown(event) {
     this.preventClose = true;
     this.dropdownOpen = !this.dropdownOpen;
+    if (this.dropdownOpen) {
+      this.createPopperInstance();
+    } else {
+      this.destroyPopper();
+    }
+  }
+
+  createPopperInstance() {
+    const dropdown = this.shadowRoot.querySelector(".dropdown");
+    this.popperInstance = createPopper(this.inputElement, dropdown, {
+      placement: 'bottom-start',
+      modifiers: [
+        {
+          name: 'offset',
+          options: {
+            offset: [0, 2],
+          },
+        },
+        {
+          name: 'preventOverflow',
+          options: {
+            boundary: 'viewport',
+          },
+        },
+      ],
+    });
+  }
+
+  destroyPopper() {
+    if (this.popperInstance) {
+      this.popperInstance.destroy();
+      this.popperInstance = null;
+    }
   }
 
   formatDate(date, format) {
@@ -192,6 +220,7 @@ class DatePickerManager extends LitElement {
       this.inputElement.value = this.selectedDate;
       this.inputElement.focus();
     }
+    this.destroyPopper();
   }
 
   handleDateRangeSelect(event) {
@@ -207,12 +236,11 @@ class DatePickerManager extends LitElement {
     if (this.inputElement) {
       this.inputElement.value =
         this.selectedStartDate && this.selectedEndDate
-          ? `${this.selectedStartDate} ${
-              this.joinBy === "to" ? " to " : this.joinBy
-            } ${this.selectedEndDate}`
+          ? `${this.selectedStartDate} ${this.joinBy} ${this.selectedEndDate}`
           : "";
       this.inputElement.focus();
     }
+    this.destroyPopper();
   }
 
   handleDateRangeTimeSelect(event) {
@@ -226,6 +254,7 @@ class DatePickerManager extends LitElement {
     );
     this.startTime = event.detail.startTime;
     this.endTime = event.detail.endTime;
+    this.duration = event.detail.duration || "";
     this.dropdownOpen = false;
     if (this.inputElement) {
       this.inputElement.value =
@@ -233,10 +262,15 @@ class DatePickerManager extends LitElement {
         this.selectedEndDate &&
         this.startTime &&
         this.endTime
-          ? `${this.selectedStartDate} ${this.startTime} ${this.joinBy} ${this.selectedEndDate} ${this.endTime}`
+          ? `${this.selectedStartDate} ${this.startTime} ${this.joinBy} ${
+              this.selectedEndDate
+            } ${this.endTime} ${
+              this.showDuration && this.duration ? `(${this.duration})` : ""
+            }`
           : "";
       this.inputElement.focus();
     }
+    this.destroyPopper();
   }
 
   handleNavigationClick(event) {
@@ -250,6 +284,7 @@ class DatePickerManager extends LitElement {
           @date-selected=${this.handleDateSelect}
           @click=${this.handleNavigationClick}
           .dateFormat=${this.dateFormat}
+          aria-label="Single Date Picker"
         ></date-picker>
       `;
     } else if (this.selectedPicker === "daterange") {
@@ -258,6 +293,7 @@ class DatePickerManager extends LitElement {
           @date-range-updated=${this.handleDateRangeSelect}
           @click=${this.handleNavigationClick}
           .dateFormat=${this.dateFormat}
+          aria-label="Date Range Picker"
         ></date-range-picker>
       `;
     } else if (this.selectedPicker === "daterangetime") {
@@ -267,6 +303,8 @@ class DatePickerManager extends LitElement {
           @click=${this.handleNavigationClick}
           .dateFormat=${this.dateFormat}
           .is24HourFormat=${this.is24HourFormat}
+          .showDuration=${this.showDuration}
+          aria-label="Date Range and Time Picker"
         ></date-range-time-picker>
       `;
     }
@@ -274,43 +312,70 @@ class DatePickerManager extends LitElement {
 
   render() {
     return html`
-      <div class="pl-input-group">
-        <input
-          type="text"
-          class="form-control"
-          placeholder=${this.selectedPicker === "daterange"
-            ? `${this.dateFormat}${this.joinBy}${this.dateFormat}`
-            : this.selectedPicker === "daterangetime"
-            ? `${this.dateFormat} HH:MM ${this.joinBy} ${this.dateFormat} HH:MM`
-            : this.dateFormat}
-          value=${this.selectedPicker === "datepicker"
-            ? this.selectedDate
-            : this.selectedPicker === "daterange"
-            ? this.selectedStartDate && this.selectedEndDate
-              ? `${this.selectedStartDate}${this.joinBy}${this.selectedEndDate}`
-              : ""
-            : this.selectedPicker === "daterangetime"
-            ? this.selectedStartDate &&
-              this.selectedEndDate &&
-              this.startTime &&
-              this.endTime
-              ? `${this.selectedStartDate} ${this.startTime}${this.joinBy}${this.selectedEndDate} ${this.endTime}`
-              : ""
-            : ""}
-          @input=${this.handleInputChange}
-        />
-        <div class="pl-input-group-append">
-          <button
-            @click=${this.toggleDropdown}
-            class="calendar-button pl-btn pl-input-group-text"
+      <div class="dropdown-wrapper">
+        <div class="pl-input-group" role="group" aria-label="Date Picker Group">
+          <label
+            class="sr-only"
+            for="${this.inputId}"
+            aria-hidden="true"
+            >Date Picker</label
           >
-            <i class="fas fa-calendar-alt"></i>
-          </button>
+          <input
+            id="${this.inputId}"
+            type="text"
+            class="form-control"
+            placeholder=${this.selectedPicker === "daterange"
+              ? `${this.dateFormat} ${this.joinBy} ${this.dateFormat}`
+              : this.selectedPicker === "daterangetime"
+              ? `${this.dateFormat} HH:MM ${this.joinBy} ${this.dateFormat} HH:MM`
+              : this.dateFormat}
+            value=${this.selectedPicker === "datepicker"
+              ? this.selectedDate
+              : this.selectedPicker === "daterange"
+              ? this.selectedStartDate && this.selectedEndDate
+                ? `${this.selectedStartDate} ${this.joinBy} ${this.selectedEndDate}`
+                : ""
+              : this.selectedPicker === "daterangetime"
+              ? this.selectedStartDate &&
+                this.selectedEndDate &&
+                this.startTime &&
+                this.endTime
+                ? `${this.selectedStartDate} ${this.startTime} ${this.joinBy} ${
+                    this.selectedEndDate
+                  } ${this.endTime} ${
+                    this.showDuration && this.duration
+                      ? `(${this.duration})`
+                      : ""
+                  }`
+                : ""
+              : ""}
+            @input=${this.handleInputChange}
+            aria-label="Selected Date"
+            aria-describedby="datepicker-desc"
+          />
+          <div class="pl-input-group-append">
+            <button
+              @click=${this.toggleDropdown}
+              class="calendar-button pl-btn pl-input-group-text"
+              aria-label="Toggle Calendar Picker"
+              aria-haspopup="dialog"
+              aria-expanded=${this.dropdownOpen ? "true" : "false"}
+            >
+              <i class="fas fa-calendar-alt"></i>
+            </button>
+          </div>
         </div>
-      </div>
 
-      <div class="dropdown ${this.dropdownOpen ? "open" : ""}">
-        <div class="dropdown-content">${this.renderPicker()}</div>
+        <div class="dropdown ${this.dropdownOpen ? "open" : ""}">
+          <div
+            class="dropdown-content"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="datepicker-desc"
+          >
+            ${this.renderPicker()}
+          </div>
+        </div>
       </div>
     `;
   }

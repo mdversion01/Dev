@@ -89,6 +89,9 @@ class DateRangeTimePicker extends LitElement {
       endTime: { type: String },
       is24HourFormat: { type: Boolean },
       okButtonDisabled: { type: Boolean },
+      showDuration: { type: Boolean },
+      startDate: { type: Object },
+      endDate: { type: Object },
     };
   }
 
@@ -106,6 +109,7 @@ class DateRangeTimePicker extends LitElement {
     this.currentEndYear = this.currentStartYear;
     this.focusedDate = new Date();
     this.okButtonDisabled = true;
+    this.showDuration = false;
 
     if (this.currentEndMonth > 11) {
       this.currentEndMonth = 0;
@@ -153,6 +157,7 @@ class DateRangeTimePicker extends LitElement {
             @click=${this.prevMonth}
             class="range-picker-nav-btn btn-outline-secondary"
             aria-label="Previous Month"
+            aria-controls="calendar-grid-${this.currentStartMonth}-${this.currentStartYear}"
           >
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
               <path
@@ -173,6 +178,7 @@ class DateRangeTimePicker extends LitElement {
               aria-label="Select Month"
               aria-labelledby="monthSelectField"
               role="listbox"
+              aria-controls="calendar-grid-${this.currentStartMonth}-${this.currentStartYear}"
               @change=${this.handleMonthChange}
             >
               ${Array.from({ length: 12 }, (_, i) => {
@@ -195,6 +201,7 @@ class DateRangeTimePicker extends LitElement {
               aria-label="Select Year"
               aria-labelledby="yearSelectField"
               role="listbox"
+              aria-controls="calendar-grid-${this.currentStartMonth}-${this.currentStartYear}"
               @change=${this.handleYearChange}
             >
               ${Array.from({ length: 21 }, (_, i) => {
@@ -207,6 +214,7 @@ class DateRangeTimePicker extends LitElement {
               @click=${this.resetCalendar}
               class="reset-btn"
               aria-label="Reset Calendar"
+              aria-controls="calendar-grid-${this.currentStartMonth}-${this.currentStartYear}"
             >
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                 <path
@@ -219,10 +227,11 @@ class DateRangeTimePicker extends LitElement {
             @click=${this.nextMonth}
             class="range-picker-nav-btn btn-outline-secondary"
             aria-label="Next Month"
+            aria-controls="calendar-grid-${this.currentStartMonth}-${this.currentStartYear}"
           >
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
               <path
-                d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s-32.8-12.5 45.3 0l160 160z"
+                d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5 45.3 0l160 160z"
               />
             </svg>
           </button>
@@ -262,12 +271,16 @@ class DateRangeTimePicker extends LitElement {
                   @input="${this._handleTimeInputChange}"
                   data-type="start"
                   maxlength="5"
+                  aria-label="Start Time"
+                  aria-invalid="${this._isValidTime(this.startTime) ? 'false' : 'true'}"
                 />
                 ${!this.is24HourFormat
                   ? html`<span
                       class="am-pm-toggle"
                       @click="${this._toggleAmPm}"
                       data-type="start"
+                      role="button"
+                      aria-label="Toggle AM/PM"
                     >
                       ${this._getAmPm(this.startTime)}
                     </span>`
@@ -283,17 +296,22 @@ class DateRangeTimePicker extends LitElement {
                   @input="${this._handleTimeInputChange}"
                   data-type="end"
                   maxlength="5"
+                  aria-label="End Time"
+                  aria-invalid="${this._isValidTime(this.endTime) ? 'false' : 'true'}"
                 />
                 ${!this.is24HourFormat
                   ? html`<span
                       class="am-pm-toggle"
                       @click="${this._toggleAmPm}"
                       data-type="end"
+                      role="button"
+                      aria-label="Toggle AM/PM"
                     >
                       ${this._getAmPm(this.endTime)}
                     </span>`
                   : ""}
               </span>
+              ${this.showDuration ? html`<span class="duration"></span>` : ""}
             </div>
             <div class="warning-message hide" aria-live="assertive"></div>
           </div>
@@ -304,6 +322,8 @@ class DateRangeTimePicker extends LitElement {
             @click="${this._handleOkClick}"
             class="btn btn-primary"
             ?disabled="${this.okButtonDisabled}"
+            aria-disabled="${this.okButtonDisabled ? 'true' : 'false'}"
+            aria-label="Confirm date and time selection"
           >
             OK
           </button>
@@ -315,6 +335,9 @@ class DateRangeTimePicker extends LitElement {
   _handleTimeInputChange(event) {
     const inputType = event.target.dataset.type;
     let timeValue = event.target.value.replace(/[^0-9]/g, ""); // Clean the input
+
+    // Save the current cursor position
+    const cursorPosition = event.target.selectionStart;
 
     // If the input is empty, set the corresponding time to an empty string and return
     if (timeValue.length === 0) {
@@ -332,6 +355,7 @@ class DateRangeTimePicker extends LitElement {
     // If the input is less than 3 characters (not a complete time), just update the input field
     if (timeValue.length < 3) {
       event.target.value = timeValue;
+      event.target.setSelectionRange(cursorPosition, cursorPosition);
       return;
     }
 
@@ -356,8 +380,13 @@ class DateRangeTimePicker extends LitElement {
     // Reflect the update in the input field
     event.target.value = timeValue;
 
+    // Restore the cursor position
+    const newCursorPosition = Math.min(cursorPosition, timeValue.length);
+    event.target.setSelectionRange(newCursorPosition, newCursorPosition);
+
     // Update the OK button state
     this._updateOkButtonState();
+    this._updateDuration(); // Update the duration after time change
   }
 
   _validateTime() {
@@ -447,6 +476,7 @@ class DateRangeTimePicker extends LitElement {
 
     // Request an update to reflect the change
     this.requestUpdate();
+    this._updateDuration(); // Update the duration after AM/PM toggle
   }
 
   _toggleTimeAmPm(time) {
@@ -505,10 +535,9 @@ class DateRangeTimePicker extends LitElement {
       this.shadowRoot.querySelector(".warning-message");
     warningMessageElement.textContent = ""; // Clear previous warnings
 
-    // Check if either startTime or endTime is empty
     if (!this.startTime || !this.endTime) {
       warningMessageElement.textContent = "Times cannot be empty.";
-      return; // Prevent further execution
+      return;
     }
 
     const formattedStartDate = this.startDate
@@ -519,17 +548,9 @@ class DateRangeTimePicker extends LitElement {
       ? this.formatDateAccordingToSelectedFormat(this.endDate)
       : null;
 
-    if (formattedStartDate && formattedEndDate) {
-      this.dispatchEvent(
-        new CustomEvent("date-range-updated", {
-          detail: {
-            startDate: formattedStartDate,
-            endDate: formattedEndDate,
-          },
-        })
-      );
-    } else {
+    if (!formattedStartDate || !formattedEndDate) {
       console.error("Invalid date range selection");
+      return;
     }
 
     const formattedStartTime = this.is24HourFormat
@@ -540,20 +561,41 @@ class DateRangeTimePicker extends LitElement {
       ? this.endTime
       : `${this.formatTime(this.endTime)} ${this._getAmPm(this.endTime)}`;
 
-    if (formattedStartDate && formattedEndDate) {
-      this.dispatchEvent(
-        new CustomEvent("date-time-updated", {
-          detail: {
-            startDate: formattedStartDate,
-            endDate: formattedEndDate,
-            startTime: formattedStartTime,
-            endTime: formattedEndTime,
-          },
-        })
+    let durationText = "";
+
+    if (this.showDuration && this.startDate && this.endDate) {
+      const startDateTime = new Date(
+        `${this.startDate.toISOString().split("T")[0]}T${this.startTime}`
       );
-    } else {
-      console.error("Invalid date range selection");
+      const endDateTime = new Date(
+        `${this.endDate.toISOString().split("T")[0]}T${this.endTime}`
+      );
+
+      const diffMs = endDateTime - startDateTime;
+      const diffHours = Math.round(diffMs / (1000 * 60 * 60));
+      const diffDays = Math.floor(diffHours / 24);
+      const remainingHours = diffHours % 24;
+
+      if (diffDays > 0) {
+        durationText += `${diffDays}d `;
+      }
+      durationText += `${remainingHours}h`;
     }
+
+    // Assign the calculated duration to the duration property
+    this.duration = this.showDuration ? durationText : "";
+
+    this.dispatchEvent(
+      new CustomEvent("date-time-updated", {
+        detail: {
+          startDate: formattedStartDate,
+          endDate: formattedEndDate,
+          startTime: formattedStartTime,
+          endTime: formattedEndTime,
+          duration: this.duration,
+        },
+      })
+    );
   }
 
   formatDateAccordingToSelectedFormat(date) {
@@ -628,7 +670,8 @@ class DateRangeTimePicker extends LitElement {
     const now = new Date();
     this.startDate = null;
     this.endDate = null;
-    this._setDefaultTimes(); // This remains for daterangetimepicker
+    this.duration = ""; // Clear the local duration
+    this._setDefaultTimes(); // Reset times
     this.currentStartMonth = now.getMonth();
     this.currentStartYear = now.getFullYear();
     this.currentEndMonth = this.currentStartMonth + 1;
@@ -640,11 +683,18 @@ class DateRangeTimePicker extends LitElement {
       this.currentEndYear++;
     }
 
-    // Dispatch the reset event to clear the input field in the DatePickerManager
+    // Clear duration display in the UI
+    const durationElement = this.shadowRoot.querySelector(".duration");
+    if (durationElement) {
+      durationElement.textContent = ""; // Clear the displayed duration
+    }
+
+    // Dispatch the reset event to clear the input field and duration in the DatePickerManager
     this.dispatchEvent(
       new CustomEvent("reset-picker", {
         bubbles: true,
         composed: true,
+        detail: { clearDuration: true }, // Include a flag to clear the duration
       })
     );
 
@@ -1122,6 +1172,7 @@ class DateRangeTimePicker extends LitElement {
     this.updateSelectedRange(); // Ensure this is called to update the UI
     this._updateOkButtonState(); // Check if OK button should be enabled
     this.requestUpdate(); // Request LitElement to re-render the component
+    this._updateDuration(); // Update the duration after selecting date
   }
 
   updateSelectedRange() {
@@ -1267,6 +1318,46 @@ class DateRangeTimePicker extends LitElement {
     const timesValid = this._validateTime(); // Check if the times are valid
 
     this.okButtonDisabled = !(startDateValid && endDateValid && timesValid); // Disable OK button if any condition is not met
+  }
+
+  _updateDuration() {
+    // Only update duration if showDuration is true
+    if (!this.showDuration) {
+      return;
+    }
+
+    const durationElement = this.shadowRoot.querySelector(".duration");
+
+    // Check if the durationElement exists before attempting to set its content
+    if (
+      durationElement &&
+      this.startDate &&
+      this.endDate &&
+      this.startTime &&
+      this.endTime
+    ) {
+      const startDateTime = new Date(
+        `${this.startDate.toISOString().split("T")[0]}T${this.startTime}`
+      );
+      const endDateTime = new Date(
+        `${this.endDate.toISOString().split("T")[0]}T${this.endTime}`
+      );
+
+      const diffMs = endDateTime - startDateTime;
+      const diffHours = Math.round(diffMs / (1000 * 60 * 60));
+      const diffDays = Math.floor(diffHours / 24);
+      const remainingHours = diffHours % 24;
+
+      let durationText = "";
+      if (diffDays > 0) {
+        durationText += `${diffDays}d `;
+      }
+      durationText += `${remainingHours}h`;
+
+      durationElement.textContent = `(${durationText})`;
+    } else if (durationElement) {
+      durationElement.textContent = "";
+    }
   }
 }
 
