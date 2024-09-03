@@ -147,27 +147,27 @@
       document.addEventListener("DOMContentLoaded", () => {
         const datePicker = document.getElementById("dateRangePicker");
         if (datePicker) {
-          console.log("DateRangePicker element found and listener attached"); // Log to confirm listener attachment
+          // console.log("DateRangePicker element found and listener attached"); // Log to confirm listener attachment
           datePicker.addEventListener("date-range-updated", function (event) {
-            console.log("Event detail received in listener:", event.detail); // Second log
+            // console.log("Event detail received in listener:", event.detail); // Second log
           });
         } else {
-          console.log("DateRangePicker element not found"); // Log if the element is not found
+          // console.log("DateRangePicker element not found"); // Log if the element is not found
         }
 
         const dateTimePicker = document.getElementById("dateRangeTimePicker");
         if (dateTimePicker) {
-          console.log(
-            "DateRangeTimePicker element found and listener attached"
-          ); // Log to confirm listener attachment
+         // console.log(
+         //   "DateRangeTimePicker element found and listener attached"
+         // ); // Log to confirm listener attachment
           dateTimePicker.addEventListener(
             "date-time-updated",
             function (event) {
-              console.log("Event detail received in listener:", event.detail); // Second log
+              // console.log("Event detail received in listener:", event.detail); // Second log
             }
           );
         } else {
-          console.log("DateRangeTimePicker element not found"); // Log if the element is not found
+          // console.log("DateRangeTimePicker element not found"); // Log if the element is not found
         }
       });
     </script>

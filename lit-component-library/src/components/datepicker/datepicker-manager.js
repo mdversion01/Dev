@@ -4,6 +4,7 @@ import { formStyles } from "../form-styles.js";
 import { inputFieldStyles } from "../input-field/input-field-styles";
 import { inputGroupStyles } from "../input-group/input-group-styles.js";
 import { buttonStyles } from "../button/button-styles";
+import { datepickerStyles } from "./datepicker-styles";
 import { createPopper } from "@popperjs/core";
 
 import "./datepicker";
@@ -17,58 +18,8 @@ class DatePickerManager extends LitElement {
     buttonStyles,
     inputFieldStyles,
     inputGroupStyles,
-    css`
-      .input-group {
-        display: flex;
-        align-items: center;
-      }
-
-      .calendar-button {
-        background-color: transparent;
-        border-top: 1px solid rgb(206, 212, 218);
-        border-bottom: 1px solid rgb(206, 212, 218);
-        border-right: 1px solid rgb(206, 212, 218);
-        border-left: none;
-        border-radius: 0 0.2rem 0.2rem 0;
-        cursor: pointer;
-        color: rgb(149, 149, 149);
-        margin-left: 0px;
-        min-height: 38px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 0.375rem 0.75rem;
-        font-size: 1rem;
-        font-weight: 400;
-        line-height: 1.5;
-        user-select: none;
-        transition: color 0.15s ease-in-out 0s,
-          background-color 0.15s ease-in-out 0s,
-          border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
-      }
-
-      .dropdown-wrapper {
-        position: relative;
-      }
-
-      .dropdown {
-        z-index: 1;
-        width: inherit;
-      }
-
-      .dropdown-content {
-        display: none;
-        background-color: white;
-        box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-        padding: 5px;
-        border-radius: 3px;
-      }
-
-      .dropdown.open .dropdown-content {
-        display: block;
-        width: inherit;
-      }
-    `,
+    datepickerStyles,
+    css``,
   ];
 
   static get properties() {

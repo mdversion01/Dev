@@ -12,60 +12,7 @@ class DateRangePicker extends LitElement {
     selectFieldStyles,
     utilitiesStyles,
     datepickerStyles,
-    css`
-      .dp-calendar:first-child {
-        margin-right: 2px;
-        border: none;
-        border-right: 1px solid #ccc;
-        border-radius: 0.25rem 0 0 0;
-      }
-      .dp-calendar:last-child {
-        margin-left: 2px;
-        border: none;
-        border-left: 1px solid #ccc;
-        border-radius: 0 0.25rem 0 0;
-      }
-
-      .border-top {
-        border-top: 1px solid #ccc !important;
-      }
-
-      footer {
-        border-width: 0 1px 1px 1px;
-        border-style: solid;
-        border-color: #ccc;
-      }
-
-      footer .small {
-        font-size: 80%;
-      }
-
-      .calendar-wrapper {
-        display: flex;
-        border-width: 1px 1px 0;
-        border-style: solid;
-        border-color: #ccc;
-        border-radius: 0.25rem 0.25rem 0 0;
-      }
-
-      .calendar-wrapper.focus,
-      .calendar-wrapper:focus {
-        outline: none !important;
-        background-color: transparent !important;
-        box-shadow: rgb(38 143 255 / 25%) 0px 0px 0px 0.2rem !important;
-        border-radius: 0.25rem 0.25rem 0 0 !important;
-      }
-
-      .focus {
-        outline: none;
-        background-color: #e0e0e0;
-        border-radius: 50%;
-      }
-
-      .to-spacing {
-        padding: 0 0.5rem;
-      }
-    `,
+    css``,
   ];
 
   static get properties() {

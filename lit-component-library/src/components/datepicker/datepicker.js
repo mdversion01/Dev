@@ -6,11 +6,7 @@ class DatePicker extends LitElement {
   static styles = [
     Fontawesome,
     datepickerStyles,
-    css`
-      footer .small {
-        font-size: 80%;
-      }
-    `,
+    css``,
   ];
 
   static get properties() {
@@ -25,7 +21,7 @@ class DatePicker extends LitElement {
       currentMonth: { type: Number },
       currentYear: { type: Number },
       displayContextExamples: { type: Boolean },
-      dateFormat: { type: String }, // New property for date format
+      dateFormat: { type: String }, // Property for date format
     };
   }
 
@@ -55,7 +51,7 @@ class DatePicker extends LitElement {
 
   render() {
     return html`
-      <div class="dp-calendar">
+      <div class="dp-single-calendar">
         <div
           class="calendar-inner"
           dir="ltr"
@@ -348,18 +344,6 @@ class DatePicker extends LitElement {
     return date.toISOString();
   }
 
-   // Function to map format strings to their corresponding functions
-   getFormattedDate(date, format) {
-    switch (format) {
-      case 'YYYY-MM-DD':
-        return this.formatDateYmd(date);
-      case 'MM-DD-YYYY':
-        return this.formatDateMdy(date);
-      default:
-        return this.formatDateYmd(date); // Default to YYYY-MM-DD if unrecognized
-    }
-  }
-
   updateSelectedDateDisplay(formattedDate) {
     const selectedDateDisplay =
       this.shadowRoot.querySelector(".selected-date bdi");
@@ -368,7 +352,7 @@ class DatePicker extends LitElement {
 
   updateSelectedDateElements(formattedDate) {
     if (!this.displayContextExamples) {
-      return; // Do nothing if context examples are not displayed
+      return;
     }
 
     const date = new Date(`${formattedDate}T00:00:00Z`);
@@ -397,7 +381,7 @@ class DatePicker extends LitElement {
     if (selectedDateDisplayMdy) {
       selectedDateDisplayMdy.textContent = selectedDateMdy;
     } else {
-      console.warn("Element with class .selected-date-Myd not found.");
+      console.warn("Element with class .selected-date-Mdy not found.");
     }
 
     if (selectedDateDisplayFull) {
@@ -417,7 +401,7 @@ class DatePicker extends LitElement {
 
   updateActiveDateElements() {
     if (!this.displayContextExamples) {
-      return; // Do nothing if context examples are not displayed
+      return;
     }
 
     const focusedSpan = this.shadowRoot.querySelector(
@@ -451,6 +435,19 @@ class DatePicker extends LitElement {
       activeDateMDY.textContent = "Date not selected";
       activeLongDate.textContent = "Date not selected";
       activeIsoDate.textContent = "Date not selected";
+    }
+  }
+
+  // Add a helper method to map the dateFormat to the correct function
+  getDateFormatMethod(format) {
+    switch (format) {
+      case "YYYY-MM-DD":
+        return this.formatDateYmd;
+      case "MM-DD-YYYY":
+        return this.formatDateMdy;
+      default:
+        console.warn(`Unknown date format: ${format}. Using default.`);
+        return this.formatDateYmd; // Default to YYYY-MM-DD
     }
   }
 
@@ -492,9 +489,42 @@ class DatePicker extends LitElement {
         Date.UTC(this.selectedYear, this.selectedMonth - 1, selectedDay)
       );
 
-      const formattedSelectedDate = this.getFormattedDate(this.selectedDate, this.dateFormat); // Use the selected date format
-      this.updateSelectedDateDisplay(formattedSelectedDate);
+      // Get the method to format the date according to the selected format
+      const formatMethod = this.getDateFormatMethod(this.dateFormat);
+      const formattedSelectedDate = formatMethod.call(this, this.selectedDate);
+      const selectedFormatted = this.formatDateLong(this.selectedDate);
 
+      // Always display the selectedFormatted date
+      this.updateSelectedDateDisplay(selectedFormatted);
+      this.updateSelectedDateElements(
+        this.selectedDate.toISOString().split("T")[0]
+      );
+      this.updateActiveDateElements();
+
+      this.currentSelectedDate = new Date(
+        Date.UTC(this.selectedYear, this.selectedMonth - 1, selectedDay)
+      );
+
+      this.updateSelectedDateElements(
+        this.currentSelectedDate.toISOString().split("T")[0]
+      );
+
+      this.shadowRoot.querySelector(".calendar").classList.add("focus");
+      this.isCalendarFocused = true;
+
+      const formattedDate = `${this.selectedDate.getUTCFullYear()}-${(
+        this.selectedDate.getUTCMonth() + 1
+      )
+        .toString()
+        .padStart(2, "0")}-${this.selectedDate
+        .getUTCDate()
+        .toString()
+        .padStart(2, "0")}`;
+      this.shadowRoot
+        .querySelector(".calendar")
+        .setAttribute("aria-activedescendant", `cell-${formattedDate}`);
+
+      // Dispatch the date-selected event with formatted date
       this.dispatchEvent(
         new CustomEvent("date-selected", {
           detail: { formattedDate: formattedSelectedDate },
@@ -526,7 +556,14 @@ class DatePicker extends LitElement {
 
       this.renderCalendar(this.currentMonth, this.currentYear);
 
-      const formattedDate = this.getFormattedDate(this.selectedDate, this.dateFormat);
+      const formattedDate = `${this.selectedDate.getUTCFullYear()}-${(
+        this.selectedDate.getUTCMonth() + 1
+      )
+        .toString()
+        .padStart(2, "0")}-${this.selectedDate
+        .getUTCDate()
+        .toString()
+        .padStart(2, "0")}`;
       this.shadowRoot
         .querySelector(".calendar")
         .setAttribute("aria-activedescendant", `cell-${formattedDate}`);
@@ -570,7 +607,7 @@ class DatePicker extends LitElement {
       const isActive = focusedSpan.classList.contains("active");
 
       if (isActive && !isPreviousMonthDay && !isNextMonthDay) {
-        return; // Do nothing if the active day is pressed again
+        return;
       } else {
         this.handleDayClick({ target: focusedSpan });
       }
@@ -591,7 +628,6 @@ class DatePicker extends LitElement {
           direction === "next" ? currentIndex + 1 : currentIndex - 1;
 
         if (direction === "up" && currentIndex < 7) {
-          // Move to the previous month and set focus on the correct day
           this.prevMonth();
           const daysInPrevMonth = new Date(
             this.currentYear,
@@ -606,7 +642,6 @@ class DatePicker extends LitElement {
           direction === "down" &&
           currentIndex >= calendarCells.length - 7
         ) {
-          // Move to the next month and set focus on the correct day
           this.nextMonth();
           newIndex = currentIndex % 7;
           calendarCells = this.shadowRoot.querySelectorAll(
@@ -916,7 +951,6 @@ class DatePicker extends LitElement {
 
         if (event.key === "ArrowUp") {
           if (index < 7) {
-            // If in the first row, move to the previous month
             const prevMonthLastDay = new Date(
               this.currentYear,
               this.currentMonth,
@@ -929,11 +963,10 @@ class DatePicker extends LitElement {
             );
             newIndex = calendarCells.length - offset;
           } else {
-            newIndex = Math.max(index - 7, 0); // Move up within the current month
+            newIndex = Math.max(index - 7, 0);
           }
         } else if (event.key === "ArrowDown") {
           if (index >= calendarCells.length - 7) {
-            // If in the last row, move to the next month
             const offset = index % 7;
             this.nextMonth();
             calendarCells = this.shadowRoot.querySelectorAll(
@@ -941,7 +974,7 @@ class DatePicker extends LitElement {
             );
             newIndex = offset;
           } else {
-            newIndex = Math.min(index + 7, calendarCells.length - 1); // Move down within the current month
+            newIndex = Math.min(index + 7, calendarCells.length - 1);
           }
         } else if (event.key === "ArrowLeft") {
           newIndex = index - 1;
@@ -949,8 +982,8 @@ class DatePicker extends LitElement {
             this.prevMonth();
             calendarCells = this.shadowRoot.querySelectorAll(
               ".calendar-grid-item"
-            ); // Update after rendering new month
-            newIndex = calendarCells.length - 1; // Move focus to the last day of the previous month
+            );
+            newIndex = calendarCells.length - 1;
           }
         } else if (event.key === "ArrowRight") {
           newIndex = index + 1;
@@ -958,8 +991,8 @@ class DatePicker extends LitElement {
             this.nextMonth();
             calendarCells = this.shadowRoot.querySelectorAll(
               ".calendar-grid-item"
-            ); // Update after rendering new month
-            newIndex = 0; // Move focus to the first day of the next month
+            );
+            newIndex = 0;
           }
         }
 
@@ -997,7 +1030,7 @@ class DatePicker extends LitElement {
 
   updateInitialContext() {
     if (!this.displayContextExamples) {
-      return; // Skip updating the context if not displaying context examples
+      return;
     }
 
     const today = new Date();

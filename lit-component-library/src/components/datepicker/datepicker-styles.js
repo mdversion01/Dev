@@ -32,7 +32,7 @@ export const datepickerStyles = css`
   }
 
   .border-top {
-    border-top: 1px solid #dee2e6 !important;
+    border-top: 1px solid #ccc !important;
   }
 
   .bg-light {
@@ -284,8 +284,31 @@ export const datepickerStyles = css`
     border: 0 !important;
   }
 
+  .focus {
+    outline: none;
+    background-color: #e0e0e0;
+    /* border-radius: 50%; */
+  }
+
+  .dp-single-calendar,
   .dp-calendar {
     width: 270px;
+  }
+
+  .calendar-wrapper {
+    display: flex;
+    border-width: 1px 1px 0;
+    border-style: solid;
+    border-color: #ccc;
+    border-radius: 0.25rem 0.25rem 0 0;
+  }
+
+  .calendar-wrapper.focus,
+  .calendar-wrapper:focus {
+    outline: none !important;
+    background-color: transparent !important;
+    box-shadow: rgb(38 143 255 / 25%) 0px 0px 0px 0.2rem !important;
+    border-radius: 0.25rem 0.25rem 0 0 !important;
   }
 
   .calendar {
@@ -372,6 +395,24 @@ export const datepickerStyles = css`
     font-size: 14px;
   }
 
+  footer .small {
+    font-size: 80%;
+  }
+
+  .dp-calendar:first-child {
+    margin-right: 2px;
+    border: none;
+    border-right: 1px solid #ccc;
+    border-radius: 0.25rem 0 0 0;
+  }
+
+  .dp-calendar:last-child {
+    margin-left: 2px;
+    border: none;
+    border-left: 1px solid #ccc;
+    border-radius: 0 0.25rem 0 0;
+  }
+
   .range-picker-wrapper {
     padding: 5px;
     /* max-width: 558px; */
@@ -381,6 +422,10 @@ export const datepickerStyles = css`
 
   .range-picker-wrapper footer {
     color: #a7a7a7;
+    border-width: 0 1px 1px 1px;
+    border-style: solid;
+    border-color: #ccc;
+    background-color: rgb(248, 249, 250);
   }
 
   .range-picker-nav {
@@ -508,5 +553,68 @@ export const datepickerStyles = css`
     font-size: 0.8333rem;
     margin: 0.5rem 0 0;
     text-align: center;
+  }
+
+  .time-input {
+    width: 50px;
+    padding: 0.05rem 0.4rem;
+    font-size: 0.833rem;
+    margin: 0 5px 0 0;
+  }
+
+  .am-pm-toggle {
+    width: 28px;
+    cursor: pointer;
+    margin-left: 5px;
+  }
+
+  .to-spacing {
+    padding: 0 0.5rem;
+  }
+
+  .calendar-button {
+    background-color: transparent;
+    border-top: 1px solid rgb(206, 212, 218);
+    border-bottom: 1px solid rgb(206, 212, 218);
+    border-right: 1px solid rgb(206, 212, 218);
+    border-left: none;
+    border-radius: 0 0.2rem 0.2rem 0;
+    cursor: pointer;
+    color: rgb(149, 149, 149);
+    margin-left: 0px;
+    min-height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    user-select: none;
+    transition: color 0.15s ease-in-out 0s,
+      background-color 0.15s ease-in-out 0s, border-color 0.15s ease-in-out 0s,
+      box-shadow 0.15s ease-in-out 0s;
+  }
+
+  .dropdown-wrapper {
+    position: relative;
+  }
+
+  .dropdown-wrapper .dropdown {
+    z-index: 1;
+    width: inherit;
+  }
+
+  .dropdown-wrapper .dropdown-content {
+    display: none;
+    background-color: white;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    padding: 5px;
+    border-radius: 3px;
+  }
+
+  .dropdown-wrapper .dropdown.open .dropdown-content {
+    display: block;
+    width: inherit;
   }
 `;

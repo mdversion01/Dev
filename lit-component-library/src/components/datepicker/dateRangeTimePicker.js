@@ -12,73 +12,7 @@ class DateRangeTimePicker extends LitElement {
     selectFieldStyles,
     utilitiesStyles,
     datepickerStyles,
-    css`
-      .dp-calendar:first-child {
-        margin-right: 2px;
-        border: none;
-        border-right: 1px solid #ccc;
-        border-radius: 0.25rem 0 0 0;
-      }
-      .dp-calendar:last-child {
-        margin-left: 2px;
-        border: none;
-        border-left: 1px solid #ccc;
-        border-radius: 0 0.25rem 0 0;
-      }
-
-      .border-top {
-        border-top: 1px solid #ccc !important;
-      }
-
-      footer {
-        border-width: 0 1px 1px 1px;
-        border-style: solid;
-        border-color: #ccc;
-      }
-
-      footer .small {
-        font-size: 80%;
-      }
-
-      .calendar-wrapper {
-        display: flex;
-        border-width: 1px 1px 0;
-        border-style: solid;
-        border-color: #ccc;
-        border-radius: 0.25rem 0.25rem 0 0;
-      }
-
-      .calendar-wrapper.focus,
-      .calendar-wrapper:focus {
-        outline: none !important;
-        background-color: transparent !important;
-        box-shadow: rgb(38 143 255 / 25%) 0px 0px 0px 0.2rem !important;
-        border-radius: 0.25rem 0.25rem 0 0 !important;
-      }
-
-      .focus {
-        outline: none;
-        background-color: #e0e0e0;
-        border-radius: 50%;
-      }
-
-      .time-input {
-        width: 50px;
-        padding: 0.05rem 0.4rem;
-        font-size: 0.833rem;
-        margin: 0 5px 0 0;
-      }
-
-      .am-pm-toggle {
-        width: 28px;
-        cursor: pointer;
-        margin-left: 5px;
-      }
-
-      .to-spacing {
-        padding: 0 0.5rem;
-      }
-    `,
+    css``,
   ];
 
   static get properties() {
@@ -125,7 +59,6 @@ class DateRangeTimePicker extends LitElement {
 
   updated(changedProperties) {
     if (changedProperties.has("is24HourFormat")) {
-      console.log("is24HourFormat changed to:", this.is24HourFormat);
       this._setDefaultTimes(); // Set default times when format changes
     }
   }
