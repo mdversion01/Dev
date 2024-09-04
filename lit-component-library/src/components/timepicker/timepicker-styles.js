@@ -10,6 +10,10 @@ export const timepickerStyles = css`
     width: 40px;
   }
 
+  .time-picker-container {
+    display: flex;
+  }
+
   .time-picker {
     position: relative;
   }
@@ -220,6 +224,32 @@ export const timepickerStyles = css`
     color: #ac0000;
   }
 
+  .toggle-format-btn {
+    height: 38px !important;
+    color: rgb(108, 117, 125);
+    border-color: #ccc !important;
+  }
+
+  .toggle-format-btn.sm {
+    height: 30px !important;
+    width: 30px !important;
+    min-width: 30px !important;
+    padding: 0 !important;
+  }
+
+  .toggle-format-btn.lg {
+    height: 45px !important;
+    width: 45px !important;
+    min-width: 45px !important;
+    padding: 0 !important;
+  }
+
+  .toggle-format-btn .format-btn {
+    width: 24px;
+    height: 24px;
+    fill: currentColor;
+  }
+
   .validation-message,
   .warning-message {
     color: #ac0000;
@@ -257,11 +287,11 @@ export const timepickerStyles = css`
   }
 
   .plumage .time-dropdown {
-    top: 29px
+    top: 29px;
   }
 
   .plumage .time-dropdown.lg {
-    top: 44px
+    top: 44px;
   }
 
   .plumage .clear-button {
@@ -319,6 +349,38 @@ export const timepickerStyles = css`
   .plumage .time-icon-btn:focus {
     outline: 0;
     box-shadow: rgb(142, 142, 142) 0 0 0 0 !important;
+  }
+
+  .plumage .toggle-format-btn {
+    height: auto !important;
+    color: rgb(108, 117, 125);
+    border: none !important;
+  }
+
+  .plumage .toggle-format-btn.sm {
+    /* height: 30px !important;
+    width: 30px !important;
+    min-width: 30px !important; */
+    padding: 0 !important;
+  }
+
+  .plumage .toggle-format-btn.lg {
+    /* height: 45px !important;
+    width: 45px !important;
+    min-width: 45px !important; */
+    padding: 0 !important;
+  }
+
+  .plumage .toggle-format-btn:hover,
+  .plumage .toggle-format-btn:focus {
+    background-color: transparent;
+    text-decoration: none;
+    color: rgb(82, 82, 82) !important;
+  }
+
+  .plumage .toggle-format-btn:focus {
+    outline: 0;
+    box-shadow: rgb(142 142 142) 0px 0px 0px 0px !important;
   }
 
   .plumage .time-picker .pl-input-group-append button:last-child {

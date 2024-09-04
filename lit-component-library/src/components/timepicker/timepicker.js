@@ -64,247 +64,275 @@ class TimePicker extends LitElement {
 
   render() {
     return html`
-      <div class="time-picker">
-        <label for="${this.id}" id="${this.ariaLabelledby}" class="sr-only"
-          >Enter Time</label
-        >
-        <div
-          class="pl-input-group${this.size === "sm"
-            ? " pl-input-group-sm"
-            : this.size === "lg"
-            ? " pl-input-group-lg"
-            : ""} mb-1"
-        >
-          <input
-            type="text"
-            id="${this.id}"
-            name="${this.inputName}"
-            class="form-control time-input"
-            style=${ifDefined(this.inputWidth ? `width: ${this.inputWidth}px` : undefined)}
-            placeholder="Enter Time"
-            value="${this._getFormattedTime()}"
-            role="textbox"
-            aria-label="${this.ariaLabel}"
-            aria-labelledby="${this.ariaLabelledby}"
-            aria-controls="time-dropdown"
-            aria-invalid="${!this.isValid}"
-            aria-describedby="validation-message"
-            maxlength="${this.is24HourFormat
-              ? this.hideSeconds
-                ? "5"
-                : "8"
-              : this.hideSeconds
-              ? "8"
-              : "11"}"
-            @focus="${this._hideDropdown}"
-            @input="${this._validateTimeInput}"
-            @paste="${this._preventInvalidPaste}"
-            @keypress="${this._handleEnterKey}"
-            @keydown="${this._handleKeydown}"
-          />
-          <div class="pl-input-group-append">
-            <button
-              class="clear-button"
-              aria-label="Clear Time"
-              role="button"
-              @click="${this._clearTime}"
-            >
-              <i class="fas fa-times-circle"></i>
-            </button>
-            ${this.hideTimepickerBtn
-              ? ""
-              : html`<button
-                  class="time-icon pl-input-group-text pl-btn time-icon-btn"
-                  aria-label="Open Timepicker"
+      <div class="time-picker-container">
+        <div class="time-picker ${!this.display24HourOnly && !this.display12HourOnly ? 'mr-1' : ''}">
+          <label for="${this.id}" id="${this.ariaLabelledby}" class="sr-only"
+            >Enter Time</label
+          >
+          <div
+            class="pl-input-group${this.size === "sm"
+              ? " pl-input-group-sm"
+              : this.size === "lg"
+              ? " pl-input-group-lg"
+              : ""} mb-1"
+          >
+            <input
+              type="text"
+              id="${this.id}"
+              name="${this.inputName}"
+              class="form-control time-input"
+              style=${ifDefined(
+                this.inputWidth ? `width: ${this.inputWidth}px` : undefined
+              )}
+              placeholder="Enter Time"
+              value="${this._getFormattedTime()}"
+              role="textbox"
+              aria-label="${this.ariaLabel}"
+              aria-labelledby="${this.ariaLabelledby}"
+              aria-controls="time-dropdown"
+              aria-invalid="${!this.isValid}"
+              aria-describedby="validation-message"
+              maxlength="${this.is24HourFormat
+                ? this.hideSeconds
+                  ? "5"
+                  : "8"
+                : this.hideSeconds
+                ? "8"
+                : "11"}"
+              @focus="${this._hideDropdown}"
+              @input="${this._validateTimeInput}"
+              @paste="${this._preventInvalidPaste}"
+              @keypress="${this._handleEnterKey}"
+              @keydown="${this._handleKeydown}"
+            />
+            <div class="pl-input-group-append">
+              <button
+                class="clear-button"
+                aria-label="Clear Time"
+                role="button"
+                @click="${this._clearTime}"
+              >
+                <i class="fas fa-times-circle"></i>
+              </button>
+              ${this.hideTimepickerBtn
+                ? ""
+                : html`<button
+                    class="time-icon pl-input-group-text pl-btn time-icon-btn"
+                    aria-label="Open Timepicker"
+                    role="button"
+                    tabindex="0"
+                    @click="${this._toggleDropdown}"
+                    ?disabled="${!this.isValid}"
+                  >
+                    <i class="fa fa-clock"></i>
+                  </button>`}
+            </div>
+          </div>
+
+          <div
+            class="validation-message ${this.validationMessage ? "" : "hidden"}"
+            role="alert"
+            id="validation-message"
+          >
+            ${this.validationMessage}
+          </div>
+
+          <div class="warning-message hidden" role="alert" id="warning-message">
+            <i class="fa fa-exclamation-triangle"></i> Time values cannot exceed
+            the limits.
+          </div>
+
+          <div
+            class="time-dropdown${this.size === "sm"
+              ? " sm"
+              : this.size === "lg"
+              ? " lg"
+              : ""} hidden"
+            role="listbox"
+            aria-hidden="true"
+            aria-labelledby="time-label"
+            tabindex="0"
+          >
+            <div class="time-spinner-wrapper">
+              <div class="time-spinner">
+                <button
+                  class="arrow up"
+                  data-type="hour"
+                  aria-label="Increment Hour"
                   role="button"
-                  tabindex="0"
-                  @click="${this._toggleDropdown}"
-                  ?disabled="${!this.isValid}"
+                  @click="${this._increment}"
                 >
-                  <i class="fa fa-clock"></i>
-                </button>`}
-          </div>
-        </div>
+                  <i class="fas fa-chevron-up"></i>
+                </button>
+                <span
+                  class="hour-display"
+                  role="option"
+                  aria-selected="false"
+                  aria-activedescendant="active-hour"
+                  tabindex="0"
+                  id="active-hour"
+                >
+                  00
+                </span>
+                <button
+                  class="arrow down"
+                  data-type="hour"
+                  aria-label="Decrement Hour"
+                  role="button"
+                  @click="${this._decrement}"
+                >
+                  <i class="fas fa-chevron-down"></i>
+                </button>
+              </div>
+              <div class="time-spinner-colon">
+                <div class="dot"><i class="fa fa-circle"></i></div>
+                <div class="dot"><i class="fa fa-circle"></i></div>
+              </div>
+              <div class="time-spinner">
+                <button
+                  class="arrow up"
+                  data-type="minute"
+                  aria-label="Increment Minute"
+                  role="button"
+                  @click="${this._increment}"
+                >
+                  <i class="fas fa-chevron-up"></i>
+                </button>
+                <span
+                  class="minute-display"
+                  role="option"
+                  aria-selected="false"
+                  aria-activedescendant="active-minute"
+                  tabindex="0"
+                  id="active-minute"
+                >
+                  00
+                </span>
+                <button
+                  class="arrow down"
+                  data-type="minute"
+                  aria-label="Decrement Minute"
+                  role="button"
+                  @click="${this._decrement}"
+                >
+                  <i class="fas fa-chevron-down"></i>
+                </button>
+              </div>
+              ${this.hideSeconds
+                ? ""
+                : html`<div class="time-spinner-colon">
+                      <div class="dot"><i class="fa fa-circle"></i></div>
+                      <div class="dot"><i class="fa fa-circle"></i></div>
+                    </div>
+                    <div class="time-spinner">
+                      <button
+                        class="arrow up"
+                        data-type="second"
+                        aria-label="Increment Second"
+                        role="button"
+                        @click="${this._increment}"
+                      >
+                        <i class="fas fa-chevron-up"></i>
+                      </button>
+                      <span
+                        class="second-display"
+                        role="option"
+                        aria-selected="false"
+                        aria-activedescendant="active-second"
+                        tabindex="0"
+                        id="active-second"
+                      >
+                        00
+                      </span>
+                      <button
+                        class="arrow down"
+                        data-type="second"
+                        aria-label="Decrement Second"
+                        role="button"
+                        @click="${this._decrement}"
+                      >
+                        <i class="fas fa-chevron-down"></i>
+                      </button>
+                    </div>`}
 
-        <div
-          class="validation-message ${this.validationMessage ? "" : "hidden"}"
-          role="alert"
-          id="validation-message"
-        >
-          ${this.validationMessage}
-        </div>
-
-        <div class="warning-message hidden" role="alert" id="warning-message">
-          <i class="fa fa-exclamation-triangle"></i> Time values cannot exceed
-          the limits.
-        </div>
-
-        <div
-          class="time-dropdown${this.size === "sm"
-            ? " sm"
-            : this.size === "lg"
-            ? " lg"
-            : ""} hidden"
-          role="listbox"
-          aria-hidden="true"
-          aria-labelledby="time-label"
-          tabindex="0"
-        >
-          <div class="time-spinner-wrapper">
-            <div class="time-spinner">
+              <div class="time-spinner am-pm-spinner hidden">
+                <button
+                  class="arrow up"
+                  data-type="ampm"
+                  aria-label="Increment AM/PM"
+                  role="button"
+                  @click="${this._increment}"
+                >
+                  <i class="fas fa-chevron-up"></i>
+                </button>
+                <span
+                  class="ampm-display"
+                  role="option"
+                  aria-selected="false"
+                  tabindex="0"
+                  id="active-ampm"
+                  aria-activedescendant="active-ampm"
+                >
+                  AM
+                </span>
+                <button
+                  class="arrow down"
+                  data-type="ampm"
+                  aria-label="Decrement AM/PM"
+                  role="button"
+                  @click="${this._decrement}"
+                >
+                  <i class="fas fa-chevron-down"></i>
+                </button>
+              </div>
+            </div>
+            <div class="time-spinner-close">
               <button
-                class="arrow up"
-                data-type="hour"
-                aria-label="Increment Hour"
-                role="button"
-                @click="${this._increment}"
+                class="pl-btn pl-btn--outlined primary sm btntext close-button"
+                aria-label="Close"
+                @click="${this._hideDropdown}"
               >
-                <i class="fas fa-chevron-up"></i>
-              </button>
-              <span
-                class="hour-display"
-                role="option"
-                aria-selected="false"
-                aria-activedescendant="active-hour"
-                tabindex="0"
-                id="active-hour"
-              >
-                00
-              </span>
-              <button
-                class="arrow down"
-                data-type="hour"
-                aria-label="Decrement Hour"
-                role="button"
-                @click="${this._decrement}"
-              >
-                <i class="fas fa-chevron-down"></i>
+                Close
               </button>
             </div>
-            <div class="time-spinner-colon">
-              <div class="dot"><i class="fa fa-circle"></i></div>
-              <div class="dot"><i class="fa fa-circle"></i></div>
-            </div>
-            <div class="time-spinner">
-              <button
-                class="arrow up"
-                data-type="minute"
-                aria-label="Increment Minute"
-                role="button"
-                @click="${this._increment}"
-              >
-                <i class="fas fa-chevron-up"></i>
-              </button>
-              <span
-                class="minute-display"
-                role="option"
-                aria-selected="false"
-                aria-activedescendant="active-minute"
-                tabindex="0"
-                id="active-minute"
-              >
-                00
-              </span>
-              <button
-                class="arrow down"
-                data-type="minute"
-                aria-label="Decrement Minute"
-                role="button"
-                @click="${this._decrement}"
-              >
-                <i class="fas fa-chevron-down"></i>
-              </button>
-            </div>
-            ${this.hideSeconds
-              ? ""
-              : html`<div class="time-spinner-colon">
-                    <div class="dot"><i class="fa fa-circle"></i></div>
-                    <div class="dot"><i class="fa fa-circle"></i></div>
-                  </div>
-                  <div class="time-spinner">
-                    <button
-                      class="arrow up"
-                      data-type="second"
-                      aria-label="Increment Second"
-                      role="button"
-                      @click="${this._increment}"
-                    >
-                      <i class="fas fa-chevron-up"></i>
-                    </button>
-                    <span
-                      class="second-display"
-                      role="option"
-                      aria-selected="false"
-                      aria-activedescendant="active-second"
-                      tabindex="0"
-                      id="active-second"
-                    >
-                      00
-                    </span>
-                    <button
-                      class="arrow down"
-                      data-type="second"
-                      aria-label="Decrement Second"
-                      role="button"
-                      @click="${this._decrement}"
-                    >
-                      <i class="fas fa-chevron-down"></i>
-                    </button>
-                  </div>`}
-
-            <div class="time-spinner am-pm-spinner hidden">
-              <button
-                class="arrow up"
-                data-type="ampm"
-                aria-label="Increment AM/PM"
-                role="button"
-                @click="${this._increment}"
-              >
-                <i class="fas fa-chevron-up"></i>
-              </button>
-              <span
-                class="ampm-display"
-                role="option"
-                aria-selected="false"
-                tabindex="0"
-                id="active-ampm"
-                aria-activedescendant="active-ampm"
-              >
-                AM
-              </span>
-              <button
-                class="arrow down"
-                data-type="ampm"
-                aria-label="Decrement AM/PM"
-                role="button"
-                @click="${this._decrement}"
-              >
-                <i class="fas fa-chevron-down"></i>
-              </button>
-            </div>
-          </div>
-          <div class="time-spinner-close">
-            <button
-              class="pl-btn pl-btn--outlined primary sm btntext close-button"
-              aria-label="Close"
-              @click="${this._hideDropdown}"
-            >
-              Close
-            </button>
           </div>
         </div>
         ${!this.display24HourOnly && !this.display12HourOnly
           ? html`
               <button
-                class="toggle-button pl-btn pl-btn--outlined default btntext sm mt-2"
-                aria-label="Toggle 12/24 Hour Format"
+                class="toggle-format-btn pl-btn pl-btn--outlined${this.size === "sm"
+              ? " sm"
+              : this.size === "lg"
+              ? " lg"
+              : ""}"
+                aria-label="${this.is24HourFormat
+                  ? "Switch to 12 Hour Format"
+                  : "Switch to 24 Hour Format"}"
                 role="button"
                 @click="${this._toggleFormat}"
                 ?disabled="${!this.isValid}"
               >
                 ${this.is24HourFormat
-                  ? "Switch to 12 Hour Format"
-                  : "Switch to 24 Hour Format"}
+                  ? html`<svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      class="format-btn"
+                    >
+                      <title>Switch to 12 Hour Format</title>
+                      <path
+                        d="M13 2V4C17 4.5 20 7.8 20 11.9C20 15.1 18.1 17.9 15.3 19.2L13 17V22H18L16.8 20.8C19.9 19.1 22 15.8 22 12C22 6.8 18 2.5 13 2M11 2C9.1 2.2 7.2 3 5.7 4.2L7.1 5.6C8.2 4.8 9.6 4.2 11 4V2M4.2 5.7C3 7.2 2.2 9.1 2 11H4C4.2 9.6 4.8 8.2 5.6 7.1L4.2 5.7M2 13C2.2 14.9 3 16.8 4.2 18.3L5.6 16.9C4.8 15.8 4.2 14.4 4 13H2M7.1 18.4L5.7 19.8C7.2 21 9.1 21.8 11 22V20C9.6 19.8 8.2 19.2 7.1 18.4M12 8V10H15V11H14C12.9 11 12 11.9 12 13V16H17V14H14V13H15C16.1 13 17 12.1 17 11V10C17 8.9 16.1 8 15 8H12M7 8V10H8V16H10V8H7Z"
+                      />
+                    </svg>`
+                  : html`<svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      class="format-btn"
+                    >
+                      <title>Switch to 24 Hour Format</title>
+                      <path
+                        d="M13 2.05V4.07C16.95 4.56 20 7.92 20 12C20 15.21 18.08 18 15.28 19.28L13 17V22H18L16.78 20.78C19.91 19.07 22 15.76 22 12C22 6.82 18.05 2.55 13 2.05M11 2C9.05 2.2 7.2 2.96 5.68 4.21L7.1 5.63C8.23 4.75 9.58 4.2 11 4V2M4.2 5.68C2.96 7.2 2.2 9.05 2 11H4C4.19 9.58 4.75 8.23 5.63 7.1L4.2 5.68M6 8V10H9V11H8C6.9 11 6 11.9 6 13V16H11V14H8V13H9C10.11 13 11 12.11 11 11V10C11 8.9 10.11 8 9 8H6M12 8V13H15V16H17V13H18V11H17V8H15V11H14V8H12M2 13C2.2 14.95 2.97 16.8 4.22 18.32L5.64 16.9C4.76 15.77 4.2 14.42 4 13H2M7.11 18.37L5.68 19.79C7.2 21.03 9.05 21.8 11 22V20C9.58 19.81 8.24 19.25 7.11 18.37Z"
+                      />
+                    </svg>`}
               </button>
             `
           : ""}
@@ -748,7 +776,8 @@ class TimePicker extends LitElement {
   }
 
   _hideWarningMessage() {
-    const warningMessageElement = this.shadowRoot.querySelector(".warning-message");
+    const warningMessageElement =
+      this.shadowRoot.querySelector(".warning-message");
     if (warningMessageElement) {
       warningMessageElement.classList.add("hidden");
     }
@@ -767,7 +796,7 @@ class TimePicker extends LitElement {
   }
 
   _toggleButtons() {
-    const toggleButton = this.shadowRoot.querySelector(".toggle-button");
+    const toggleButton = this.shadowRoot.querySelector(".toggle-format-btn");
     const timeIconBtn = this.shadowRoot.querySelector(".time-icon-btn");
 
     if (toggleButton) {
