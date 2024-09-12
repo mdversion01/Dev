@@ -4,12 +4,14 @@ import { datepickerStyles } from "./datepicker-styles.js";
 import { utilitiesStyles } from "../utilities-styles.js";
 import { formStyles } from "../form-styles.js";
 import { selectFieldStyles } from "../select-field/select-field-styles.js";
+import { plSelectFieldStyles } from "../pl-select-field/pl-select-field-styles.js";
 
 class DateRangePicker extends LitElement {
   static styles = [
     Fontawesome,
     formStyles,
     selectFieldStyles,
+    plSelectFieldStyles,
     utilitiesStyles,
     datepickerStyles,
     css``,
@@ -20,6 +22,7 @@ class DateRangePicker extends LitElement {
       ariaLabel: { type: String },
       dateFormat: { type: String },
       okButtonDisabled: { type: Boolean },
+      plumage: { type: Boolean },
     };
   }
 
@@ -35,6 +38,8 @@ class DateRangePicker extends LitElement {
     this.currentEndYear = this.currentStartYear;
     this.focusedDate = new Date();
     this.okButtonDisabled = true; // Initialize the OK button as disabled
+    this.plumage = false;
+    this.addEventListener("reset-picker", this.resetCalendar);
 
     if (this.currentEndMonth > 11) {
       this.currentEndMonth = 0;
@@ -42,14 +47,139 @@ class DateRangePicker extends LitElement {
     }
   }
 
+  connectedCallback() {
+    super.connectedCallback();
+    document.addEventListener("click", this.handleDocumentClick);
+
+     // Listen for the reset-picker event and reset the calendar when it's triggered
+  this.addEventListener("reset-picker", this.resetCalendar);
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    document.removeEventListener("click", this.handleDocumentClick);
+
+    // Remove the event listener when the component is disconnected
+  this.removeEventListener("reset-picker", this.resetCalendar);
+  }
+
   firstUpdated() {
     this.syncMonthYearSelectors();
+  }
+
+  renderSelects() {
+    return html`
+      <label id="monthSelectField" class="sr-only visually-hidden" for="months"
+        >Select Month</label
+      >
+      <select
+        id="months"
+        class="form-select form-control select-sm months"
+        aria-label="Select Month"
+        aria-labelledby="monthSelectField"
+        role="listbox"
+        @change=${this.handleMonthChange}
+      >
+        ${Array.from({ length: 12 }, (_, i) => {
+          const month = new Date(0, i).toLocaleString("en-US", {
+            month: "long",
+          });
+          return html`<option value="${i}">${month}</option>`;
+        })}
+      </select>
+
+      <label id="yearSelectField" class="sr-only visually-hidden" for="year"
+        >Select Year</label
+      >
+      <select
+        id="year"
+        class="form-select form-control select-sm years"
+        aria-label="Select Year"
+        aria-labelledby="yearSelectField"
+        role="listbox"
+        @change=${this.handleYearChange}
+      >
+        ${Array.from({ length: 21 }, (_, i) => {
+          const year = i + 2014;
+          return html`<option value="${year}">${year}</option>`;
+        })}
+      </select>
+    `;
+  }
+
+  renderPlumageSelects() {
+    return html`
+      <div
+        class="pl-input-container mr-2"
+        @click="${this.handleInteraction}"
+        role="presentation"
+        aria-labelledby="monthSelectField"
+      >
+        <label
+          id="monthSelectField"
+          class="sr-only visually-hidden"
+          for="months"
+          >Select Month</label
+        >
+        <select
+          id="months"
+          class="form-select form-control select-sm months"
+          aria-label="Select Month"
+          aria-labelledby="monthSelectField"
+          role="listbox"
+          @change=${this.handleMonthChange}
+          @focus="${this.handleFocus}"
+          @blur="${this.handleBlur}"
+        >
+          ${Array.from({ length: 12 }, (_, i) => {
+            const month = new Date(0, i).toLocaleString("en-US", {
+              month: "long",
+            });
+            return html`<option value="${i}">${month}</option>`;
+          })}
+        </select>
+
+        <div class="b-underline" role="presentation">
+          <div class="b-focus" role="presentation" aria-hidden="true"></div>
+        </div>
+      </div>
+
+      <div
+        class="pl-input-container mr-2"
+        @click="${this.handleInteraction}"
+        role="presentation"
+        aria-labelledby="yearSelectField"
+      >
+        <label id="yearSelectField" class="sr-only visually-hidden" for="year"
+          >Select Year</label
+        >
+        <select
+          id="year"
+          class="form-select form-control select-sm years"
+          aria-label="Select Year"
+          aria-labelledby="yearSelectField"
+          role="listbox"
+          @change=${this.handleYearChange}
+          @focus="${this.handleFocus}"
+          @blur="${this.handleBlur}"
+        >
+          ${Array.from({ length: 21 }, (_, i) => {
+            const year = i + 2014;
+            return html`<option value="${year}">${year}</option>`;
+          })}
+        </select>
+
+        <div class="b-underline" role="presentation">
+          <div class="b-focus" role="presentation" aria-hidden="true"></div>
+        </div>
+      </div>
+    `;
   }
 
   render() {
     return html`
       <div
-        class="range-picker-wrapper"
+        class="range-picker-wrapper${this.plumage ? " plumage" : ""}"
         role="region"
         aria-label="${this.ariaLabel || "Date Range Picker"}"
       >
@@ -66,50 +196,11 @@ class DateRangePicker extends LitElement {
             </svg>
           </button>
           <div class="selectors">
-            <label
-              id="monthSelectField"
-              class="sr-only visually-hidden"
-              for="months"
-              >Select Month</label
-            >
-            <select
-              id="months"
-              class="form-select form-control select-sm months"
-              aria-label="Select Month"
-              aria-labelledby="monthSelectField"
-              role="listbox"
-              @change=${this.handleMonthChange}
-            >
-              ${Array.from({ length: 12 }, (_, i) => {
-                const month = new Date(0, i).toLocaleString("en-US", {
-                  month: "long",
-                });
-                return html`<option value="${i}">${month}</option>`;
-              })}
-            </select>
-
-            <label
-              id="yearSelectField"
-              class="sr-only visually-hidden"
-              for="year"
-              >Select Year</label
-            >
-            <select
-              id="year"
-              class="form-select form-control select-sm years"
-              aria-label="Select Year"
-              aria-labelledby="yearSelectField"
-              role="listbox"
-              @change=${this.handleYearChange}
-            >
-              ${Array.from({ length: 21 }, (_, i) => {
-                const year = i + 2014;
-                return html`<option value="${year}">${year}</option>`;
-              })}
-            </select>
+            
+            ${this.plumage ? this.renderPlumageSelects() : this.renderSelects()}
 
             <button
-              @click=${this.resetCalendar}
+            @click=${() => this.dispatchEvent(new CustomEvent('reset-picker', { bubbles: true, composed: true }))}
               class="reset-btn"
               aria-label="Reset Calendar"
             >
@@ -176,6 +267,51 @@ class DateRangePicker extends LitElement {
         </div>
       </div>
     `;
+  }
+
+  handleInteraction(event) {
+    // Stop the event from propagating to the document click handler
+    event.stopPropagation();
+
+    // Check if the event target is a select element (for both month and year)
+    const container = event.target.closest(".pl-input-container");
+    const bFocusDiv = container ? container.querySelector(".b-focus") : null;
+
+    if (bFocusDiv) {
+      // If the interaction is on the select field (either month or year), apply the focus styles
+      if (event.target.tagName.toLowerCase() === "select") {
+        bFocusDiv.style.width = "100%";
+        bFocusDiv.style.left = "0";
+      } else {
+        bFocusDiv.style.width = "0";
+        bFocusDiv.style.left = "50%";
+      }
+    }
+  }
+
+  handleFocus(event) {
+    // Ensure focus logic is handled properly for both select fields (month and year)
+    this.handleInteraction(event);
+  }
+
+  handleBlur(event) {
+    // Reset the focus styling when focus is lost (for both select fields)
+    this.handleDocumentClick();
+  }
+
+  handleDocumentClick() {
+    // Ensure shadowRoot is available before querying elements
+    if (this.shadowRoot) {
+      const bFocusDivs = this.shadowRoot.querySelectorAll(".b-focus");
+      
+      // Check if bFocusDivs exists and contains elements
+      if (bFocusDivs.length > 0) {
+        bFocusDivs.forEach((bFocusDiv) => {
+          bFocusDiv.style.width = "0";
+          bFocusDiv.style.left = "50%";
+        });
+      }
+    }
   }
 
   _handleOkClick() {
@@ -269,38 +405,33 @@ class DateRangePicker extends LitElement {
     }
   }
 
-  resetCalendar() {
-    const now = new Date();
-    this.startDate = null;
-    this.endDate = null;
-    this.currentStartMonth = now.getMonth();
-    this.currentStartYear = now.getFullYear();
-    this.currentEndMonth = this.currentStartMonth + 1;
-    this.currentEndYear = this.currentStartYear;
-    this.okButtonDisabled = true; // Re-disable the OK button
-
-    if (this.currentEndMonth > 11) {
-      this.currentEndMonth = 0;
-      this.currentEndYear++;
+  resetCalendar(event) {
+    // Reset only when triggered by a user action (like clicking the reset button) or an event
+    if (!event || event.type === "reset-picker") {
+      this.startDate = null;
+      this.endDate = null;
+      this.currentStartMonth = new Date().getMonth();
+      this.currentStartYear = new Date().getFullYear();
+      this.currentEndMonth = this.currentStartMonth + 1;
+      this.currentEndYear = this.currentStartYear;
+      this.okButtonDisabled = true; // Re-disable the OK button
+  
+      if (this.currentEndMonth > 11) {
+        this.currentEndMonth = 0;
+        this.currentEndYear++;
+      }
+  
+      Promise.resolve(this.requestUpdate())
+        .then(() => {
+          this.updateSelectedRange();
+          this.syncMonthYearSelectors();
+        })
+        .catch((error) => {
+          console.error("Error in resetCalendar:", error);
+        });
     }
-
-    // Dispatch the reset event to clear the input field in the DatePickerManager
-    this.dispatchEvent(
-      new CustomEvent("reset-picker", {
-        bubbles: true,
-        composed: true,
-      })
-    );
-
-    Promise.resolve(this.requestUpdate())
-      .then(() => {
-        this.updateSelectedRange();
-        this.syncMonthYearSelectors();
-      })
-      .catch((error) => {
-        console.error("Error in resetCalendar:", error);
-      });
   }
+  
 
   renderCalendar(month0b, year) {
     const calendarGridId = `calendar-grid-${month0b}-${year}`;
@@ -334,49 +465,49 @@ class DateRangePicker extends LitElement {
           <small
             aria-label="Sunday"
             title="Sunday"
-            class="calendar-grid-day col"
+            class="calendar-grid-day col${this.plumage ? ' text-truncate' : ''}"
             role="columnheader"
             >Sun</small
           >
           <small
             aria-label="Monday"
             title="Monday"
-            class="calendar-grid-day col"
+            class="calendar-grid-day col${this.plumage ? ' text-truncate' : ''}"
             role="columnheader"
             >Mon</small
           >
           <small
             aria-label="Tuesday"
             title="Tuesday"
-            class="calendar-grid-day col"
+            class="calendar-grid-day col${this.plumage ? ' text-truncate' : ''}"
             role="columnheader"
             >Tue</small
           >
           <small
             aria-label="Wednesday"
             title="Wednesday"
-            class="calendar-grid-day col"
+            class="calendar-grid-day col${this.plumage ? ' text-truncate' : ''}"
             role="columnheader"
             >Wed</small
           >
           <small
             aria-label="Thursday"
             title="Thursday"
-            class="calendar-grid-day col"
+            class="calendar-grid-day col${this.plumage ? ' text-truncate' : ''}"
             role="columnheader"
             >Thu</small
           >
           <small
             aria-label="Friday"
             title="Friday"
-            class="calendar-grid-day col"
+            class="calendar-grid-day col${this.plumage ? ' text-truncate' : ''}"
             role="columnheader"
             >Fri</small
           >
           <small
             aria-label="Saturday"
             title="Saturday"
-            class="calendar-grid-day col"
+            class="calendar-grid-day col${this.plumage ? ' text-truncate' : ''}"
             role="columnheader"
             >Sat</small
           >

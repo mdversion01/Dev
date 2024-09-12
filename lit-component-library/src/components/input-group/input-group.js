@@ -191,6 +191,7 @@ class InputGroup extends LitElement {
                   this.validation ? "validationMessage" : undefined
                 )}
                 @input=${this.handleInput}
+                ?disabled=${this.disabled}
               />
               ${this.append
                 ? html`<div

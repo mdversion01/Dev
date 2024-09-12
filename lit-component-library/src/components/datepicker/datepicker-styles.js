@@ -326,6 +326,9 @@ export const datepickerStyles = css`
 
   .calendar-inner {
     min-width: 250px;
+    border: 1px solid rgb(225, 225, 225);
+    border-radius: 3px;
+    padding: 0.25rem;
   }
 
   .calendar-grid {
@@ -416,7 +419,7 @@ export const datepickerStyles = css`
   .range-picker-wrapper {
     padding: 5px;
     /* max-width: 558px; */
-    border: 1px solid #ccc;
+    border: 1px solid #e1e1e1;
     border-radius: 5px;
   }
 
@@ -574,11 +577,6 @@ export const datepickerStyles = css`
 
   .calendar-button {
     background-color: transparent;
-    border-top: 1px solid rgb(206, 212, 218);
-    border-bottom: 1px solid rgb(206, 212, 218);
-    border-right: 1px solid rgb(206, 212, 218);
-    border-left: none;
-    border-radius: 0 0.2rem 0.2rem 0;
     cursor: pointer;
     color: rgb(149, 149, 149);
     margin-left: 0px;
@@ -596,6 +594,28 @@ export const datepickerStyles = css`
       box-shadow 0.15s ease-in-out 0s;
   }
 
+  .calendar-button:hover,
+  .pl-input-group-prepend.is-invalid > .calendar-button:hover, 
+  .pl-input-group-append.is-invalid > .calendar-button:hover {
+    color: #FFF;
+  }
+
+  .pl-input-group-append .calendar-button {
+    border-top: 1px solid rgb(206, 212, 218);
+    border-bottom: 1px solid rgb(206, 212, 218);
+    border-right: 1px solid rgb(206, 212, 218);
+    border-left: none;
+    border-radius: 0 0.2rem 0.2rem 0;
+  }
+
+  .pl-input-group-prepend .calendar-button {
+    border-top: 1px solid rgb(206, 212, 218);
+    border-bottom: 1px solid rgb(206, 212, 218);
+    border-left: 1px solid rgb(206, 212, 218);
+    border-right: none;
+    border-radius: 0.2rem 0 0 0.2rem;
+  }
+
   .dropdown-wrapper {
     position: relative;
   }
@@ -609,12 +629,81 @@ export const datepickerStyles = css`
     display: none;
     background-color: white;
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-    padding: 5px;
+    /* padding: 5px; */
     border-radius: 3px;
   }
 
   .dropdown-wrapper .dropdown.open .dropdown-content {
     display: block;
     width: inherit;
+  }
+
+  .text-truncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .plumage .selected-date {
+    padding: 0.25rem;
+    font-size: 80%;
+    border: none;
+  }
+
+  .plumage .calendar-inner {
+    padding: 0;
+  }
+
+  .plumage .calendar-nav .btn {
+    padding: 0.25rem;
+    margin: 0.125rem;
+    font-size: 0.8333rem;
+    height: 1.375rem;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+  }
+
+  .plumage .calendar {
+    border: none;
+    padding: 0 !important;
+  }
+
+  .plumage .calendar .calendar-grid-caption {
+    padding: 0.25rem;
+    font-size: 0.875rem;
+    border: none;
+  }
+
+  .plumage .calendar .calendar-grid-weekdays {
+    margin: 0;
+  }
+
+  .plumage .calendar .calendar-grid-weekdays .small,
+  .plumage .calendar .calendar-grid-weekdays small {
+    font-size: 80%;
+    font-weight: 400;
+  }
+
+  .plumage .dp-calendar:first-child {
+    border-right: 1px solid rgb(204, 204, 204) !important;
+    margin-right: 0;
+  }
+
+  .plumage .range-picker-nav-btn,
+  .plumage .reset-btn {
+    border: none;
+  }
+
+  .plumage .time-input {
+    font-size: 0.833rem !important;
+  }
+
+  .plumage .calendar-button {
+    border: none;
+  }
+
+  .plumage .pl-input-group-text {
+    border: none;
   }
 `;

@@ -113,7 +113,6 @@ class PlAutocompleteInput extends LitElement {
         // Clear selections only if desired. If not, remove the next line.
         this.multiSelectedOptions.clear();
       }
-      this.clearInputField();
       this.requestUpdate();
     }
   }
@@ -133,7 +132,6 @@ class PlAutocompleteInput extends LitElement {
         case "Enter":
           // Select the focused option
           if (this.multiSelect) {
-            
             if (this.focusedOptionIndex !== -1) {
               this.handleMultiSelectOption(
                 this.filteredOptions[this.focusedOptionIndex]
@@ -141,7 +139,6 @@ class PlAutocompleteInput extends LitElement {
               this.focusedOptionIndex = -1; // Reset focus
             }
           } else {
-            
             if (this.focusedOptionIndex !== -1) {
               this.handleSelectOption(
                 this.filteredOptions[this.focusedOptionIndex]
@@ -326,14 +323,17 @@ class PlAutocompleteInput extends LitElement {
   renderInputLabel(ids) {
     return html`
       <label
-        class="form-control-label${this.required ? " required" : ""}${this.labelHidden ? " sr-only" : ""}${this
-          .formLayout === "horizontal"
+        class="form-control-label${this.required ? " required" : ""}${this
+          .labelHidden
+          ? " sr-only"
+          : ""}${this.formLayout === "horizontal"
           ? " col-md-2 no-padding col-form-label"
           : ""}${this.validation ? " invalid" : ""}"
         for=${ifDefined(ids ? ids : undefined)}
-        >${this.formLayout === "horizontal" || this.formLayout === "inline" ? html`${this.label}:` : html`${this.label}`}
-        </label
-      >
+        >${this.formLayout === "horizontal" || this.formLayout === "inline"
+          ? html`${this.label}:`
+          : html`${this.label}`}
+      </label>
     `;
   }
 
@@ -398,11 +398,10 @@ class PlAutocompleteInput extends LitElement {
             ></div>
           </div>
         </div>
-        
       </div>
       ${this.validation
-          ? html`<div class="invalid-feedback">${this.validationMessage}</div>`
-          : ""}
+        ? html`<div class="invalid-feedback">${this.validationMessage}</div>`
+        : ""}
     `;
   }
 
@@ -814,16 +813,24 @@ class PlAutocompleteInput extends LitElement {
   render() {
     const ids = this.camelCase(this.inputId).replace(/ /g, "");
     const names = this.camelCase(this.label).replace(/ /g, "");
-  
+
     return html`
       <div class="${this.formLayout ? ` ${this.formLayout}` : ""}">
         <div
-          class="form-group${this.formLayout === "horizontal" ? ` row` : this.formLayout === "inline" ? ` row inline` : ""}${this.multiSelect ? " ac-combobox-container" : ""}"
+          class="form-group${this.formLayout === "horizontal"
+            ? ` row`
+            : this.formLayout === "inline"
+            ? ` row inline`
+            : ""}${this.multiSelect ? " ac-combobox-container" : ""}"
         >
           ${this.label ? this.renderInputLabel(ids) : ""}
           <div class="${this.formLayout === "horizontal" ? "col-10" : ""}">
-            ${this.multiSelect || this.multipleSelections ? this.renderMultipleSelections(ids, names) : this.renderInput(ids, names)}
-            ${this.multiSelect ? this.renderMultiSelectDropdown() : this.renderDropdown()}
+            ${this.multiSelect || this.multipleSelections
+              ? this.renderMultipleSelections(ids, names)
+              : this.renderInput(ids, names)}
+            ${this.multiSelect
+              ? this.renderMultiSelectDropdown()
+              : this.renderDropdown()}
           </div>
         </div>
       </div>

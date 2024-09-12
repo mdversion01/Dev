@@ -60,6 +60,7 @@
                 <date-range-time-picker
                   id="dateRangeTimePicker"
                   showDuration
+                  is24HourFormat="false"
                 ></date-range-time-picker>
               </section>
               <section class="display-box-meta markdown">
@@ -79,7 +80,10 @@
               <section class="display-box-demo">
                 <div style="width: 210px">
                   <datepicker-manager
+                    plumage
                     dateFormat="MM-DD-YYYY"
+                    validation
+                    validationMessage="Please select a date"
                   ></datepicker-manager>
                 </div>
               </section>
@@ -93,15 +97,15 @@
 
           <section class="section">
             <section class="display-box" id="db-1">
-              <section
-                class="display-box-demo">
+              <section class="display-box-demo">
                 <div style="width: 295px">
                   <datepicker-manager
-                  selectedPicker="daterange"
-                  joinBy="to"
+                    selectedPicker="daterange"
+                    joinBy="to"
+                    validation
+                    validationMessage="Please select a date"
                   ></datepicker-manager>
                 </div>
-              
               </section>
               <section class="display-box-meta markdown">
                 <div class="display-box-title">Basic Usage</div>
@@ -113,15 +117,16 @@
 
           <section class="section">
             <section class="display-box" id="db-1">
-              <section
-                class="display-box-demo">
+              <section class="display-box-demo">
                 <div style="width: 405px">
                   <datepicker-manager
-                  dateFormat="MM-DD-YYYY"
-                  selectedPicker="daterangetime"
-                  joinBy="to"
-                  is24HourFormat="true"
-                  showDuration
+                    dateFormat="MM-DD-YYYY"
+                    selectedPicker="daterangetime"
+                    joinBy="to"
+                    is24HourFormat="true"
+                    showDuration
+                    validation
+                    validationMessage="Please select a date"
                   ></datepicker-manager>
                 </div>
               </section>
@@ -157,9 +162,9 @@
 
         const dateTimePicker = document.getElementById("dateRangeTimePicker");
         if (dateTimePicker) {
-         // console.log(
-         //   "DateRangeTimePicker element found and listener attached"
-         // ); // Log to confirm listener attachment
+          // console.log(
+          //   "DateRangeTimePicker element found and listener attached"
+          // ); // Log to confirm listener attachment
           dateTimePicker.addEventListener(
             "date-time-updated",
             function (event) {

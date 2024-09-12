@@ -1,29 +1,29 @@
 import { css } from "lit";
 
 export const plInputGroupStyles = css`
-  .pl-input-group {
+  .plumage .pl-input-group {
     position: relative;
     display: flex;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
     align-items: stretch;
     width: 100%;
   }
 
-  .pl-input-group-append,
-  .pl-input-group-prepend {
+  .plumage .pl-input-group-append,
+  .plumage .pl-input-group-prepend {
     display: flex;
     height: 100%;
   }
 
-  .pl-input-group-prepend {
+  .plumage .pl-input-group-prepend {
     margin-right: -1px;
   }
 
-  .pl-input-group-append {
+  .plumage .pl-input-group-append {
     margin-left: -1px;
   }
 
-  .pl-input-group-text {
+  .plumage .pl-input-group-text {
     display: flex;
     align-items: center;
     padding: 0.375rem 0.75rem;
@@ -38,7 +38,7 @@ export const plInputGroupStyles = css`
     min-height: 38px;
   }
 
-  .pl-input-group-btn {
+  .plumage .pl-input-group-btn {
     display: flex;
     align-items: center;
     cursor: pointer;
@@ -56,25 +56,9 @@ export const plInputGroupStyles = css`
     height: 100%;
   }
 
-  /* .pl-input-group > .form-control {
-    background-color: transparent;
-    background-clip: padding-box;
-    border: 0 solid rgb(202, 202, 202);
-    border-radius: 0;
-    color: rgb(56, 56, 56);
-    display: block;
-    font-size: 0.8333rem;
-    font-weight: 400;
-    line-height: 1.2;
-    padding: 0.375rem 0.5rem 0.375rem 0;
-    transition: border-color 0.15s ease-in-out 0s,
-      box-shadow 0.15s ease-in-out 0s;
-    width: calc(100% - 15px);
-  } */
-
-  .pl-input-group > .custom-file,
-  .pl-input-group > .custom-select,
-  .pl-input-group > .form-control {
+  .plumage .pl-input-group > .custom-file,
+  .plumage .pl-input-group > .custom-select,
+  .plumage .pl-input-group > .form-control {
     position: relative;
     flex: 1 1 auto;
     width: 1%;
@@ -82,52 +66,52 @@ export const plInputGroupStyles = css`
     border: none;
   }
 
-  .pl-input-group > .form-control:not(first-child) {
+  .plumage .pl-input-group > .form-control:not(first-child) {
     padding-left: 0;
   }
 
-  .pl-input-group > .form-control:first-child {
+  .plumage .pl-input-group > .form-control:first-child {
     padding-left: 0.5rem;
   }
 
-  .pl-input-group-sm > .custom-select,
-  .pl-input-group-sm > .form-control,
-  .pl-input-group-sm > .pl-input-group-append > .pl-btn,
-  .pl-input-group-sm > .pl-input-group-append > .pl-input-group-text,
-  .pl-input-group-sm > .pl-input-group-prepend > .pl-btn,
-  .pl-input-group-sm > .pl-input-group-prepend > .pl-input-group-text {
+  .plumage .pl-input-group-sm > .custom-select,
+  .plumage .pl-input-group-sm > .form-control,
+  .plumage .pl-input-group-sm > .pl-input-group-append > .pl-btn,
+  .plumage .pl-input-group-sm > .pl-input-group-append > .pl-input-group-text,
+  .plumage .pl-input-group-sm > .pl-input-group-prepend > .pl-btn,
+  .plumage .pl-input-group-sm > .pl-input-group-prepend > .pl-input-group-text {
     padding: 0.25rem 0.5rem;
     font-size: 0.833rem;
     line-height: 1.5;
     min-height: 0;
   }
 
-  .pl-input-group-sm > .form-control {
+  .plumage .pl-input-group-sm > .form-control {
     padding: 0.25rem 0.5rem 0.25rem 0;
   }
 
-  .pl-input-group-lg > .custom-select,
-  .pl-input-group-lg > .form-control,
-  .pl-input-group-lg > .pl-input-group-append > .pl-btn,
-  .pl-input-group-lg > .pl-input-group-append > .pl-input-group-text,
-  .pl-input-group-lg > .pl-input-group-prepend > .pl-btn,
-  .pl-input-group-lg > .pl-input-group-prepend > .pl-input-group-text {
+  .plumage .pl-input-group-lg > .custom-select,
+  .plumage .pl-input-group-lg > .form-control,
+  .plumage .pl-input-group-lg > .pl-input-group-append > .pl-btn,
+  .plumage .pl-input-group-lg > .pl-input-group-append > .pl-input-group-text,
+  .plumage .pl-input-group-lg > .pl-input-group-prepend > .pl-btn,
+  .plumage .pl-input-group-lg > .pl-input-group-prepend > .pl-input-group-text {
     padding: 0.5rem 1rem;
     font-size: 1.125rem;
     line-height: 1.5;
   }
 
-  .pl-input-group-lg > .form-control {
+  .plumage .pl-input-group-lg > .form-control {
     padding: 0.5rem 1rem 0.5rem 0;
   }
 
-  .pl-input-group input:focus {
+  .plumage .pl-input-group input:focus {
     box-shadow: none;
     outline: none;
   }
 
-  .horizontal .form-pl-input-group label,
-  .inline .form-pl-input-group label {
+  .plumage .horizontal .form-pl-input-group label,
+  .plumage .inline .form-pl-input-group label {
     display: flex;
     align-items: center;
     justify-content: right;
@@ -136,18 +120,18 @@ export const plInputGroupStyles = css`
     padding-right: 8px !important;
   }
 
-  .horizontal .pl-input-group,
-  .inline .pl-input-group {
+  .plumage .horizontal .pl-input-group,
+  .plumage .inline .pl-input-group {
     padding: 0 15px 0 0;
   }
 
-  .form-pl-input-group label {
+  .plumage .form-pl-input-group label {
     margin-bottom: 0.25rem !important;
   }
 
-  .form-control:disabled,
-  .form-control.disabled,
-  .pl-input-group.disabled {
+  .plumage .form-control:disabled,
+  .plumage .form-control.disabled,
+  .plumage .pl-input-group.disabled {
     background-color: rgb(245, 245, 245);
   }
 
@@ -156,13 +140,13 @@ export const plInputGroupStyles = css`
     background-color: transparent;
   }
 
-  .pl-input-group .form-control:invalid,
-  .pl-input-group .form-control.is-invalid {
+  .plumage .pl-input-group .form-control:invalid,
+  .plumage .pl-input-group .form-control.is-invalid {
     background-position: right calc(-1.5em + 1.5rem) center;
   }
 
-  .pl-input-group-prepend.is-invalid > .pl-input-group-text,
-  .pl-input-group-append.is-invalid > .pl-input-group-text {
+  .plumage .pl-input-group-prepend.is-invalid > .pl-input-group-text,
+  .plumage .pl-input-group-append.is-invalid > .pl-input-group-text {
     color: #b30009;
   }
 
@@ -178,6 +162,10 @@ export const plInputGroupStyles = css`
     width: unset;
   }
 
+  .search-bar-container.pl-input-group {
+    flex-wrap: nowrap;
+  }
+
   .search-bar-container:focus,
   .search-bar-container:hover,
   .search-bar-container:focus-within {
@@ -186,7 +174,21 @@ export const plInputGroupStyles = css`
   }
 
   .search-bar-container .form-control {
+  }
+
+  .search-bar-container .form-control {
+    background-color: transparent;
+    background-clip: padding-box;
     border: 1px solid transparent;
+    color: rgb(56, 56, 56);
+    display: block;
+    font-size: 0.8333rem;
+    font-weight: 400;
+    line-height: 1.2;
+    padding: 0.375rem 0.5rem 0.375rem 0;
+    transition: border-color 0.15s ease-in-out 0s,
+      box-shadow 0.15s ease-in-out 0s;
+    width: calc(100% - 15px);
   }
 
   .search-bar-container .form-control:focus {

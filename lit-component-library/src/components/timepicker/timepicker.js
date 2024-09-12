@@ -15,7 +15,11 @@ class TimePicker extends LitElement {
     inputGroupStyles,
     inputFieldStyles,
     timepickerStyles,
-    css``,
+    css`
+      .pl-input-group {
+        flex-wrap: nowrap;
+      }
+    `,
   ];
 
   static get properties() {
@@ -65,7 +69,12 @@ class TimePicker extends LitElement {
   render() {
     return html`
       <div class="time-picker-container">
-        <div class="time-picker ${!this.display24HourOnly && !this.display12HourOnly ? 'mr-1' : ''}">
+        <div
+          class="time-picker ${!this.display24HourOnly &&
+          !this.display12HourOnly
+            ? "mr-1"
+            : ""}"
+        >
           <label for="${this.id}" id="${this.ariaLabelledby}" class="sr-only"
             >Enter Time</label
           >
@@ -300,11 +309,12 @@ class TimePicker extends LitElement {
         ${!this.display24HourOnly && !this.display12HourOnly
           ? html`
               <button
-                class="toggle-format-btn pl-btn pl-btn--outlined${this.size === "sm"
-              ? " sm"
-              : this.size === "lg"
-              ? " lg"
-              : ""}"
+                class="toggle-format-btn pl-btn pl-btn--outlined${this.size ===
+                "sm"
+                  ? " sm"
+                  : this.size === "lg"
+                  ? " lg"
+                  : ""}"
                 aria-label="${this.is24HourFormat
                   ? "Switch to 12 Hour Format"
                   : "Switch to 24 Hour Format"}"

@@ -115,7 +115,6 @@ class AutocompleteInput extends LitElement {
         // Clear selections only if desired. If not, remove the next line.
         this.multiSelectedOptions.clear();
       }
-      this.clearInputField();
       this.requestUpdate();
     }
   }
@@ -156,6 +155,9 @@ class AutocompleteInput extends LitElement {
       // Handle input events for filtering options
       this.inputValue = event.target.value;
       this.filterOptions();
+
+      this.focusedOptionIndex = -1; // Reset the focused option index
+      this.isDropdownOpen = true; // Open the dropdown as the user types
 
       // Update validation only if it's explicitly being used.
       if (this.required || this.validation) {

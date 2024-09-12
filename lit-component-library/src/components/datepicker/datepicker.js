@@ -3,11 +3,7 @@ import Fontawesome from "lit-fontawesome";
 import { datepickerStyles } from "./datepicker-styles.js";
 
 class DatePicker extends LitElement {
-  static styles = [
-    Fontawesome,
-    datepickerStyles,
-    css``,
-  ];
+  static styles = [Fontawesome, datepickerStyles, css``];
 
   static get properties() {
     return {
@@ -22,6 +18,7 @@ class DatePicker extends LitElement {
       currentYear: { type: Number },
       displayContextExamples: { type: Boolean },
       dateFormat: { type: String }, // Property for date format
+      plumage: { type: Boolean },
     };
   }
 
@@ -38,6 +35,8 @@ class DatePicker extends LitElement {
     this.currentYear = this.currentSelectedDate.getFullYear();
     this.displayContextExamples = false;
     this.dateFormat = "YYYY-MM-DD"; // Default to YYYY-MM-DD format
+    this.plumage = false;
+    this.addEventListener("reset-picker", this.resetCalendar);
   }
 
   firstUpdated() {
@@ -49,155 +48,174 @@ class DatePicker extends LitElement {
     }
   }
 
+  resetCalendar(event) {
+    const today = new Date();
+  
+    // Clear the selected date
+    this.selectedDate = null;
+  
+    // Clear the active state and reset the calendar view
+    this.clearActiveState();
+  
+    // Reset the selected date display to "No date selected"
+    this.updateSelectedDateDisplay("No date selected");
+  
+    // Optionally, you can reset the focus to today's date
+    this.currentDate();
+  }
+  
   render() {
     return html`
-      <div class="dp-single-calendar">
+      <div class="dp-single-calendar${this.plumage ? " plumage" : ""}">
         <div
           class="calendar-inner"
           dir="ltr"
           lang="en-US"
           role="group"
           aria-describedby="calendar-wrapper"
-        ></div>
-        <header class="datepicker" title="Selected Date">
-          <output
-            aria-live="polite"
-            aria-atomic="true"
-            class="selected-date form-control form-control-sm text-center"
-            id="selected-date"
-            role="status"
-            tabindex="-1"
-          >
-            <bdi>No date selected</bdi>
-            <bdi class="sr-only">(Selected date)</bdi>
-          </output>
-        </header>
-        <div
-          class="calendar-nav d-flex"
-          aria-label="Calendar Navigation"
-          role="group"
-          aria-labelledby="calendar-navigation"
         >
-          <span id="calendar-navigation" class="sr-only"
-            >Calendar Navigation</span
-          >
-          <button
-            aria-label="Previous year"
-            aria-keyshortcuts="Alt+PageDown"
-            class="prev-year btn btn-sm border-0 flex-fill btn-outline-secondary"
-            title="Previous year"
-            type="button"
-            @click=${this.prevYear}
-          >
-            <i class="fas fa-angle-double-left" aria-hidden="true"></i>
-          </button>
-          <button
-            aria-label="Previous month"
-            aria-keyshortcuts="PageDown"
-            class="prev-month btn btn-sm border-0 flex-fill btn-outline-secondary"
-            title="Previous month"
-            type="button"
-            @click=${this.prevMonth}
-          >
-            <i class="fas fa-angle-left" aria-hidden="true"></i>
-          </button>
-          <button
-            aria-label="Current Day/Month/Year"
-            aria-keyshortcuts="Home"
-            class="current-date btn btn-sm border-0 flex-fill btn-outline-secondary"
-            title="Current Day/Month/Year"
-            type="button"
-            @click=${this.currentDate}
-          >
-            <i class="fas fa-circle" aria-hidden="true"></i>
-            <span class="sr-only">Today</span>
-          </button>
-          <button
-            aria-label="Next month"
-            aria-keyshortcuts="PageUp"
-            class="next-month btn btn-sm border-0 flex-fill btn-outline-secondary"
-            title="Next month"
-            type="button"
-            @click=${this.nextMonth}
-          >
-            <i class="fas fa-angle-right" aria-hidden="true"></i>
-          </button>
-          <button
-            title="Next year"
-            type="button"
-            class="next-year btn btn-sm border-0 flex-fill btn-outline-secondary"
-            aria-label="Next year"
-            aria-keyshortcuts="Alt+PageUp"
-            @click=${this.nextYear}
-          >
-            <i class="fas fa-angle-double-right" aria-hidden="true"></i>
-          </button>
-        </div>
-        <div
-          aria-describedby="calendar-grid"
-          aria-labelledby="calendar-grid-caption"
-          aria-roledescription="Calendar"
-          class="calendar form-control h-auto text-center pt-2"
-          role="region"
-          aria-label="Calendar"
-          tabindex="0"
-          @focus=${this.handleCalendarFocus}
-          @focusout=${this.handleCalendarFocusOut}
-        >
+          <header class="datepicker" title="Selected Date">
+            <output
+              aria-live="polite"
+              aria-atomic="true"
+              class="selected-date form-control form-control-sm text-center"
+              id="selected-date"
+              role="status"
+              tabindex="-1"
+            >
+              <bdi>No date selected</bdi>
+              <bdi class="sr-only">(Selected date)</bdi>
+            </output>
+          </header>
           <div
-            aria-live="polite"
-            aria-atomic="true"
-            class="calendar-grid-caption text-center font-weight-bold"
-            id="__CDID__calendar-grid-caption_"
-          ></div>
-          <div aria-hidden="true" class="calendar-grid-weekdays">
-            <small
-              aria-label="Sunday"
-              title="Sunday"
-              class="calendar-grid-day col"
-              >Sun</small
+            class="calendar-nav d-flex"
+            aria-label="Calendar Navigation"
+            role="group"
+            aria-labelledby="calendar-navigation"
+          >
+            <span id="calendar-navigation" class="sr-only"
+              >Calendar Navigation</span
             >
-            <small
-              aria-label="Monday"
-              title="Monday"
-              class="calendar-grid-day col"
-              >Mon</small
+            <button
+              aria-label="Previous year"
+              aria-keyshortcuts="Alt+PageDown"
+              class="prev-year btn btn-sm border-0 flex-fill btn-outline-secondary"
+              title="Previous year"
+              type="button"
+              @click=${this.prevYear}
             >
-            <small
-              aria-label="Tuesday"
-              title="Tuesday"
-              class="calendar-grid-day col"
-              >Tue</small
+              <i class="fas fa-angle-double-left" aria-hidden="true"></i>
+            </button>
+            <button
+              aria-label="Previous month"
+              aria-keyshortcuts="PageDown"
+              class="prev-month btn btn-sm border-0 flex-fill btn-outline-secondary"
+              title="Previous month"
+              type="button"
+              @click=${this.prevMonth}
             >
-            <small
-              aria-label="Wednesday"
-              title="Wednesday"
-              class="calendar-grid-day col"
-              >Wed</small
+              <i class="fas fa-angle-left" aria-hidden="true"></i>
+            </button>
+            <button
+              aria-label="Current Day/Month/Year"
+              aria-keyshortcuts="Home"
+              class="current-date btn btn-sm border-0 flex-fill btn-outline-secondary"
+              title="Current Day/Month/Year"
+              type="button"
+              @click=${this.currentDate}
             >
-            <small
-              aria-label="Thursday"
-              title="Thursday"
-              class="calendar-grid-day col"
-              >Thu</small
+              <i class="fas fa-circle" aria-hidden="true"></i>
+              <span class="sr-only">Today</span>
+            </button>
+            <button
+              aria-label="Next month"
+              aria-keyshortcuts="PageUp"
+              class="next-month btn btn-sm border-0 flex-fill btn-outline-secondary"
+              title="Next month"
+              type="button"
+              @click=${this.nextMonth}
             >
-            <small
-              aria-label="Friday"
-              title="Friday"
-              class="calendar-grid-day col"
-              >Fri</small
+              <i class="fas fa-angle-right" aria-hidden="true"></i>
+            </button>
+            <button
+              title="Next year"
+              type="button"
+              class="next-year btn btn-sm border-0 flex-fill btn-outline-secondary"
+              aria-label="Next year"
+              aria-keyshortcuts="Alt+PageUp"
+              @click=${this.nextYear}
             >
-            <small
-              aria-label="Saturday"
-              title="Saturday"
-              class="calendar-grid-day col"
-              >Sat</small
-            >
+              <i class="fas fa-angle-double-right" aria-hidden="true"></i>
+            </button>
           </div>
-          <div class="calendar-grid" id="calendar-grid"></div>
-          <footer class="border-top small text-muted text-center bg-light">
-            <div class="small">Use cursor keys to navigate calendar dates</div>
-          </footer>
+          <div
+            aria-describedby="calendar-grid"
+            aria-labelledby="calendar-grid-caption"
+            aria-roledescription="Calendar"
+            class="calendar form-control h-auto text-center pt-2"
+            role="region"
+            aria-label="Calendar"
+            tabindex="0"
+            @focus=${this.handleCalendarFocus}
+            @focusout=${this.handleCalendarFocusOut}
+          >
+            <div
+              aria-live="polite"
+              aria-atomic="true"
+              class="calendar-grid-caption text-center font-weight-bold"
+              id="__CDID__calendar-grid-caption_"
+            ></div>
+            <div aria-hidden="true" class="calendar-grid-weekdays">
+              <small
+                aria-label="Sunday"
+                title="Sunday"
+                class="calendar-grid-day col${this.plumage ? ' text-truncate' : ''}"
+                >Sun</small
+              >
+              <small
+                aria-label="Monday"
+                title="Monday"
+                class="calendar-grid-day col${this.plumage ? ' text-truncate' : ''}"
+                >Mon</small
+              >
+              <small
+                aria-label="Tuesday"
+                title="Tuesday"
+                class="calendar-grid-day col${this.plumage ? ' text-truncate' : ''}"
+                >Tue</small
+              >
+              <small
+                aria-label="Wednesday"
+                title="Wednesday"
+                class="calendar-grid-day col${this.plumage ? ' text-truncate' : ''}"
+                >Wed</small
+              >
+              <small
+                aria-label="Thursday"
+                title="Thursday"
+                class="calendar-grid-day col${this.plumage ? ' text-truncate' : ''}"
+                >Thu</small
+              >
+              <small
+                aria-label="Friday"
+                title="Friday"
+                class="calendar-grid-day col${this.plumage ? ' text-truncate' : ''}"
+                >Fri</small
+              >
+              <small
+                aria-label="Saturday"
+                title="Saturday"
+                class="calendar-grid-day col${this.plumage ? ' text-truncate' : ''}"
+                >Sat</small
+              >
+            </div>
+            <div class="calendar-grid" id="calendar-grid"></div>
+            <footer class="border-top small text-muted text-center bg-light">
+              <div class="small">
+                Use cursor keys to navigate calendar dates
+              </div>
+            </footer>
+          </div>
         </div>
       </div>
       ${this.displayContextExamples
@@ -668,29 +686,23 @@ class DatePicker extends LitElement {
   }
 
   clearActiveState() {
-    const allSpans = this.shadowRoot.querySelectorAll(
-      ".calendar-grid-item span"
-    );
+    const allSpans = this.shadowRoot.querySelectorAll(".calendar-grid-item span");
     allSpans.forEach((span) => {
       span.classList.remove("active", "btn-primary", "focus");
       span.classList.add("btn-outline-light", "text-dark");
-
-      const dateElement = this.shadowRoot.getElementById(
-        `cell-${span.parentElement.dataset.date}`
-      );
+  
+      const dateElement = this.shadowRoot.getElementById(`cell-${span.parentElement.dataset.date}`);
       if (dateElement) {
         const existingAriaLabel = dateElement.getAttribute("aria-label");
         if (existingAriaLabel.endsWith(" (Selected)")) {
-          dateElement.setAttribute(
-            "aria-label",
-            existingAriaLabel.slice(0, -11)
-          );
+          dateElement.setAttribute("aria-label", existingAriaLabel.slice(0, -11));
           dateElement.removeAttribute("aria-selected");
           dateElement.removeAttribute("aria-current");
         }
       }
     });
   }
+  
 
   setActiveState() {
     const activeSpan = this.shadowRoot.querySelector(".active");
@@ -931,11 +943,13 @@ class DatePicker extends LitElement {
 
   currentDate() {
     const today = new Date();
-    this.selectedDate = today;
     this.currentMonth = today.getUTCMonth();
     this.currentYear = today.getUTCFullYear();
+    
+    // Re-render the calendar for the current month and year
     this.renderCalendar(this.currentMonth, this.currentYear);
   }
+  
 
   handleKeyDown(event) {
     const calendarGrid = this.shadowRoot.querySelector(".calendar-grid");

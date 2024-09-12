@@ -4,7 +4,7 @@ export const inputGroupStyles = css`
   .pl-input-group {
     position: relative;
     display: flex;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
     align-items: stretch;
     width: 100%;
   }
