@@ -815,7 +815,7 @@ class PlAutocompleteInput extends LitElement {
     const names = this.camelCase(this.label).replace(/ /g, "");
 
     return html`
-      <div class="${this.formLayout ? ` ${this.formLayout}` : ""}">
+      <div class="plumage ${this.formLayout ? ` ${this.formLayout}` : ""}">
         <div
           class="form-group${this.formLayout === "horizontal"
             ? ` row`

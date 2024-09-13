@@ -16,7 +16,7 @@ class PlTimePicker extends LitElement {
     plInputFieldStyles,
     plInputGroupStyles,
     css`
-      .pl-input-group {
+      .plumage .pl-input-group {
         flex-wrap: nowrap;
       }
     `,

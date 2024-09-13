@@ -55,6 +55,7 @@ class DatePickerManager extends LitElement {
       size: { type: String },
       validation: { type: Boolean },
       validationMessage: { type: String },
+      warningMessage: { type: String },
     };
   }
 
@@ -91,6 +92,10 @@ class DatePickerManager extends LitElement {
     this.size = "";
     this.validation = false;
     this.validationMessage = "";
+    this.warningMessage = "";
+
+    // Set default warning message based on selected picker
+    this.setDefaultWarningMessage();
   }
 
   firstUpdated() {
@@ -101,6 +106,10 @@ class DatePickerManager extends LitElement {
       "reset-picker",
       this.clearInputField.bind(this)
     );
+
+    // Ensure the warning message is displayed when the page is loaded
+    this.setDefaultWarningMessage(); // Call it here to ensure correct initial message
+    this.requestUpdate();
   }
 
   connectedCallback() {
@@ -159,7 +168,35 @@ class DatePickerManager extends LitElement {
         this.duration = "";
       }
 
-      // Dispatch the reset-picker event to the child components (calendars)
+      // Set default warning message based on the selected picker
+      this.setDefaultWarningMessage();
+
+      // Reset validationMessage (so it's not shown)
+      this.validationMessage = "";
+
+      // Add 'is-invalid' and 'invalid' classes to input and label
+      this.inputElement.classList.add("is-invalid");
+      const labelElement = this.shadowRoot.querySelector(
+        'label[for="' + this.inputId + '"]'
+      );
+      const appendElement = this.shadowRoot.querySelector(
+        ".pl-input-group-append"
+      );
+      const prependElement = this.shadowRoot.querySelector(
+        ".pl-input-group-prepend"
+      );
+
+      if (labelElement) {
+        labelElement.classList.add("invalid");
+      }
+      if (appendElement) {
+        appendElement.classList.add("is-invalid");
+      }
+      if (prependElement) {
+        prependElement.classList.add("is-invalid");
+      }
+
+      // Dispatch the reset-picker event to child components (calendars)
       if (!event || !event.detail || !event.detail.preventReset) {
         this.shadowRoot
           .querySelectorAll(
@@ -175,6 +212,8 @@ class DatePickerManager extends LitElement {
             );
           });
       }
+
+      this.requestUpdate(); // Update the UI to reflect the new warning message
     }
   }
 
@@ -253,7 +292,7 @@ class DatePickerManager extends LitElement {
     const dateRangePattern =
       /^(?:\d{4}-\d{2}-\d{2}|\d{2}-\d{2}-\d{4})[\s-]+(?:to|\-)[\s]+(?:\d{4}-\d{2}-\d{2}|\d{2}-\d{2}-\d{4})$/;
     const dateRangeTimePattern =
-      /^(?:\d{4}-\d{2}-\d{2} \d{2}:\d{2}|\d{2}-\d{2}-\d{4} \d{2}:\d{2})(?: AM| PM)?[\s-]+(?:to|\-)[\s]+(?:\d{4}-\d{2}-\d{2} \d{2}:\d{2}|\d{2}-\d{2}-\d{4} \d{2}:\d{2})(?: AM| PM)?$/;
+      /^(?:\d{2}-\d{2}-\d{4} \d{2}:\d{2})(?: AM| PM)?[\s-]+(?:to|\-)[\s]+(?:\d{2}-\d{2}-\d{4} \d{2}:\d{2})(?: AM| PM)?(?: \(\d+d \d+h\))?$/;
 
     let isValid = false;
     if (this.selectedPicker === "datepicker") {
@@ -264,26 +303,63 @@ class DatePickerManager extends LitElement {
       isValid = dateRangeTimePattern.test(value);
     }
 
-    if (isValid) {
-      this.validation = false;
-      this.validationMessage = "";
-    } else {
+    if (!value) {
+      // If input is empty, show the warning message based on the selected picker
+      this.setDefaultWarningMessage();
+    } else if (!isValid) {
+      // If format is invalid, show the validation message
       this.validation = true;
       this.validationMessage = "Invalid date format.";
+      this.warningMessage = ""; // Reset warning message
+    } else {
+      // Input is valid, clear both messages
+      this.validation = false;
+      this.validationMessage = "";
+      this.warningMessage = "";
+    }
+
+    this.requestUpdate(); // Ensure the UI reflects changes
+  }
+
+  // Call this method when the picker type is updated or initially loaded
+  setDefaultWarningMessage() {
+    switch (this.selectedPicker) {
+      case "datepicker":
+        this.warningMessage = "Please pick a date.";
+        break;
+      case "daterange":
+        this.warningMessage = "Please pick a date range.";
+        break;
+      case "daterangetime":
+        this.warningMessage = "Please pick a date and time range.";
+        break;
+      default:
+        this.warningMessage = "Please provide a valid selection.";
+        break;
+    }
+
+    this.validation = this.validation; // Ensure validation is active
+    this.requestUpdate(); // Trigger a re-render to display the message
+  }
+
+  // When selectedPicker changes, ensure the correct warning message is set
+  updated(changedProperties) {
+    if (changedProperties.has("selectedPicker")) {
+      this.setDefaultWarningMessage(); // Ensure correct warning message when picker changes
     }
   }
 
   handleInputChange(event) {
     const value = event.target.value.trim();
 
-    // Validate the input
-    this.validateInput(value);
-
+    // If the input is cleared
     if (value === "") {
-      // If the input is cleared, reset the calendar and clear the selected dates and times
-      this.clearInputField();
+      this.clearInputField(); // Reset the field and show validation
       return;
     }
+
+    // Validate the input
+    this.validateInput(value);
 
     // Update properties based on picker type
     if (this.selectedPicker === "datepicker") {
@@ -322,9 +398,33 @@ class DatePickerManager extends LitElement {
       this.inputElement.value = this.selectedDate;
       this.inputElement.focus();
     }
-    // Clear validation
-    this.validation = false;
-    this.validationMessage = "";
+
+    // Perform validation after date selection
+    this.validateInput(this.selectedDate);
+
+    // Remove validation error classes if input is valid
+    if (!this.validation) {
+      this.inputElement.classList.remove("is-invalid");
+      const labelElement = this.shadowRoot.querySelector(
+        'label[for="' + this.inputId + '"]'
+      );
+      const appendElement = this.shadowRoot.querySelector(
+        ".pl-input-group-append"
+      );
+      const prependElement = this.shadowRoot.querySelector(
+        ".pl-input-group-prepend"
+      );
+      if (labelElement) {
+        labelElement.classList.remove("invalid");
+      }
+      if (appendElement) {
+        appendElement.classList.remove("is-invalid");
+      }
+      if (prependElement) {
+        prependElement.classList.remove("is-invalid");
+      }
+    }
+
     this.destroyPopper();
   }
 
@@ -345,9 +445,33 @@ class DatePickerManager extends LitElement {
           : "";
       this.inputElement.focus();
     }
-    // Clear validation
-    this.validation = false;
-    this.validationMessage = "";
+
+    // Perform validation after date range selection
+    this.validateInput(this.inputElement.value);
+
+    // Remove validation error classes if input is valid
+    if (!this.validation) {
+      this.inputElement.classList.remove("is-invalid");
+      const labelElement = this.shadowRoot.querySelector(
+        'label[for="' + this.inputId + '"]'
+      );
+      const appendElement = this.shadowRoot.querySelector(
+        ".pl-input-group-append"
+      );
+      const prependElement = this.shadowRoot.querySelector(
+        ".pl-input-group-prepend"
+      );
+      if (labelElement) {
+        labelElement.classList.remove("invalid");
+      }
+      if (appendElement) {
+        appendElement.classList.remove("is-invalid");
+      }
+      if (prependElement) {
+        prependElement.classList.remove("is-invalid");
+      }
+    }
+
     this.destroyPopper();
   }
 
@@ -364,6 +488,7 @@ class DatePickerManager extends LitElement {
     this.endTime = event.detail.endTime;
     this.duration = event.detail.duration || "";
     this.dropdownOpen = false;
+
     if (this.inputElement) {
       this.inputElement.value =
         this.selectedStartDate &&
@@ -372,16 +497,59 @@ class DatePickerManager extends LitElement {
         this.endTime
           ? `${this.selectedStartDate} ${this.startTime} ${this.joinBy} ${
               this.selectedEndDate
-            } ${this.endTime} ${
-              this.showDuration && this.duration ? `(${this.duration})` : ""
+            } ${this.endTime}${
+              this.showDuration && this.duration ? ` (${this.duration})` : ""
             }`
           : "";
       this.inputElement.focus();
     }
-    // Clear validation
-    this.validation = false;
-    this.validationMessage = "";
+
+    // Log for debugging purposes
+    console.log("Validation value before validation: ", this.validation);
+    console.log("Input value: ", this.inputElement.value);
+
+    // Perform validation after selecting date range with time
+    this.validateInput(this.inputElement.value);
+
+    // Log validation status after running validation
+    console.log("Validation value after validation: ", this.validation);
+
+    // Remove validation error classes if input is valid
+    if (!this.validation) {
+      console.log("Removing validation classes...");
+      this.removeValidationClasses();
+    }
+
     this.destroyPopper();
+  }
+
+  // Helper function to remove the validation classes
+  removeValidationClasses() {
+    if (this.inputElement) {
+      // Remove 'is-invalid' from the input field
+      this.inputElement.classList.remove("is-invalid");
+    }
+
+    // Remove 'invalid' and 'is-invalid' from other elements
+    const labelElement = this.shadowRoot.querySelector(
+      `label[for="${this.inputId}"]`
+    );
+    const appendElement = this.shadowRoot.querySelector(
+      ".pl-input-group-append"
+    );
+    const prependElement = this.shadowRoot.querySelector(
+      ".pl-input-group-prepend"
+    );
+
+    if (labelElement) {
+      labelElement.classList.remove("invalid");
+    }
+    if (appendElement) {
+      appendElement.classList.remove("is-invalid");
+    }
+    if (prependElement) {
+      prependElement.classList.remove("is-invalid");
+    }
   }
 
   handleNavigationClick(event) {
@@ -551,9 +719,15 @@ class DatePickerManager extends LitElement {
                 : ""}
             </div>
             ${this.validation
-              ? html`<div class="invalid-feedback">
-                  ${this.validationMessage}
-                </div>`
+              ? html`
+                  ${this.warningMessage
+                    ? html`<div class="invalid-feedback warning">
+                        ${this.warningMessage}
+                      </div>`
+                    : html`<div class="invalid-feedback validation">
+                        ${this.validationMessage}
+                      </div>`}
+                `
               : ""}
           </div>
         </div>
@@ -565,29 +739,27 @@ class DatePickerManager extends LitElement {
     return html`
       <div class="plumage${this.formLayout ? ` ${this.formLayout}` : ""}">
         <div
-          class="form-group form-pl-input-group${
-            this.formLayout === "horizontal"
-              ? ` row`
-              : this.formLayout === "inline"
-              ? ` row inline`
-              : ""
-          }"
+          class="form-group form-pl-input-group${this.formLayout ===
+          "horizontal"
+            ? ` row`
+            : this.formLayout === "inline"
+            ? ` row inline`
+            : ""}"
         >
           <label
-            class="form-control-label${this.required ? " required" : ""}${
-      this.labelHidden ? " sr-only" : ""
-    }${this.formLayout === "horizontal" ? " col-md-2 no-padding" : ""}${
-      this.validation ? " invalid" : ""
-    }"
+            class="form-control-label${this.required ? " required" : ""}${this
+              .labelHidden
+              ? " sr-only"
+              : ""}${this.formLayout === "horizontal"
+              ? " col-md-2 no-padding"
+              : ""}${this.validation ? " invalid" : ""}"
             for="${this.inputId}"
-             aria-hidden="true"
-            >${
-              this.formLayout === "horizontal" || this.formLayout === "inline"
-                ? html`${this.label}:`
-                : html`${this.label}`
-            }
+            aria-hidden="true"
+            >${this.formLayout === "horizontal" || this.formLayout === "inline"
+              ? html`${this.label}:`
+              : html`${this.label}`}
           </label>
-          
+
           <div
             class=${ifDefined(
               this.formLayout === "horizontal"
@@ -596,126 +768,119 @@ class DatePickerManager extends LitElement {
             )}
           ></div>
 
-
-      <div class="pl-input-group${
-        this.size === "sm"
-          ? " pl-input-group-sm"
-          : this.size === "lg"
-          ? " pl-input-group-lg"
-          : ""
-      }${
-      this.disabled ? " disabled" : ""
-    }" role="group" aria-label="Date Picker Group">
-
-        ${
-          this.prepend
-            ? html`<div
-                class="pl-input-group-prepend${this.validation
-                  ? " is-invalid"
-                  : ""}"
-              >
-                <button
-                  @click=${this.toggleDropdown}
-                  class="calendar-button pl-btn pl-input-group-text"
-                  aria-label="Toggle Calendar Picker"
-                  aria-haspopup="dialog"
-                  aria-expanded=${this.dropdownOpen ? "true" : "false"}
-                  ?disabled=${this.disabled}
-                >
-                  <i class="${this.icon}"></i>
-                </button>
-              </div>`
-            : ""
-        }
-        
-        <input
-          id="${this.inputId}"
-          type="text"
-          class="form-control${this.validation ? " is-invalid" : ""}"
-          placeholder=${
-            this.selectedPicker === "daterange"
-              ? `${this.dateFormat} ${this.joinBy} ${this.dateFormat}`
-              : this.selectedPicker === "daterangetime"
-              ? `${this.dateFormat} HH:MM ${this.joinBy} ${this.dateFormat} HH:MM`
-              : this.dateFormat
-          }
-          value=${
-            this.selectedPicker === "datepicker"
-              ? this.selectedDate
-              : this.selectedPicker === "daterange"
-              ? this.selectedStartDate && this.selectedEndDate
-                ? `${this.selectedStartDate} ${this.joinBy} ${this.selectedEndDate}`
-                : ""
-              : this.selectedPicker === "daterangetime"
-              ? this.selectedStartDate &&
-                this.selectedEndDate &&
-                this.startTime &&
-                this.endTime
-                ? `${this.selectedStartDate} ${this.startTime} ${this.joinBy} ${
-                    this.selectedEndDate
-                  } ${this.endTime} ${
-                    this.showDuration && this.duration
-                      ? `(${this.duration})`
-                      : ""
-                  }`
-                : ""
-              : ""
-          }
-          @focus="${this.handleInteraction}"
-          @blur="${this.handleDocumentClick}"  
-          @input=${this.handleInputChange}
-          name="selectedDate"
-          aria-label="Selected Date"
-          aria-describedby="datepicker-desc"
-          aria-describedby=${ifDefined(
-            this.validation ? "validationMessage" : undefined
-          )}
-                ?disabled=${this.disabled}
-        />
-        
-        ${
-          this.append
-            ? html`<div
-                class="pl-input-group-append${this.validation
-                  ? " is-invalid"
-                  : ""}"
-              >
-                <button
-                  @click=${this.toggleDropdown}
-                  class="calendar-button pl-btn pl-input-group-text"
-                  aria-label="Toggle Calendar Picker"
-                  aria-haspopup="dialog"
-                  aria-expanded=${this.dropdownOpen ? "true" : "false"}
-                  ?disabled=${this.disabled}
-                >
-                  <i class="${this.icon}"></i>
-                </button>
-              </div>`
-            : ""
-        }
-
-        <div
-          class="b-underline${this.validation ? " invalid" : ""}"
-          role="presentation"
-        >
           <div
-            class="b-focus${this.disabled ? " disabled" : ""}${
-      this.validation ? " invalid" : ""
-    }"
-            role="presentation"
-            aria-hidden="true"
-          ></div>
-        </div>    
+            class="pl-input-group${this.size === "sm"
+              ? " pl-input-group-sm"
+              : this.size === "lg"
+              ? " pl-input-group-lg"
+              : ""}${this.disabled ? " disabled" : ""}"
+            role="group"
+            aria-label="Date Picker Group"
+          >
+            ${this.prepend
+              ? html`<div
+                  class="pl-input-group-prepend${this.validation
+                    ? " is-invalid"
+                    : ""}"
+                >
+                  <button
+                    @click=${this.toggleDropdown}
+                    class="calendar-button pl-btn pl-input-group-text"
+                    aria-label="Toggle Calendar Picker"
+                    aria-haspopup="dialog"
+                    aria-expanded=${this.dropdownOpen ? "true" : "false"}
+                    ?disabled=${this.disabled}
+                  >
+                    <i class="${this.icon}"></i>
+                  </button>
+                </div>`
+              : ""}
 
+            <input
+              id="${this.inputId}"
+              type="text"
+              class="form-control${this.validation ? " is-invalid" : ""}"
+              placeholder=${this.selectedPicker === "daterange"
+                ? `${this.dateFormat} ${this.joinBy} ${this.dateFormat}`
+                : this.selectedPicker === "daterangetime"
+                ? `${this.dateFormat} HH:MM ${this.joinBy} ${this.dateFormat} HH:MM`
+                : this.dateFormat}
+              value=${this.selectedPicker === "datepicker"
+                ? this.selectedDate
+                : this.selectedPicker === "daterange"
+                ? this.selectedStartDate && this.selectedEndDate
+                  ? `${this.selectedStartDate} ${this.joinBy} ${this.selectedEndDate}`
+                  : ""
+                : this.selectedPicker === "daterangetime"
+                ? this.selectedStartDate &&
+                  this.selectedEndDate &&
+                  this.startTime &&
+                  this.endTime
+                  ? `${this.selectedStartDate} ${this.startTime} ${
+                      this.joinBy
+                    } ${this.selectedEndDate} ${this.endTime} ${
+                      this.showDuration && this.duration
+                        ? `(${this.duration})`
+                        : ""
+                    }`
+                  : ""
+                : ""}
+              @focus="${this.handleInteraction}"
+              @blur="${this.handleDocumentClick}"
+              @input=${this.handleInputChange}
+              name="selectedDate"
+              aria-label="Selected Date"
+              aria-describedby="datepicker-desc"
+              aria-describedby=${ifDefined(
+                this.validation ? "validationMessage" : undefined
+              )}
+              ?disabled=${this.disabled}
+            />
 
-      </div>
+            ${this.append
+              ? html`<div
+                  class="pl-input-group-append${this.validation
+                    ? " is-invalid"
+                    : ""}"
+                >
+                  <button
+                    @click=${this.toggleDropdown}
+                    class="calendar-button pl-btn pl-input-group-text"
+                    aria-label="Toggle Calendar Picker"
+                    aria-haspopup="dialog"
+                    aria-expanded=${this.dropdownOpen ? "true" : "false"}
+                    ?disabled=${this.disabled}
+                  >
+                    <i class="${this.icon}"></i>
+                  </button>
+                </div>`
+              : ""}
 
-      ${
-        this.validation
-          ? html`<div class="invalid-feedback">${this.validationMessage}</div>`
-          : ""
-      }
+            <div
+              class="b-underline${this.validation ? " invalid" : ""}"
+              role="presentation"
+            >
+              <div
+                class="b-focus${this.disabled ? " disabled" : ""}${this
+                  .validation
+                  ? " invalid"
+                  : ""}"
+                role="presentation"
+                aria-hidden="true"
+              ></div>
+            </div>
           </div>
+          ${this.validation
+            ? html`
+                ${this.warningMessage
+                  ? html`<div class="invalid-feedback warning">
+                      ${this.warningMessage}
+                    </div>`
+                  : html`<div class="invalid-feedback validation">
+                      ${this.validationMessage}
+                    </div>`}
+              `
+            : ""}
         </div>
       </div>
     `;

@@ -147,7 +147,7 @@ export const inputGroupStyles = css`
   .pl-input-group-sm > .pl-input-group-append > .pl-input-group-text,
   .pl-input-group-sm > .pl-input-group-prepend > .pl-btn,
   .pl-input-group-sm > .pl-input-group-prepend > .pl-input-group-text {
-    padding: 0.25rem 0.5rem;
+    padding: 0.15rem 0.5rem;
     font-size: 0.875rem;
     line-height: 1.5;
     border-radius: 0.2rem;
@@ -156,7 +156,7 @@ export const inputGroupStyles = css`
 
   .pl-input-group-sm > .custom-select,
   .pl-input-group-sm > .form-control:not(textarea) {
-    height: calc(1.5em + 0.5rem + 2px);
+    height: calc(1.5em + 0.39rem + 1px);
   }
 
   .pl-input-group-lg > .custom-select,

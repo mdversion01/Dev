@@ -594,10 +594,14 @@ export const datepickerStyles = css`
       box-shadow 0.15s ease-in-out 0s;
   }
 
-  .calendar-button:hover,
-  .pl-input-group-prepend.is-invalid > .calendar-button:hover, 
+  .calendar-button:hover  {
+    color: #fff;
+  }
+
+  .pl-input-group-prepend.is-invalid > .calendar-button:hover,
   .pl-input-group-append.is-invalid > .calendar-button:hover {
-    color: #FFF;
+    color: #fff;
+    background-color: rgb(179, 0, 9);
   }
 
   .pl-input-group-append .calendar-button {
@@ -705,5 +709,16 @@ export const datepickerStyles = css`
 
   .plumage .pl-input-group-text {
     border: none;
+  }
+
+  .plumage .calendar-button:hover {
+    color: #1f1f1f;
+    background-color: transparent !important;
+  }
+
+  .plumage .pl-input-group-prepend.is-invalid > .calendar-button:hover,
+  .plumage .pl-input-group-append.is-invalid > .calendar-button:hover {
+    color: #6e2226;
+    background-color: transparent !important;
   }
 `;
