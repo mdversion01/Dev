@@ -3,7 +3,15 @@ import Fontawesome from "lit-fontawesome";
 import { datepickerStyles } from "./datepicker-styles.js";
 
 class DatePicker extends LitElement {
-  static styles = [Fontawesome, datepickerStyles, css``];
+  static styles = [
+    Fontawesome,
+    datepickerStyles,
+    css`
+      footer .small {
+        font-size: 80%;
+      }
+    `,
+  ];
 
   static get properties() {
     return {
@@ -37,6 +45,17 @@ class DatePicker extends LitElement {
     this.dateFormat = "YYYY-MM-DD"; // Default to YYYY-MM-DD format
     this.plumage = false;
     this.addEventListener("reset-picker", this.resetCalendar);
+    this.addEventListener("update-calendar", this.handleUpdateCalendar); // Listen for updates
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+    this.addEventListener("update-calendar", this.updateCalendarWithDate);
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    this.removeEventListener("update-calendar", this.updateCalendarWithDate);
   }
 
   firstUpdated() {
@@ -48,22 +67,42 @@ class DatePicker extends LitElement {
     }
   }
 
+  // Method to handle updating the calendar with the typed date
+  updateCalendarWithDate(event) {
+    const { date } = event.detail;
+
+    // Update the current month and year to match the typed date
+    this.currentMonth = date.getUTCMonth();
+    this.currentYear = date.getUTCFullYear();
+
+    // Update the selected date
+    this.selectedDate = new Date(
+      Date.UTC(this.currentYear, this.currentMonth, date.getUTCDate())
+    );
+
+    // Re-render the calendar with the updated month and year
+    this.renderCalendar(this.currentMonth, this.currentYear);
+
+    // Set the active state on the selected date
+    this.setActiveState();
+  }
+
   resetCalendar(event) {
     const today = new Date();
-  
+
     // Clear the selected date
     this.selectedDate = null;
-  
+
     // Clear the active state and reset the calendar view
     this.clearActiveState();
-  
+
     // Reset the selected date display to "No date selected"
     this.updateSelectedDateDisplay("No date selected");
-  
+
     // Optionally, you can reset the focus to today's date
     this.currentDate();
   }
-  
+
   render() {
     return html`
       <div class="dp-single-calendar${this.plumage ? " plumage" : ""}">
@@ -169,43 +208,57 @@ class DatePicker extends LitElement {
               <small
                 aria-label="Sunday"
                 title="Sunday"
-                class="calendar-grid-day col${this.plumage ? ' text-truncate' : ''}"
+                class="calendar-grid-day col${this.plumage
+                  ? " text-truncate"
+                  : ""}"
                 >Sun</small
               >
               <small
                 aria-label="Monday"
                 title="Monday"
-                class="calendar-grid-day col${this.plumage ? ' text-truncate' : ''}"
+                class="calendar-grid-day col${this.plumage
+                  ? " text-truncate"
+                  : ""}"
                 >Mon</small
               >
               <small
                 aria-label="Tuesday"
                 title="Tuesday"
-                class="calendar-grid-day col${this.plumage ? ' text-truncate' : ''}"
+                class="calendar-grid-day col${this.plumage
+                  ? " text-truncate"
+                  : ""}"
                 >Tue</small
               >
               <small
                 aria-label="Wednesday"
                 title="Wednesday"
-                class="calendar-grid-day col${this.plumage ? ' text-truncate' : ''}"
+                class="calendar-grid-day col${this.plumage
+                  ? " text-truncate"
+                  : ""}"
                 >Wed</small
               >
               <small
                 aria-label="Thursday"
                 title="Thursday"
-                class="calendar-grid-day col${this.plumage ? ' text-truncate' : ''}"
+                class="calendar-grid-day col${this.plumage
+                  ? " text-truncate"
+                  : ""}"
                 >Thu</small
               >
               <small
                 aria-label="Friday"
                 title="Friday"
-                class="calendar-grid-day col${this.plumage ? ' text-truncate' : ''}"
+                class="calendar-grid-day col${this.plumage
+                  ? " text-truncate"
+                  : ""}"
                 >Fri</small
               >
               <small
                 aria-label="Saturday"
                 title="Saturday"
-                class="calendar-grid-day col${this.plumage ? ' text-truncate' : ''}"
+                class="calendar-grid-day col${this.plumage
+                  ? " text-truncate"
+                  : ""}"
                 >Sat</small
               >
             </div>
@@ -362,6 +415,18 @@ class DatePicker extends LitElement {
     return date.toISOString();
   }
 
+  //  // Function to map format strings to their corresponding functions
+  //  getFormattedDate(date, format) {
+  //   switch (format) {
+  //     case 'YYYY-MM-DD':
+  //       return this.formatDateYmd(date);
+  //     case 'MM-DD-YYYY':
+  //       return this.formatDateMdy(date);
+  //     default:
+  //       return this.formatDateYmd(date); // Default to YYYY-MM-DD if unrecognized
+  //   }
+  // }
+
   updateSelectedDateDisplay(formattedDate) {
     const selectedDateDisplay =
       this.shadowRoot.querySelector(".selected-date bdi");
@@ -370,7 +435,7 @@ class DatePicker extends LitElement {
 
   updateSelectedDateElements(formattedDate) {
     if (!this.displayContextExamples) {
-      return;
+      return; // Do nothing if context examples are not displayed
     }
 
     const date = new Date(`${formattedDate}T00:00:00Z`);
@@ -399,7 +464,7 @@ class DatePicker extends LitElement {
     if (selectedDateDisplayMdy) {
       selectedDateDisplayMdy.textContent = selectedDateMdy;
     } else {
-      console.warn("Element with class .selected-date-Mdy not found.");
+      console.warn("Element with class .selected-date-Myd not found.");
     }
 
     if (selectedDateDisplayFull) {
@@ -419,7 +484,7 @@ class DatePicker extends LitElement {
 
   updateActiveDateElements() {
     if (!this.displayContextExamples) {
-      return;
+      return; // Do nothing if context examples are not displayed
     }
 
     const focusedSpan = this.shadowRoot.querySelector(
@@ -472,25 +537,24 @@ class DatePicker extends LitElement {
   handleDayClick(event) {
     const clickedSpan = event.target;
     const dayContainer = clickedSpan.parentElement;
-
+  
     const isPreviousMonthDay =
       dayContainer.classList.contains("previous-month-day");
     const isNextMonthDay = dayContainer.classList.contains("next-month-day");
-
+  
     const isActive = clickedSpan.classList.contains("active");
-
+  
     if (!isPreviousMonthDay && !isNextMonthDay) {
       this.clearActiveState();
-
+  
       if (!isActive) {
         clickedSpan.classList.add("active", "btn-primary", "focus");
-
+  
         const selectedDateElement = this.shadowRoot.getElementById(
           `cell-${dayContainer.dataset.date}`
         );
         if (selectedDateElement) {
-          const existingAriaLabel =
-            selectedDateElement.getAttribute("aria-label");
+          const existingAriaLabel = selectedDateElement.getAttribute("aria-label");
           selectedDateElement.setAttribute(
             "aria-label",
             `${existingAriaLabel} (Selected)`
@@ -499,49 +563,43 @@ class DatePicker extends LitElement {
           selectedDateElement.setAttribute("aria-current", "date");
         }
       }
-
+  
       this.selectedMonth = parseInt(dayContainer.dataset.month);
       this.selectedYear = parseInt(dayContainer.dataset.year);
       const selectedDay = parseInt(clickedSpan.textContent);
-      this.selectedDate = new Date(
-        Date.UTC(this.selectedYear, this.selectedMonth - 1, selectedDay)
-      );
-
+  
+      // Use local time instead of UTC to avoid timezone issues
+      this.selectedDate = new Date(this.selectedYear, this.selectedMonth - 1, selectedDay);
+  
       // Get the method to format the date according to the selected format
       const formatMethod = this.getDateFormatMethod(this.dateFormat);
       const formattedSelectedDate = formatMethod.call(this, this.selectedDate);
       const selectedFormatted = this.formatDateLong(this.selectedDate);
-
+  
       // Always display the selectedFormatted date
       this.updateSelectedDateDisplay(selectedFormatted);
-      this.updateSelectedDateElements(
-        this.selectedDate.toISOString().split("T")[0]
-      );
+      this.updateSelectedDateElements(formattedSelectedDate);
       this.updateActiveDateElements();
-
-      this.currentSelectedDate = new Date(
-        Date.UTC(this.selectedYear, this.selectedMonth - 1, selectedDay)
-      );
-
-      this.updateSelectedDateElements(
-        this.currentSelectedDate.toISOString().split("T")[0]
-      );
-
+  
+      this.currentSelectedDate = new Date(this.selectedYear, this.selectedMonth - 1, selectedDay);
+  
+      this.updateSelectedDateElements(formattedSelectedDate);
+  
       this.shadowRoot.querySelector(".calendar").classList.add("focus");
       this.isCalendarFocused = true;
-
-      const formattedDate = `${this.selectedDate.getUTCFullYear()}-${(
-        this.selectedDate.getUTCMonth() + 1
+  
+      const formattedDate = `${this.selectedDate.getFullYear()}-${(
+        this.selectedDate.getMonth() + 1
       )
         .toString()
         .padStart(2, "0")}-${this.selectedDate
-        .getUTCDate()
+        .getDate()
         .toString()
         .padStart(2, "0")}`;
       this.shadowRoot
         .querySelector(".calendar")
         .setAttribute("aria-activedescendant", `cell-${formattedDate}`);
-
+  
       // Dispatch the date-selected event with formatted date
       this.dispatchEvent(
         new CustomEvent("date-selected", {
@@ -564,28 +622,28 @@ class DatePicker extends LitElement {
           this.currentYear++;
         }
       }
-
+  
       this.selectedMonth = parseInt(dayContainer.dataset.month);
       this.selectedYear = parseInt(dayContainer.dataset.year);
       const selectedDay = parseInt(clickedSpan.textContent);
-      this.selectedDate = new Date(
-        Date.UTC(this.selectedYear, this.selectedMonth - 1, selectedDay)
-      );
-
+  
+      // Use local time instead of UTC to avoid timezone issues
+      this.selectedDate = new Date(this.selectedYear, this.selectedMonth - 1, selectedDay);
+  
       this.renderCalendar(this.currentMonth, this.currentYear);
-
-      const formattedDate = `${this.selectedDate.getUTCFullYear()}-${(
-        this.selectedDate.getUTCMonth() + 1
+  
+      const formattedDate = `${this.selectedDate.getFullYear()}-${(
+        this.selectedDate.getMonth() + 1
       )
         .toString()
         .padStart(2, "0")}-${this.selectedDate
-        .getUTCDate()
+        .getDate()
         .toString()
         .padStart(2, "0")}`;
       this.shadowRoot
         .querySelector(".calendar")
         .setAttribute("aria-activedescendant", `cell-${formattedDate}`);
-
+  
       const newFocusCell = this.shadowRoot.querySelector(
         `.calendar-grid-item[data-date="${formattedDate}"]`
       );
@@ -595,19 +653,20 @@ class DatePicker extends LitElement {
           .querySelector(".calendar")
           .setAttribute("aria-activedescendant", newFocusCell.id);
       }
-
+  
       this.setActiveState();
       this.updateSelectedDateElements(formattedDate);
       this.updateActiveDateElements();
-
+  
       // Ensure the focus remains on the selected day
       setTimeout(() => {
         newFocusCell?.querySelector("span")?.focus();
       }, 0);
     }
-
+  
     this.setActiveState();
   }
+  
 
   handleEnterKeyPress(event) {
     event.stopPropagation();
@@ -625,7 +684,7 @@ class DatePicker extends LitElement {
       const isActive = focusedSpan.classList.contains("active");
 
       if (isActive && !isPreviousMonthDay && !isNextMonthDay) {
-        return;
+        return; // Do nothing if the active day is pressed again
       } else {
         this.handleDayClick({ target: focusedSpan });
       }
@@ -646,6 +705,7 @@ class DatePicker extends LitElement {
           direction === "next" ? currentIndex + 1 : currentIndex - 1;
 
         if (direction === "up" && currentIndex < 7) {
+          // Move to the previous month and set focus on the correct day
           this.prevMonth();
           const daysInPrevMonth = new Date(
             this.currentYear,
@@ -660,6 +720,7 @@ class DatePicker extends LitElement {
           direction === "down" &&
           currentIndex >= calendarCells.length - 7
         ) {
+          // Move to the next month and set focus on the correct day
           this.nextMonth();
           newIndex = currentIndex % 7;
           calendarCells = this.shadowRoot.querySelectorAll(
@@ -686,23 +747,29 @@ class DatePicker extends LitElement {
   }
 
   clearActiveState() {
-    const allSpans = this.shadowRoot.querySelectorAll(".calendar-grid-item span");
+    const allSpans = this.shadowRoot.querySelectorAll(
+      ".calendar-grid-item span"
+    );
     allSpans.forEach((span) => {
       span.classList.remove("active", "btn-primary", "focus");
       span.classList.add("btn-outline-light", "text-dark");
-  
-      const dateElement = this.shadowRoot.getElementById(`cell-${span.parentElement.dataset.date}`);
+
+      const dateElement = this.shadowRoot.getElementById(
+        `cell-${span.parentElement.dataset.date}`
+      );
       if (dateElement) {
         const existingAriaLabel = dateElement.getAttribute("aria-label");
         if (existingAriaLabel.endsWith(" (Selected)")) {
-          dateElement.setAttribute("aria-label", existingAriaLabel.slice(0, -11));
+          dateElement.setAttribute(
+            "aria-label",
+            existingAriaLabel.slice(0, -11)
+          );
           dateElement.removeAttribute("aria-selected");
           dateElement.removeAttribute("aria-current");
         }
       }
     });
   }
-  
 
   setActiveState() {
     const activeSpan = this.shadowRoot.querySelector(".active");
@@ -943,13 +1010,11 @@ class DatePicker extends LitElement {
 
   currentDate() {
     const today = new Date();
+    this.selectedDate = today;
     this.currentMonth = today.getUTCMonth();
     this.currentYear = today.getUTCFullYear();
-    
-    // Re-render the calendar for the current month and year
     this.renderCalendar(this.currentMonth, this.currentYear);
   }
-  
 
   handleKeyDown(event) {
     const calendarGrid = this.shadowRoot.querySelector(".calendar-grid");
@@ -965,6 +1030,7 @@ class DatePicker extends LitElement {
 
         if (event.key === "ArrowUp") {
           if (index < 7) {
+            // If in the first row, move to the previous month
             const prevMonthLastDay = new Date(
               this.currentYear,
               this.currentMonth,
@@ -977,10 +1043,11 @@ class DatePicker extends LitElement {
             );
             newIndex = calendarCells.length - offset;
           } else {
-            newIndex = Math.max(index - 7, 0);
+            newIndex = Math.max(index - 7, 0); // Move up within the current month
           }
         } else if (event.key === "ArrowDown") {
           if (index >= calendarCells.length - 7) {
+            // If in the last row, move to the next month
             const offset = index % 7;
             this.nextMonth();
             calendarCells = this.shadowRoot.querySelectorAll(
@@ -988,7 +1055,7 @@ class DatePicker extends LitElement {
             );
             newIndex = offset;
           } else {
-            newIndex = Math.min(index + 7, calendarCells.length - 1);
+            newIndex = Math.min(index + 7, calendarCells.length - 1); // Move down within the current month
           }
         } else if (event.key === "ArrowLeft") {
           newIndex = index - 1;
@@ -996,8 +1063,8 @@ class DatePicker extends LitElement {
             this.prevMonth();
             calendarCells = this.shadowRoot.querySelectorAll(
               ".calendar-grid-item"
-            );
-            newIndex = calendarCells.length - 1;
+            ); // Update after rendering new month
+            newIndex = calendarCells.length - 1; // Move focus to the last day of the previous month
           }
         } else if (event.key === "ArrowRight") {
           newIndex = index + 1;
@@ -1005,8 +1072,8 @@ class DatePicker extends LitElement {
             this.nextMonth();
             calendarCells = this.shadowRoot.querySelectorAll(
               ".calendar-grid-item"
-            );
-            newIndex = 0;
+            ); // Update after rendering new month
+            newIndex = 0; // Move focus to the first day of the next month
           }
         }
 
@@ -1044,7 +1111,7 @@ class DatePicker extends LitElement {
 
   updateInitialContext() {
     if (!this.displayContextExamples) {
-      return;
+      return; // Skip updating the context if not displaying context examples
     }
 
     const today = new Date();

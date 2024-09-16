@@ -265,22 +265,32 @@ class DatePickerManager extends LitElement {
       this.popperInstance = null;
     }
   }
-
   formatDate(date, format) {
-    const options = {};
-    switch (format) {
-      case "YYYY-MM-DD":
-        options.year = "numeric";
-        options.month = "2-digit";
-        options.day = "2-digit";
-        break;
-      case "MM-DD-YYYY":
-        options.year = "numeric";
-        options.month = "2-digit";
-        options.day = "2-digit";
-        break;
+    // Ensure that the date is a valid Date object
+    if (!(date instanceof Date)) {
+      date = new Date(date); // Convert to Date object if not already
     }
-    return new Date(date)
+
+    // Check if the date is valid after conversion
+    if (isNaN(date)) {
+      console.error("Invalid date provided to formatDate:", date);
+      return "Invalid Date";
+    }
+
+    // Use local date methods to avoid timezone shift
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-based
+    const day = String(date.getDate()).padStart(2, "0");
+
+    if (format === "YYYY-MM-DD") {
+      return `${year}-${month}-${day}`;
+    } else if (format === "MM-DD-YYYY") {
+      return `${month}-${day}-${year}`;
+    }
+
+    // Fallback to locale-aware formatting using default options
+    const options = { year: "numeric", month: "2-digit", day: "2-digit" };
+    return date
       .toLocaleDateString("en-US", options)
       .replace(/(\d+)\/(\d+)\/(\d+)/, (match, m, d, y) => {
         return format === "YYYY-MM-DD" ? `${y}-${m}-${d}` : `${m}-${d}-${y}`;
@@ -389,24 +399,37 @@ class DatePickerManager extends LitElement {
   }
 
   handleDateSelect(event) {
-    this.selectedDate = this.formatDate(
-      event.detail.formattedDate,
-      this.dateFormat
-    );
+    // Ensure formattedDate is a valid Date object
+    const selectedDate = new Date(event.detail.formattedDate);
+
+    // Get the year, month, and day values explicitly without any timezone offsets
+    const year = selectedDate.getUTCFullYear();
+    const month = String(selectedDate.getUTCMonth() + 1).padStart(2, "0"); // Months are 0-based
+    const day = String(selectedDate.getUTCDate()).padStart(2, "0");
+
+    // Create a new date string in the desired format without applying timezone conversions
+    const formattedSelectedDate = `${year}-${month}-${day}`;
+
+    // Set the selectedDate property
+    this.selectedDate = formattedSelectedDate;
+
+    // Close the dropdown
     this.dropdownOpen = false;
+
+    // Set the formatted date in the input element and focus the input
     if (this.inputElement) {
-      this.inputElement.value = this.selectedDate;
+      this.inputElement.value = formattedSelectedDate;
       this.inputElement.focus();
     }
 
-    // Perform validation after date selection
+    // Perform validation on the selected date
     this.validateInput(this.selectedDate);
 
     // Remove validation error classes if input is valid
     if (!this.validation) {
       this.inputElement.classList.remove("is-invalid");
       const labelElement = this.shadowRoot.querySelector(
-        'label[for="' + this.inputId + '"]'
+        `label[for="${this.inputId}"]`
       );
       const appendElement = this.shadowRoot.querySelector(
         ".pl-input-group-append"
@@ -414,6 +437,8 @@ class DatePickerManager extends LitElement {
       const prependElement = this.shadowRoot.querySelector(
         ".pl-input-group-prepend"
       );
+
+      // Remove 'invalid' classes from the label and input group elements
       if (labelElement) {
         labelElement.classList.remove("invalid");
       }
@@ -425,19 +450,33 @@ class DatePickerManager extends LitElement {
       }
     }
 
+    // Destroy the popper (dropdown) after selection
     this.destroyPopper();
   }
 
   handleDateRangeSelect(event) {
-    this.selectedStartDate = this.formatDate(
-      event.detail.startDate,
-      this.dateFormat
+    // Manually extract the date components to avoid time zone issues
+    const startDateParts = event.detail.startDate.split("-");
+    const endDateParts = event.detail.endDate.split("-");
+
+    // Create date objects using local date parts (YYYY, MM, DD)
+    const startDate = new Date(
+      startDateParts[0],
+      startDateParts[1] - 1,
+      startDateParts[2]
     );
-    this.selectedEndDate = this.formatDate(
-      event.detail.endDate,
-      this.dateFormat
+    const endDate = new Date(
+      endDateParts[0],
+      endDateParts[1] - 1,
+      endDateParts[2]
     );
+
+    // Format the dates for display
+    this.selectedStartDate = this.formatDate(startDate, this.dateFormat);
+    this.selectedEndDate = this.formatDate(endDate, this.dateFormat);
+
     this.dropdownOpen = false;
+
     if (this.inputElement) {
       this.inputElement.value =
         this.selectedStartDate && this.selectedEndDate
@@ -446,44 +485,32 @@ class DatePickerManager extends LitElement {
       this.inputElement.focus();
     }
 
-    // Perform validation after date range selection
+    // Validate input after selecting the date range
     this.validateInput(this.inputElement.value);
 
-    // Remove validation error classes if input is valid
-    if (!this.validation) {
-      this.inputElement.classList.remove("is-invalid");
-      const labelElement = this.shadowRoot.querySelector(
-        'label[for="' + this.inputId + '"]'
-      );
-      const appendElement = this.shadowRoot.querySelector(
-        ".pl-input-group-append"
-      );
-      const prependElement = this.shadowRoot.querySelector(
-        ".pl-input-group-prepend"
-      );
-      if (labelElement) {
-        labelElement.classList.remove("invalid");
-      }
-      if (appendElement) {
-        appendElement.classList.remove("is-invalid");
-      }
-      if (prependElement) {
-        prependElement.classList.remove("is-invalid");
-      }
-    }
-
+    this.removeValidationClasses();
     this.destroyPopper();
   }
 
   handleDateRangeTimeSelect(event) {
-    this.selectedStartDate = this.formatDate(
-      event.detail.startDate,
-      this.dateFormat
+    // Manually extract the date components
+    const startDateParts = event.detail.startDate.split("-");
+    const endDateParts = event.detail.endDate.split("-");
+
+    // Create date objects using local date parts (YYYY, MM, DD)
+    const startDate = new Date(
+      startDateParts[0],
+      startDateParts[1] - 1,
+      startDateParts[2]
     );
-    this.selectedEndDate = this.formatDate(
-      event.detail.endDate,
-      this.dateFormat
+    const endDate = new Date(
+      endDateParts[0],
+      endDateParts[1] - 1,
+      endDateParts[2]
     );
+
+    this.selectedStartDate = this.formatDate(startDate, this.dateFormat);
+    this.selectedEndDate = this.formatDate(endDate, this.dateFormat);
     this.startTime = event.detail.startTime;
     this.endTime = event.detail.endTime;
     this.duration = event.detail.duration || "";
@@ -497,29 +524,16 @@ class DatePickerManager extends LitElement {
         this.endTime
           ? `${this.selectedStartDate} ${this.startTime} ${this.joinBy} ${
               this.selectedEndDate
-            } ${this.endTime}${
-              this.showDuration && this.duration ? ` (${this.duration})` : ""
+            } ${this.endTime} ${
+              this.showDuration && this.duration ? `(${this.duration})` : ""
             }`
           : "";
       this.inputElement.focus();
     }
 
-    // Log for debugging purposes
-    console.log("Validation value before validation: ", this.validation);
-    console.log("Input value: ", this.inputElement.value);
-
-    // Perform validation after selecting date range with time
     this.validateInput(this.inputElement.value);
 
-    // Log validation status after running validation
-    console.log("Validation value after validation: ", this.validation);
-
-    // Remove validation error classes if input is valid
-    if (!this.validation) {
-      console.log("Removing validation classes...");
-      this.removeValidationClasses();
-    }
-
+    this.removeValidationClasses();
     this.destroyPopper();
   }
 
