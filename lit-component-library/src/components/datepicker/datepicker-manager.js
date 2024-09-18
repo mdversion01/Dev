@@ -265,6 +265,7 @@ class DatePickerManager extends LitElement {
       this.popperInstance = null;
     }
   }
+  
   formatDate(date, format) {
     // Ensure that the date is a valid Date object
     if (!(date instanceof Date)) {
