@@ -905,26 +905,29 @@ class DatePickerNew extends LitElement {
 
   handleEnterKeyPress(event) {
     event.stopPropagation();
-
+  
     const focusedSpan = this.shadowRoot.querySelector(
       ".calendar-grid-item span.focus"
     );
     if (focusedSpan) {
       const dayContainer = focusedSpan.parentElement;
-
+  
       const isPreviousMonthDay =
         dayContainer.classList.contains("previous-month-day");
       const isNextMonthDay = dayContainer.classList.contains("next-month-day");
-
+  
       const isActive = focusedSpan.classList.contains("active");
-
+  
       if (isActive && !isPreviousMonthDay && !isNextMonthDay) {
         return; // Do nothing if the active day is pressed again
       } else {
         this.handleDayClick({ target: focusedSpan });
+  
+        // Close the dropdown after the date selection
+        this.toggleDropdown();
       }
     }
-  }
+  }  
 
   handleDateNavigation(event, direction) {
     const focusedElement = this.shadowRoot.activeElement;

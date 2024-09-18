@@ -356,6 +356,7 @@ export const datepickerStyles = css`
   .calendar-grid-item:focus-visible {
     outline: none;
   }
+
   .previous-month-day,
   .next-month-day {
     color: #ccc;
@@ -594,7 +595,7 @@ export const datepickerStyles = css`
       box-shadow 0.15s ease-in-out 0s;
   }
 
-  .calendar-button:hover  {
+  .calendar-button:hover {
     color: #fff;
   }
 
