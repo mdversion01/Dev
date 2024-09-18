@@ -203,20 +203,20 @@ class DatePickerNew extends LitElement {
     this.dropdownOpen = !this.dropdownOpen;
 
     if (this.dropdownOpen) {
-        const inputValue = this.inputElement.value.trim();
-    
-        if (!inputValue) {
-          this.clearInputField(); // Reset input and calendar
-          this.updateSelectedDateDisplay(null); // Reset display
+      const inputValue = this.inputElement.value.trim();
+
+      if (!inputValue) {
+        this.clearInputField(); // Reset input and calendar
+        this.updateSelectedDateDisplay(null); // Reset display
+      } else {
+        const parsedDate = this.parseDate(inputValue);
+        if (parsedDate && !isNaN(parsedDate.getTime())) {
+          this.updateCalendarWithParsedDate(parsedDate); // Sync calendar
+          this.updateSelectedDateDisplay(parsedDate); // Update display
         } else {
-          const parsedDate = this.parseDate(inputValue);
-          if (parsedDate && !isNaN(parsedDate.getTime())) {
-            this.updateCalendarWithParsedDate(parsedDate); // Sync calendar
-            this.updateSelectedDateDisplay(parsedDate); // Update display
-          } else {
-            this.updateSelectedDateDisplay(null); // Handle invalid input
-          }
+          this.updateSelectedDateDisplay(null); // Handle invalid input
         }
+      }
 
       this.createPopperInstance(); // Open the dropdown and create the popper
       document.addEventListener("click", this.handleOutsideClick); // Attach listener to document
@@ -254,28 +254,32 @@ class DatePickerNew extends LitElement {
     }
   }
 
-//   handleInputChange(event) {
-//     const inputValue = event.target.value.trim();
+  //   handleInputChange(event) {
+  //     const inputValue = event.target.value.trim();
 
-//     // Update the input field with the current value
-//     this.updateInputField(inputValue);
+  //     // Update the input field with the current value
+  //     this.updateInputField(inputValue);
 
-//     // If the input is cleared (Backspace or manual delete)
-//     if (inputValue === "") {
-//       this.clearInputField(); // Call the clear function to reset everything
-//       return;
-//     }
+  //     // If the input is cleared (Backspace or manual delete)
+  //     if (inputValue === "") {
+  //       this.clearInputField(); // Call the clear function to reset everything
+  //       return;
+  //     }
 
-//     // Perform validation on the current input
-//     this.validateInput(inputValue);
-//   }
+  //     // Perform validation on the current input
+  //     this.validateInput(inputValue);
+  //   }
 
-handleInputChange(event) {
+  handleInputChange(event) {
     const inputValue = event.target.value.trim();
-  
+
     // Parse the input date based on the current date format
     const parsedDate = this.parseDate(inputValue);
-  
+
+    // Log the input value and parsed date
+    console.log("Input value:", inputValue);
+    console.log("Parsed date:", parsedDate);
+
     if (parsedDate && !isNaN(parsedDate.getTime())) {
       // If valid, update the calendar and display the long formatted date
       this.updateCalendarWithParsedDate(parsedDate);
@@ -288,6 +292,9 @@ handleInputChange(event) {
 
   handleInputBlur(event) {
     const inputValue = event.target.value.trim();
+
+    // Log when blur is triggered
+    console.log("Input blur triggered. Input value:", inputValue);
 
     if (inputValue === "") {
       this.clearInputField();
@@ -302,6 +309,8 @@ handleInputChange(event) {
 
       // Long format for header
       const formattedLongDate = this.formatDateLong(parsedDate);
+
+      console.log("Formatted Date:", formattedSelectedDate);
 
       this.updateInputField(formattedSelectedDate); // Update input with short format
       this.updateSelectedDateDisplay(parsedDate); // Update header with long format
@@ -324,8 +333,18 @@ handleInputChange(event) {
         const year = parseInt(partsYMD[0], 10);
         const month = parseInt(partsYMD[1], 10) - 1; // Months are 0-based
         const day = parseInt(partsYMD[2], 10);
-  
-        if (!isNaN(year) && !isNaN(month) && !isNaN(day)) {
+
+        // Strict check for valid year, month, and day ranges
+        if (
+          !isNaN(year) &&
+          !isNaN(month) &&
+          !isNaN(day) &&
+          year.toString().length === 4 && // Ensure valid 4-digit year
+          month >= 0 &&
+          month < 12 && // Month between 0 and 11
+          day > 0 &&
+          day <= 31 // Day between 1 and 31 (basic check)
+        ) {
           return new Date(year, month, day);
         }
       }
@@ -335,16 +354,26 @@ handleInputChange(event) {
         const month = parseInt(partsMDY[0], 10) - 1; // Months are 0-based
         const day = parseInt(partsMDY[1], 10);
         const year = parseInt(partsMDY[2], 10);
-  
-        if (!isNaN(month) && !isNaN(day) && !isNaN(year)) {
+
+        // Strict check for valid year, month, and day ranges
+        if (
+          !isNaN(month) &&
+          !isNaN(day) &&
+          !isNaN(year) &&
+          year.toString().length === 4 && // Ensure valid 4-digit year
+          month >= 0 &&
+          month < 12 && // Month between 0 and 11
+          day > 0 &&
+          day <= 31 // Day between 1 and 31 (basic check)
+        ) {
           return new Date(year, month, day);
         }
       }
     }
-  
-    return null; // Return null if the input doesn't match the expected format
+
+    // If parsing fails, return null
+    return null;
   }
-  
 
   //   formatDate(date) {
   //     if (this.dateFormat === "MM-DD-YYYY") {
@@ -584,8 +613,9 @@ handleInputChange(event) {
   }
 
   updateSelectedDateDisplay(date) {
-    const selectedDateDisplay = this.shadowRoot.querySelector(".selected-date bdi");
-  
+    const selectedDateDisplay =
+      this.shadowRoot.querySelector(".selected-date bdi");
+
     // Check if date is valid (either Date object or valid string)
     if (!date || !(date instanceof Date) || isNaN(date.getTime())) {
       // Display "No date selected" if no valid date is provided
@@ -596,7 +626,6 @@ handleInputChange(event) {
       selectedDateDisplay.textContent = formattedLongDate;
     }
   }
-  
 
   updateSelectedDateElements(formattedDate) {
     if (!this.displayContextExamples) {
@@ -604,14 +633,16 @@ handleInputChange(event) {
     }
 
     const date = new Date(formattedDate);
-    
+
     const selectedDateYmd = this.formatDateYmd(date);
     const selectedDateMdy = this.formatDateMdy(date);
     const selectedFormatted = this.formatDateLong(date); // Long format for display
     const selectedIsoFormatted = this.formatISODate(date);
-    
-    const selectedDateDisplayYmd = this.shadowRoot.querySelector(".selected-date-Ymd");
-    const selectedDateDisplayMdy = this.shadowRoot.querySelector(".selected-date-Mdy");
+
+    const selectedDateDisplayYmd =
+      this.shadowRoot.querySelector(".selected-date-Ymd");
+    const selectedDateDisplayMdy =
+      this.shadowRoot.querySelector(".selected-date-Mdy");
     const selectedDateDisplayFull = this.shadowRoot.querySelector(
       ".selected-formatted-date"
     );
@@ -624,19 +655,19 @@ handleInputChange(event) {
     } else {
       console.warn("Element with class .selected-date-Ymd not found.");
     }
-  
+
     if (selectedDateDisplayMdy) {
       selectedDateDisplayMdy.textContent = selectedDateMdy;
     } else {
       console.warn("Element with class .selected-date-Mdy not found.");
     }
-  
+
     if (selectedDateDisplayFull) {
       selectedDateDisplayFull.textContent = selectedFormatted;
     } else {
       console.warn("Element with class .selected-formatted-date not found.");
     }
-  
+
     if (selectedDateDisplayIso) {
       selectedDateDisplayIso.textContent = selectedIsoFormatted;
     } else {
@@ -651,22 +682,28 @@ handleInputChange(event) {
     if (!this.displayContextExamples) {
       return; // Do nothing if context examples are not displayed
     }
-  
-    const focusedSpan = this.shadowRoot.querySelector(".calendar-grid-item span.focus");
+
+    const focusedSpan = this.shadowRoot.querySelector(
+      ".calendar-grid-item span.focus"
+    );
     const activeDateYMD = this.shadowRoot.querySelector(".active-date-ymd");
     const activeDateMDY = this.shadowRoot.querySelector(".active-date-mdy");
-    const activeLongDate = this.shadowRoot.querySelector(".active-formatted-date-long");
-    const activeIsoDate = this.shadowRoot.querySelector(".active-formatted-iso");
-  
+    const activeLongDate = this.shadowRoot.querySelector(
+      ".active-formatted-date-long"
+    );
+    const activeIsoDate = this.shadowRoot.querySelector(
+      ".active-formatted-iso"
+    );
+
     if (!activeDateYMD || !activeDateMDY || !activeLongDate || !activeIsoDate) {
       console.error("One or more active date elements are missing");
       return;
     }
-  
+
     if (focusedSpan) {
       const dataDate = focusedSpan.parentElement.getAttribute("data-date");
       const date = new Date(`${dataDate}T00:00:00Z`);
-  
+
       // Correctly format and update the elements
       activeDateYMD.textContent = this.formatDateYmd(date); // YYYY-MM-DD
       activeDateMDY.textContent = this.formatDateMdy(date); // MM-DD-YYYY
@@ -680,7 +717,6 @@ handleInputChange(event) {
       activeIsoDate.textContent = "Date not selected";
     }
   }
-  
 
   // Add a helper method to map the dateFormat to the correct function
   getDateFormatMethod(format) {
@@ -1398,18 +1434,22 @@ handleInputChange(event) {
   handleKeyDown(event) {
     const inputField = this.shadowRoot.querySelector("input.form-control");
 
-    // Handle Backspace to clear the input if it's empty
+    // Handle Backspace: Only clear the input if it's not empty, avoid triggering date navigation
     if (event.key === "Backspace") {
-      // Check if the input field becomes empty
       if (inputField.value.trim() === "") {
-        this.clearInputField(); // Call the clear function to reset everything
-        return;
+        this.clearInputField(); // Reset everything if input is empty
+        return; // Exit to prevent further key handling
       }
     }
 
-    // Other keydown handling for arrows remains unchanged (navigation keys)
+    // Handle other key events (like arrow navigation) only when the calendar is focused
     const calendarGrid = this.shadowRoot.querySelector(".calendar-grid");
-    let currentFocus = this.shadowRoot.activeElement;
+    const currentFocus = this.shadowRoot.activeElement;
+
+    if (!calendarGrid || !calendarGrid.contains(currentFocus)) {
+      return; // Do nothing if the calendar grid is not focused
+    }
+
     let calendarCells = calendarGrid.querySelectorAll(".calendar-grid-item");
 
     if (event.key.startsWith("Arrow")) {
@@ -1536,6 +1576,8 @@ handleInputChange(event) {
 
   // Ensure clearing input resets the datepicker state
   clearInputField() {
+    console.log("Clearing input field");
+
     this.selectedDate = null; // Clear the selected date
     this.updateInputField(""); // Clear input value
     this.updateSelectedDateDisplay("No date selected"); // Reset display
@@ -1556,6 +1598,7 @@ handleInputChange(event) {
   updateInputField(value) {
     const inputField = this.shadowRoot.querySelector("input.form-control");
     if (inputField) {
+      console.log("Updating input field with value:", value);
       inputField.value = value;
     }
   }
