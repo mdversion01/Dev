@@ -203,22 +203,20 @@ class DatePickerNew extends LitElement {
     this.dropdownOpen = !this.dropdownOpen;
 
     if (this.dropdownOpen) {
-      const inputValue = this.inputElement.value.trim();
-
-      // If input is empty, reset to today's date
-      if (!inputValue) {
-        this.clearInputField(); // Reset the input field and calendar
-      } else {
-        // If there's a valid date in the input, parse and update the calendar
-        const parsedDate = this.parseDate(inputValue);
-
-        if (parsedDate) {
-          this.updateCalendarWithParsedDate(parsedDate); // Sync calendar with input
+        const inputValue = this.inputElement.value.trim();
+    
+        if (!inputValue) {
+          this.clearInputField(); // Reset input and calendar
+          this.updateSelectedDateDisplay(null); // Reset display
         } else {
-          // If the input date is invalid, clear and reset
-          this.clearInputField();
+          const parsedDate = this.parseDate(inputValue);
+          if (parsedDate && !isNaN(parsedDate.getTime())) {
+            this.updateCalendarWithParsedDate(parsedDate); // Sync calendar
+            this.updateSelectedDateDisplay(parsedDate); // Update display
+          } else {
+            this.updateSelectedDateDisplay(null); // Handle invalid input
+          }
         }
-      }
 
       this.createPopperInstance(); // Open the dropdown and create the popper
       document.addEventListener("click", this.handleOutsideClick); // Attach listener to document
@@ -256,42 +254,62 @@ class DatePickerNew extends LitElement {
     }
   }
 
-  handleInputChange(event) {
+//   handleInputChange(event) {
+//     const inputValue = event.target.value.trim();
+
+//     // Update the input field with the current value
+//     this.updateInputField(inputValue);
+
+//     // If the input is cleared (Backspace or manual delete)
+//     if (inputValue === "") {
+//       this.clearInputField(); // Call the clear function to reset everything
+//       return;
+//     }
+
+//     // Perform validation on the current input
+//     this.validateInput(inputValue);
+//   }
+
+handleInputChange(event) {
     const inputValue = event.target.value.trim();
-
-    // Update the input field with the current value
-    this.updateInputField(inputValue);
-
-    // If the input is cleared (Backspace or manual delete)
-    if (inputValue === "") {
-      this.clearInputField(); // Call the clear function to reset everything
-      return;
+  
+    // Parse the input date based on the current date format
+    const parsedDate = this.parseDate(inputValue);
+  
+    if (parsedDate && !isNaN(parsedDate.getTime())) {
+      // If valid, update the calendar and display the long formatted date
+      this.updateCalendarWithParsedDate(parsedDate);
+      this.updateSelectedDateDisplay(parsedDate); // Pass valid date
+    } else {
+      // If invalid or empty, reset the display to "No date selected"
+      this.updateSelectedDateDisplay(null);
     }
-
-    // Perform validation on the current input
-    this.validateInput(inputValue);
   }
 
   handleInputBlur(event) {
     const inputValue = event.target.value.trim();
 
-    // If the input is empty, clear the input and reset calendar
     if (inputValue === "") {
-      this.clearInputField(); // Reset the input field and calendar
-      this.validation = false; // Disable any validation error
-      this.validationMessage = ""; // Clear any validation message
-      this.requestUpdate(); // Re-render UI without any validation
+      this.clearInputField();
       return;
     }
 
-    // Parse the input date based on the current date format
     const parsedDate = this.parseDate(inputValue);
 
     if (parsedDate) {
-      // If valid, update the calendar and input field
-      this.updateCalendarWithParsedDate(parsedDate);
+      // Short format for input field
+      const formattedSelectedDate = this.formatDate(parsedDate);
+
+      // Long format for header
+      const formattedLongDate = this.formatDateLong(parsedDate);
+
+      this.updateInputField(formattedSelectedDate); // Update input with short format
+      this.updateSelectedDateDisplay(parsedDate); // Update header with long format
+
+      this.selectedDate = parsedDate;
+      this.renderCalendar(this.currentMonth, this.currentYear);
     } else {
-      // If invalid, show validation error but DO NOT show "Invalid Date" in input
+      // Handle invalid date input (if needed)
       this.validation = true;
       this.validationMessage = `Invalid date format. Please use ${this.dateFormat}.`;
       this.requestUpdate();
@@ -306,7 +324,7 @@ class DatePickerNew extends LitElement {
         const year = parseInt(partsYMD[0], 10);
         const month = parseInt(partsYMD[1], 10) - 1; // Months are 0-based
         const day = parseInt(partsYMD[2], 10);
-
+  
         if (!isNaN(year) && !isNaN(month) && !isNaN(day)) {
           return new Date(year, month, day);
         }
@@ -317,22 +335,23 @@ class DatePickerNew extends LitElement {
         const month = parseInt(partsMDY[0], 10) - 1; // Months are 0-based
         const day = parseInt(partsMDY[1], 10);
         const year = parseInt(partsMDY[2], 10);
-
+  
         if (!isNaN(month) && !isNaN(day) && !isNaN(year)) {
           return new Date(year, month, day);
         }
       }
     }
-
+  
     return null; // Return null if the input doesn't match the expected format
   }
+  
 
-//   formatDate(date) {
-//     if (this.dateFormat === "MM-DD-YYYY") {
-//       return this.formatDateMdy(date); // Format as MM-DD-YYYY
-//     }
-//     return this.formatDateYmd(date); // Default to YYYY-MM-DD
-//   }
+  //   formatDate(date) {
+  //     if (this.dateFormat === "MM-DD-YYYY") {
+  //       return this.formatDateMdy(date); // Format as MM-DD-YYYY
+  //     }
+  //     return this.formatDateYmd(date); // Default to YYYY-MM-DD
+  //   }
 
   handleDateSelect(event) {
     const selectedDay = event.target.dataset.day;
@@ -564,27 +583,35 @@ class DatePickerNew extends LitElement {
     `;
   }
 
-  updateSelectedDateDisplay(formattedDate) {
-    const selectedDateDisplay =
-      this.shadowRoot.querySelector(".selected-date bdi");
-    selectedDateDisplay.textContent = formattedDate;
+  updateSelectedDateDisplay(date) {
+    const selectedDateDisplay = this.shadowRoot.querySelector(".selected-date bdi");
+  
+    // Check if date is valid (either Date object or valid string)
+    if (!date || !(date instanceof Date) || isNaN(date.getTime())) {
+      // Display "No date selected" if no valid date is provided
+      selectedDateDisplay.textContent = "No date selected";
+    } else {
+      // If a valid date is provided, format it as a long date
+      const formattedLongDate = this.formatDateLong(date);
+      selectedDateDisplay.textContent = formattedLongDate;
+    }
   }
+  
 
   updateSelectedDateElements(formattedDate) {
     if (!this.displayContextExamples) {
-      return; // Do nothing if context examples are not displayed
+      return;
     }
 
-    const date = new Date(`${formattedDate}T00:00:00Z`);
+    const date = new Date(formattedDate);
+    
     const selectedDateYmd = this.formatDateYmd(date);
     const selectedDateMdy = this.formatDateMdy(date);
-    const selectedFormatted = this.formatDateLong(date);
+    const selectedFormatted = this.formatDateLong(date); // Long format for display
     const selectedIsoFormatted = this.formatISODate(date);
-
-    const selectedDateDisplayYmd =
-      this.shadowRoot.querySelector(".selected-date-Ymd");
-    const selectedDateDisplayMdy =
-      this.shadowRoot.querySelector(".selected-date-Mdy");
+    
+    const selectedDateDisplayYmd = this.shadowRoot.querySelector(".selected-date-Ymd");
+    const selectedDateDisplayMdy = this.shadowRoot.querySelector(".selected-date-Mdy");
     const selectedDateDisplayFull = this.shadowRoot.querySelector(
       ".selected-formatted-date"
     );
@@ -597,66 +624,63 @@ class DatePickerNew extends LitElement {
     } else {
       console.warn("Element with class .selected-date-Ymd not found.");
     }
-
+  
     if (selectedDateDisplayMdy) {
       selectedDateDisplayMdy.textContent = selectedDateMdy;
     } else {
-      console.warn("Element with class .selected-date-Myd not found.");
+      console.warn("Element with class .selected-date-Mdy not found.");
     }
-
+  
     if (selectedDateDisplayFull) {
       selectedDateDisplayFull.textContent = selectedFormatted;
     } else {
       console.warn("Element with class .selected-formatted-date not found.");
     }
-
+  
     if (selectedDateDisplayIso) {
       selectedDateDisplayIso.textContent = selectedIsoFormatted;
     } else {
       console.warn("Element with class .selected-formatted-iso not found.");
     }
 
-    this.updateSelectedDateDisplay(selectedFormatted);
+    // Update the header (bdi element) with the long format
+    this.updateSelectedDateDisplay(date);
   }
 
   updateActiveDateElements() {
     if (!this.displayContextExamples) {
       return; // Do nothing if context examples are not displayed
     }
-
-    const focusedSpan = this.shadowRoot.querySelector(
-      ".calendar-grid-item span.focus"
-    );
+  
+    const focusedSpan = this.shadowRoot.querySelector(".calendar-grid-item span.focus");
     const activeDateYMD = this.shadowRoot.querySelector(".active-date-ymd");
-
     const activeDateMDY = this.shadowRoot.querySelector(".active-date-mdy");
-
-    const activeLongDate = this.shadowRoot.querySelector(
-      ".active-formatted-date-long"
-    );
-    const activeIsoDate = this.shadowRoot.querySelector(
-      ".active-formatted-iso"
-    );
-
+    const activeLongDate = this.shadowRoot.querySelector(".active-formatted-date-long");
+    const activeIsoDate = this.shadowRoot.querySelector(".active-formatted-iso");
+  
     if (!activeDateYMD || !activeDateMDY || !activeLongDate || !activeIsoDate) {
       console.error("One or more active date elements are missing");
       return;
     }
-
+  
     if (focusedSpan) {
       const dataDate = focusedSpan.parentElement.getAttribute("data-date");
       const date = new Date(`${dataDate}T00:00:00Z`);
-      activeDateYMD.textContent = dataDate;
-      activeDateMDY.textContent = dataDate;
-      activeLongDate.textContent = this.formatDateLong(date);
-      activeIsoDate.textContent = this.formatISODate(date);
+  
+      // Correctly format and update the elements
+      activeDateYMD.textContent = this.formatDateYmd(date); // YYYY-MM-DD
+      activeDateMDY.textContent = this.formatDateMdy(date); // MM-DD-YYYY
+      activeLongDate.textContent = this.formatDateLong(date); // Long format (weekday, month, day, year)
+      activeIsoDate.textContent = this.formatISODate(date); // ISO format
     } else {
+      // If no date is focused, reset the context display
       activeDateYMD.textContent = "Date not selected";
       activeDateMDY.textContent = "Date not selected";
       activeLongDate.textContent = "Date not selected";
       activeIsoDate.textContent = "Date not selected";
     }
   }
+  
 
   // Add a helper method to map the dateFormat to the correct function
   getDateFormatMethod(format) {
@@ -676,106 +700,116 @@ class DatePickerNew extends LitElement {
     const dayContainer = clickedSpan.parentElement;
 
     const isPreviousMonthDay =
-        dayContainer.classList.contains("previous-month-day");
+      dayContainer.classList.contains("previous-month-day");
     const isNextMonthDay = dayContainer.classList.contains("next-month-day");
     const isActive = clickedSpan.classList.contains("active");
 
     // Clear the active state only if the clicked day is not already active
     if (!isActive) {
-        this.clearActiveState(); // Ensure other active states are cleared
+      this.clearActiveState(); // Ensure other active states are cleared
 
-        // Add active state to the clicked day
-        clickedSpan.classList.add("active", "btn-primary", "focus");
+      // Add active state to the clicked day
+      clickedSpan.classList.add("active", "btn-primary", "focus");
 
-        // Add aria-label for accessibility to show the selected state
-        const selectedDateElement = this.shadowRoot.getElementById(
-            `cell-${dayContainer.dataset.date}`
+      // Add aria-label for accessibility to show the selected state
+      const selectedDateElement = this.shadowRoot.getElementById(
+        `cell-${dayContainer.dataset.date}`
+      );
+      if (selectedDateElement) {
+        const existingAriaLabel =
+          selectedDateElement.getAttribute("aria-label");
+        selectedDateElement.setAttribute(
+          "aria-label",
+          `${existingAriaLabel} (Selected)`
         );
-        if (selectedDateElement) {
-            const existingAriaLabel = selectedDateElement.getAttribute("aria-label");
-            selectedDateElement.setAttribute(
-                "aria-label",
-                `${existingAriaLabel} (Selected)`
-            );
-            selectedDateElement.setAttribute("aria-selected", "true");
-            selectedDateElement.setAttribute("aria-current", "date");
-        }
+        selectedDateElement.setAttribute("aria-selected", "true");
+        selectedDateElement.setAttribute("aria-current", "date");
+      }
 
-        // Update selected date properties
-        this.selectedMonth = parseInt(dayContainer.dataset.month);
-        this.selectedYear = parseInt(dayContainer.dataset.year);
-        const selectedDay = parseInt(clickedSpan.textContent);
+      // Update selected date properties
+      this.selectedMonth = parseInt(dayContainer.dataset.month);
+      this.selectedYear = parseInt(dayContainer.dataset.year);
+      const selectedDay = parseInt(clickedSpan.textContent);
 
-        // Use local time instead of UTC to avoid timezone issues
-        this.selectedDate = new Date(
-            this.selectedYear,
-            this.selectedMonth - 1,
-            selectedDay
-        );
+      // Use local time instead of UTC to avoid timezone issues
+      this.selectedDate = new Date(
+        this.selectedYear,
+        this.selectedMonth - 1,
+        selectedDay
+      );
 
-        // Get the method to format the date according to the selected format
-        const formatMethod = this.getDateFormatMethod(this.dateFormat);
-        const formattedSelectedDate = formatMethod.call(this, this.selectedDate);
+      // Ensure the selected date is valid
+      if (isNaN(this.selectedDate.getTime())) {
+        console.error("Invalid date selected");
+        return;
+      }
 
-        // Update the input field with the formatted selected date
-        this.updateInputField(formattedSelectedDate);
+      // Get the long-formatted date for the header display
+      const selectedFormattedLong = this.formatDateLong(this.selectedDate);
 
-        // Update other related components, including the header
-        this.updateSelectedDateDisplay(formattedSelectedDate);
-        this.updateActiveDateElements();
+      // Use the short format for input field updates (YYYY-MM-DD or MM-DD-YYYY)
+      const formatMethod = this.getDateFormatMethod(this.dateFormat);
+      const formattedSelectedDate = formatMethod.call(this, this.selectedDate);
 
-        // Update the selected date in the context and ensure the calendar is focused
-        this.currentSelectedDate = new Date(
-            this.selectedYear,
-            this.selectedMonth - 1,
-            selectedDay
-        );
+      // Update the input field with the short format
+      this.updateInputField(formattedSelectedDate);
 
-        this.updateSelectedDateElements(formattedSelectedDate);
-        this.shadowRoot.querySelector(".calendar").classList.add("focus");
-        this.isCalendarFocused = true;
+      // Always update the selected date display (header) with the long format
+      this.updateSelectedDateDisplay(selectedFormattedLong);
 
-        // Update aria-activedescendant for accessibility
-        const formattedDate = `${this.selectedDate.getFullYear()}-${(
-            this.selectedDate.getMonth() + 1
-        )
-            .toString()
-            .padStart(2, "0")}-${this.selectedDate
-            .getDate()
-            .toString()
-            .padStart(2, "0")}`;
-        this.shadowRoot
-            .querySelector(".calendar")
-            .setAttribute("aria-activedescendant", `cell-${formattedDate}`);
+      // Ensure other date-related components are updated
+      this.updateActiveDateElements();
+      this.currentSelectedDate = new Date(
+        this.selectedYear,
+        this.selectedMonth - 1,
+        selectedDay
+      );
+      this.updateSelectedDateElements(selectedFormattedLong);
 
-        // Dispatch the date-selected event with the formatted date
-        this.dispatchEvent(
-            new CustomEvent("date-selected", {
-                detail: { formattedDate: formattedSelectedDate },
-                bubbles: true,
-                composed: true,
-            })
-        );
+      this.shadowRoot.querySelector(".calendar").classList.add("focus");
+      this.isCalendarFocused = true;
+
+      // Update aria-activedescendant for accessibility
+      const formattedDate = `${this.selectedDate.getFullYear()}-${(
+        this.selectedDate.getMonth() + 1
+      )
+        .toString()
+        .padStart(2, "0")}-${this.selectedDate
+        .getDate()
+        .toString()
+        .padStart(2, "0")}`;
+      this.shadowRoot
+        .querySelector(".calendar")
+        .setAttribute("aria-activedescendant", `cell-${formattedDate}`);
+
+      // Dispatch the date-selected event with the long formatted date
+      this.dispatchEvent(
+        new CustomEvent("date-selected", {
+          detail: { formattedDate: selectedFormattedLong },
+          bubbles: true,
+          composed: true,
+        })
+      );
     }
 
-    // Do not allow toggling off the selected day
+    // Prevent toggling off the selected day
     if (isActive) {
-        return; // Prevent removing the active state when clicking the same day
+      return;
     }
 
     // Handle previous/next month date selections
     if (isPreviousMonthDay) {
-        this.currentMonth--;
-        if (this.currentMonth < 0) {
-            this.currentMonth = 11;
-            this.currentYear--;
-        }
+      this.currentMonth--;
+      if (this.currentMonth < 0) {
+        this.currentMonth = 11;
+        this.currentYear--;
+      }
     } else if (isNextMonthDay) {
-        this.currentMonth++;
-        if (this.currentMonth > 11) {
-            this.currentMonth = 0;
-            this.currentYear++;
-        }
+      this.currentMonth++;
+      if (this.currentMonth > 11) {
+        this.currentMonth = 0;
+        this.currentYear++;
+      }
     }
 
     this.selectedMonth = parseInt(dayContainer.dataset.month);
@@ -784,33 +818,33 @@ class DatePickerNew extends LitElement {
 
     // Use local time instead of UTC to avoid timezone issues
     this.selectedDate = new Date(
-        this.selectedYear,
-        this.selectedMonth - 1,
-        selectedDay
+      this.selectedYear,
+      this.selectedMonth - 1,
+      selectedDay
     );
 
     this.renderCalendar(this.currentMonth, this.currentYear);
 
     const formattedDate = `${this.selectedDate.getFullYear()}-${(
-        this.selectedDate.getMonth() + 1
+      this.selectedDate.getMonth() + 1
     )
-        .toString()
-        .padStart(2, "0")}-${this.selectedDate
-        .getDate()
-        .toString()
-        .padStart(2, "0")}`;
+      .toString()
+      .padStart(2, "0")}-${this.selectedDate
+      .getDate()
+      .toString()
+      .padStart(2, "0")}`;
     this.shadowRoot
-        .querySelector(".calendar")
-        .setAttribute("aria-activedescendant", `cell-${formattedDate}`);
+      .querySelector(".calendar")
+      .setAttribute("aria-activedescendant", `cell-${formattedDate}`);
 
     const newFocusCell = this.shadowRoot.querySelector(
-        `.calendar-grid-item[data-date="${formattedDate}"]`
+      `.calendar-grid-item[data-date="${formattedDate}"]`
     );
     if (newFocusCell) {
-        newFocusCell.focus();
-        this.shadowRoot
-            .querySelector(".calendar")
-            .setAttribute("aria-activedescendant", newFocusCell.id);
+      newFocusCell.focus();
+      this.shadowRoot
+        .querySelector(".calendar")
+        .setAttribute("aria-activedescendant", newFocusCell.id);
     }
 
     this.setActiveState();
@@ -819,18 +853,17 @@ class DatePickerNew extends LitElement {
 
     // Ensure the focus remains on the selected day
     setTimeout(() => {
-        newFocusCell?.querySelector("span")?.focus();
+      newFocusCell?.querySelector("span")?.focus();
     }, 0);
 
     this.setActiveState();
-}
-
+  }
 
   // Add a helper method to update the input field
   updateInputField(formattedDate) {
     const inputField = this.shadowRoot.querySelector("input.form-control");
     if (inputField) {
-      inputField.value = formattedDate;
+      inputField.value = formattedDate; // Use short format for input field
     }
   }
 
@@ -1180,15 +1213,15 @@ class DatePickerNew extends LitElement {
   formatDate(dateOrYear, month = null, day = null) {
     // Check if the function is called with separate year, month, and day parameters
     if (month !== null && day !== null) {
-        const options = {
-            weekday: "long",
-            month: "long",
-            day: "numeric",
-            year: "numeric",
-            timeZone: "UTC",
-        };
-        const selectedDate = new Date(Date.UTC(dateOrYear, month - 1, day));
-        return selectedDate.toLocaleDateString(undefined, options); // Long format with weekday
+      const options = {
+        weekday: "long",
+        month: "long",
+        day: "numeric",
+        year: "numeric",
+        timeZone: "UTC",
+      };
+      const selectedDate = new Date(Date.UTC(dateOrYear, month - 1, day));
+      return selectedDate.toLocaleDateString(undefined, options); // Long format with weekday
     }
 
     // Assume the first argument is a Date object if month and day are not provided
@@ -1196,11 +1229,10 @@ class DatePickerNew extends LitElement {
 
     // Format based on the current `dateFormat` property
     if (this.dateFormat === "MM-DD-YYYY") {
-        return this.formatDateMdy(date); // Format as MM-DD-YYYY
+      return this.formatDateMdy(date); // Format as MM-DD-YYYY
     }
     return this.formatDateYmd(date); // Default to YYYY-MM-DD
-}
-
+  }
 
   formatDateForAriaLabel(date, isCurrentDay = false) {
     if (!(date instanceof Date)) {
@@ -1231,14 +1263,14 @@ class DatePickerNew extends LitElement {
     const month = String(date.getUTCMonth() + 1).padStart(2, "0");
     const day = String(date.getUTCDate()).padStart(2, "0");
     return `${year}-${month}-${day}`; // YYYY-MM-DD format
-}
+  }
 
-formatDateMdy(date) {
+  formatDateMdy(date) {
     const month = String(date.getUTCMonth() + 1).padStart(2, "0");
     const day = String(date.getUTCDate()).padStart(2, "0");
     const year = date.getUTCFullYear();
     return `${month}-${day}-${year}`; // MM-DD-YYYY format
-}
+  }
 
   formatDateLong(date) {
     if (!(date instanceof Date)) {
