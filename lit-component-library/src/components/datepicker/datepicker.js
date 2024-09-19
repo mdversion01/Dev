@@ -415,18 +415,6 @@ class DatePicker extends LitElement {
     return date.toISOString();
   }
 
-  //  // Function to map format strings to their corresponding functions
-  //  getFormattedDate(date, format) {
-  //   switch (format) {
-  //     case 'YYYY-MM-DD':
-  //       return this.formatDateYmd(date);
-  //     case 'MM-DD-YYYY':
-  //       return this.formatDateMdy(date);
-  //     default:
-  //       return this.formatDateYmd(date); // Default to YYYY-MM-DD if unrecognized
-  //   }
-  // }
-
   updateSelectedDateDisplay(formattedDate) {
     const selectedDateDisplay =
       this.shadowRoot.querySelector(".selected-date bdi");

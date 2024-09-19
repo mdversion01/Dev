@@ -140,7 +140,7 @@ class DatePickerNew extends LitElement {
     document.addEventListener("click", this.handleOutsideClick);
     document.removeEventListener("click", this.handleDocumentClick);
     // Ensure the warning message is displayed when the page is loaded
-    this.setDefaultWarningMessage(); // Call it here to ensure correct initial message
+    // this.setDefaultWarningMessage(); // Call it here to ensure correct initial message
     this.requestUpdate();
   }
 
@@ -254,76 +254,96 @@ class DatePickerNew extends LitElement {
     }
   }
 
-  //   handleInputChange(event) {
-  //     const inputValue = event.target.value.trim();
-
-  //     // Update the input field with the current value
-  //     this.updateInputField(inputValue);
-
-  //     // If the input is cleared (Backspace or manual delete)
-  //     if (inputValue === "") {
-  //       this.clearInputField(); // Call the clear function to reset everything
-  //       return;
-  //     }
-
-  //     // Perform validation on the current input
-  //     this.validateInput(inputValue);
-  //   }
-
   handleInputChange(event) {
-    const inputValue = event.target.value.trim();
-
-    // Parse the input date based on the current date format
-    const parsedDate = this.parseDate(inputValue);
-
-    // Log the input value and parsed date
-    console.log("Input value:", inputValue);
-    console.log("Parsed date:", parsedDate);
-
-    if (parsedDate && !isNaN(parsedDate.getTime())) {
-      // If valid, update the calendar and display the long formatted date
-      this.updateCalendarWithParsedDate(parsedDate);
-      this.updateSelectedDateDisplay(parsedDate); // Pass valid date
-    } else {
-      // If invalid or empty, reset the display to "No date selected"
-      this.updateSelectedDateDisplay(null);
+    const inputElement = event.target;
+    const inputValue = inputElement.value.trim();
+  
+    // Save the current cursor position
+    let cursorPosition = inputElement.selectionStart;
+  
+    // Remove all non-numeric characters except dashes
+    let rawValue = inputValue.replace(/[^0-9]/g, "");
+  
+    let formattedValue = "";
+  
+    const isYMDFormat = this.dateFormat === "YYYY-MM-DD";
+    const isMDYFormat = this.dateFormat === "MM-DD-YYYY";
+  
+    // Handle YYYY-MM-DD format
+    if (isYMDFormat) {
+      if (rawValue.length <= 4) {
+        formattedValue = rawValue; // Year part only
+      } else if (rawValue.length <= 6) {
+        formattedValue = `${rawValue.slice(0, 4)}-${rawValue.slice(4)}`; // Year and month
+      } else {
+        formattedValue = `${rawValue.slice(0, 4)}-${rawValue.slice(4, 6)}-${rawValue.slice(6, 8)}`; // Full year, month, and day
+      }
+    } 
+    // Handle MM-DD-YYYY format
+    else if (isMDYFormat) {
+      if (rawValue.length <= 2) {
+        formattedValue = rawValue; // Month part only
+      } else if (rawValue.length <= 4) {
+        formattedValue = `${rawValue.slice(0, 2)}-${rawValue.slice(2)}`; // Month and day
+      } else {
+        formattedValue = `${rawValue.slice(0, 2)}-${rawValue.slice(2, 4)}-${rawValue.slice(4, 8)}`; // Full month, day, and year
+      }
     }
+  
+    // Update the input field with the formatted value
+    inputElement.value = formattedValue;
+  
+    // Adjust cursor position if necessary
+    let newCursorPosition = cursorPosition;
+  
+    // Restore the cursor position only if we didn't add any extra formatting (like dashes)
+    if (formattedValue.length > inputValue.length) {
+      newCursorPosition++;
+    } else if (formattedValue.length < inputValue.length) {
+      newCursorPosition--;
+    }
+  
+    inputElement.setSelectionRange(newCursorPosition, newCursorPosition);
+  
+    // Trigger validation dynamically based on the formatted input
+    this.validateInput(formattedValue);
   }
+  
 
   handleInputBlur(event) {
     const inputValue = event.target.value.trim();
-
-    // Log when blur is triggered
-    console.log("Input blur triggered. Input value:", inputValue);
-
+    console.log("Blur Event Triggered with value:", inputValue);
+  
     if (inputValue === "") {
+      // Clear the input if it's empty
       this.clearInputField();
       return;
     }
-
+  
+    // Validate the input on blur
+    this.validateInput(inputValue);
+  
+    // If validation fails, show the validation message but don't clear the input
+    if (this.validation) {
+      console.log("Validation failed: ", this.validationMessage);
+      return;  // Do not clear the input field or selected date, just show the error
+    }
+  
+    // If the input passes validation, format and set the date
     const parsedDate = this.parseDate(inputValue);
-
+  
     if (parsedDate) {
-      // Short format for input field
+      // Format and update the input field with the parsed date
       const formattedSelectedDate = this.formatDate(parsedDate);
-
-      // Long format for header
-      const formattedLongDate = this.formatDateLong(parsedDate);
-
-      console.log("Formatted Date:", formattedSelectedDate);
-
-      this.updateInputField(formattedSelectedDate); // Update input with short format
-      this.updateSelectedDateDisplay(parsedDate); // Update header with long format
-
+      this.updateInputField(formattedSelectedDate);
+      this.updateSelectedDateDisplay(parsedDate);
       this.selectedDate = parsedDate;
       this.renderCalendar(this.currentMonth, this.currentYear);
     } else {
-      // Handle invalid date input (if needed)
-      this.validation = true;
-      this.validationMessage = `Invalid date format. Please use ${this.dateFormat}.`;
-      this.requestUpdate();
+      console.log("Invalid input but not clearing the input.");
     }
   }
+  
 
   parseDate(input) {
     // Determine the current date format
@@ -373,33 +393,6 @@ class DatePickerNew extends LitElement {
 
     // If parsing fails, return null
     return null;
-  }
-
-  //   formatDate(date) {
-  //     if (this.dateFormat === "MM-DD-YYYY") {
-  //       return this.formatDateMdy(date); // Format as MM-DD-YYYY
-  //     }
-  //     return this.formatDateYmd(date); // Default to YYYY-MM-DD
-  //   }
-
-  handleDateSelect(event) {
-    const selectedDay = event.target.dataset.day;
-    this.selectedDate = new Date(
-      this.currentYear,
-      this.currentMonth,
-      selectedDay
-    );
-
-    // Format based on the dateFormat property
-    const formattedDate = this.formatDate(this.selectedDate);
-
-    // Update the input field with the formatted date
-    this.updateInputField(formattedDate);
-
-    // Update the display of the selected date
-    this.updateSelectedDateDisplay(formattedDate);
-
-    this.toggleDropdown(); // Close dropdown after selection
   }
 
   renderDatePicker() {
@@ -905,29 +898,29 @@ class DatePickerNew extends LitElement {
 
   handleEnterKeyPress(event) {
     event.stopPropagation();
-  
+
     const focusedSpan = this.shadowRoot.querySelector(
       ".calendar-grid-item span.focus"
     );
     if (focusedSpan) {
       const dayContainer = focusedSpan.parentElement;
-  
+
       const isPreviousMonthDay =
         dayContainer.classList.contains("previous-month-day");
       const isNextMonthDay = dayContainer.classList.contains("next-month-day");
-  
+
       const isActive = focusedSpan.classList.contains("active");
-  
+
       if (isActive && !isPreviousMonthDay && !isNextMonthDay) {
         return; // Do nothing if the active day is pressed again
       } else {
         this.handleDayClick({ target: focusedSpan });
-  
+
         // Close the dropdown after the date selection
         this.toggleDropdown();
       }
     }
-  }  
+  }
 
   handleDateNavigation(event, direction) {
     const focusedElement = this.shadowRoot.activeElement;
@@ -1333,49 +1326,67 @@ class DatePickerNew extends LitElement {
   }
 
   validateInput(value) {
-    if (!value) {
-      // If the input is empty, clear validation and warnings, do not show any message
-      this.validation = false;
-      this.validationMessage = "";
-      this.warningMessage = "";
+    // Clear previous messages
+    this.validationMessage = "";
+    this.validation = false;
+  
+    if (this.required && !value) {
+      // Check if the field is required and the value is empty
+      this.validation = true;
+      this.validationMessage = "This is a required field.";
       this.requestUpdate();
       return;
     }
-
-    // Patterns for both supported formats
-    const datePickerPatternYMD = /^\d{4}-\d{2}-\d{2}$/; // YYYY-MM-DD
-    const datePickerPatternMDY = /^\d{2}-\d{2}-\d{4}$/; // MM-DD-YYYY
-
-    // Determine the current format
-    const isYMDFormat = this.dateFormat === "YYYY-MM-DD";
-    const isMDYFormat = this.dateFormat === "MM-DD-YYYY";
-
-    // Validate based on the current format
-    const isValid =
-      (isYMDFormat && datePickerPatternYMD.test(value)) ||
-      (isMDYFormat && datePickerPatternMDY.test(value));
-
-    if (!isValid) {
-      // If the format is invalid, display a message based on the current format
-      this.validation = true;
-      this.validationMessage = `Invalid date format. Please use ${this.dateFormat}.`;
-      this.requestUpdate(); // Ensure the UI reflects changes
-    } else {
-      // If valid, clear validation messages
-      this.validation = false;
-      this.validationMessage = "";
-      this.requestUpdate();
+  
+    let parts, year, month, day;
+  
+    // Parse the input based on date format
+    if (this.dateFormat === "YYYY-MM-DD") {
+      parts = value.split("-");
+      if (parts.length === 3) {
+        year = parseInt(parts[0], 10);
+        month = parseInt(parts[1], 10);
+        day = parseInt(parts[2], 10);
+      }
+    } else if (this.dateFormat === "MM-DD-YYYY") {
+      parts = value.split("-");
+      if (parts.length === 3) {
+        month = parseInt(parts[0], 10);
+        day = parseInt(parts[1], 10);
+        year = parseInt(parts[2], 10);
+      }
     }
+  
+    // Validate year
+    if (year && year < 1900) {
+      this.validation = true;
+      this.validationMessage = "Year must be greater than or equal to 1900.";
+      this.requestUpdate();
+      return;
+    }
+  
+    // Validate month
+    if (month && (month < 1 || month > 12)) {
+      this.validation = true;
+      this.validationMessage = "Month must be between 01 and 12.";
+      this.requestUpdate();
+      return;
+    }
+  
+    // Validate day
+    if (day && (day < 1 || day > 31)) {
+      this.validation = true;
+      this.validationMessage = "Day must be between 01 and 31.";
+      this.requestUpdate();
+      return;
+    }
+  
+    // If all checks pass, clear validation
+    this.validation = false;
+    this.validationMessage = "";
+    this.requestUpdate();
   }
-
-  // Call this method when the picker type is updated or initially loaded
-  setDefaultWarningMessage() {
-    this.warningMessage = "Please pick a date.";
-
-    this.validation = this.validation; // Ensure validation is active
-    this.requestUpdate(); // Trigger a re-render to display the message
-  }
-
+  
   prevMonth() {
     this.preventClose = true; // Prevent closing the dropdown
     this.currentMonth--;
@@ -1407,15 +1418,6 @@ class DatePickerNew extends LitElement {
     this.currentYear++;
     this.renderCalendar(this.currentMonth, this.currentYear);
   }
-
-  //   currentDate() {
-  //     this.preventClose = true; // Prevent closing the dropdown
-  //     const today = new Date();
-  //     this.selectedDate = today;
-  //     this.currentMonth = today.getUTCMonth();
-  //     this.currentYear = today.getUTCFullYear();
-  //     this.renderCalendar(this.currentMonth, this.currentYear);
-  //   }
 
   currentDate() {
     const today = new Date();
@@ -1632,46 +1634,45 @@ class DatePickerNew extends LitElement {
   }
 
   handleDateSelect(event) {
-    // Ensure formattedDate is a valid Date object
-    const selectedDate = new Date(event.detail.formattedDate);
-
-    // Get the year, month, and day values explicitly without any timezone offsets
-    const year = selectedDate.getUTCFullYear();
-    const month = String(selectedDate.getUTCMonth() + 1).padStart(2, "0"); // Months are 0-based
-    const day = String(selectedDate.getUTCDate()).padStart(2, "0");
-
-    // Create a new date string in the desired format without applying timezone conversions
+    // If the event contains a formatted date, use it
+    const formattedDate = event.detail?.formattedDate 
+      ? new Date(event.detail.formattedDate) 
+      : new Date(
+          this.currentYear,
+          this.currentMonth,
+          event.target.dataset.day // If selected via calendar
+        );
+  
+    // Extract year, month, and day
+    const year = formattedDate.getUTCFullYear();
+    const month = String(formattedDate.getUTCMonth() + 1).padStart(2, "0"); // Months are 0-based
+    const day = String(formattedDate.getUTCDate()).padStart(2, "0");
+  
+    // Create a formatted date string (YYYY-MM-DD)
     const formattedSelectedDate = `${year}-${month}-${day}`;
-
+  
     // Set the selectedDate property
-    this.selectedDate = formattedSelectedDate;
-
+    this.selectedDate = formattedDate;
+  
     // Close the dropdown
     this.dropdownOpen = false;
-
-    // Set the formatted date in the input element and focus the input
+  
+    // Update the input field with the formatted date and focus the input
     if (this.inputElement) {
       this.inputElement.value = formattedSelectedDate;
       this.inputElement.focus();
     }
-
+  
     // Perform validation on the selected date
-    this.validateInput(this.selectedDate);
-
+    this.validateInput(formattedSelectedDate);
+  
     // Remove validation error classes if input is valid
     if (!this.validation) {
       this.inputElement.classList.remove("is-invalid");
-      const labelElement = this.shadowRoot.querySelector(
-        `label[for="${this.inputId}"]`
-      );
-      const appendElement = this.shadowRoot.querySelector(
-        ".pl-input-group-append"
-      );
-      const prependElement = this.shadowRoot.querySelector(
-        ".pl-input-group-prepend"
-      );
-
-      // Remove 'invalid' classes from the label and input group elements
+      const labelElement = this.shadowRoot.querySelector(`label[for="${this.inputId}"]`);
+      const appendElement = this.shadowRoot.querySelector(".pl-input-group-append");
+      const prependElement = this.shadowRoot.querySelector(".pl-input-group-prepend");
+  
       if (labelElement) {
         labelElement.classList.remove("invalid");
       }
@@ -1682,10 +1683,13 @@ class DatePickerNew extends LitElement {
         prependElement.classList.remove("is-invalid");
       }
     }
-
+  
+    // Update the selected date display
+    this.updateSelectedDateDisplay(formattedSelectedDate);
+  
     // Destroy the popper (dropdown) after selection
     this.destroyPopper();
-  }
+  }  
 
   // Helper function to remove the validation classes
   removeValidationClasses() {
@@ -1807,6 +1811,7 @@ class DatePickerNew extends LitElement {
                   this.selectedDate ? this.formatDate(this.selectedDate) : ""
                 }
                 @input=${this.handleInputChange}
+                @blur=${this.handleInputBlur}
                 ?disabled=${this.disabled}
                 aria-label="Selected Date"
                 aria-describedby="datepicker-desc"

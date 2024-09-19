@@ -419,7 +419,7 @@ export const datepickerStyles = css`
 
   .range-picker-wrapper {
     padding: 5px;
-    /* max-width: 558px; */
+    max-width: 558px;
     border: 1px solid #e1e1e1;
     border-radius: 5px;
   }
