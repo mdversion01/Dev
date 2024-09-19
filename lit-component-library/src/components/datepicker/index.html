@@ -75,7 +75,7 @@
         </section>
 
         <section>
-          <section class="section">
+          <!-- <section class="section">
             <section class="display-box" id="db-1">
               <section class="display-box-demo">
                 <div style="width: 210px">
@@ -88,13 +88,13 @@
                 <div class=""></div>
               </section>
             </section>
-          </section>
+          </section> -->
 
           <section class="section">
             <section class="display-box" id="db-1">
               <section class="display-box-demo">
                 <div>
-                  <date-picker-new calendar displayContextExamples></date-picker-new>
+                  <date-picker-new calendar></date-picker-new>
                 </div>
                 <div style="width: 210px">
                   <date-picker-new></date-picker-new>
@@ -116,6 +116,29 @@
                     selectedPicker="daterange"
                     joinBy="to"
                   ></datepicker-manager>
+                </div>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">Date Range Picker</div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
+
+          <section class="section">
+            <section class="display-box" id="db-1">
+              <section class="display-box-demo">
+                <div>
+                  <date-range-picker-new rangePicker
+                    joinBy="to"
+                  ></date-range-picker-new>
+                </div>
+
+                <div style="width: 295px">
+                  <date-range-picker-new
+                    joinBy="to"
+                  ></date-range-picker-new>
                 </div>
               </section>
               <section class="display-box-meta markdown">
@@ -154,7 +177,10 @@
 
     <script type="module" src="./datepicker.js"></script>
     <script type="module" src="./datepicker-new.js"></script>
+    
     <script type="module" src="./daterangepicker.js"></script>
+    <script type="module" src="./daterangepicker-new.js"></script>
+
     <script type="module" src="./dateRangeTimePicker.js"></script>
     <script type="module" src="./datepicker-manager.js"></script>
 
