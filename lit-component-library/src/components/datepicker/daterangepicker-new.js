@@ -159,10 +159,6 @@ class DateRangePickerNew extends LitElement {
     this.removeEventListener("reset-picker", this.resetCalendar);
   }
 
-  firstUpdated() {
-    this.syncMonthYearSelectors();
-  }
-
   renderSelects() {
     return html`
       <label id="monthSelectField" class="sr-only visually-hidden" for="months"
@@ -328,9 +324,15 @@ class DateRangePickerNew extends LitElement {
       : null;
 
     if (formattedStartDate && formattedEndDate) {
-      // Update the input field when the OK button is clicked
-      this.inputElement.value = `${formattedStartDate} ${this.joinBy} ${formattedEndDate}`;
+      // Check if inputElement exists before trying to set its value
+      if (this.inputElement) {
+        // Update the input field with the selected range
+        this.inputElement.value = `${formattedStartDate} ${this.joinBy} ${formattedEndDate}`;
+      } else {
+        console.error("Input element is not available.");
+      }
 
+      // Dispatch an event to notify about the updated range
       this.dispatchEvent(
         new CustomEvent("date-range-updated", {
           detail: {
@@ -340,7 +342,7 @@ class DateRangePickerNew extends LitElement {
         })
       );
 
-      // Close the dropdown and remove event listeners
+      // Close the dropdown and clean up
       this.dropdownOpen = false;
       this.destroyPopper();
       document.removeEventListener("click", this.handleOutsideClick);
@@ -350,20 +352,9 @@ class DateRangePickerNew extends LitElement {
   }
 
   formatDateAccordingToSelectedFormat(date) {
+    // Simplified date formatting logic for consistency
     if (!date) return null;
-
-    switch (this.dateFormat) {
-      case "Y-m-d":
-        return this.formatDateYmd(date);
-      case "M-d-Y":
-        return this.formatDateMDY(date);
-      case "Long Date":
-        return this.formatDateLong(date);
-      case "ISO":
-        return this.formatISODate(date);
-      default:
-        return this.formatDateYmd(date); // Fallback to a default format
-    }
+    return this.formatDateYmd(date); // Using Y-m-d as default format
   }
 
   handleMonthChange(event) {
@@ -861,6 +852,7 @@ class DateRangePickerNew extends LitElement {
 
   handleDayClick(date) {
     this.selectDate(date);
+    this.updateDisplayedDateRange(); // Make sure the displayed date range is updated
   }
 
   handleEnterKeyPress(event) {
@@ -901,6 +893,7 @@ class DateRangePickerNew extends LitElement {
     }
   }
 
+  // Select the date based on startDate and endDate logic
   selectDate(date) {
     if (!this.startDate || (this.startDate && this.endDate)) {
       this.startDate = date;
@@ -914,57 +907,64 @@ class DateRangePickerNew extends LitElement {
       }
     }
 
-    this.updateSelectedRange();
-    this._updateOkButtonState(); // Update the OK button state
+    this.updateSelectedRange(); // Update the range selections in the calendar
+    this._updateOkButtonState(); // Enable OK button if valid
+    this.updateDisplayedDateRange(); // Update displayed date range immediately
     this.requestUpdate();
   }
 
+  // Update the range selections in the calendar grid
   updateSelectedRange() {
     const allItems = this.shadowRoot.querySelectorAll(".calendar-grid-item");
 
     allItems.forEach((item) => {
       const itemDate = new Date(item.getAttribute("data-date"));
+      const normalizedItemDate = this.normalizeDate(itemDate);
       const spanElement = item.querySelector("span");
 
+      // Clear previous selection classes
       item.classList.remove("selected-range", "selected-range-active");
       spanElement.classList.remove("focus");
 
+      // Apply 'selected-range-active' to the start and end dates
+      if (this.isStartOrEndDate(normalizedItemDate)) {
+        item.classList.add("selected-range-active");
+        spanElement.classList.remove("btn-outline-light");
+      }
+
+      // Apply 'selected-range' to the dates within the range
       if (
-        this.isDateInRange(itemDate) &&
+        this.isDateInRange(normalizedItemDate) &&
         !item.classList.contains("previous-month-day") &&
         !item.classList.contains("next-month-day")
       ) {
         item.classList.add("selected-range");
         spanElement.classList.remove("btn-outline-light");
       }
-
-      if (
-        this.isStartOrEndDate(itemDate) &&
-        !item.classList.contains("previous-month-day") &&
-        !item.classList.contains("next-month-day")
-      ) {
-        item.classList.add("selected-range-active");
-        spanElement.classList.remove("btn-outline-light");
-      }
     });
-
-    this.updateDisplayedDateRange();
   }
 
+  // Update the displayed range text in the UI
   updateDisplayedDateRange() {
     const startDateElement = this.shadowRoot.querySelector(".start-date");
     const endDateElement = this.shadowRoot.querySelector(".end-date");
 
-    const formattedStartDate = this.startDate
-      ? this.formatDateAccordingToSelectedFormat(this.startDate)
-      : "N/A";
+    if (this.startDate && this.endDate) {
+      const formattedStartDate = this.formatDate(
+        this.normalizeDate(this.startDate), // Normalize date to prevent time zone shifts
+        this.dateFormat
+      );
+      const formattedEndDate = this.formatDate(
+        this.normalizeDate(this.endDate),
+        this.dateFormat
+      );
 
-    const formattedEndDate = this.endDate
-      ? this.formatDateAccordingToSelectedFormat(this.endDate)
-      : "N/A";
-
-    startDateElement.textContent = formattedStartDate;
-    endDateElement.textContent = formattedEndDate;
+      startDateElement.textContent = formattedStartDate;
+      endDateElement.textContent = formattedEndDate;
+    } else {
+      startDateElement.textContent = "N/A";
+      endDateElement.textContent = "N/A";
+    }
   }
 
   isToday(date) {
@@ -976,19 +976,32 @@ class DateRangePickerNew extends LitElement {
     );
   }
 
+  // Check if a date is within the selected range
   isDateInRange(date) {
+    const normalizedStartDate = this.normalizeDate(this.startDate);
+    const normalizedEndDate = this.normalizeDate(this.endDate);
     return (
-      this.startDate &&
-      this.endDate &&
-      date >= this.startDate &&
-      date <= this.endDate
+      normalizedStartDate &&
+      normalizedEndDate &&
+      date >= normalizedStartDate &&
+      date <= normalizedEndDate
     );
   }
 
+  // Check if a date is the start or end date
   isStartOrEndDate(date) {
+    const normalizedStartDate = this.startDate
+      ? this.normalizeDate(this.startDate)
+      : null;
+    const normalizedEndDate = this.endDate
+      ? this.normalizeDate(this.endDate)
+      : null;
+
+    // Use exact date comparison, not off-by-one
     return (
-      (this.startDate && date.getTime() === this.startDate.getTime()) ||
-      (this.endDate && date.getTime() === this.endDate.getTime())
+      (normalizedStartDate &&
+        date.getTime() === normalizedStartDate.getTime()) ||
+      (normalizedEndDate && date.getTime() === normalizedEndDate.getTime())
     );
   }
 
@@ -1102,6 +1115,10 @@ class DateRangePickerNew extends LitElement {
       prependElement.classList.add("is-invalid");
     }
 
+    // Close the dropdown and destroy the Popper instance (if exists)
+    this.dropdownOpen = false;
+    this.destroyPopper(); // Destroy the Popper instance
+
     // Reset the calendar view to its default state
     this.requestUpdate();
     this.resetCalendar();
@@ -1168,47 +1185,86 @@ class DateRangePickerNew extends LitElement {
   }
 
   toggleDropdown(event) {
-    event.stopPropagation(); // Prevent the click from bubbling up
-    this.preventClose = true; // Prevent the dropdown from closing on its own click
+    event.stopPropagation();
 
-    // Toggle the dropdown state
+    this.preventClose = true; // Prevent the dropdown from closing
+
     this.dropdownOpen = !this.dropdownOpen;
 
     if (this.dropdownOpen) {
-      // Only clear the dates if the input has been explicitly cleared by the user or reset button
-      if (this.inputElement && this.inputElement.value === "") {
-        this.selectedStartDate = "";
-        this.selectedEndDate = "";
-      }
+      // If a range is already selected, ensure the correct months are displayed
+      if (this.startDate) {
+        this.currentStartMonth = this.startDate.getMonth();
+        this.currentStartYear = this.startDate.getFullYear();
+        this.currentEndMonth = this.endDate
+          ? this.endDate.getMonth()
+          : (this.currentStartMonth + 1) % 12;
+        this.currentEndYear = this.endDate
+          ? this.endDate.getFullYear()
+          : this.currentStartMonth === 11
+          ? this.currentStartYear + 1
+          : this.currentStartYear;
 
-      // Initialize or fetch input element if it's not already done
-      if (!this.inputElement) {
-        this.inputElement = this.shadowRoot.querySelector(".form-control");
-      }
-
-      if (this.inputElement) {
-        // Ensure Popper is correctly created when dropdown opens
-        this.createPopperInstance();
-        document.addEventListener("click", this.handleOutsideClick); // Add click listener to handle outside click
+        // Handle when start and end dates are in the same month
+        if (
+          this.currentStartMonth === this.currentEndMonth &&
+          this.currentStartYear === this.currentEndYear
+        ) {
+          this.currentEndMonth = (this.currentStartMonth + 1) % 12;
+          this.currentEndYear =
+            this.currentStartMonth === 11
+              ? this.currentStartYear + 1
+              : this.currentStartYear;
+        }
       } else {
-        console.error("Input element not found.");
+        // Default to current month and the next consecutive month
+        const today = new Date();
+        this.currentStartMonth = today.getMonth();
+        this.currentStartYear = today.getFullYear();
+        this.currentEndMonth = (this.currentStartMonth + 1) % 12;
+        this.currentEndYear =
+          this.currentStartMonth === 11
+            ? this.currentStartYear + 1
+            : this.currentStartYear;
       }
+
+      // Update the calendar view
+      this.createPopperInstance();
+      document.addEventListener("click", this.handleOutsideClick);
     } else {
-      this.preventClose = false; // Reset preventClose when closing the dropdown
-      this.destroyPopper(); // Clean up Popper instance when dropdown closes
-      document.removeEventListener("click", this.handleOutsideClick); // Remove listener when dropdown closes
+      this.destroyPopper();
+      document.removeEventListener("click", this.handleOutsideClick);
     }
   }
 
-  // Add the parseDate function if not yet defined
-  parseDate(inputValue) {
-    // Implement a simple date parsing based on your format (e.g., YYYY-MM-DD)
-    const parts = inputValue.split("-");
-    if (parts.length === 3) {
-      const year = parseInt(parts[0], 10);
-      const month = parseInt(parts[1], 10) - 1; // JS months are 0-based
-      const day = parseInt(parts[2], 10);
-      return new Date(year, month, day);
+  // Normalize a date to remove time components and ensure comparisons only on year, month, day
+  normalizeDate(date) {
+    // Avoid timezone-related issues by always working in UTC
+    if (!date) return null;
+    return new Date(
+      Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate())
+    );
+  }
+
+  // Utility to parse a date string based on the dateFormat prop
+  parseDate(dateStr) {
+    const parts = dateStr.split("-");
+
+    // Adjust parsing according to the selected dateFormat
+    if (this.dateFormat === "YYYY-MM-DD") {
+      if (parts.length === 3) {
+        const year = parseInt(parts[0], 10);
+        const month = parseInt(parts[1], 10) - 1; // JS months are 0-based
+        const day = parseInt(parts[2], 10);
+        return new Date(year, month, day);
+      }
+    } else if (this.dateFormat === "MM-DD-YYYY") {
+      if (parts.length === 3) {
+        const month = parseInt(parts[0], 10) - 1; // JS months are 0-based
+        const day = parseInt(parts[1], 10);
+        const year = parseInt(parts[2], 10);
+        return new Date(year, month, day);
+      }
     }
     return null;
   }
@@ -1243,22 +1299,11 @@ class DateRangePickerNew extends LitElement {
     }
   }
 
+  // Helper function to format a date according to the selected format
   formatDate(date, format) {
-    // Ensure that the date is a valid Date object
-    if (!(date instanceof Date)) {
-      date = new Date(date); // Convert to Date object if not already
-    }
-
-    // Check if the date is valid after conversion
-    if (isNaN(date)) {
-      console.error("Invalid date provided to formatDate:", date);
-      return "Invalid Date";
-    }
-
-    // Use local date methods to avoid timezone shift
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-based
-    const day = String(date.getDate()).padStart(2, "0");
+    const year = date.getUTCFullYear();
+    const month = String(date.getUTCMonth() + 1).padStart(2, "0");
+    const day = String(date.getUTCDate()).padStart(2, "0");
 
     if (format === "YYYY-MM-DD") {
       return `${year}-${month}-${day}`;
@@ -1266,13 +1311,7 @@ class DateRangePickerNew extends LitElement {
       return `${month}-${day}-${year}`;
     }
 
-    // Fallback to locale-aware formatting using default options
-    const options = { year: "numeric", month: "2-digit", day: "2-digit" };
-    return date
-      .toLocaleDateString("en-US", options)
-      .replace(/(\d+)\/(\d+)\/(\d+)/, (match, m, d, y) => {
-        return format === "YYYY-MM-DD" ? `${y}-${m}-${d}` : `${m}-${d}-${y}`;
-      });
+    return `${year}-${month}-${day}`; // Default format
   }
 
   validateInput(value) {
@@ -1306,25 +1345,68 @@ class DateRangePickerNew extends LitElement {
     this.requestUpdate(); // Trigger a re-render to display the message
   }
 
+  // Handle input changes when typing a date range manually
   handleInputChange(event) {
-    const inputElement = event.target;
-    let inputValue = inputElement.value.trim();
+    const inputValue = event.target.value.trim();
 
     if (inputValue === "") {
-      // If the input is cleared, reset the field and calendar
+      // Reset everything if input is cleared
       this.clearInputField();
       return;
     }
 
-    // Handle normal input changes here (e.g., date validation)
+    // Split the input based on the joinBy (e.g., " - " or " to ")
     const dates = inputValue.split(this.joinBy);
     if (dates.length === 2) {
-      this.selectedStartDate = dates[0].trim();
-      this.selectedEndDate = dates[1].trim();
-    }
+      const [startDateStr, endDateStr] = dates.map((date) => date.trim());
 
-    // Validate the input value
-    this.validateInput(inputValue);
+      // Parse the start and end dates from the input
+      const startDate = this.parseDate(startDateStr);
+      const endDate = this.parseDate(endDateStr);
+
+      if (startDate && endDate && startDate <= endDate) {
+        this.startDate = startDate;
+        this.endDate = endDate;
+
+        // Sync the calendar to show the months of the startDate and next consecutive month
+        this.currentStartMonth = this.startDate.getMonth();
+        this.currentStartYear = this.startDate.getFullYear();
+
+        // Ensure consecutive months display
+        if (
+          this.startDate.getMonth() === this.endDate.getMonth() &&
+          this.startDate.getFullYear() === this.endDate.getFullYear()
+        ) {
+          // If the start and end are in the same month, show the next month
+          this.currentEndMonth = (this.currentStartMonth + 1) % 12;
+          this.currentEndYear =
+            this.currentStartMonth === 11
+              ? this.currentStartYear + 1
+              : this.currentStartYear;
+        } else {
+          // Show the end date's month if it's different
+          this.currentEndMonth = this.endDate.getMonth();
+          this.currentEndYear = this.endDate.getFullYear();
+        }
+
+        // Update the range and the calendar view
+        this.updateSelectedRange();
+        this.updateDisplayedDateRange();
+
+        // Re-render the calendar to reflect the manual input
+        this.requestUpdate();
+      } else {
+        // Handle invalid date input
+        this.validation = true;
+        this.validationMessage = "Invalid date range format.";
+        this.requestUpdate();
+      }
+    } else {
+      // Handle incorrect input format
+      this.validation = true;
+      this.validationMessage = "Invalid date range format.";
+      this.requestUpdate();
+    }
   }
 
   handleDateRangeSelect(event) {
@@ -1370,6 +1452,13 @@ class DateRangePickerNew extends LitElement {
   }
 
   renderDateRangePicker() {
+    // Ensure consecutive month rendering
+    const startMonth = this.currentStartMonth;
+    const startYear = this.currentStartYear;
+
+    const nextMonth = (startMonth + 1) % 12;
+    const nextYear = startMonth === 11 ? startYear + 1 : startYear;
+
     return html`
       <div
         class="range-picker-wrapper${this.plumage ? " plumage" : ""}"
@@ -1427,11 +1516,8 @@ class DateRangePickerNew extends LitElement {
             role="application"
             aria-label="Calendars"
           >
-            ${this.renderCalendar(
-              this.currentStartMonth,
-              this.currentStartYear
-            )}
-            ${this.renderCalendar(this.currentEndMonth, this.currentEndYear)}
+            ${this.renderCalendar(startMonth, startYear)}
+            ${this.renderCalendar(nextMonth, nextYear)}
           </div>
           <footer class="border-top small text-center">
             <div class="small" aria-live="polite">
