@@ -25,7 +25,7 @@
           <section class="section">
             <section class="display-box" id="db-1">
               <section class="display-box-demo">
-                <date-picker displayContextExamples></date-picker>
+                <date-picker displayContextExamples plumage></date-picker>
               </section>
               <section class="display-box-meta markdown">
                 <div class="display-box-title">Basic Usage</div>
@@ -111,7 +111,7 @@
           <section class="section">
             <section class="display-box" id="db-1">
               <section class="display-box-demo">
-                <div style="width: 295px">
+                <div style="width: 325px">
                   <datepicker-manager
                     selectedPicker="daterange"
                     joinBy="to"
@@ -130,15 +130,14 @@
             <section class="display-box" id="db-1">
               <section class="display-box-demo">
                 <div>
-                  <date-range-picker-new rangePicker
+                  <date-range-picker-new
+                    rangePicker
                     joinBy="to"
                   ></date-range-picker-new>
                 </div>
 
-                <div style="width: 295px">
-                  <date-range-picker-new
-                    joinBy="to"
-                  ></date-range-picker-new>
+                <div style="width: 325px">
+                  <date-range-picker-new joinBy="to"></date-range-picker-new>
                 </div>
               </section>
               <section class="display-box-meta markdown">
@@ -171,17 +170,44 @@
               </section>
             </section>
           </section>
+
+          <section class="section">
+            <section class="display-box" id="db-1">
+              <section class="display-box-demo">
+                <div>
+                  <date-range-time-picker-new
+                    rangeTimePicker
+                    joinBy="to"
+                    showDuration
+                  ></date-range-time-picker-new>
+                </div>
+
+                <div style="width: 430px">
+                  <date-range-time-picker-new
+                    joinBy="to"
+                    showDuration
+                  ></date-range-time-picker-new>
+                </div>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">Date Range Picker</div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
         </section>
       </div>
     </div>
 
     <script type="module" src="./datepicker.js"></script>
     <script type="module" src="./datepicker-new.js"></script>
-    
+
     <script type="module" src="./daterangepicker.js"></script>
     <script type="module" src="./daterangepicker-new.js"></script>
 
     <script type="module" src="./dateRangeTimePicker.js"></script>
+    <script type="module" src="./dateRangeTimePicker-new.js"></script>
     <script type="module" src="./datepicker-manager.js"></script>
 
     <script>
