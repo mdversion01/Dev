@@ -124,9 +124,6 @@ class DateRangePickerNew extends LitElement {
     this.inputElement = this.shadowRoot.querySelector(".form-control");
     document.addEventListener("click", this.handleOutsideClick);
 
-    // Log inputElement to ensure it's correctly selected
-    console.log(this.inputElement);
-
     if (!this.inputElement) {
       console.error("Input element not found.");
     } else {
@@ -1465,6 +1462,15 @@ class DateRangePickerNew extends LitElement {
       this.clearInputField();
       this.validationMessage = this.required ? "This field is required." : "";
 
+      // Optionally, show validation message if required
+      if (this.required) {
+        this.validation = true;
+        this.validationMessage = "This field is required.";
+      } else {
+        this.validation = false;
+        this.validationMessage = ""; // Clear validation if not required
+      }
+
       // Update value property when clearing input
       this.value = "";
       this.setAttribute("value", this.value);
@@ -1473,6 +1479,9 @@ class DateRangePickerNew extends LitElement {
       this.requestUpdate();
       return;
     }
+
+    // Validate the input while typing
+    this.validateInput(inputValue);
 
     // Validate input and split date range
     const dates = inputValue.split(this.joinBy);
