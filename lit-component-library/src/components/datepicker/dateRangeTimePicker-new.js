@@ -2310,8 +2310,9 @@ class DateRangeTimePickerNew extends LitElement {
                 id="${this.inputId}"
                 type="text"
                 class="form-control${this.validation ? " is-invalid" : ""}"
-                placeholder="${this.dateFormat} HH:MM ${this.joinBy} ${this
-                  .dateFormat} HH:MM"
+                placeholder="${this.is24HourFormat ? `${this.dateFormat} HH:MM ${this.joinBy} ${this
+                  .dateFormat} HH:MM` : `${this.dateFormat} HH:MM AM/PM ${this.joinBy} ${this
+                  .dateFormat} HH:MM AM/PM`}"
                 value="${ifDefined(this.value)}"
                 @input=${this.handleInputChange}
                 ?disabled=${this.disabled}
@@ -2419,8 +2420,9 @@ class DateRangeTimePickerNew extends LitElement {
                 id="${this.inputId}"
                 type="text"
                 class="form-control${this.validation ? " is-invalid" : ""}"
-                placeholder="${this.dateFormat} ${this.joinBy} ${this
-                  .dateFormat}"
+                placeholder="${this.is24HourFormat ? `${this.dateFormat} HH:MM ${this.joinBy} ${this
+                  .dateFormat} HH:MM` : `${this.dateFormat} HH:MM AM/PM ${this.joinBy} ${this
+                  .dateFormat} HH:MM AM/PM`}"
                 value="${ifDefined(this.value)}"
                 @focus="${this.handleInputInteraction}"
                 @blur="${this.handleInputDocumentClick}"
