@@ -95,7 +95,7 @@ class DateRangePickerNew extends LitElement {
     this.append = true;
     this.appendId = "";
     this.disabled = false;
-    this.label = "Date Picker";
+    this.label = "Date Range Picker";
     this.labelHidden = false;
     this.formLayout = "";
     this.icon = "fas fa-calendar-alt";

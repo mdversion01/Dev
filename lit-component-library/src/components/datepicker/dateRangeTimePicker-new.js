@@ -99,7 +99,7 @@ class DateRangeTimePickerNew extends LitElement {
     this.append = true;
     this.appendId = "";
     this.disabled = false;
-    this.label = "Date Picker";
+    this.label = "Date and Time Picker";
     this.labelHidden = false;
     this.formLayout = "";
     this.icon = "fas fa-calendar-alt";
@@ -1562,28 +1562,47 @@ class DateRangeTimePickerNew extends LitElement {
   }
 
   validateInput(value) {
-    // Regular expression to match the valid date formats with separators
-    const dateRangeTimePattern =
-      /^(?:\d{2}-\d{2}-\d{4} \d{2}:\d{2})(?: AM| PM)?[\s-]+(?:to|\-)[\s]+(?:\d{2}-\d{2}-\d{4} \d{2}:\d{2})(?: AM| PM)?(?: \(\d+d \d+h\))?$/;
+    // Define patterns for date and time formats
+    const datePattern = /^\d{4}-\d{2}-\d{2}$|^\d{2}-\d{2}-\d{4}$/; // Accepts YYYY-MM-DD or MM-DD-YYYY
+    const timePattern = /^\d{2}:\d{2}$/; // Accepts HH:MM
 
-    // Check if the entire value matches the valid date range pattern
-    const isValid = dateRangePattern.test(value);
+    // Split the input by the separator 'to' or '-'
+    const parts = value.split(/\s+(?:to|-)\s+/);
 
-    if (!value) {
-      // If input is empty, show validation message
+    // Check if there are two parts (start date and end date)
+    if (parts.length !== 2) {
       this.validation = true;
-      this.validationMessage = "This field is required.";
-    } else if (!isValid) {
-      // If format is invalid, show the validation message
+      this.validationMessage = "Incomplete date range.";
+      this.requestUpdate();
+      return;
+    }
+
+    const [startPart, endPart] = parts;
+
+    // Split date and time from start and end
+    const [startDate, startTime] = startPart.split(" ");
+    const [endDate, endTime] = endPart.split(" ");
+
+    // Validate date and time for start and end
+    const isStartDateValid = datePattern.test(startDate);
+    const isStartTimeValid = timePattern.test(startTime);
+    const isEndDateValid = datePattern.test(endDate);
+    const isEndTimeValid = timePattern.test(endTime);
+
+    // Set the validation messages based on which part is invalid
+    if (!isStartDateValid || !isStartTimeValid) {
       this.validation = true;
-      this.validationMessage = "Invalid date range format.";
+      this.validationMessage = "Invalid start date or time.";
+    } else if (!isEndDateValid || !isEndTimeValid) {
+      this.validation = true;
+      this.validationMessage = "Invalid end date or time.";
     } else {
-      // Input is valid, remove validation message
+      // If everything is valid, reset validation
       this.validation = false;
       this.validationMessage = "";
     }
 
-    // Request an update to reflect changes in the UI
+    // Update the UI to reflect the validation status
     this.requestUpdate();
   }
 
@@ -1595,14 +1614,15 @@ class DateRangeTimePickerNew extends LitElement {
 
   handleInputChange(event) {
     const inputValue = event.target.value.trim();
-
+  
+    // Define expected length for a valid date-time range string (e.g., YYYY-MM-DD HH:MM to YYYY-MM-DD HH:MM)
+    const minValidLength = 36; // Adjust as per your joinBy format (36 for 'YYYY-MM-DD HH:MM to YYYY-MM-DD HH:MM')
+  
     // If the input is empty, reset the calendar and validation
     if (inputValue === "") {
-      // Reset calendar and clear dates
       this.clearInputField();
       this.validationMessage = this.required ? "This field is required." : "";
-
-      // Optionally, show validation message if required
+  
       if (this.required) {
         this.validation = true;
         this.validationMessage = "This field is required.";
@@ -1610,35 +1630,39 @@ class DateRangeTimePickerNew extends LitElement {
         this.validation = false;
         this.validationMessage = ""; // Clear validation if not required
       }
-
-      // Update value property when clearing input
+  
       this.value = "";
       this.setAttribute("value", this.value);
-      console.log("Value cleared:", this.value);
-
-      // Trigger re-render to show validation state
       this.requestUpdate();
       return;
     }
-
-    // Validate the input while typing
+  
+    // Trigger validation if input length is less than expected
+    if (inputValue.length < minValidLength) {
+      this.validation = true;
+      this.validationMessage = "Incomplete date and time. Please provide a full range.";
+      this.requestUpdate();
+      return;
+    }
+  
+    // Continue to validate the input while typing
     this.validateInput(inputValue);
-
+  
     const dates = inputValue.split(this.joinBy);
     if (dates.length === 2) {
       const [startDateStr, endDateStr] = dates.map((date) => date.trim());
-
+  
       const startDate = this.parseDate(startDateStr);
       const endDate = this.parseDate(endDateStr);
-
+  
       if (startDate && endDate && startDate <= endDate) {
         this.startDate = startDate;
         this.endDate = endDate;
-
+  
         // Update range after input
         this.updateSelectedRange();
         this.updateDisplayedDateRange();
-
+  
         // If valid, remove validation
         this.validation = false;
         this.validationMessage = "";
@@ -1646,16 +1670,17 @@ class DateRangeTimePickerNew extends LitElement {
       } else {
         // If the date format or range is invalid, show validation message
         this.validation = true;
-        this.validationMessage = "Please enter a valid date range.";
+        this.validationMessage = "Invalid date or time range. Please check the input.";
         this.requestUpdate();
       }
     } else {
       // If the input doesn't match the expected format, trigger validation
       this.validation = true;
-      this.validationMessage = "Please enter a valid date range.";
+      this.validationMessage = "Invalid format. Expected format is 'YYYY-MM-DD HH:MM to YYYY-MM-DD HH:MM'.";
       this.requestUpdate();
     }
   }
+  
 
   handleDateRangeSelect(event) {
     // Manually extract the date components to avoid time zone issues
@@ -1942,11 +1967,13 @@ class DateRangeTimePickerNew extends LitElement {
 
   _handleTimeInputChange(event) {
     const inputType = event.target.dataset.type;
-    let timeValue = event.target.value.replace(/[^0-9]/g, "");
+    let timeValue = event.target.value.replace(/[^0-9]/g, ""); // Only keep digits
 
-    const cursorPosition = event.target.selectionStart;
+    const cursorPosition = event.target.selectionStart; // Track the initial cursor position
+    const initialLength = timeValue.length; // Track the initial length of the input
 
     if (timeValue.length === 0) {
+      // Handle empty input
       if (inputType === "start") {
         this.startTime = "";
       } else if (inputType === "end") {
@@ -1958,33 +1985,69 @@ class DateRangeTimePickerNew extends LitElement {
       return;
     }
 
-    if (timeValue.length < 3) {
-      event.target.value = timeValue;
-      event.target.setSelectionRange(cursorPosition, cursorPosition);
-      return;
-    }
-
+    // Ensure that the time input is in proper format (HH:MM)
     if (timeValue.length >= 3) {
       timeValue = `${timeValue.slice(0, 2)}:${timeValue.slice(2, 4)}`;
     }
 
-    timeValue = timeValue.slice(0, 5);
+    timeValue = timeValue.slice(0, 5); // Limit to HH:MM format
 
+    // Preserve the current AM/PM value
+    const currentAmPm =
+      inputType === "start"
+        ? this._getAmPm(this.startTime)
+        : this._getAmPm(this.endTime);
+
+    // Update the startTime or endTime based on input type
     if (inputType === "start") {
       this.startTime = timeValue;
     } else if (inputType === "end") {
       this.endTime = timeValue;
     }
 
-    const timesValid = this._validateTime();
-
+    // Update the input value
     event.target.value = timeValue;
 
-    const newCursorPosition = Math.min(cursorPosition, timeValue.length);
+    // Calculate the new cursor position based on input changes
+    const newCursorPosition =
+      cursorPosition + (timeValue.length - initialLength);
+
+    // Set the cursor back to the right position
     event.target.setSelectionRange(newCursorPosition, newCursorPosition);
 
+    // Ensure the time is valid and update the OK button state
+    this._validateTime();
     this._updateOkButtonState();
+
+    // Convert the time to 12-hour format if required
+    if (!this.is24HourFormat) {
+      if (inputType === "start") {
+        this.startTime = this._convertTo12HourFormat(
+          this.startTime,
+          currentAmPm
+        );
+      } else if (inputType === "end") {
+        this.endTime = this._convertTo12HourFormat(this.endTime, currentAmPm);
+      }
+    }
+
     this._updateDuration();
+  }
+
+  _convertTo12HourFormat(time, ampm) {
+    if (!time || !time.includes(":")) return time;
+
+    let [hours, minutes] = time.split(":");
+    hours = parseInt(hours, 10);
+
+    // Don't modify hours if they are already in correct 12-hour format
+    if (ampm === "PM" && hours < 12) {
+      hours = (hours + 12) % 24;
+    } else if (ampm === "AM" && hours === 12) {
+      hours = 0;
+    }
+
+    return `${hours.toString().padStart(2, "0")}:${minutes}`;
   }
 
   _updateDuration() {
@@ -2037,16 +2100,13 @@ class DateRangeTimePickerNew extends LitElement {
       return false;
     }
 
-    if (this.startTime && !this._isValidTime(this.startTime)) {
+    // Validate start time and end time without touching AM/PM
+    if (
+      !this._isValidTime(this.startTime) ||
+      !this._isValidTime(this.endTime)
+    ) {
       warningMessageElement.textContent =
         "Start time is invalid. Format - HH:MM and values cannot exceed the limits.";
-      warningMessageElement.classList.remove("hide");
-      return false;
-    }
-
-    if (this.endTime && !this._isValidTime(this.endTime)) {
-      warningMessageElement.textContent =
-        "End time is invalid. Format - HH:MM and values cannot exceed the limits.";
       warningMessageElement.classList.remove("hide");
       return false;
     }
@@ -2071,23 +2131,19 @@ class DateRangeTimePickerNew extends LitElement {
     const inputType = event.target.dataset.type;
     let time = inputType === "start" ? this.startTime : this.endTime;
 
+    if (!time || !time.includes(":")) return;
+
     let [hours, minutes] = time.split(":");
-    let period = this._getAmPm(time);
+    let period = this._getAmPm(time); // Determine if it's AM or PM
 
-    if (period === "AM") {
-      period = "PM";
-    } else {
-      period = "AM";
-    }
+    // Toggle between AM and PM when the button is clicked
+    period = period === "AM" ? "PM" : "AM";
 
-    if (hours === "12") {
-      hours = period === "AM" ? "00" : "12";
-    } else {
-      if (period === "PM" && hours !== "12") {
-        hours = (parseInt(hours, 10) + 12).toString().padStart(2, "0");
-      } else if (period === "AM" && hours !== "12") {
-        hours = (parseInt(hours, 10) - 12).toString().padStart(2, "0");
-      }
+    // Convert hours when toggling
+    if (period === "PM" && parseInt(hours, 10) < 12) {
+      hours = (parseInt(hours, 10) + 12).toString().padStart(2, "0");
+    } else if (period === "AM" && parseInt(hours, 10) >= 12) {
+      hours = (parseInt(hours, 10) - 12).toString().padStart(2, "0");
     }
 
     const updatedTime = `${hours}:${minutes}`;
