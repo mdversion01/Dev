@@ -1637,7 +1637,7 @@ class DateRangeTimePickerNew extends LitElement {
       return;
     }
   
-    // Trigger validation if input length is less than expected
+    // If the input is shorter than expected, trigger validation
     if (inputValue.length < minValidLength) {
       this.validation = true;
       this.validationMessage = "Incomplete date and time. Please provide a full range.";
@@ -1645,42 +1645,67 @@ class DateRangeTimePickerNew extends LitElement {
       return;
     }
   
-    // Continue to validate the input while typing
-    this.validateInput(inputValue);
-  
-    const dates = inputValue.split(this.joinBy);
-    if (dates.length === 2) {
-      const [startDateStr, endDateStr] = dates.map((date) => date.trim());
-  
-      const startDate = this.parseDate(startDateStr);
-      const endDate = this.parseDate(endDateStr);
-  
-      if (startDate && endDate && startDate <= endDate) {
-        this.startDate = startDate;
-        this.endDate = endDate;
-  
-        // Update range after input
-        this.updateSelectedRange();
-        this.updateDisplayedDateRange();
-  
-        // If valid, remove validation
-        this.validation = false;
-        this.validationMessage = "";
-        this.requestUpdate();
-      } else {
-        // If the date format or range is invalid, show validation message
-        this.validation = true;
-        this.validationMessage = "Invalid date or time range. Please check the input.";
-        this.requestUpdate();
-      }
-    } else {
-      // If the input doesn't match the expected format, trigger validation
+    // Extract dates and times from the input string
+    const [startPart, endPart] = inputValue.split(this.joinBy);
+    if (!startPart || !endPart) {
       this.validation = true;
       this.validationMessage = "Invalid format. Expected format is 'YYYY-MM-DD HH:MM to YYYY-MM-DD HH:MM'.";
       this.requestUpdate();
+      return;
+    }
+  
+    const [startDateStr, startTimeStr] = startPart.trim().split(" ");
+    const [endDateStr, endTimeStr] = endPart.trim().split(" ");
+  
+    const startDate = this.parseDate(startDateStr);
+    const endDate = this.parseDate(endDateStr);
+  
+    if (!startDate || !endDate || !startTimeStr || !endTimeStr) {
+      this.validation = true;
+      this.validationMessage = "Invalid date or time format.";
+      this.requestUpdate();
+      return;
+    }
+  
+    // Validate times before applying them
+    if (!this._isValidTime(startTimeStr) || !this._isValidTime(endTimeStr)) {
+      this.validation = true;
+      this.validationMessage = "Invalid time format. Please provide a valid time.";
+      this.requestUpdate();
+      return;
+    }
+  
+    // Update start and end dates and times if valid
+    this.startDate = startDate;
+    this.endDate = endDate;
+    this.startTime = startTimeStr;
+    this.endTime = endTimeStr;
+  
+    // Update the time inputs in the dropdown
+    this._updateDropdownTimeInput('start', this.startTime);
+    this._updateDropdownTimeInput('end', this.endTime);
+  
+    // If `showDuration` is true, calculate and display the duration
+    if (this.showDuration) {
+      this._updateDuration();
+    }
+  
+    // Update range after input
+    this.updateSelectedRange();
+    this.updateDisplayedDateRange();
+  
+    // If valid, remove validation
+    this.validation = false;
+    this.validationMessage = "";
+    this.requestUpdate();
+  }
+
+  _updateDropdownTimeInput(type, timeValue) {
+    const timeInput = this.shadowRoot.querySelector(`input[data-type="${type}"]`);
+    if (timeInput) {
+      timeInput.value = timeValue;
     }
   }
-  
 
   handleDateRangeSelect(event) {
     // Manually extract the date components to avoid time zone issues
@@ -2051,14 +2076,9 @@ class DateRangeTimePickerNew extends LitElement {
   }
 
   _updateDuration() {
-    if (!this.showDuration) {
-      return;
-    }
-
     const durationElement = this.shadowRoot.querySelector(".duration");
-
+  
     if (
-      durationElement &&
       this.startDate &&
       this.endDate &&
       this.startTime &&
@@ -2070,20 +2090,24 @@ class DateRangeTimePickerNew extends LitElement {
       const endDateTime = new Date(
         `${this.endDate.toISOString().split("T")[0]}T${this.endTime}`
       );
-
+  
       const diffMs = endDateTime - startDateTime;
       const diffHours = Math.round(diffMs / (1000 * 60 * 60));
       const diffDays = Math.floor(diffHours / 24);
       const remainingHours = diffHours % 24;
-
+  
       let durationText = "";
       if (diffDays > 0) {
         durationText += `${diffDays}d `;
       }
       durationText += `${remainingHours}h`;
-
-      durationElement.textContent = `(${durationText})`;
+  
+      // Update the UI with the duration
+      if (durationElement) {
+        durationElement.textContent = `(${durationText})`;
+      }
     } else if (durationElement) {
+      // Clear duration if the dates or times are not valid
       durationElement.textContent = "";
     }
   }
