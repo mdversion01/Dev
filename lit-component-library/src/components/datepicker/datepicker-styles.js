@@ -537,7 +537,7 @@ export const datepickerStyles = css`
     font-size: 0.8333rem;
     padding: 5px 8px;
     height: auto;
-    width: 40px;
+    width: auto;
   }
 
   .ok-button .btn.btn-primary:hover {
