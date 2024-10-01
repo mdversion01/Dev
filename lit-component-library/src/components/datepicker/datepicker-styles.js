@@ -263,8 +263,9 @@ export const datepickerStyles = css`
     border-radius: 3px;
   }
 
-  .selectors .reset-btn:hover,
-  .selectors .reset-btn:focus {
+  .selectors .reset-btn:hover
+  /*, .selectors .reset-btn:focus { */
+  {
     color: rgb(255, 255, 255);
     fill: rgb(255, 255, 255);
     background-color: rgb(108, 117, 125);

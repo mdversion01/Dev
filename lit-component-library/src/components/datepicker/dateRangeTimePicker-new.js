@@ -75,7 +75,6 @@ class DateRangeTimePickerNew extends LitElement {
   constructor() {
     super();
     this.ariaLabel = "";
-    // this.dateFormat = "Y-m-d"; // Other options: "M-d-Y", "Long Date", "ISO"
     this.startDate = null;
     this.endDate = null;
     this.currentStartMonth = new Date().getMonth();
@@ -148,6 +147,13 @@ class DateRangeTimePickerNew extends LitElement {
     if (!this.inputElement) {
       console.error("Input element not found.");
     } else {
+      // Add event listener for the "Enter" key
+      this.inputElement.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+          this._handleEnterKeyPress();
+        }
+      });
+
       document.addEventListener("click", this.handleOutsideClick);
     }
 
@@ -192,6 +198,18 @@ class DateRangeTimePickerNew extends LitElement {
       this._setDefaultTimes();
       this._setDefaultTimeInputs();
     }
+  }
+
+  openDropdown() {
+    this.dropdownOpen = true;
+    this.createPopperInstance();
+    document.addEventListener("click", this.handleOutsideClick);
+  }
+
+  closeDropdown() {
+    this.dropdownOpen = false;
+    this.destroyPopper();
+    document.removeEventListener("click", this.handleOutsideClick);
   }
 
   _setDefaultTimeInputs() {
@@ -488,8 +506,7 @@ class DateRangeTimePickerNew extends LitElement {
       if (appendElement) appendElement.classList.remove("is-invalid");
       if (prependElement) prependElement.classList.remove("is-invalid");
 
-      this.dropdownOpen = false;
-      this.destroyPopper();
+      this.closeDropdown();
       document.removeEventListener("click", this.handleOutsideClick);
 
       // Re-sync the month/year selectors to reflect the current view
@@ -615,8 +632,8 @@ class DateRangeTimePickerNew extends LitElement {
     this.updateDisplayedDateRange();
 
     // Close the dropdown and clean up popper instance
-    this.dropdownOpen = false;
-    this.destroyPopper();
+    // this.dropdownOpen = false;
+    // this.destroyPopper();
 
     // Request an update to ensure the component is re-rendered with the latest changes
     this.requestUpdate();
@@ -1363,8 +1380,8 @@ class DateRangeTimePickerNew extends LitElement {
     this.updateSelectedRange(); // Ensure the range is visually cleared
     this.updateDisplayedDateRange(); // Reset the displayed date range
 
-    this.dropdownOpen = false;
-    this.destroyPopper();
+    // this.dropdownOpen = false;
+    // this.destroyPopper();
     this.requestUpdate(); // Re-render the component
   }
 
@@ -1378,8 +1395,7 @@ class DateRangeTimePickerNew extends LitElement {
       dropdown &&
       (!dropdown.contains(event.target) || event.target === okButton)
     ) {
-      this.dropdownOpen = false;
-      this.destroyPopper();
+        this.closeDropdown();
       document.removeEventListener("click", this.handleOutsideClick);
     }
 
@@ -1430,15 +1446,16 @@ class DateRangeTimePickerNew extends LitElement {
 
   toggleDropdown(event) {
     event.stopPropagation();
-
+  
     this.preventClose = true; // Prevent the dropdown from closing
-
-    this.dropdownOpen = !this.dropdownOpen;
-
-    if (this.dropdownOpen) {
+  
+    if (!this.dropdownOpen) {
+      // Open the dropdown
+      this.openDropdown();
+  
       // Update range when dropdown is opened
       this.updateSelectedRange();
-
+  
       // If a range is already selected, ensure the correct months are displayed
       if (this.startDate) {
         this.currentStartMonth = this.startDate.getMonth();
@@ -1451,7 +1468,7 @@ class DateRangeTimePickerNew extends LitElement {
           : this.currentStartMonth === 11
           ? this.currentStartYear + 1
           : this.currentStartYear;
-
+  
         // Handle when start and end dates are in the same month
         if (
           this.currentStartMonth === this.currentEndMonth &&
@@ -1474,15 +1491,12 @@ class DateRangeTimePickerNew extends LitElement {
             ? this.currentStartYear + 1
             : this.currentStartYear;
       }
-
-      // Update the calendar view
-      this.createPopperInstance();
-      document.addEventListener("click", this.handleOutsideClick);
     } else {
-      this.destroyPopper();
-      document.removeEventListener("click", this.handleOutsideClick);
+      // Close the dropdown
+      this.closeDropdown();
     }
   }
+  
 
   // Normalize a date to remove time components and ensure comparisons only on year, month, day
   normalizeDate(date) {
