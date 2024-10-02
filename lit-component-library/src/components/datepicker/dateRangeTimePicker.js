@@ -1681,7 +1681,7 @@ class DateRangeTimePicker extends LitElement {
     if (!startPart || !endPart) {
       this.validation = true;
       this.validationMessage =
-        "Invalid format. Expected format is 'YYYY-MM-DD HH:MM to YYYY-MM-DD HH:MM'.";
+        `Invalid format. Expected format is 'YYYY-MM-DD HH:MM ${this.joinBy} YYYY-MM-DD HH:MM'.`;
       this.requestUpdate();
       return;
     }
@@ -1940,7 +1940,7 @@ class DateRangeTimePicker extends LitElement {
                       ${this._getAmPm(this.startTime)}
                     </span>`
                   : ""}
-                <span class="to-spacing">to</span>
+                <span class="to-spacing">${this.joinBy}</span>
                 <span class="end-date">N/A</span>
                 ${this.plumage
                   ? html` <div
