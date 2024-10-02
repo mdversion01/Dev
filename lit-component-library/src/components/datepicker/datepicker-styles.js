@@ -703,6 +703,13 @@ export const datepickerStyles = css`
 
   .plumage .time-input {
     font-size: 0.833rem !important;
+    border: none;
+  }
+
+  .plumage .time-input:focus {
+    outline: none;
+    border: none;
+    box-shadow: none;
   }
 
   .plumage .calendar-button {

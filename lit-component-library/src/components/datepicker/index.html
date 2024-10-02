@@ -25,48 +25,78 @@
           <section class="section">
             <section class="display-box" id="db-1">
               <section class="display-box-demo">
-                <date-picker displayContextExamples plumage></date-picker>
-              </section>
-              <section class="display-box-meta markdown">
-                <div class="display-box-title">Basic Usage</div>
-                <div class="display-box-description">Date picker calendar</div>
-                <div class=""></div>
-              </section>
-            </section>
-          </section>
-
-          <section class="section">
-            <section class="display-box" id="db-1">
-              <section
-                class="display-box-demo"
-                style="display: flex; justify-content: center"
-              >
-                <date-range-picker id="dateRangePicker"></date-range-picker>
-              </section>
-              <section class="display-box-meta markdown">
-                <div class="display-box-title">Basic Usage</div>
-                <div class="display-box-description">Date Range Picker</div>
-                <div class=""></div>
-              </section>
-            </section>
-          </section>
-
-          <section class="section">
-            <section class="display-box" id="db-1">
-              <section
-                class="display-box-demo"
-                style="display: flex; justify-content: center"
-              >
-                <date-range-time-picker
-                  id="dateRangeTimePicker"
-                  showDuration
-                  is24HourFormat="false"
-                ></date-range-time-picker>
+                <div style="display: flex; justify-content: space-between">
+                  <div>
+                    <div style="margin-bottom: 20px">
+                      <date-picker calendar></date-picker>
+                    </div>
+                    <div style="width: 210px">
+                      <date-picker></date-picker>
+                    </div>
+                  </div>
+                  <div>
+                    <div style="margin-bottom: 58px">
+                      <date-picker calendar plumage></date-picker>
+                    </div>
+                    <div style="width: 210px">
+                      <date-picker plumage></date-picker>
+                    </div>
+                  </div>
+                </div>
               </section>
               <section class="display-box-meta markdown">
                 <div class="display-box-title">Basic Usage</div>
                 <div class="display-box-description">
-                  Date Range Time Picker
+                  Date picker calendar or Date Picker Input field, basic and
+                  Plumage themed.
+                </div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
+
+          <section class="section">
+            <section class="display-box" id="db-1">
+              <section class="display-box-demo">
+                <div>
+                  <date-range-picker rangePicker></date-range-picker>
+                </div>
+
+                <div style="width: 325px">
+                  <date-range-picker></date-range-picker>
+                </div>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">
+                  Date Range Picker and Input Field with Date Range Picker,
+                  basic theme.
+                </div>
+                <div class=""></div>
+              </section>
+            </section>
+          </section>
+
+          <section class="section">
+            <section class="display-box" id="db-1">
+              <section class="display-box-demo">
+                <div>
+                  <date-range-picker
+                    rangePicker
+                    joinBy="to"
+                    plumage
+                  ></date-range-picker>
+                </div>
+
+                <div style="width: 325px">
+                  <date-range-picker joinBy="to" plumage></date-range-picker>
+                </div>
+              </section>
+              <section class="display-box-meta markdown">
+                <div class="display-box-title">Basic Usage</div>
+                <div class="display-box-description">
+                  Date Range Picker and Input Field with Date Range Picker,
+                  Plumage theme.
                 </div>
                 <div class=""></div>
               </section>
@@ -75,126 +105,59 @@
         </section>
 
         <section>
-          <!-- <section class="section">
-            <section class="display-box" id="db-1">
-              <section class="display-box-demo">
-                <div style="width: 210px">
-                  <datepicker-manager></datepicker-manager>
-                </div>
-              </section>
-              <section class="display-box-meta markdown">
-                <div class="display-box-title">Basic Usage</div>
-                <div class="display-box-description">Date picker calendar</div>
-                <div class=""></div>
+          <section>
+            <section class="section">
+              <section class="display-box" id="db-1">
+                <section class="display-box-demo">
+                  <div>
+                    <date-range-time-picker
+                      rangeTimePicker
+                      showDuration
+                    ></date-range-time-picker>
+                  </div>
+
+                  <div style="width: 554px">
+                    <date-range-time-picker
+                      showDuration
+                    ></date-range-time-picker>
+                  </div>
+                </section>
+                <section class="display-box-meta markdown">
+                  <div class="display-box-title">Basic Usage</div>
+                  <div class="display-box-description">
+                    Date Range and Time Picker and Input Field with Date Range
+                    and Time Picker, basic theme.
+                  </div>
+                  <div class=""></div>
+                </section>
               </section>
             </section>
-          </section> -->
 
-          <section class="section">
             <section class="display-box" id="db-1">
               <section class="display-box-demo">
                 <div>
-                  <date-picker-new calendar></date-picker-new>
-                </div>
-                <div style="width: 210px">
-                  <date-picker-new></date-picker-new>
-                </div>
-              </section>
-              <section class="display-box-meta markdown">
-                <div class="display-box-title">Basic Usage</div>
-                <div class="display-box-description">Date picker calendar</div>
-                <div class=""></div>
-              </section>
-            </section>
-          </section>
-
-          <!-- <section class="section">
-            <section class="display-box" id="db-1">
-              <section class="display-box-demo">
-                <div style="width: 325px">
-                  <datepicker-manager
-                    selectedPicker="daterange"
+                  <date-range-time-picker
+                    rangeTimePicker
                     joinBy="to"
-                  ></datepicker-manager>
-                </div>
-              </section>
-              <section class="display-box-meta markdown">
-                <div class="display-box-title">Basic Usage</div>
-                <div class="display-box-description">Date Range Picker</div>
-                <div class=""></div>
-              </section>
-            </section>
-          </section> -->
-
-          <section class="section">
-            <section class="display-box" id="db-1">
-              <section class="display-box-demo">
-                <div>
-                  <date-range-picker-new
-                    rangePicker
-                    joinBy="to"
-                  ></date-range-picker-new>
-                </div>
-
-                <div style="width: 325px">
-                  <date-range-picker-new joinBy="to"></date-range-picker-new>
-                </div>
-              </section>
-              <section class="display-box-meta markdown">
-                <div class="display-box-title">Basic Usage</div>
-                <div class="display-box-description">Date Range Picker</div>
-                <div class=""></div>
-              </section>
-            </section>
-          </section>
-
-          <!-- <section class="section">
-            <section class="display-box" id="db-1">
-              <section class="display-box-demo">
-                <div style="width: 405px">
-                  <datepicker-manager
-                    dateFormat="MM-DD-YYYY"
-                    selectedPicker="daterangetime"
-                    joinBy="to"
-                    is24HourFormat="true"
                     showDuration
-                  ></datepicker-manager>
+                    plumage
+                  ></date-range-time-picker>
+                </div>
+
+                <div style="width: 554px">
+                  <date-range-time-picker
+                    joinBy="to"
+                    showDuration
+                    plumage
+                  ></date-range-time-picker>
                 </div>
               </section>
               <section class="display-box-meta markdown">
                 <div class="display-box-title">Basic Usage</div>
                 <div class="display-box-description">
-                  Date Range Time Picker
+                  Date Range and Time Picker and Input Field with Date Range and
+                  Time Picker, Plumage theme.
                 </div>
-                <div class=""></div>
-              </section>
-            </section>
-          </section> -->
-
-          <section class="section">
-            <section class="display-box" id="db-1">
-              <section class="display-box-demo">
-                <div>
-                  <date-range-time-picker-new
-                    rangeTimePicker
-                    joinBy="to"
-                    showDuration
-                    is24HourFormat="false"
-                    showOkButton="false"
-                  ></date-range-time-picker-new>
-                </div>
-
-                <div style="width: 554px">
-                  <date-range-time-picker-new
-                    joinBy="to"
-                    showDuration
-                    is24HourFormat="false"
-                   ></date-range-time-picker-new>
-                </div>
-              </section>
-              <section class="display-box-meta markdown">
-                <div class="display-box-title">Basic Usage</div>
-                <div class="display-box-description">Date Range Picker</div>
                 <div class=""></div>
               </section>
             </section>
@@ -204,14 +167,12 @@
     </div>
 
     <script type="module" src="./datepicker.js"></script>
-    <script type="module" src="./datepicker-new.js"></script>
 
     <script type="module" src="./daterangepicker.js"></script>
-    <script type="module" src="./daterangepicker-new.js"></script>
 
     <script type="module" src="./dateRangeTimePicker.js"></script>
-    <script type="module" src="./dateRangeTimePicker-new.js"></script>
-    <script type="module" src="./datepicker-manager.js"></script>
+
+    <!-- <script type="module" src="./datepicker-manager.js"></script> -->
 
     <script>
       document.addEventListener("DOMContentLoaded", () => {
