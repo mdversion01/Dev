@@ -40,7 +40,6 @@ class DateRangeTimePicker extends LitElement {
     return {
       ariaLabel: { type: String },
       dateFormat: { type: String },
-
       plumage: { type: Boolean },
       dropdownOpen: { type: Boolean },
       selectedDate: { type: String },
@@ -55,6 +54,7 @@ class DateRangeTimePicker extends LitElement {
       labelHidden: { type: Boolean },
       formLayout: { type: String },
       icon: { type: String },
+      placeholder: { type: String },
       prepend: { type: Boolean },
       prependId: { type: String },
       required: { type: Boolean },
@@ -101,6 +101,9 @@ class DateRangeTimePicker extends LitElement {
     this.labelHidden = false;
     this.formLayout = "";
     this.icon = "fas fa-calendar-alt";
+    this.placeholder = this.is24HourFormat
+                  ? `${this.dateFormat} HH:MM ${this.joinBy} ${this.dateFormat} HH:MM`
+                  : `${this.dateFormat} HH:MM AM/PM ${this.joinBy} ${this.dateFormat} HH:MM AM/PM`;
     this.prepend = false;
     this.prependId = "";
     this.required = false;
@@ -2336,9 +2339,7 @@ class DateRangeTimePicker extends LitElement {
                 id="${this.inputId}"
                 type="text"
                 class="form-control${this.validation ? " is-invalid" : ""}"
-                placeholder="${this.is24HourFormat
-                  ? `${this.dateFormat} HH:MM ${this.joinBy} ${this.dateFormat} HH:MM`
-                  : `${this.dateFormat} HH:MM AM/PM ${this.joinBy} ${this.dateFormat} HH:MM AM/PM`}"
+                placeholder="${this.placeholder}"
                 value="${ifDefined(this.value)}"
                 @input=${this.handleInputChange}
                 ?disabled=${this.disabled}
@@ -2446,9 +2447,7 @@ class DateRangeTimePicker extends LitElement {
                 id="${this.inputId}"
                 type="text"
                 class="form-control${this.validation ? " is-invalid" : ""}"
-                placeholder="${this.is24HourFormat
-                  ? `${this.dateFormat} HH:MM ${this.joinBy} ${this.dateFormat} HH:MM`
-                  : `${this.dateFormat} HH:MM AM/PM ${this.joinBy} ${this.dateFormat} HH:MM AM/PM`}"
+                placeholder="${this.placeholder}"
                 value="${ifDefined(this.value)}"
                 @focus="${this.handleInputInteraction}"
                 @blur="${this.handleInputDocumentClick}"

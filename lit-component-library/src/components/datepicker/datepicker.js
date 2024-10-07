@@ -39,7 +39,6 @@ class DatePicker extends LitElement {
       displayContextExamples: { type: Boolean },
       dateFormat: { type: String }, // Property for date format
       plumage: { type: Boolean },
-
       dropdownOpen: { type: Boolean },
       inputId: { type: String },
       append: { type: Boolean },
@@ -49,6 +48,7 @@ class DatePicker extends LitElement {
       labelHidden: { type: Boolean },
       formLayout: { type: String },
       icon: { type: String },
+      placeholder: { type: String },
       prepend: { type: Boolean },
       prependId: { type: String },
       required: { type: Boolean },
@@ -76,7 +76,6 @@ class DatePicker extends LitElement {
     this.plumage = false;
     this.addEventListener("reset-picker", this.resetCalendar);
     this.addEventListener("update-calendar", this.handleUpdateCalendar); // Listen for updates
-
     this.dropdownOpen = false;
     this.inputId = "datepicker";
     this.append = true;
@@ -86,6 +85,7 @@ class DatePicker extends LitElement {
     this.labelHidden = false;
     this.formLayout = "";
     this.icon = "fas fa-calendar-alt";
+    this.placeholder = `${this.dateFormat}`;
     this.prepend = false;
     this.prependId = "";
     this.required = false;
@@ -317,8 +317,7 @@ class DatePicker extends LitElement {
 
   handleInputBlur(event) {
     const inputValue = event.target.value.trim();
-    console.log("Blur Event Triggered with value:", inputValue);
-
+    
     if (inputValue === "") {
       // Clear the input if it's empty
       this.clearInputField();
@@ -612,8 +611,6 @@ class DatePicker extends LitElement {
   updateSelectedDateDisplay(date) {
     const selectedDateDisplay = this.shadowRoot.querySelector(".selected-date bdi");
   
-    console.log("Selected Date Display (before formatting): ", date); // Debugging to see the date passed
-  
     // If the date is a string, attempt to convert it to a Date object
     if (typeof date === 'string') {
       date = new Date(date);
@@ -623,12 +620,10 @@ class DatePicker extends LitElement {
     if (!date || !(date instanceof Date) || isNaN(date.getTime())) {
       // Display "No date selected" if no valid date is provided
       selectedDateDisplay.textContent = "No date selected";
-      console.log("No valid date provided");
     } else {
       // If a valid date is provided, format it as a long date
       const formattedLongDate = this.formatDateLong(date);
   
-      console.log("Formatted Long Date: ", formattedLongDate); // Debugging to see the formatted date
       selectedDateDisplay.textContent = formattedLongDate;
     }
   }
@@ -1600,8 +1595,6 @@ class DatePicker extends LitElement {
 
   // Ensure clearing input resets the datepicker state
   clearInputField() {
-    console.log("Clearing input field");
-
     this.selectedDate = null; // Clear the selected date
     this.updateInputField(""); // Clear input value
     this.updateSelectedDateDisplay("No date selected"); // Reset display
@@ -1622,7 +1615,6 @@ class DatePicker extends LitElement {
   updateInputField(value) {
     const inputField = this.shadowRoot.querySelector("input.form-control");
     if (inputField) {
-      console.log("Updating input field with value:", value);
       inputField.value = value;
     }
   }
@@ -1831,7 +1823,7 @@ class DatePicker extends LitElement {
                 id="${this.inputId}"
                 type="text"
                 class="form-control${this.validation ? " is-invalid" : ""}"
-                placeholder=${this.dateFormat}
+                placeholder=${this.placeholder}
                 value=${
                   this.selectedDate ? this.formatDate(this.selectedDate) : ""
                 }
@@ -1946,31 +1938,10 @@ class DatePicker extends LitElement {
               id="${this.inputId}"
               type="text"
               class="form-control${this.validation ? " is-invalid" : ""}"
-              placeholder=${this.selectedPicker === "daterange"
-                ? `${this.dateFormat} ${this.joinBy} ${this.dateFormat}`
-                : this.selectedPicker === "daterangetime"
-                ? `${this.dateFormat} HH:MM ${this.joinBy} ${this.dateFormat} HH:MM`
-                : this.dateFormat}
-              value=${this.selectedPicker === "datepicker"
-                ? this.selectedDate
-                : this.selectedPicker === "daterange"
-                ? this.selectedStartDate && this.selectedEndDate
-                  ? `${this.selectedStartDate} ${this.joinBy} ${this.selectedEndDate}`
-                  : ""
-                : this.selectedPicker === "daterangetime"
-                ? this.selectedStartDate &&
-                  this.selectedEndDate &&
-                  this.startTime &&
-                  this.endTime
-                  ? `${this.selectedStartDate} ${this.startTime} ${
-                      this.joinBy
-                    } ${this.selectedEndDate} ${this.endTime} ${
-                      this.showDuration && this.duration
-                        ? `(${this.duration})`
-                        : ""
-                    }`
-                  : ""
-                : ""}
+              placeholder=${this.placeholder}
+              value=${
+                  this.selectedDate ? this.formatDate(this.selectedDate) : ""
+                }
               @focus="${this.handleInteraction}"
               @blur="${this.handleDocumentClick}"
               @input=${this.handleInputChange}

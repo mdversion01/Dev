@@ -54,6 +54,7 @@ class DateRangePicker extends LitElement {
       labelHidden: { type: Boolean },
       formLayout: { type: String },
       icon: { type: String },
+      placeholder: { type: String },
       prepend: { type: Boolean },
       prependId: { type: String },
       required: { type: Boolean },
@@ -96,6 +97,7 @@ class DateRangePicker extends LitElement {
     this.labelHidden = false;
     this.formLayout = "";
     this.icon = "fas fa-calendar-alt";
+    this.placeholder = `${this.dateFormat} ${this.joinBy} ${this.dateFormat}`;
     this.prepend = false;
     this.prependId = "";
     this.required = false;
@@ -372,7 +374,6 @@ class DateRangePicker extends LitElement {
 
         // Update the 'value' property and reflect it as an attribute
         this.value = selectedRange;
-        console.log("Value updated via OK button:", this.value);
       }
 
       // Dispatch event for the updated date range
@@ -1476,7 +1477,6 @@ class DateRangePicker extends LitElement {
       // Update value property when clearing input
       this.value = "";
       this.setAttribute("value", this.value);
-      console.log("Value cleared:", this.value);
 
       this.requestUpdate();
       return;
@@ -1499,7 +1499,6 @@ class DateRangePicker extends LitElement {
         const selectedRange = `${startDateStr} ${this.joinBy} ${endDateStr}`;
         this.value = selectedRange;
         this.setAttribute("value", this.value); // Sync the value attribute
-        console.log("Value updated via input:", this.value);
 
         this.updateSelectedRange();
         this.updateDisplayedDateRange();
@@ -1758,8 +1757,7 @@ class DateRangePicker extends LitElement {
                 id="${this.inputId}"
                 type="text"
                 class="form-control${this.validation ? " is-invalid" : ""}"
-                placeholder="${this.dateFormat} ${this.joinBy} ${this
-                  .dateFormat}"
+                placeholder="${this.placeholder}"
                 value="${ifDefined(this.value)}"
                 @input=${this.handleInputChange}
                 ?disabled=${this.disabled}
@@ -1867,8 +1865,7 @@ class DateRangePicker extends LitElement {
                 id="${this.inputId}"
                 type="text"
                 class="form-control${this.validation ? " is-invalid" : ""}"
-                placeholder="${this.dateFormat} ${this.joinBy} ${this
-                  .dateFormat}"
+                placeholder="${this.placeholder}"
                 value="${ifDefined(this.value)}"
                 @focus="${this.handleInputInteraction}"
                 @blur="${this.handleInputDocumentClick}"
