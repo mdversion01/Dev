@@ -149,13 +149,6 @@ class DateRangeTimePicker extends LitElement {
     if (!this.inputElement) {
       console.error("Input element not found.");
     } else {
-      // Add event listener for the "Enter" key
-      this.inputElement.addEventListener("keydown", (event) => {
-        if (event.key === "Enter") {
-          this._handleEnterKeyPress();
-        }
-      });
-
       document.addEventListener("click", this.handleOutsideClick);
     }
 
@@ -1933,7 +1926,7 @@ class DateRangeTimePicker extends LitElement {
                       />
                     `}
                 ${!this.is24HourFormat
-                  ? html`<span
+                  ? html`<button
                       class="am-pm-toggle"
                       @click="${this._toggleAmPm}"
                       data-type="start"
@@ -1941,7 +1934,7 @@ class DateRangeTimePicker extends LitElement {
                       aria-label="Toggle AM/PM"
                     >
                       ${this._getAmPm(this.startTime)}
-                    </span>`
+                    </button>`
                   : ""}
                 <span class="to-spacing">${this.joinBy}</span>
                 <span class="end-date">N/A</span>
@@ -1994,7 +1987,7 @@ class DateRangeTimePicker extends LitElement {
                         : "true"}"
                     />`}
                 ${!this.is24HourFormat
-                  ? html`<span
+                  ? html`<button
                       class="am-pm-toggle"
                       @click="${this._toggleAmPm}"
                       data-type="end"
@@ -2002,7 +1995,7 @@ class DateRangeTimePicker extends LitElement {
                       aria-label="Toggle AM/PM"
                     >
                       ${this._getAmPm(this.endTime)}
-                    </span>`
+                </button>`
                   : ""}
               </span>
               ${this.showDuration ? html`<span class="duration"></span>` : ""}

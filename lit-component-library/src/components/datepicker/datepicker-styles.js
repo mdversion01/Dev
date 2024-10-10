@@ -570,6 +570,9 @@ export const datepickerStyles = css`
   .am-pm-toggle {
     width: 28px;
     cursor: pointer;
+  }
+
+  .duration {
     margin-left: 5px;
   }
 

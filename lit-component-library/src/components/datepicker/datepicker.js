@@ -106,7 +106,7 @@ class DatePicker extends LitElement {
     this.addEventListener("keydown", this.handleKeyDown);
 
     // document.addEventListener("click", this.handleDocumentClick);
-    // this.append = this.getAttribute("append") !== "false";
+    this.append = this.getAttribute("append") !== "false";
   }
 
   disconnectedCallback() {
@@ -142,6 +142,16 @@ class DatePicker extends LitElement {
     // Ensure the warning message is displayed when the page is loaded
     // this.setDefaultWarningMessage(); // Call it here to ensure correct initial message
     this.requestUpdate();
+  }
+
+  updated(changedProperties) {
+    // Handle other property updates like dateFormat
+    if (changedProperties.has("dateFormat")) {
+      this.placeholder = this.dateFormat;
+      this.updateInputFormat(); // Reformat input field based on date format change
+    }
+
+    super.updated(changedProperties); // Call the super updated method
   }
 
   // Method to handle updating the calendar with the typed date
@@ -317,7 +327,7 @@ class DatePicker extends LitElement {
 
   handleInputBlur(event) {
     const inputValue = event.target.value.trim();
-    
+
     if (inputValue === "") {
       // Clear the input if it's empty
       this.clearInputField();
@@ -609,13 +619,14 @@ class DatePicker extends LitElement {
   }
 
   updateSelectedDateDisplay(date) {
-    const selectedDateDisplay = this.shadowRoot.querySelector(".selected-date bdi");
-  
+    const selectedDateDisplay =
+      this.shadowRoot.querySelector(".selected-date bdi");
+
     // If the date is a string, attempt to convert it to a Date object
-    if (typeof date === 'string') {
+    if (typeof date === "string") {
       date = new Date(date);
     }
-  
+
     // Check if date is valid (either Date object or valid string converted to Date)
     if (!date || !(date instanceof Date) || isNaN(date.getTime())) {
       // Display "No date selected" if no valid date is provided
@@ -623,7 +634,7 @@ class DatePicker extends LitElement {
     } else {
       // If a valid date is provided, format it as a long date
       const formattedLongDate = this.formatDateLong(date);
-  
+
       selectedDateDisplay.textContent = formattedLongDate;
     }
   }
@@ -741,7 +752,8 @@ class DatePicker extends LitElement {
     const isNextMonthDay = dayContainer.classList.contains("next-month-day");
     const isActive = clickedSpan.classList.contains("active");
 
-    // Clear the active state only if the clicked day is not already active
+    let formattedDate = ""; // Define formattedDate to prevent errors
+
     if (!isActive) {
       this.clearActiveState(); // Ensure other active states are cleared
 
@@ -783,18 +795,15 @@ class DatePicker extends LitElement {
 
       // Get the long-formatted date for the header display
       const selectedFormattedLong = this.formatDateLong(this.selectedDate);
+      const formattedSelectedDate = this.getDateFormatMethod(
+        this.dateFormat
+      ).call(this, this.selectedDate);
 
-      // Use the short format for input field updates (YYYY-MM-DD or MM-DD-YYYY)
-      const formatMethod = this.getDateFormatMethod(this.dateFormat);
-      const formattedSelectedDate = formatMethod.call(this, this.selectedDate);
-
-      // Update the input field with the short format
       this.updateInputField(formattedSelectedDate);
 
       // Always update the selected date display (header) with the long format
       this.updateSelectedDateDisplay(selectedFormattedLong);
-
-      // Ensure other date-related components are updated
+      this.updateSelectedDateElements(selectedFormattedLong);
       this.updateActiveDateElements();
       this.currentSelectedDate = new Date(
         this.selectedYear,
@@ -808,14 +817,13 @@ class DatePicker extends LitElement {
       this.isCalendarFocused = true;
 
       // Update aria-activedescendant for accessibility
-      const formattedDate = `${this.selectedDate.getFullYear()}-${(
+      formattedDate = `${this.selectedDate.getFullYear()}-${String(
         this.selectedDate.getMonth() + 1
-      )
-        .toString()
-        .padStart(2, "0")}-${this.selectedDate
-        .getDate()
-        .toString()
-        .padStart(2, "0")}`;
+      ).padStart(2, "0")}-${String(this.selectedDate.getDate()).padStart(
+        2,
+        "0"
+      )}`;
+
       this.shadowRoot
         .querySelector(".calendar")
         .setAttribute("aria-activedescendant", `cell-${formattedDate}`);
@@ -836,68 +844,38 @@ class DatePicker extends LitElement {
     }
 
     // Handle previous/next month date selections
-    if (isPreviousMonthDay) {
-      this.currentMonth--;
+    if (isPreviousMonthDay || isNextMonthDay) {
+      this.currentMonth += isNextMonthDay ? 1 : -1;
       if (this.currentMonth < 0) {
         this.currentMonth = 11;
         this.currentYear--;
-      }
-    } else if (isNextMonthDay) {
-      this.currentMonth++;
-      if (this.currentMonth > 11) {
+      } else if (this.currentMonth > 11) {
         this.currentMonth = 0;
         this.currentYear++;
       }
+      this.renderCalendar(this.currentMonth, this.currentYear);
+
+      // Recalculate the `formattedDate` for the newly rendered month
+      this.selectedDate = new Date(
+        this.currentYear,
+        this.currentMonth,
+        parseInt(clickedSpan.textContent, 10)
+      );
+      formattedDate = `${this.selectedDate.getFullYear()}-${String(
+        this.selectedDate.getMonth() + 1
+      ).padStart(2, "0")}-${String(this.selectedDate.getDate()).padStart(
+        2,
+        "0"
+      )}`;
     }
 
-    // Parse the selected date for the current view
-    this.selectedMonth = parseInt(dayContainer.dataset.month, 10);
-    this.selectedYear = parseInt(dayContainer.dataset.year, 10);
-    const selectedDay = parseInt(clickedSpan.textContent, 10);
-
-    // Use local time instead of UTC to avoid timezone issues
-    this.selectedDate = new Date(
-      this.selectedYear,
-      this.selectedMonth - 1,
-      selectedDay
-    );
-
-    // Re-render the calendar for the new month/year
-    this.renderCalendar(this.currentMonth, this.currentYear);
-
-    // Set aria-activedescendant for keyboard navigation
-    const formattedDate = `${this.selectedDate.getFullYear()}-${(
-      this.selectedDate.getMonth() + 1
-    )
-      .toString()
-      .padStart(2, "0")}-${this.selectedDate
-      .getDate()
-      .toString()
-      .padStart(2, "0")}`;
-    this.shadowRoot
-      .querySelector(".calendar")
-      .setAttribute("aria-activedescendant", `cell-${formattedDate}`);
-
-    // Refocus on the newly selected day
+    // Now safely use `formattedDate` after it has been defined/redefined
     const newFocusCell = this.shadowRoot.querySelector(
       `.calendar-grid-item[data-date="${formattedDate}"]`
     );
     if (newFocusCell) {
-      newFocusCell.focus();
-      this.shadowRoot
-        .querySelector(".calendar")
-        .setAttribute("aria-activedescendant", newFocusCell.id);
+      newFocusCell.querySelector("span").focus();
     }
-
-    // Set the new active state
-    this.setActiveState();
-    this.updateSelectedDateElements(formattedDate);
-    this.updateActiveDateElements();
-
-    // Ensure the focus remains on the selected day
-    setTimeout(() => {
-      newFocusCell?.querySelector("span")?.focus();
-    }, 0);
 
     this.setActiveState();
   }
@@ -908,6 +886,18 @@ class DatePicker extends LitElement {
     if (inputField) {
       inputField.value = formattedDate; // Use short format for input field
     }
+  }
+
+  updateInputFormat() {
+    if (this.selectedDate) {
+      const formattedSelectedDate = this.getDateFormatMethod(
+        this.dateFormat
+      ).call(this, this.selectedDate);
+      this.updateInputField(formattedSelectedDate); // Update the input value
+      this.updateSelectedDateDisplay(this.formatDateLong(this.selectedDate)); // Update display
+    }
+    // Update placeholder with current date format
+    this.placeholder = this.dateFormat;
   }
 
   handleEnterKeyPress(event) {
@@ -1343,64 +1333,87 @@ class DatePicker extends LitElement {
     // Clear previous messages
     this.validationMessage = "";
     this.validation = false;
-
-    if (this.required && !value) {
-      // Check if the field is required and the value is empty
+  
+    // Helper function to trigger validation error
+    const triggerValidation = (message) => {
       this.validation = true;
-      this.validationMessage = "This is a required field.";
-      this.requestUpdate();
-      return;
-    }
-
+      this.validationMessage = message;
+      this.requestUpdate(); // Ensures that the error message is reflected in the UI
+    };
+  
     let parts, year, month, day;
-
-    // Parse the input based on date format
+  
+    // Parse the input based on the date format
     if (this.dateFormat === "YYYY-MM-DD") {
       parts = value.split("-");
-      if (parts.length === 3) {
-        year = parseInt(parts[0], 10);
-        month = parseInt(parts[1], 10);
-        day = parseInt(parts[2], 10);
+      year = parts[0] ? parts[0] : null;
+      month = parts[1] ? parseInt(parts[1], 10) : null;
+      day = parts[2] ? parseInt(parts[2], 10) : null;
+  
+      // Validate year: must be present and exactly 4 digits
+      if (
+        year === null ||
+        year.length < 4 ||
+        isNaN(parseInt(year, 10)) ||
+        parseInt(year, 10) < 1900
+      ) {
+        triggerValidation(
+          "Year is required, must be 4 digits, and must be greater than or equal to 1900."
+        );
+        return;
       }
+  
+      // Validate month if present or empty (i.e. being deleted)
+      if (month === null || isNaN(month) || month < 1 || month > 12) {
+        triggerValidation("Month is required and must be between 01 and 12.");
+        return;
+      }
+  
+      // Validate day if present or empty (i.e. being deleted)
+      if (day === null || isNaN(day) || day < 1 || day > 31) {
+        triggerValidation("Day is required and must be between 01 and 31.");
+        return;
+      }
+  
     } else if (this.dateFormat === "MM-DD-YYYY") {
       parts = value.split("-");
-      if (parts.length === 3) {
-        month = parseInt(parts[0], 10);
-        day = parseInt(parts[1], 10);
-        year = parseInt(parts[2], 10);
+      month = parts[0] ? parseInt(parts[0], 10) : null;
+      day = parts[1] ? parseInt(parts[1], 10) : null;
+      year = parts[2] ? parts[2] : null;
+  
+      // Validate month: must be present and between 01 and 12, or trigger validation when deleted
+      if (month === null || isNaN(month) || month < 1 || month > 12) {
+        triggerValidation("Month is required and must be between 01 and 12.");
+        return;
+      }
+  
+      // Validate day: must be present and between 01 and 31, or trigger validation when deleted
+      if (day === null || isNaN(day) || day < 1 || day > 31) {
+        triggerValidation("Day is required and must be between 01 and 31.");
+        return;
+      }
+  
+      // Validate year: it should be present and exactly 4 digits
+      if (
+        year === null ||
+        year.length < 4 ||
+        isNaN(parseInt(year, 10)) ||
+        parseInt(year, 10) < 1900
+      ) {
+        triggerValidation(
+          "Year is required, must be 4 digits, and must be greater than or equal to 1900."
+        );
+        return;
       }
     }
-
-    // Validate year
-    if (year && year < 1900) {
-      this.validation = true;
-      this.validationMessage = "Year must be greater than or equal to 1900.";
-      this.requestUpdate();
-      return;
-    }
-
-    // Validate month
-    if (month && (month < 1 || month > 12)) {
-      this.validation = true;
-      this.validationMessage = "Month must be between 01 and 12.";
-      this.requestUpdate();
-      return;
-    }
-
-    // Validate day
-    if (day && (day < 1 || day > 31)) {
-      this.validation = true;
-      this.validationMessage = "Day must be between 01 and 31.";
-      this.requestUpdate();
-      return;
-    }
-
+  
     // If all checks pass, clear validation
     this.validation = false;
     this.validationMessage = "";
     this.requestUpdate();
   }
-
+  
+  
   prevMonth() {
     this.preventClose = true; // Prevent closing the dropdown
     this.currentMonth--;
@@ -1756,6 +1769,40 @@ class DatePicker extends LitElement {
     `;
   }
 
+  renderAppend() {
+    return html`
+      <div class="pl-input-group-append${this.validation ? " is-invalid" : ""}">
+        <button
+          @click=${this.toggleDropdown}
+          class="calendar-button pl-btn pl-input-group-text"
+          aria-label="Toggle Calendar Picker"
+          aria-haspopup="dialog"
+          aria-expanded=${this.dropdownOpen ? "true" : "false"}
+          ?disabled=${this.disabled}
+        >
+          <i class="${this.icon}"></i>
+        </button>
+      </div>
+    `;
+  }
+
+  renderPrepend() {
+    return html` <div
+      class="pl-input-group-prepend${this.validation ? " is-invalid" : ""}"
+    >
+      <button
+        @click=${this.toggleDropdown}
+        class="calendar-button pl-btn pl-input-group-text"
+        aria-label="Toggle Calendar Picker"
+        aria-haspopup="dialog"
+        aria-expanded=${this.dropdownOpen ? "true" : "false"}
+        ?disabled=${this.disabled}
+      >
+        <i class="${this.icon}"></i>
+      </button>
+    </div>`;
+  }
+
   renderInputGroup() {
     return html`
       <div class=${ifDefined(this.formLayout)}></div>
@@ -1799,26 +1846,7 @@ class DatePicker extends LitElement {
               role="group"
               aria-label="Date Picker Group"
             >
-              ${
-                this.prepend
-                  ? html` <div
-                      class="pl-input-group-prepend${this.validation
-                        ? " is-invalid"
-                        : ""}"
-                    >
-                      <button
-                        @click=${this.toggleDropdown}
-                        class="calendar-button pl-btn pl-input-group-text"
-                        aria-label="Toggle Calendar Picker"
-                        aria-haspopup="dialog"
-                        aria-expanded=${this.dropdownOpen ? "true" : "false"}
-                        ?disabled=${this.disabled}
-                      >
-                        <i class="${this.icon}"></i>
-                      </button>
-                    </div>`
-                  : ""
-              }
+              ${this.prepend ? this.renderPrepend() : ""}
               <input
                 id="${this.inputId}"
                 type="text"
@@ -1833,26 +1861,7 @@ class DatePicker extends LitElement {
                 aria-label="Selected Date"
                 aria-describedby="datepicker-desc"
               />
-              ${
-                this.append
-                  ? html` <div
-                      class="pl-input-group-append${this.validation
-                        ? " is-invalid"
-                        : ""}"
-                    >
-                      <button
-                        @click=${this.toggleDropdown}
-                        class="calendar-button pl-btn pl-input-group-text"
-                        aria-label="Toggle Calendar Picker"
-                        aria-haspopup="dialog"
-                        aria-expanded=${this.dropdownOpen ? "true" : "false"}
-                        ?disabled=${this.disabled}
-                      >
-                        <i class="${this.icon}"></i>
-                      </button>
-                    </div>`
-                  : ""
-              }
+              ${this.append ? this.renderAppend() : ""}
             </div>
             ${
               this.validation
@@ -1939,9 +1948,9 @@ class DatePicker extends LitElement {
               type="text"
               class="form-control${this.validation ? " is-invalid" : ""}"
               placeholder=${this.placeholder}
-              value=${
-                  this.selectedDate ? this.formatDate(this.selectedDate) : ""
-                }
+              value=${this.selectedDate
+                ? this.formatDate(this.selectedDate)
+                : ""}
               @focus="${this.handleInteraction}"
               @blur="${this.handleDocumentClick}"
               @input=${this.handleInputChange}
