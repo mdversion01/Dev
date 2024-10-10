@@ -102,8 +102,8 @@ class DateRangeTimePicker extends LitElement {
     this.formLayout = "";
     this.icon = "fas fa-calendar-alt";
     this.placeholder = this.is24HourFormat
-                  ? `${this.dateFormat} HH:MM ${this.joinBy} ${this.dateFormat} HH:MM`
-                  : `${this.dateFormat} HH:MM AM/PM ${this.joinBy} ${this.dateFormat} HH:MM AM/PM`;
+      ? `${this.dateFormat} HH:MM ${this.joinBy} ${this.dateFormat} HH:MM`
+      : `${this.dateFormat} HH:MM AM/PM ${this.joinBy} ${this.dateFormat} HH:MM AM/PM`;
     this.prepend = false;
     this.prependId = "";
     this.required = false;
@@ -1081,6 +1081,21 @@ class DateRangeTimePicker extends LitElement {
 
   handleDayClick(date) {
     this.selectDate(date);
+
+    // Reset times to default when a new start date is selected
+    this._setDefaultTimes();
+    this._setDefaultTimeInputs();
+
+    // Clear validation messages
+    this.validation = false;
+    this.validationMessage = "";
+    this.removeValidationClasses(); // Clear any validation classes
+
+    // Temporarily avoid time validation until both times are set
+    if (this.startTime && this.endTime) {
+      this._validateTime(); // Only validate once both times are set
+    }
+
     this.updateDisplayedDateRange(); // Make sure the displayed date range is updated
   }
 
@@ -1636,8 +1651,7 @@ class DateRangeTimePicker extends LitElement {
     const [startPart, endPart] = inputValue.split(this.joinBy);
     if (!startPart || !endPart) {
       this.validation = true;
-      this.validationMessage =
-        `Invalid format. Expected format is 'YYYY-MM-DD HH:MM ${this.joinBy} YYYY-MM-DD HH:MM'.`;
+      this.validationMessage = `Invalid format. Expected format is 'YYYY-MM-DD HH:MM ${this.joinBy} YYYY-MM-DD HH:MM'.`;
       this.requestUpdate();
       return;
     }
@@ -1955,7 +1969,7 @@ class DateRangeTimePicker extends LitElement {
                       aria-label="Toggle AM/PM"
                     >
                       ${this._getAmPm(this.endTime)}
-                </button>`
+                    </button>`
                   : ""}
               </span>
               ${this.showDuration ? html`<span class="duration"></span>` : ""}
@@ -2045,22 +2059,6 @@ class DateRangeTimePicker extends LitElement {
     this._updateDuration();
   }
 
-  _convertTo12HourFormat(time, ampm) {
-    if (!time || !time.includes(":")) return time;
-
-    let [hours, minutes] = time.split(":");
-    hours = parseInt(hours, 10);
-
-    // Don't modify hours if they are already in correct 12-hour format
-    if (ampm === "PM" && hours < 12) {
-      hours = (hours + 12) % 24;
-    } else if (ampm === "AM" && hours === 12) {
-      hours = 0;
-    }
-
-    return `${hours.toString().padStart(2, "0")}:${minutes}`;
-  }
-
   _updateDuration() {
     const durationElement = this.shadowRoot.querySelector(".duration");
 
@@ -2094,35 +2092,61 @@ class DateRangeTimePicker extends LitElement {
   }
 
   _validateTime() {
-    const warningMessageElement =
-      this.shadowRoot.querySelector(".warning-message");
+    const warningMessageElement = this.shadowRoot.querySelector(".warning-message");
     warningMessageElement.classList.add("hide");
     warningMessageElement.textContent = "";
-
-    // Independent validation for startTime
-    let isStartTimeValid = this._isValidTime(this.startTime);
+  
+    // Do not validate if either startTime or endTime is not set yet
+    if (!this.startTime || !this.endTime) {
+      return true; // Temporarily bypass validation until both times are present
+    }
+  
+    let isStartTimeValid = true;
+    let isEndTimeValid = true;
+  
+    // Perform different validation depending on the time format
+    if (this.is24HourFormat) {
+      // 24-hour format validation
+      isStartTimeValid = this._isValidTime(this.startTime); // Validate start time
+      isEndTimeValid = this._isValidTime(this.endTime); // Validate end time
+  
+      // Compare times and handle end time being on the next day
+      if (isStartTimeValid && isEndTimeValid && this.startTime > this.endTime) {
+        isEndTimeValid = true; // Allow end time to be earlier, indicating next day
+      }
+    } else {
+      // 12-hour format validation (including AM/PM handling)
+      const startTime12 = this._convertTo24HourFormat(this.startTime); // Convert to 24-hour internally for comparison
+      const endTime12 = this._convertTo24HourFormat(this.endTime); // Same for end time
+  
+      isStartTimeValid = this._isValidTime(startTime12); // Validate converted start time
+      isEndTimeValid = this._isValidTime(endTime12); // Validate converted end time
+  
+      // Allow end time to be earlier (indicating next day) by comparing the 24-hour format values
+      if (isStartTimeValid && isEndTimeValid && startTime12 > endTime12) {
+        isEndTimeValid = true; // Allow end time to be on the next day
+      }
+    }
+  
     if (!isStartTimeValid) {
-      warningMessageElement.textContent =
-        "Start time is invalid. Format - HH:MM and values cannot exceed the limits.";
+      warningMessageElement.textContent = "Start time is invalid. Format - HH:MM and values cannot exceed the limits.";
       warningMessageElement.classList.remove("hide");
     }
-
-    // Independent validation for endTime
-    let isEndTimeValid = this._isValidTime(this.endTime);
+  
     if (!isEndTimeValid) {
-      warningMessageElement.textContent =
-        "End time is invalid. Format - HH:MM and values cannot exceed the limits.";
+      warningMessageElement.textContent = "End time is invalid. Format - HH:MM and values cannot exceed the limits.";
       warningMessageElement.classList.remove("hide");
     }
-
-    // If both are valid, hide the validation message
+  
+    // If both times are valid, hide the validation message
     if (isStartTimeValid && isEndTimeValid) {
       warningMessageElement.textContent = "";
       warningMessageElement.classList.add("hide");
     }
-
+  
     return isStartTimeValid && isEndTimeValid;
   }
+  
 
   _isValidTime(time) {
     const timePattern24 = /^([01]\d|2[0-3]):([0-5]\d)$/;
@@ -2206,16 +2230,37 @@ class DateRangeTimePicker extends LitElement {
     return `${hours.toString().padStart(2, "0")}:${minutes}`;
   }
 
+  _convertTo12HourFormat(time, ampm) {
+    if (!time || !time.includes(":")) return time;
+
+    let [hours, minutes] = time.split(":");
+    hours = parseInt(hours, 10);
+
+    // Don't modify hours if they are already in correct 12-hour format
+    if (ampm === "PM" && hours < 12) {
+      hours = (hours + 12) % 24;
+    } else if (ampm === "AM" && hours === 12) {
+      hours = 0;
+    }
+
+    return `${hours.toString().padStart(2, "0")}:${minutes}`;
+  }
+
   _convertTo24HourFormat(time, ampm) {
     let [hours, minutes] = time.split(":");
     hours = parseInt(hours, 10);
+  
+    // Convert based on the AM/PM value passed in
     if (ampm === "PM" && hours !== 12) {
       hours += 12;
     } else if (ampm === "AM" && hours === 12) {
       hours = 0;
     }
+  
     return `${hours.toString().padStart(2, "0")}:${minutes}`;
   }
+  
+  
 
   renderDropdown() {
     this.showOkButton = true;
