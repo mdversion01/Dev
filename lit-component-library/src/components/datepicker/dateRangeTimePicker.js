@@ -598,15 +598,27 @@ class DateRangeTimePicker extends LitElement {
   }
 
   resetCalendar() {
+    this.isResetting = true; // Indicate resetting is in progress
+
     const now = new Date();
 
-    // Reset internal dates
+    // Reset internal dates and times
     this.startDate = null;
     this.endDate = null;
     this.duration = "";
     this._setDefaultTimes(); // Reset start and end times to default values
 
-    // Set the start and end month/year based on the current date
+    // Clear validation and warning messages
+    this.validation = false;
+    this.validationMessage = "";
+    const warningMessageElement =
+      this.shadowRoot.querySelector(".warning-message");
+    if (warningMessageElement) {
+      warningMessageElement.textContent = "";
+      warningMessageElement.classList.add("hide");
+    }
+
+    // Set default months and years
     this.currentStartMonth = now.getMonth();
     this.currentStartYear = now.getFullYear();
     this.currentEndMonth = this.currentStartMonth + 1;
@@ -618,11 +630,7 @@ class DateRangeTimePicker extends LitElement {
       this.currentEndYear += 1;
     }
 
-    // Set the start and end times to the default values (based on 24-hour format)
-    this.startTime = this.is24HourFormat ? "00:00" : "12:00";
-    this.endTime = this.is24HourFormat ? "00:00" : "12:00";
-
-    // Update the time input fields in the UI to reflect the default times
+    // Reset the time inputs in the UI
     const startTimeInput = this.shadowRoot.querySelector(
       'input[data-type="start"]'
     );
@@ -635,23 +643,24 @@ class DateRangeTimePicker extends LitElement {
     // Clear the duration text
     const durationElement = this.shadowRoot.querySelector(".duration");
     if (durationElement) {
-      durationElement.textContent = ""; // Clear the displayed duration
+      durationElement.textContent = "";
     }
 
-    // Clear the input field and trigger validation if required
+    // Reset the input field
     this.clearInputField();
 
-    // Ensure the component's value property is reset to empty
-    this.value = "";
-    this.setAttribute("value", this.value);
-
-    // Sync the month/year selectors and update the calendar view
+    // Sync the month/year selectors
     this.syncMonthYearSelectors();
+
+    // Update range selection and displayed date range
     this.updateSelectedRange();
     this.updateDisplayedDateRange();
 
-    // Request an update to ensure the component is re-rendered with the latest changes
+    // Ensure UI update
     this.requestUpdate();
+
+    // Exit reset mode after the operation
+    this.isResetting = false;
   }
 
   renderCalendar(month0b, year) {
@@ -1309,13 +1318,7 @@ class DateRangeTimePicker extends LitElement {
   }
 
   clearInputField() {
-    // Reset the input field values to default
-    this._setDefaultTimes(); // Reset to default startTime and endTime
-
-    // Set the time input fields to the default values
-    this._setDefaultTimeInputs();
-
-    // Reset internal dates
+    this._setDefaultTimes(); // Reset times to default
     this.startDate = null;
     this.endDate = null;
 
@@ -1324,73 +1327,30 @@ class DateRangeTimePicker extends LitElement {
       this.inputElement.value = "";
     }
 
-    // Reset the value property
-    this.value = ""; // Clear the value property to reflect the change
+    this.value = "";
     this.setAttribute("value", this.value);
 
-    // Clear the duration text
+    // Clear duration
     const durationElement = this.shadowRoot.querySelector(".duration");
     if (durationElement) {
-      durationElement.textContent = ""; // Clear the displayed duration
+      durationElement.textContent = "";
     }
 
-    // Reset the default warning message and validation message
-    this.setDefaultWarningMessage();
+    // Clear validation messages
+    const warningMessageElement =
+      this.shadowRoot.querySelector(".warning-message");
+    if (warningMessageElement) {
+      warningMessageElement.textContent = "";
+      warningMessageElement.classList.add("hide");
+    }
+
+    this.validation = false;
     this.validationMessage = "";
 
-    // Trigger validation if required
-    if (this.required) {
-      this.validation = true; // Mark input as invalid
-      this.validationMessage = "This field is required.";
+    // Clear validation classes
+    this.removeValidationClasses();
 
-      // Add 'is-invalid' class to the input and related elements
-      this.inputElement.classList.add("is-invalid");
-      const labelElement = this.shadowRoot.querySelector(
-        `label[for="${this.inputId}"]`
-      );
-      const appendElement = this.shadowRoot.querySelector(
-        ".pl-input-group-append"
-      );
-      const prependElement = this.shadowRoot.querySelector(
-        ".pl-input-group-prepend"
-      );
-
-      if (labelElement) labelElement.classList.add("invalid");
-      if (appendElement) appendElement.classList.add("is-invalid");
-      if (prependElement) prependElement.classList.add("is-invalid");
-    } else {
-      this.validation = false; // Clear validation
-      this.validationMessage = "";
-
-      // Remove validation classes if not required
-      this.inputElement.classList.remove("is-invalid");
-      const labelElement = this.shadowRoot.querySelector(
-        `label[for="${this.inputId}"]`
-      );
-      const appendElement = this.shadowRoot.querySelector(
-        ".pl-input-group-append"
-      );
-      const prependElement = this.shadowRoot.querySelector(
-        ".pl-input-group-prepend"
-      );
-
-      if (labelElement) labelElement.classList.remove("invalid");
-      if (appendElement) appendElement.classList.remove("is-invalid");
-      if (prependElement) prependElement.classList.remove("is-invalid");
-    }
-
-    // Reset the calendar view to the current month/year
-    this.currentStartMonth = new Date().getMonth();
-    this.currentStartYear = new Date().getFullYear();
-    this.currentEndMonth = this.currentStartMonth + 1;
-    this.currentEndYear = this.currentStartYear;
-
-    if (this.currentEndMonth > 11) {
-      this.currentEndMonth = 0;
-      this.currentEndYear += 1;
-    }
-
-    // Sync the month/year selectors and update the calendar
+    // Sync calendar view
     this.syncMonthYearSelectors();
     this.updateSelectedRange(); // Ensure the range is visually cleared
     this.updateDisplayedDateRange(); // Reset the displayed date range
@@ -2139,24 +2099,29 @@ class DateRangeTimePicker extends LitElement {
     warningMessageElement.classList.add("hide");
     warningMessageElement.textContent = "";
 
-    if (!this.startTime || !this.endTime) {
-      warningMessageElement.textContent = "Times cannot be empty.";
-      warningMessageElement.classList.remove("hide");
-      return false;
-    }
-
-    // Validate start time and end time without touching AM/PM
-    if (
-      !this._isValidTime(this.startTime) ||
-      !this._isValidTime(this.endTime)
-    ) {
+    // Independent validation for startTime
+    let isStartTimeValid = this._isValidTime(this.startTime);
+    if (!isStartTimeValid) {
       warningMessageElement.textContent =
         "Start time is invalid. Format - HH:MM and values cannot exceed the limits.";
       warningMessageElement.classList.remove("hide");
-      return false;
     }
 
-    return true;
+    // Independent validation for endTime
+    let isEndTimeValid = this._isValidTime(this.endTime);
+    if (!isEndTimeValid) {
+      warningMessageElement.textContent =
+        "End time is invalid. Format - HH:MM and values cannot exceed the limits.";
+      warningMessageElement.classList.remove("hide");
+    }
+
+    // If both are valid, hide the validation message
+    if (isStartTimeValid && isEndTimeValid) {
+      warningMessageElement.textContent = "";
+      warningMessageElement.classList.add("hide");
+    }
+
+    return isStartTimeValid && isEndTimeValid;
   }
 
   _isValidTime(time) {
