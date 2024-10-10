@@ -146,11 +146,17 @@ class DateRangeTimePicker extends LitElement {
     // Ensure time inputs are set to default values
     this._setDefaultTimeInputs();
 
-    if (!this.inputElement) {
-      console.error("Input element not found.");
-    } else {
-      document.addEventListener("click", this.handleOutsideClick);
+    // if (!this.inputElement) {
+    //   console.error("Input element not found.");
+    // } else {
+    //   document.addEventListener("click", this.handleOutsideClick);
+    // }
+
+    const inputGroup = this.shadowRoot.querySelector(".pl-input-group");
+    if (inputGroup) {
+      inputGroup.addEventListener("click", this.toggleDropdown.bind(this));
     }
+    document.addEventListener("click", this.handleOutsideClick);
 
     this.shadowRoot.addEventListener(
       "reset-picker",
@@ -441,7 +447,6 @@ class DateRangeTimePicker extends LitElement {
 
   _handleOkClick() {
     if (this.startDate && this.endDate) {
-      // When the button says "OK" and start/end dates are selected
       // Ensure that startTime and endTime are set to default if they are empty
       if (!this.startTime || !this.endTime) {
         const warningMessageElement =
@@ -450,7 +455,7 @@ class DateRangeTimePicker extends LitElement {
         return;
       }
 
-      // Format start and end times
+      // Format start and end times based on the selected time format (24-hour or 12-hour)
       const formattedStartTime = this.is24HourFormat
         ? this.startTime
         : `${this.formatTime(this.startTime)} ${this._getAmPm(this.startTime)}`;
@@ -467,6 +472,7 @@ class DateRangeTimePicker extends LitElement {
         this.endDate
       );
 
+      // Format the duration if needed
       let durationText = "";
       if (this.showDuration && this.startDate && this.endDate) {
         const startDateTime = new Date(
@@ -488,14 +494,14 @@ class DateRangeTimePicker extends LitElement {
 
       this.duration = this.showDuration ? durationText : "";
 
-      // Update the input element with the formatted values
+      // Update the input element and the 'value' property
       if (this.inputElement) {
         this.inputElement.value = `${formattedStartDate} ${formattedStartTime} ${this.joinBy} ${formattedEndDate} ${formattedEndTime} (${this.duration})`;
         this.value = this.inputElement.value;
-        this.setAttribute("value", this.value);
+        this.setAttribute("value", this.value); // Reflect the value as an attribute
       }
 
-      // Dispatch a custom event with updated details
+      // Dispatch a custom event to notify about the updated date and time
       this.dispatchEvent(
         new CustomEvent("date-time-updated", {
           detail: {
@@ -508,11 +514,12 @@ class DateRangeTimePicker extends LitElement {
         })
       );
 
-      // Clear validation errors and remove 'is-invalid' class
+      // Clear validation errors
       this.validation = false;
       this.validationMessage = "";
       this.inputElement.classList.remove("is-invalid");
 
+      // Remove any invalid classes from label, append, and prepend elements
       const labelElement = this.shadowRoot.querySelector(
         `label[for="${this.inputId}"]`
       );
@@ -531,11 +538,11 @@ class DateRangeTimePicker extends LitElement {
       this.closeDropdown();
       document.removeEventListener("click", this.handleOutsideClick);
 
-      // Sync the month/year selectors and re-render
+      // Sync the month/year selectors and re-render the component
       this.syncMonthYearSelectors();
       this.requestUpdate();
     } else {
-      // If no selection is made, just close the dropdown
+      // If no valid selection is made, just close the dropdown
       this.closeDropdown();
     }
   }
@@ -1432,55 +1439,66 @@ class DateRangeTimePicker extends LitElement {
     }
   }
 
+  // toggleDropdown(event) {
+  //   event.stopPropagation();
+
+  //   this.preventClose = true; // Prevent the dropdown from closing
+
+  //   if (!this.dropdownOpen) {
+  //     // Open the dropdown
+  //     this.openDropdown();
+
+  //     // Update range when dropdown is opened
+  //     this.updateSelectedRange();
+
+  //     // If a range is already selected, ensure the correct months are displayed
+  //     if (this.startDate) {
+  //       this.currentStartMonth = this.startDate.getMonth();
+  //       this.currentStartYear = this.startDate.getFullYear();
+  //       this.currentEndMonth = this.endDate
+  //         ? this.endDate.getMonth()
+  //         : (this.currentStartMonth + 1) % 12;
+  //       this.currentEndYear = this.endDate
+  //         ? this.endDate.getFullYear()
+  //         : this.currentStartMonth === 11
+  //         ? this.currentStartYear + 1
+  //         : this.currentStartYear;
+
+  //       // Handle when start and end dates are in the same month
+  //       if (
+  //         this.currentStartMonth === this.currentEndMonth &&
+  //         this.currentStartYear === this.currentEndYear
+  //       ) {
+  //         this.currentEndMonth = (this.currentStartMonth + 1) % 12;
+  //         this.currentEndYear =
+  //           this.currentStartMonth === 11
+  //             ? this.currentStartYear + 1
+  //             : this.currentStartYear;
+  //       }
+  //     } else {
+  //       // Default to current month and the next consecutive month
+  //       const today = new Date();
+  //       this.currentStartMonth = today.getMonth();
+  //       this.currentStartYear = today.getFullYear();
+  //       this.currentEndMonth = (this.currentStartMonth + 1) % 12;
+  //       this.currentEndYear =
+  //         this.currentStartMonth === 11
+  //           ? this.currentStartYear + 1
+  //           : this.currentStartYear;
+  //     }
+  //   } else {
+  //     // Close the dropdown
+  //     this.closeDropdown();
+  //   }
+  // }
+
   toggleDropdown(event) {
     event.stopPropagation();
-
-    this.preventClose = true; // Prevent the dropdown from closing
+    this.preventClose = true; // Prevent the dropdown from closing when interacting
 
     if (!this.dropdownOpen) {
-      // Open the dropdown
       this.openDropdown();
-
-      // Update range when dropdown is opened
-      this.updateSelectedRange();
-
-      // If a range is already selected, ensure the correct months are displayed
-      if (this.startDate) {
-        this.currentStartMonth = this.startDate.getMonth();
-        this.currentStartYear = this.startDate.getFullYear();
-        this.currentEndMonth = this.endDate
-          ? this.endDate.getMonth()
-          : (this.currentStartMonth + 1) % 12;
-        this.currentEndYear = this.endDate
-          ? this.endDate.getFullYear()
-          : this.currentStartMonth === 11
-          ? this.currentStartYear + 1
-          : this.currentStartYear;
-
-        // Handle when start and end dates are in the same month
-        if (
-          this.currentStartMonth === this.currentEndMonth &&
-          this.currentStartYear === this.currentEndYear
-        ) {
-          this.currentEndMonth = (this.currentStartMonth + 1) % 12;
-          this.currentEndYear =
-            this.currentStartMonth === 11
-              ? this.currentStartYear + 1
-              : this.currentStartYear;
-        }
-      } else {
-        // Default to current month and the next consecutive month
-        const today = new Date();
-        this.currentStartMonth = today.getMonth();
-        this.currentStartYear = today.getFullYear();
-        this.currentEndMonth = (this.currentStartMonth + 1) % 12;
-        this.currentEndYear =
-          this.currentStartMonth === 11
-            ? this.currentStartYear + 1
-            : this.currentStartYear;
-      }
     } else {
-      // Close the dropdown
       this.closeDropdown();
     }
   }
@@ -2092,24 +2110,25 @@ class DateRangeTimePicker extends LitElement {
   }
 
   _validateTime() {
-    const warningMessageElement = this.shadowRoot.querySelector(".warning-message");
+    const warningMessageElement =
+      this.shadowRoot.querySelector(".warning-message");
     warningMessageElement.classList.add("hide");
     warningMessageElement.textContent = "";
-  
+
     // Do not validate if either startTime or endTime is not set yet
     if (!this.startTime || !this.endTime) {
       return true; // Temporarily bypass validation until both times are present
     }
-  
+
     let isStartTimeValid = true;
     let isEndTimeValid = true;
-  
+
     // Perform different validation depending on the time format
     if (this.is24HourFormat) {
       // 24-hour format validation
       isStartTimeValid = this._isValidTime(this.startTime); // Validate start time
       isEndTimeValid = this._isValidTime(this.endTime); // Validate end time
-  
+
       // Compare times and handle end time being on the next day
       if (isStartTimeValid && isEndTimeValid && this.startTime > this.endTime) {
         isEndTimeValid = true; // Allow end time to be earlier, indicating next day
@@ -2118,35 +2137,36 @@ class DateRangeTimePicker extends LitElement {
       // 12-hour format validation (including AM/PM handling)
       const startTime12 = this._convertTo24HourFormat(this.startTime); // Convert to 24-hour internally for comparison
       const endTime12 = this._convertTo24HourFormat(this.endTime); // Same for end time
-  
+
       isStartTimeValid = this._isValidTime(startTime12); // Validate converted start time
       isEndTimeValid = this._isValidTime(endTime12); // Validate converted end time
-  
+
       // Allow end time to be earlier (indicating next day) by comparing the 24-hour format values
       if (isStartTimeValid && isEndTimeValid && startTime12 > endTime12) {
         isEndTimeValid = true; // Allow end time to be on the next day
       }
     }
-  
+
     if (!isStartTimeValid) {
-      warningMessageElement.textContent = "Start time is invalid. Format - HH:MM and values cannot exceed the limits.";
+      warningMessageElement.textContent =
+        "Start time is invalid. Format - HH:MM and values cannot exceed the limits.";
       warningMessageElement.classList.remove("hide");
     }
-  
+
     if (!isEndTimeValid) {
-      warningMessageElement.textContent = "End time is invalid. Format - HH:MM and values cannot exceed the limits.";
+      warningMessageElement.textContent =
+        "End time is invalid. Format - HH:MM and values cannot exceed the limits.";
       warningMessageElement.classList.remove("hide");
     }
-  
+
     // If both times are valid, hide the validation message
     if (isStartTimeValid && isEndTimeValid) {
       warningMessageElement.textContent = "";
       warningMessageElement.classList.add("hide");
     }
-  
+
     return isStartTimeValid && isEndTimeValid;
   }
-  
 
   _isValidTime(time) {
     const timePattern24 = /^([01]\d|2[0-3]):([0-5]\d)$/;
@@ -2162,7 +2182,7 @@ class DateRangeTimePicker extends LitElement {
   }
 
   _toggleAmPm(event) {
-    const inputType = event.target.dataset.type;
+    const inputType = event.target.dataset.type; // Get the type (start or end)
     let time = inputType === "start" ? this.startTime : this.endTime;
 
     if (!time || !time.includes(":")) return;
@@ -2170,27 +2190,33 @@ class DateRangeTimePicker extends LitElement {
     let [hours, minutes] = time.split(":");
     let period = this._getAmPm(time); // Determine if it's AM or PM
 
-    // Toggle between AM and PM when the button is clicked
-    period = period === "AM" ? "PM" : "AM";
+    // Toggle between AM and PM
+    if (period === "AM") {
+        period = "PM";
+    } else {
+        period = "AM";
+    }
 
-    // Convert hours when toggling
+    // Convert the time based on the period toggle
     if (period === "PM" && parseInt(hours, 10) < 12) {
-      hours = (parseInt(hours, 10) + 12).toString().padStart(2, "0");
+        hours = (parseInt(hours, 10) + 12).toString().padStart(2, "0");
     } else if (period === "AM" && parseInt(hours, 10) >= 12) {
-      hours = (parseInt(hours, 10) - 12).toString().padStart(2, "0");
+        hours = (parseInt(hours, 10) - 12).toString().padStart(2, "0");
     }
 
     const updatedTime = `${hours}:${minutes}`;
 
+    // Update the startTime or endTime based on input type
     if (inputType === "start") {
-      this.startTime = updatedTime;
+        this.startTime = updatedTime;
     } else if (inputType === "end") {
-      this.endTime = updatedTime;
+        this.endTime = updatedTime;
     }
 
-    this.requestUpdate();
-    this._updateDuration();
-  }
+    // Use Lit's reactive rendering to re-render the component and avoid direct DOM manipulation
+    this.requestUpdate(); // This ensures the component is re-rendered properly
+}
+
 
   _toggleTimeAmPm(time) {
     let [hours, minutes] = time.split(":");
@@ -2249,18 +2275,16 @@ class DateRangeTimePicker extends LitElement {
   _convertTo24HourFormat(time, ampm) {
     let [hours, minutes] = time.split(":");
     hours = parseInt(hours, 10);
-  
+
     // Convert based on the AM/PM value passed in
     if (ampm === "PM" && hours !== 12) {
       hours += 12;
     } else if (ampm === "AM" && hours === 12) {
       hours = 0;
     }
-  
+
     return `${hours.toString().padStart(2, "0")}:${minutes}`;
   }
-  
-  
 
   renderDropdown() {
     this.showOkButton = true;
@@ -2326,7 +2350,6 @@ class DateRangeTimePicker extends LitElement {
                       : ""}"
                   >
                     <button
-                      @click=${this.toggleDropdown}
                       class="calendar-button pl-btn pl-input-group-text"
                       aria-label="Toggle Calendar Picker"
                       aria-haspopup="dialog"
@@ -2344,8 +2367,8 @@ class DateRangeTimePicker extends LitElement {
                 class="form-control${this.validation ? " is-invalid" : ""}"
                 placeholder="${this.placeholder}"
                 value="${ifDefined(this.value)}"
-                @input=${this.handleInputChange}
                 ?disabled=${this.disabled}
+                readonly
                 aria-label="Selected Date"
                 aria-describedby="datepicker-desc"
               />
@@ -2357,7 +2380,6 @@ class DateRangeTimePicker extends LitElement {
                       : ""}"
                   >
                     <button
-                      @click=${this.toggleDropdown}
                       class="calendar-button pl-btn pl-input-group-text"
                       aria-label="Toggle Calendar Picker"
                       aria-haspopup="dialog"
@@ -2434,7 +2456,6 @@ class DateRangeTimePicker extends LitElement {
                       : ""}"
                   >
                     <button
-                      @click=${this.toggleDropdown}
                       class="calendar-button pl-btn pl-input-group-text"
                       aria-label="Toggle Calendar Picker"
                       aria-haspopup="dialog"
@@ -2454,7 +2475,7 @@ class DateRangeTimePicker extends LitElement {
                 value="${ifDefined(this.value)}"
                 @focus="${this.handleInputInteraction}"
                 @blur="${this.handleInputDocumentClick}"
-                @input=${this.handleInputChange}
+                readonly
                 name="selectedDate"
                 aria-label="Selected Date"
                 aria-describedby="datepicker-desc"
@@ -2468,7 +2489,6 @@ class DateRangeTimePicker extends LitElement {
                       : ""}"
                   >
                     <button
-                      @click=${this.toggleDropdown}
                       class="calendar-button pl-btn pl-input-group-text"
                       aria-label="Toggle Calendar Picker"
                       aria-haspopup="dialog"

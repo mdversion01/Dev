@@ -176,6 +176,12 @@ class AccessiblePaletteSwitcher extends LitElement {
     .red-700 {
       background-color: var(--red-700);
     }
+    .red-910 {
+      background-color: var(--red-910);
+    }
+    .red-920 {
+      background-color: var(--red-920);
+    }
     .orange-400 {
       background-color: var(--orange-400);
     }
@@ -258,7 +264,7 @@ class AccessiblePaletteSwitcher extends LitElement {
       "gray-25", "gray-50", "gray-75", "gray-100", "gray-200", "gray-300", "gray-400", "gray-500", 
       "gray-600", "gray-700", "gray-800", "gray-850", "gray-900", "blue-50", "blue-100", "blue-200", 
       "blue-300", "blue-400", "blue-500", "blue-600", "blue-700", "red-200", "red-400", "red-500", 
-      "red-600", "red-700", "orange-400", "orange-500", "orange-600", "orange-700", "green-200", 
+      "red-600", "red-700", "red-910", "red-920", "orange-400", "orange-500", "orange-600", "orange-700", "green-200", 
       "green-400", "green-500", "green-600", "green-700", "yellow-200", "yellow-400", "brown-400"
     ];
 
