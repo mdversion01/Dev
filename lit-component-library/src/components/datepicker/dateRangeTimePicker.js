@@ -146,16 +146,18 @@ class DateRangeTimePicker extends LitElement {
     // Ensure time inputs are set to default values
     this._setDefaultTimeInputs();
 
-    // if (!this.inputElement) {
-    //   console.error("Input element not found.");
-    // } else {
-    //   document.addEventListener("click", this.handleOutsideClick);
-    // }
-
     const inputGroup = this.shadowRoot.querySelector(".pl-input-group");
     if (inputGroup) {
       inputGroup.addEventListener("click", this.toggleDropdown.bind(this));
     }
+
+    this.inputElement = this.shadowRoot.querySelector('.date-range-time-input');
+    
+    if (this.inputElement) {
+      this.inputElement.addEventListener('focus', () => this._addFocusClass());
+      this.inputElement.addEventListener('blur', () => this._removeFocusClass());
+    }
+
     document.addEventListener("click", this.handleOutsideClick);
 
     this.shadowRoot.addEventListener(
@@ -194,6 +196,20 @@ class DateRangeTimePicker extends LitElement {
 
     // Remove the event listener when the component is disconnected
     this.removeEventListener("reset-picker", this.resetCalendar);
+  }
+
+  _addFocusClass() {
+    const drtpDiv = this.shadowRoot.querySelector('.drtp');
+    if (drtpDiv) {
+      drtpDiv.classList.add('focus');
+    }
+  }
+
+  _removeFocusClass() {
+    const drtpDiv = this.shadowRoot.querySelector('.drtp');
+    if (drtpDiv) {
+      drtpDiv.classList.remove('focus');
+    }
   }
 
   updated(changedProperties) {
@@ -1439,69 +1455,69 @@ class DateRangeTimePicker extends LitElement {
     }
   }
 
-  // toggleDropdown(event) {
-  //   event.stopPropagation();
-
-  //   this.preventClose = true; // Prevent the dropdown from closing
-
-  //   if (!this.dropdownOpen) {
-  //     // Open the dropdown
-  //     this.openDropdown();
-
-  //     // Update range when dropdown is opened
-  //     this.updateSelectedRange();
-
-  //     // If a range is already selected, ensure the correct months are displayed
-  //     if (this.startDate) {
-  //       this.currentStartMonth = this.startDate.getMonth();
-  //       this.currentStartYear = this.startDate.getFullYear();
-  //       this.currentEndMonth = this.endDate
-  //         ? this.endDate.getMonth()
-  //         : (this.currentStartMonth + 1) % 12;
-  //       this.currentEndYear = this.endDate
-  //         ? this.endDate.getFullYear()
-  //         : this.currentStartMonth === 11
-  //         ? this.currentStartYear + 1
-  //         : this.currentStartYear;
-
-  //       // Handle when start and end dates are in the same month
-  //       if (
-  //         this.currentStartMonth === this.currentEndMonth &&
-  //         this.currentStartYear === this.currentEndYear
-  //       ) {
-  //         this.currentEndMonth = (this.currentStartMonth + 1) % 12;
-  //         this.currentEndYear =
-  //           this.currentStartMonth === 11
-  //             ? this.currentStartYear + 1
-  //             : this.currentStartYear;
-  //       }
-  //     } else {
-  //       // Default to current month and the next consecutive month
-  //       const today = new Date();
-  //       this.currentStartMonth = today.getMonth();
-  //       this.currentStartYear = today.getFullYear();
-  //       this.currentEndMonth = (this.currentStartMonth + 1) % 12;
-  //       this.currentEndYear =
-  //         this.currentStartMonth === 11
-  //           ? this.currentStartYear + 1
-  //           : this.currentStartYear;
-  //     }
-  //   } else {
-  //     // Close the dropdown
-  //     this.closeDropdown();
-  //   }
-  // }
-
   toggleDropdown(event) {
     event.stopPropagation();
-    this.preventClose = true; // Prevent the dropdown from closing when interacting
+
+    this.preventClose = true; // Prevent the dropdown from closing
 
     if (!this.dropdownOpen) {
+      // Open the dropdown
       this.openDropdown();
+
+      // Update range when dropdown is opened
+      this.updateSelectedRange();
+
+      // If a range is already selected, ensure the correct months are displayed
+      if (this.startDate) {
+        this.currentStartMonth = this.startDate.getMonth();
+        this.currentStartYear = this.startDate.getFullYear();
+        this.currentEndMonth = this.endDate
+          ? this.endDate.getMonth()
+          : (this.currentStartMonth + 1) % 12;
+        this.currentEndYear = this.endDate
+          ? this.endDate.getFullYear()
+          : this.currentStartMonth === 11
+          ? this.currentStartYear + 1
+          : this.currentStartYear;
+
+        // Handle when start and end dates are in the same month
+        if (
+          this.currentStartMonth === this.currentEndMonth &&
+          this.currentStartYear === this.currentEndYear
+        ) {
+          this.currentEndMonth = (this.currentStartMonth + 1) % 12;
+          this.currentEndYear =
+            this.currentStartMonth === 11
+              ? this.currentStartYear + 1
+              : this.currentStartYear;
+        }
+      } else {
+        // Default to current month and the next consecutive month
+        const today = new Date();
+        this.currentStartMonth = today.getMonth();
+        this.currentStartYear = today.getFullYear();
+        this.currentEndMonth = (this.currentStartMonth + 1) % 12;
+        this.currentEndYear =
+          this.currentStartMonth === 11
+            ? this.currentStartYear + 1
+            : this.currentStartYear;
+      }
     } else {
+      // Close the dropdown
       this.closeDropdown();
     }
   }
+
+  // toggleDropdown(event) {
+  //   event.stopPropagation();
+  //   this.preventClose = true; // Prevent the dropdown from closing when interacting
+
+  //   if (!this.dropdownOpen) {
+  //     this.openDropdown();
+  //   } else {
+  //     this.closeDropdown();
+  //   }
+  // }
 
   // Normalize a date to remove time components and ensure comparisons only on year, month, day
   normalizeDate(date) {
@@ -2120,31 +2136,39 @@ class DateRangeTimePicker extends LitElement {
       return true; // Temporarily bypass validation until both times are present
     }
 
-    let isStartTimeValid = true;
-    let isEndTimeValid = true;
+    // Ensure startDate and endDate are defined before proceeding
+    if (!this.startDate || !this.endDate) {
+      warningMessageElement.textContent =
+        "Both start and end dates must be selected.";
+      warningMessageElement.classList.remove("hide");
+      return false;
+    }
 
-    // Perform different validation depending on the time format
-    if (this.is24HourFormat) {
-      // 24-hour format validation
-      isStartTimeValid = this._isValidTime(this.startTime); // Validate start time
-      isEndTimeValid = this._isValidTime(this.endTime); // Validate end time
+    let isStartTimeValid = this._isValidTime(this.startTime);
+    let isEndTimeValid = this._isValidTime(this.endTime);
 
-      // Compare times and handle end time being on the next day
-      if (isStartTimeValid && isEndTimeValid && this.startTime > this.endTime) {
-        isEndTimeValid = true; // Allow end time to be earlier, indicating next day
-      }
-    } else {
-      // 12-hour format validation (including AM/PM handling)
-      const startTime12 = this._convertTo24HourFormat(this.startTime); // Convert to 24-hour internally for comparison
-      const endTime12 = this._convertTo24HourFormat(this.endTime); // Same for end time
+    // Convert to 24-hour format for validation and comparison
+    let startTime24 = this.is24HourFormat
+      ? this.startTime
+      : this._convertTo24HourFormat(
+          this.startTime,
+          this._getAmPm(this.startTime)
+        );
+    let endTime24 = this.is24HourFormat
+      ? this.endTime
+      : this._convertTo24HourFormat(this.endTime, this._getAmPm(this.endTime));
 
-      isStartTimeValid = this._isValidTime(startTime12); // Validate converted start time
-      isEndTimeValid = this._isValidTime(endTime12); // Validate converted end time
+    const startDateTime = new Date(
+      `${this.startDate.toISOString().split("T")[0]}T${startTime24}`
+    );
+    const endDateTime = new Date(
+      `${this.endDate.toISOString().split("T")[0]}T${endTime24}`
+    );
 
-      // Allow end time to be earlier (indicating next day) by comparing the 24-hour format values
-      if (isStartTimeValid && isEndTimeValid && startTime12 > endTime12) {
-        isEndTimeValid = true; // Allow end time to be on the next day
-      }
+    // Ensure valid start and end times, allowing endDateTime to be after startDateTime
+    if (isStartTimeValid && isEndTimeValid && endDateTime < startDateTime) {
+      // End time must be logically after the start time (even if on different days)
+      isEndTimeValid = true;
     }
 
     if (!isStartTimeValid) {
@@ -2192,31 +2216,30 @@ class DateRangeTimePicker extends LitElement {
 
     // Toggle between AM and PM
     if (period === "AM") {
-        period = "PM";
+      period = "PM";
     } else {
-        period = "AM";
+      period = "AM";
     }
 
     // Convert the time based on the period toggle
     if (period === "PM" && parseInt(hours, 10) < 12) {
-        hours = (parseInt(hours, 10) + 12).toString().padStart(2, "0");
+      hours = (parseInt(hours, 10) + 12).toString().padStart(2, "0");
     } else if (period === "AM" && parseInt(hours, 10) >= 12) {
-        hours = (parseInt(hours, 10) - 12).toString().padStart(2, "0");
+      hours = (parseInt(hours, 10) - 12).toString().padStart(2, "0");
     }
 
     const updatedTime = `${hours}:${minutes}`;
 
     // Update the startTime or endTime based on input type
     if (inputType === "start") {
-        this.startTime = updatedTime;
+      this.startTime = updatedTime;
     } else if (inputType === "end") {
-        this.endTime = updatedTime;
+      this.endTime = updatedTime;
     }
 
     // Use Lit's reactive rendering to re-render the component and avoid direct DOM manipulation
     this.requestUpdate(); // This ensures the component is re-rendered properly
-}
-
+  }
 
   _toggleTimeAmPm(time) {
     let [hours, minutes] = time.split(":");
@@ -2335,13 +2358,14 @@ class DateRangeTimePicker extends LitElement {
             )}
           >
             <div
-              class="pl-input-group${this.size === "sm"
+              class="pl-input-group drtp${this.size === "sm"
                 ? " pl-input-group-sm"
                 : this.size === "lg"
                 ? " pl-input-group-lg"
                 : ""}"
               role="group"
               aria-label="Date Picker Group"
+              tabindex="0"
             >
               ${this.prepend
                 ? html`<div
@@ -2349,22 +2373,22 @@ class DateRangeTimePicker extends LitElement {
                       ? " is-invalid"
                       : ""}"
                   >
-                    <button
-                      class="calendar-button pl-btn pl-input-group-text"
+                    <span
+                      class="pl-input-group-text"
                       aria-label="Toggle Calendar Picker"
                       aria-haspopup="dialog"
                       aria-expanded=${this.dropdownOpen ? "true" : "false"}
                       ?disabled=${this.disabled}
                     >
                       <i class="${this.icon}"></i>
-                    </button>
+              </span>
                   </div>`
                 : ""}
 
               <input
                 id="${this.inputId}"
                 type="text"
-                class="form-control${this.validation ? " is-invalid" : ""}"
+                class="date-range-time-input form-control${this.validation ? " is-invalid" : ""}"
                 placeholder="${this.placeholder}"
                 value="${ifDefined(this.value)}"
                 ?disabled=${this.disabled}
@@ -2379,15 +2403,15 @@ class DateRangeTimePicker extends LitElement {
                       ? " is-invalid"
                       : ""}"
                   >
-                    <button
-                      class="calendar-button pl-btn pl-input-group-text"
+                    <span
+                      class="pl-input-group-text"
                       aria-label="Toggle Calendar Picker"
                       aria-haspopup="dialog"
                       aria-expanded=${this.dropdownOpen ? "true" : "false"}
                       ?disabled=${this.disabled}
                     >
                       <i class="${this.icon}"></i>
-                    </button>
+              </span>
                   </div>`
                 : ""}
             </div>
@@ -2441,7 +2465,7 @@ class DateRangeTimePicker extends LitElement {
             )}
           >
             <div
-              class="pl-input-group${this.size === "sm"
+              class="pl-input-group drtp-plumage${this.size === "sm"
                 ? " pl-input-group-sm"
                 : this.size === "lg"
                 ? " pl-input-group-lg"
@@ -2455,22 +2479,22 @@ class DateRangeTimePicker extends LitElement {
                       ? " is-invalid"
                       : ""}"
                   >
-                    <button
-                      class="calendar-button pl-btn pl-input-group-text"
+                    <span
+                      class="pl-input-group-text"
                       aria-label="Toggle Calendar Picker"
                       aria-haspopup="dialog"
                       aria-expanded=${this.dropdownOpen ? "true" : "false"}
                       ?disabled=${this.disabled}
                     >
                       <i class="${this.icon}"></i>
-                    </button>
+              </span>
                   </div>`
                 : ""}
 
               <input
                 id="${this.inputId}"
                 type="text"
-                class="form-control${this.validation ? " is-invalid" : ""}"
+                class="date-range-time-input form-control${this.validation ? " is-invalid" : ""}"
                 placeholder="${this.placeholder}"
                 value="${ifDefined(this.value)}"
                 @focus="${this.handleInputInteraction}"
@@ -2488,15 +2512,15 @@ class DateRangeTimePicker extends LitElement {
                       ? " is-invalid"
                       : ""}"
                   >
-                    <button
-                      class="calendar-button pl-btn pl-input-group-text"
+                    <span
+                      class="pl-input-group-text"
                       aria-label="Toggle Calendar Picker"
                       aria-haspopup="dialog"
                       aria-expanded=${this.dropdownOpen ? "true" : "false"}
                       ?disabled=${this.disabled}
                     >
                       <i class="${this.icon}"></i>
-                    </button>
+              </span>
                   </div>`
                 : ""}
 

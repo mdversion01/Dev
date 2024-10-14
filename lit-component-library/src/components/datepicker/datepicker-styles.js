@@ -264,8 +264,7 @@ export const datepickerStyles = css`
   }
 
   .selectors .reset-btn:hover
-  /*, .selectors .reset-btn:focus { */
-  {
+  /*, .selectors .reset-btn:focus { */ {
     color: rgb(255, 255, 255);
     fill: rgb(255, 255, 255);
     background-color: rgb(108, 117, 125);
@@ -579,6 +578,44 @@ export const datepickerStyles = css`
   .to-spacing {
     padding: 0 0.5rem;
   }
+
+  .drtp {
+    border: 1px solid rgb(206, 212, 218);
+    border-radius: 0.25rem;
+  }
+
+  .drtp.focus {
+    background-color: transparent;
+    border-color: rgb(155, 196, 246);
+    color: rgb(56, 56, 56);
+    outline: 0px;
+    box-shadow: rgb(0 123 255 / 25%) 0px 0px 0px 0.2rem;
+    border-radius: 0.25rem;
+  }
+
+  .drtp .form-control {
+    border: none;
+  }
+
+  .drtp .form-control:focus {
+    background-color: transparent;
+    border-color: transparent;
+    outline: 0px;
+    box-shadow: none;
+  }
+
+  .drtp .pl-input-group-text,
+  .plumage .drtp-plumage .pl-input-group-text  {
+    color: #ccc;
+    background-color: transparent;
+    border: none;
+  }
+  
+  div.drtp,
+  div.pl-input-group-append,
+  div.pl-input-group-prepend {
+    outline: none !important;
+}
 
   .calendar-button {
     background-color: transparent;
