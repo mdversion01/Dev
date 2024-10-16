@@ -160,18 +160,26 @@ class DateRangeTimePicker extends LitElement {
       );
     }
 
-    const startInput = this.shadowRoot.querySelector('input[data-type="start"]');
+    const startInput = this.shadowRoot.querySelector(
+      'input[data-type="start"]'
+    );
     const endInput = this.shadowRoot.querySelector('input[data-type="end"]');
 
     // Attach the event listener for handling backspace and input change
     if (startInput) {
-      startInput.addEventListener('keydown', this._handleBackspace.bind(this));
-      startInput.addEventListener('input', this._handleTimeInputChange.bind(this));
+      startInput.addEventListener("keydown", this._handleBackspace.bind(this));
+      startInput.addEventListener(
+        "input",
+        this._handleTimeInputChange.bind(this)
+      );
     }
 
     if (endInput) {
-      endInput.addEventListener('keydown', this._handleBackspace.bind(this));
-      endInput.addEventListener('input', this._handleTimeInputChange.bind(this));
+      endInput.addEventListener("keydown", this._handleBackspace.bind(this));
+      endInput.addEventListener(
+        "input",
+        this._handleTimeInputChange.bind(this)
+      );
     }
 
     document.addEventListener("click", this.handleOutsideClick);
@@ -1113,10 +1121,6 @@ class DateRangeTimePicker extends LitElement {
   handleDayClick(date) {
     this.selectDate(date);
 
-    // Reset times to default when a new start date is selected
-    // this._setDefaultTimes();
-    // this._setDefaultTimeInputs();
-
     // Clear validation messages
     // this.validation = false;
     // this.validationMessage = "";
@@ -1961,99 +1965,124 @@ class DateRangeTimePicker extends LitElement {
     const inputType = event.target.dataset.type;
     let input = event.target.value.replace(/[^0-9]/g, ""); // Remove non-numeric characters
     const selectionStart = event.target.selectionStart; // Capture cursor position
-
+  
+    // If the input is empty, clear the time and trigger validation
+    if (input.length === 0) {
+      // Clear the internal start or end time and update the field
+      if (inputType === "start") {
+        this.startTime = "";
+      } else if (inputType === "end") {
+        this.endTime = "";
+      }
+  
+      // Trigger validation
+      this._validateTimeInputs();
+      return;
+    }
+  
     // Insert colon if there are more than 2 digits
     if (input.length >= 2) {
-        input = input.slice(0, 2) + ':' + (input.slice(2, 4) || '');
+      input = input.slice(0, 2) + ':' + (input.slice(2, 4) || '');
     }
-
+  
     // Limit input to 5 characters (HH:MM format)
     input = input.substring(0, 5);
-
+  
     // Extract hours and minutes from the input
     let [hours, minutes] = input.split(":");
     hours = hours || "";  // Keep hours empty initially if undefined
     minutes = minutes || "";  // Keep minutes empty initially if undefined
-
+  
     // Only validate the hours and minutes after the user has entered enough input
     if (hours.length === 2 && minutes.length === 2) {
-        if (this.is24HourFormat) {
-            if (parseInt(hours, 10) > 23) hours = "23";  // Limit to 23 hours for 24-hour format
-        } else {
-            if (parseInt(hours, 10) > 12) hours = "12";  // Limit to 12 hours for 12-hour format
-            if (parseInt(hours, 10) < 1) hours = "01";  // Minimum 1 for 12-hour format
-        }
-        if (parseInt(minutes, 10) > 59) minutes = "59";  // Limit minutes to 59
+      if (this.is24HourFormat) {
+        if (parseInt(hours, 10) > 23) hours = "23";  // Limit to 23 hours for 24-hour format
+      } else {
+        if (parseInt(hours, 10) > 12) hours = "12";  // Limit to 12 hours for 12-hour format
+        if (parseInt(hours, 10) < 1) hours = "01";  // Minimum 1 for 12-hour format
+      }
+      if (parseInt(minutes, 10) > 59) minutes = "59";  // Limit minutes to 59
     }
-
+  
     // Reformat the input with the colon
     input = `${hours}:${minutes}`.slice(0, 5);  // Trim any excess characters
-
+  
     // Update the value in the input field
     event.target.value = input;
-
+  
     // Handle cursor movement logic
     if (selectionStart <= 2 && input.length >= 2) {
-        event.target.setSelectionRange(selectionStart, selectionStart);  // Keep cursor in position for hours
+      event.target.setSelectionRange(selectionStart, selectionStart);  // Keep cursor in position for hours
     } else if (selectionStart > 2) {
-        event.target.setSelectionRange(selectionStart + 1, selectionStart + 1);  // Adjust for colon when typing minutes
+      event.target.setSelectionRange(selectionStart + 1, selectionStart + 1);  // Adjust for colon when typing minutes
     }
-
+  
     // Set the time based on whether this is the start or end input
     if (inputType === "start") {
-        this.startTime = input;
+      this.startTime = input;
     } else if (inputType === "end") {
-        this.endTime = input;
+      this.endTime = input;
     }
-
+  
+    // Validate if times are empty
+    this._validateTimeInputs();
     this._updateOkButtonState();
     this._updateDuration();
-}
+  }
 
-
-
-
-_handleBackspace(event) {
+  _handleBackspace(event) {
     const input = event.target;
     let selectionStart = input.selectionStart;
     const selectionEnd = input.selectionEnd;
 
     // Handle backspace when deleting one character (no text is selected)
-    if (event.key === 'Backspace' && selectionStart === selectionEnd) {
-        if (selectionStart > 0) {
-            event.preventDefault();
-            let updatedValue = input.value.split('');
+    if (event.key === "Backspace" && selectionStart === selectionEnd) {
+      if (selectionStart > 0) {
+        event.preventDefault();
+        let updatedValue = input.value.split("");
 
-            // Remove the character before the cursor position
-            updatedValue.splice(selectionStart - 1, 1);
+        // Remove the character before the cursor position
+        updatedValue.splice(selectionStart - 1, 1);
 
-            // Handle colon skipping and cursor movement logic
-            if (selectionStart === 4) {
-                // If deleting at the minute position, move cursor left one step
-                selectionStart = 3;
-            } else if (selectionStart === 3) {
-                // If cursor is at colon, delete and move to 2nd position
-                selectionStart = 2;
-            } else if (selectionStart === 2) {
-                // If cursor is at 2nd position, delete and move to 1st
-                selectionStart = 1;
-            } else if (selectionStart === 1) {
-                // If cursor is at 1st position, move to 0
-                selectionStart = 0;
-            }
-
-            // Reformat the value with the colon in the correct place
-            updatedValue = updatedValue.filter(c => c !== ':').join('');
-            if (updatedValue.length >= 2) {
-                updatedValue = updatedValue.slice(0, 2) + ':' + updatedValue.slice(2);
-            }
-
-            input.value = updatedValue;
-            input.setSelectionRange(selectionStart, selectionStart); // Keep cursor at the correct position
+        // Handle colon skipping and cursor movement logic
+        if (selectionStart === 4) {
+          // If deleting at the minute position, move cursor left one step
+          selectionStart = 3;
+        } else if (selectionStart === 3) {
+          // If cursor is at colon, delete and move to 2nd position
+          selectionStart = 2;
+        } else if (selectionStart === 2) {
+          // If cursor is at 2nd position, delete and move to 1st
+          selectionStart = 1;
+        } else if (selectionStart === 1) {
+          // If cursor is at 1st position, move to 0
+          selectionStart = 0;
         }
-    }
-}
 
+        // Reformat the value with the colon in the correct place
+        updatedValue = updatedValue.filter((c) => c !== ":").join("");
+        if (updatedValue.length >= 2) {
+          updatedValue = updatedValue.slice(0, 2) + ":" + updatedValue.slice(2);
+        }
+
+        input.value = updatedValue;
+        input.setSelectionRange(selectionStart, selectionStart); // Keep cursor at the correct position
+      }
+    }
+  }
+
+  _validateTimeInputs() {
+    const warningMessageElement = this.shadowRoot.querySelector(".warning-message");
+  
+    // Display warning if either time is empty
+    if (!this.startTime || !this.endTime) {
+      warningMessageElement.textContent = "Times cannot be empty.";
+      warningMessageElement.classList.remove("hide");
+    } else {
+      warningMessageElement.textContent = "";
+      warningMessageElement.classList.add("hide");
+    }
+  }
 
   _updateDuration() {
     const durationElement = this.shadowRoot.querySelector(".duration");
