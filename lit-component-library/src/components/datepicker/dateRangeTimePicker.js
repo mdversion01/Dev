@@ -1962,36 +1962,56 @@ class DateRangeTimePicker extends LitElement {
     let input = event.target.value.replace(/[^0-9]/g, ""); // Remove non-numeric characters
     const selectionStart = event.target.selectionStart; // Capture cursor position
 
-    // Automatically insert the colon when there are more than 2 digits
+    // Insert colon if there are more than 2 digits
     if (input.length >= 2) {
-        input = input.slice(0, 2) + ':' + input.slice(2, 4);
+        input = input.slice(0, 2) + ':' + (input.slice(2, 4) || '');
     }
 
-    // Limit to 5 characters (HH:MM)
+    // Limit input to 5 characters (HH:MM format)
     input = input.substring(0, 5);
 
-    // Set the correct value back
+    // Extract hours and minutes from the input
+    let [hours, minutes] = input.split(":");
+    hours = hours || "";  // Keep hours empty initially if undefined
+    minutes = minutes || "";  // Keep minutes empty initially if undefined
+
+    // Only validate the hours and minutes after the user has entered enough input
+    if (hours.length === 2 && minutes.length === 2) {
+        if (this.is24HourFormat) {
+            if (parseInt(hours, 10) > 23) hours = "23";  // Limit to 23 hours for 24-hour format
+        } else {
+            if (parseInt(hours, 10) > 12) hours = "12";  // Limit to 12 hours for 12-hour format
+            if (parseInt(hours, 10) < 1) hours = "01";  // Minimum 1 for 12-hour format
+        }
+        if (parseInt(minutes, 10) > 59) minutes = "59";  // Limit minutes to 59
+    }
+
+    // Reformat the input with the colon
+    input = `${hours}:${minutes}`.slice(0, 5);  // Trim any excess characters
+
+    // Update the value in the input field
     event.target.value = input;
 
-    // Adjust cursor position to move correctly while typing minutes
+    // Handle cursor movement logic
+    if (selectionStart <= 2 && input.length >= 2) {
+        event.target.setSelectionRange(selectionStart, selectionStart);  // Keep cursor in position for hours
+    } else if (selectionStart > 2) {
+        event.target.setSelectionRange(selectionStart + 1, selectionStart + 1);  // Adjust for colon when typing minutes
+    }
+
+    // Set the time based on whether this is the start or end input
     if (inputType === "start") {
         this.startTime = input;
     } else if (inputType === "end") {
         this.endTime = input;
     }
 
-    // Adjust cursor behavior when typing minutes
-    if (selectionStart === 3 || selectionStart === 4) {
-        // If cursor is on or after colon, move it accordingly after typing minutes
-        event.target.setSelectionRange(selectionStart + 1, selectionStart + 1);
-    } else if (selectionStart <= 2 && input.length >= 2) {
-        // Keeps cursor in the right position for typing hours
-        event.target.setSelectionRange(selectionStart, selectionStart);
-    }
-
     this._updateOkButtonState();
     this._updateDuration();
 }
+
+
+
 
 _handleBackspace(event) {
     const input = event.target;
