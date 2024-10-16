@@ -1965,7 +1965,7 @@ class DateRangeTimePicker extends LitElement {
     const inputType = event.target.dataset.type;
     let input = event.target.value.replace(/[^0-9]/g, ""); // Remove non-numeric characters
     const selectionStart = event.target.selectionStart; // Capture cursor position
-  
+
     // If the input is empty, clear the time and trigger validation
     if (input.length === 0) {
       // Clear the internal start or end time and update the field
@@ -1974,56 +1974,56 @@ class DateRangeTimePicker extends LitElement {
       } else if (inputType === "end") {
         this.endTime = "";
       }
-  
+
       // Trigger validation
       this._validateTimeInputs();
       return;
     }
-  
+
     // Insert colon if there are more than 2 digits
     if (input.length >= 2) {
-      input = input.slice(0, 2) + ':' + (input.slice(2, 4) || '');
+      input = input.slice(0, 2) + ":" + (input.slice(2, 4) || "");
     }
-  
+
     // Limit input to 5 characters (HH:MM format)
     input = input.substring(0, 5);
-  
+
     // Extract hours and minutes from the input
     let [hours, minutes] = input.split(":");
-    hours = hours || "";  // Keep hours empty initially if undefined
-    minutes = minutes || "";  // Keep minutes empty initially if undefined
-  
+    hours = hours || ""; // Keep hours empty initially if undefined
+    minutes = minutes || ""; // Keep minutes empty initially if undefined
+
     // Only validate the hours and minutes after the user has entered enough input
     if (hours.length === 2 && minutes.length === 2) {
       if (this.is24HourFormat) {
-        if (parseInt(hours, 10) > 23) hours = "23";  // Limit to 23 hours for 24-hour format
+        if (parseInt(hours, 10) > 23) hours = "23"; // Limit to 23 hours for 24-hour format
       } else {
-        if (parseInt(hours, 10) > 12) hours = "12";  // Limit to 12 hours for 12-hour format
-        if (parseInt(hours, 10) < 1) hours = "01";  // Minimum 1 for 12-hour format
+        if (parseInt(hours, 10) > 12) hours = "12"; // Limit to 12 hours for 12-hour format
+        if (parseInt(hours, 10) < 1) hours = "01"; // Minimum 1 for 12-hour format
       }
-      if (parseInt(minutes, 10) > 59) minutes = "59";  // Limit minutes to 59
+      if (parseInt(minutes, 10) > 59) minutes = "59"; // Limit minutes to 59
     }
-  
+
     // Reformat the input with the colon
-    input = `${hours}:${minutes}`.slice(0, 5);  // Trim any excess characters
-  
+    input = `${hours}:${minutes}`.slice(0, 5); // Trim any excess characters
+
     // Update the value in the input field
     event.target.value = input;
-  
+
     // Handle cursor movement logic
     if (selectionStart <= 2 && input.length >= 2) {
-      event.target.setSelectionRange(selectionStart, selectionStart);  // Keep cursor in position for hours
+      event.target.setSelectionRange(selectionStart, selectionStart); // Keep cursor in position for hours
     } else if (selectionStart > 2) {
-      event.target.setSelectionRange(selectionStart + 1, selectionStart + 1);  // Adjust for colon when typing minutes
+      event.target.setSelectionRange(selectionStart + 1, selectionStart + 1); // Adjust for colon when typing minutes
     }
-  
+
     // Set the time based on whether this is the start or end input
     if (inputType === "start") {
       this.startTime = input;
     } else if (inputType === "end") {
       this.endTime = input;
     }
-  
+
     // Validate if times are empty
     this._validateTimeInputs();
     this._updateOkButtonState();
@@ -2072,8 +2072,9 @@ class DateRangeTimePicker extends LitElement {
   }
 
   _validateTimeInputs() {
-    const warningMessageElement = this.shadowRoot.querySelector(".warning-message");
-  
+    const warningMessageElement =
+      this.shadowRoot.querySelector(".warning-message");
+
     // Display warning if either time is empty
     if (!this.startTime || !this.endTime) {
       warningMessageElement.textContent = "Times cannot be empty.";
@@ -2125,6 +2126,9 @@ class DateRangeTimePicker extends LitElement {
     const inputType = event.target.dataset.type;
     let time = inputType === "start" ? this.startTime : this.endTime;
 
+    // Log the current time before toggling
+    console.log("Before toggle:", time);
+
     if (!time || !time.includes(":")) return;
 
     let [hours, minutes] = time.split(":");
@@ -2139,12 +2143,21 @@ class DateRangeTimePicker extends LitElement {
 
     // Convert the time based on the period toggle
     if (period === "PM" && parseInt(hours, 10) < 12) {
-      hours = (parseInt(hours, 10) + 12).toString().padStart(2, "0");
+      // AM to PM: Add 12 hours unless it's 12 AM
+      hours = (parseInt(hours, 10) === 12 ? 12 : parseInt(hours, 10) + 12)
+        .toString()
+        .padStart(2, "0");
     } else if (period === "AM" && parseInt(hours, 10) >= 12) {
-      hours = (parseInt(hours, 10) - 12).toString().padStart(2, "0");
+      // PM to AM: Subtract 12 hours unless it's 12 PM
+      hours = (parseInt(hours, 10) === 12 ? 12 : parseInt(hours, 10) - 12)
+        .toString()
+        .padStart(2, "0");
     }
 
     const updatedTime = `${hours}:${minutes}`;
+
+    // Log the updated time after toggling
+    console.log("After toggle:", updatedTime);
 
     // Update the startTime or endTime based on input type
     if (inputType === "start") {
