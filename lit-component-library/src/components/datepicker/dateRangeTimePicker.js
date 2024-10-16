@@ -160,6 +160,20 @@ class DateRangeTimePicker extends LitElement {
       );
     }
 
+    const startInput = this.shadowRoot.querySelector('input[data-type="start"]');
+    const endInput = this.shadowRoot.querySelector('input[data-type="end"]');
+
+    // Attach the event listener for handling backspace and input change
+    if (startInput) {
+      startInput.addEventListener('keydown', this._handleBackspace.bind(this));
+      startInput.addEventListener('input', this._handleTimeInputChange.bind(this));
+    }
+
+    if (endInput) {
+      endInput.addEventListener('keydown', this._handleBackspace.bind(this));
+      endInput.addEventListener('input', this._handleTimeInputChange.bind(this));
+    }
+
     document.addEventListener("click", this.handleOutsideClick);
 
     this.shadowRoot.addEventListener(
@@ -1945,44 +1959,81 @@ class DateRangeTimePicker extends LitElement {
 
   _handleTimeInputChange(event) {
     const inputType = event.target.dataset.type;
-    let timeValue = event.target.value.replace(/[^0-9]/g, ""); // Remove non-numeric characters
-    let cursorPosition = event.target.selectionStart;
-  
-    // Automatically add the colon after the first two digits
-    if (timeValue.length > 2) {
-      timeValue = `${timeValue.slice(0, 2)}:${timeValue.slice(2, 4)}`;
-    } else if (timeValue.length > 1) {
-      timeValue = `${timeValue.slice(0, 2)}:`; // Add colon after two digits
+    let input = event.target.value.replace(/[^0-9]/g, ""); // Remove non-numeric characters
+    const selectionStart = event.target.selectionStart; // Capture cursor position
+
+    // Automatically insert the colon when there are more than 2 digits
+    if (input.length >= 2) {
+        input = input.slice(0, 2) + ':' + input.slice(2, 4);
     }
-  
-    let [hours = "", minutes = ""] = timeValue.split(":");
-  
-    // Make sure the hours and minutes are within valid ranges
-    if (this.is24HourFormat) {
-      if (parseInt(hours, 10) > 23) hours = "23"; // Max hours for 24-hour format
-    } else {
-      if (parseInt(hours, 10) > 12) hours = "12"; // Max hours for 12-hour format
-      if (parseInt(hours, 10) < 1 && hours.length === 2) hours = "01"; // Minimum is 01
-    }
-  
-    if (parseInt(minutes, 10) > 59) minutes = "59"; // Max minutes is 59
-  
-    if (hours || minutes) {
-      timeValue = `${hours}:${minutes}`;
-    }
-  
-    event.target.value = timeValue;
-    event.target.setSelectionRange(cursorPosition, cursorPosition);
-  
+
+    // Limit to 5 characters (HH:MM)
+    input = input.substring(0, 5);
+
+    // Set the correct value back
+    event.target.value = input;
+
+    // Adjust cursor position to move correctly while typing minutes
     if (inputType === "start") {
-      this.startTime = timeValue;
+        this.startTime = input;
     } else if (inputType === "end") {
-      this.endTime = timeValue;
+        this.endTime = input;
     }
-  
-    this._updateOkButtonState(); // Update the OK button state dynamically
-    this._updateDuration(); // Update duration if times are valid
-  }
+
+    // Adjust cursor behavior when typing minutes
+    if (selectionStart === 3 || selectionStart === 4) {
+        // If cursor is on or after colon, move it accordingly after typing minutes
+        event.target.setSelectionRange(selectionStart + 1, selectionStart + 1);
+    } else if (selectionStart <= 2 && input.length >= 2) {
+        // Keeps cursor in the right position for typing hours
+        event.target.setSelectionRange(selectionStart, selectionStart);
+    }
+
+    this._updateOkButtonState();
+    this._updateDuration();
+}
+
+_handleBackspace(event) {
+    const input = event.target;
+    let selectionStart = input.selectionStart;
+    const selectionEnd = input.selectionEnd;
+
+    // Handle backspace when deleting one character (no text is selected)
+    if (event.key === 'Backspace' && selectionStart === selectionEnd) {
+        if (selectionStart > 0) {
+            event.preventDefault();
+            let updatedValue = input.value.split('');
+
+            // Remove the character before the cursor position
+            updatedValue.splice(selectionStart - 1, 1);
+
+            // Handle colon skipping and cursor movement logic
+            if (selectionStart === 4) {
+                // If deleting at the minute position, move cursor left one step
+                selectionStart = 3;
+            } else if (selectionStart === 3) {
+                // If cursor is at colon, delete and move to 2nd position
+                selectionStart = 2;
+            } else if (selectionStart === 2) {
+                // If cursor is at 2nd position, delete and move to 1st
+                selectionStart = 1;
+            } else if (selectionStart === 1) {
+                // If cursor is at 1st position, move to 0
+                selectionStart = 0;
+            }
+
+            // Reformat the value with the colon in the correct place
+            updatedValue = updatedValue.filter(c => c !== ':').join('');
+            if (updatedValue.length >= 2) {
+                updatedValue = updatedValue.slice(0, 2) + ':' + updatedValue.slice(2);
+            }
+
+            input.value = updatedValue;
+            input.setSelectionRange(selectionStart, selectionStart); // Keep cursor at the correct position
+        }
+    }
+}
+
 
   _updateDuration() {
     const durationElement = this.shadowRoot.querySelector(".duration");
