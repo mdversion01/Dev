@@ -579,9 +579,18 @@ export const datepickerStyles = css`
     padding: 0 0.5rem;
   }
 
+  .dtrp-field-container {
+    padding: 0 15px 0 0;
+  }
+
   .drtp {
     border: 1px solid rgb(206, 212, 218);
     border-radius: 0.25rem;
+    padding: 0 !important;
+  }
+
+  .drtp:hover {
+    border-color: rgb(155, 196, 246);
   }
 
   .drtp.focus {
@@ -605,17 +614,49 @@ export const datepickerStyles = css`
   }
 
   .drtp .pl-input-group-text,
-  .plumage .drtp-plumage .pl-input-group-text  {
+  .plumage .drtp-plumage .pl-input-group-text {
     color: #ccc;
     background-color: transparent;
     border: none;
   }
-  
+
   div.drtp,
   div.pl-input-group-append,
   div.pl-input-group-prepend {
     outline: none !important;
-}
+  }
+
+  .clear-input-button {
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out, color 0.2s ease-in-out;
+    position: absolute;
+    right: 6px;
+    top: 7px;
+  }
+
+  .clear-input-button:hover {
+    color: #d10000;
+    cursor: pointer;
+  }
+
+  .drtp:hover .clear-input-button,
+  .drtp:focus-within .clear-input-button,
+  .plumage .drtp-plumage:hover .clear-input-button,
+  .plumage .drtp-plumage:focus-within .clear-input-button {
+    opacity: 1;
+    visibility: visible;
+
+  }
+
+  .drtp .calendar-icon,
+  .plumage .drtp-plumage .calendar-icon {
+    transition: opacity 0.2s ease-in-out, color 0.2s ease-in-out;
+  }
+
+  .drtp:hover .calendar-icon,
+  .plumage .drtp-plumage:hover .calendar-icon {
+    opacity: 0; /* Hide the calendar icon when the input is hovered */
+  }
 
   .calendar-button {
     background-color: transparent;
