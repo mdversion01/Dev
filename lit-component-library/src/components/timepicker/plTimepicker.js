@@ -457,34 +457,36 @@ class PlTimePicker extends LitElement {
   _convertTimeFormat() {
     const timeInput = this.shadowRoot.querySelector(".time-input").value;
     let [hours, minutes, seconds] = timeInput.split(/[: ]/);
-    const isPM = /PM$/.test(timeInput);
+    const isPM = /PM$/.test(timeInput); // Check if it's PM in 12-hour format
     let ampm = "";
-
+  
     hours = parseInt(hours, 10);
     minutes = parseInt(minutes, 10);
     seconds = this.hideSeconds ? 0 : parseInt(seconds, 10);
-
+  
     if (this.is24HourFormat) {
+      // Convert 12-hour to 24-hour
       if (isPM && hours < 12) {
-        hours += 12;
+        hours += 12; // Convert PM times (except 12 PM) to 24-hour format
       } else if (!isPM && hours === 12) {
-        hours = 0;
+        hours = 0; // Convert 12 AM to 00:00 in 24-hour format
       }
-      ampm = "";
+      ampm = ""; // No AM/PM in 24-hour format
     } else {
+      // Convert 24-hour to 12-hour
       if (hours === 0) {
-        hours = 12;
+        hours = 12; // Convert 00:00 to 12:00 AM
         ampm = "AM";
       } else if (hours === 12) {
-        ampm = isPM ? "PM" : "AM";
+        ampm = "PM"; // Handle 12 PM case correctly
       } else if (hours > 12) {
-        hours -= 12;
+        hours -= 12; // Convert 13-23 hours to 1-11 PM
         ampm = "PM";
       } else {
-        ampm = "AM";
+        ampm = "AM"; // Handle morning times
       }
     }
-
+  
     this.shadowRoot.querySelector(".hour-display").textContent = hours
       .toString()
       .padStart(2, "0");
