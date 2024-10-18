@@ -1,6 +1,7 @@
 import { LitElement, html, css } from "lit";
 import { ifDefined } from "lit/directives/if-defined.js";
 import Fontawesome from "lit-fontawesome";
+import { layoutStyles } from "../layout-styles.js";
 import { datepickerStyles } from "./datepicker-styles.js";
 import { utilitiesStyles } from "../utilities-styles.js";
 import { selectFieldStyles } from "../select-field/select-field-styles.js";
@@ -15,6 +16,7 @@ import { createPopper } from "@popperjs/core";
 class DateRangeTimePicker extends LitElement {
   static styles = [
     Fontawesome,
+    layoutStyles,
     formStyles,
     selectFieldStyles,
     plSelectFieldStyles,
@@ -116,6 +118,8 @@ class DateRangeTimePicker extends LitElement {
     this.showDuration = false;
     this.value = "";
     this.showOkButton = true;
+    this.startAmPm = "PM"; // Default to PM
+    this.endAmPm = "PM"; // Default to PM
     this._setDefaultTimes();
     this.addEventListener("reset-picker", this.resetCalendar);
 
@@ -146,7 +150,7 @@ class DateRangeTimePicker extends LitElement {
     // Ensure time inputs are set to default values
     this._setDefaultTimeInputs();
 
-    const inputGroup = this.shadowRoot.querySelector(".pl-input-group");
+    const inputGroup = this.shadowRoot.querySelector(".date-range-time-input");
     if (inputGroup) {
       inputGroup.addEventListener("click", this.toggleDropdown.bind(this));
     }
@@ -182,6 +186,17 @@ class DateRangeTimePicker extends LitElement {
       );
     }
 
+    // Event listener for Enter key to open dropdown on focus
+  const drtpElement = this.plumage ? this.shadowRoot.querySelector('.drtp-plumage') : this.shadowRoot.querySelector('.drtp');
+  if (drtpElement) {
+    drtpElement.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter') {
+        event.preventDefault(); // Prevent any default Enter key action
+        this.toggleDropdown(event); // Open the dropdown
+      }
+    });
+  }
+
     document.addEventListener("click", this.handleOutsideClick);
 
     this.shadowRoot.addEventListener(
@@ -209,6 +224,14 @@ class DateRangeTimePicker extends LitElement {
     this.addEventListener("reset-picker", this.resetCalendar);
 
     this.append = this.getAttribute("append") !== "false";
+
+    // Access the formId and formLayout properties from the closest form-component
+    const formComponent = this.closest("form-component");
+
+    if (formComponent) {
+      this.formId = formComponent.formId || "";
+      this.formLayout = formComponent.formLayout || "";
+    }
   }
 
   disconnectedCallback() {
@@ -499,11 +522,11 @@ class DateRangeTimePicker extends LitElement {
 
       const formattedStartTime = this.is24HourFormat
         ? this.startTime
-        : `${this.formatTime(this.startTime)} ${this._getAmPm(this.startTime)}`;
+        : `${this.formatTime(this.startTime)} ${this.startAmPm}`; // Use startAmPm
 
       const formattedEndTime = this.is24HourFormat
         ? this.endTime
-        : `${this.formatTime(this.endTime)} ${this._getAmPm(this.endTime)}`;
+        : `${this.formatTime(this.endTime)} ${this.endAmPm}`; // Use endAmPm
 
       const formattedStartDate = this.formatDateAccordingToSelectedFormat(
         this.startDate
@@ -647,9 +670,11 @@ class DateRangeTimePicker extends LitElement {
     this.duration = "";
     this._setDefaultTimes(); // Reset start and end times to default values
 
+    // Reset AM/PM toggles to "PM"
+    this.startAmPm = "PM";
+    this.endAmPm = "PM";
+
     // Clear validation and warning messages
-    // this.validation = false;
-    // this.validationMessage = "";
     const warningMessageElement =
       this.shadowRoot.querySelector(".warning-message");
     if (warningMessageElement) {
@@ -1560,7 +1585,7 @@ class DateRangeTimePicker extends LitElement {
           {
             name: "offset",
             options: {
-              offset: [0, 2], // Adjust offset as needed
+              offset: [-2, 2], // Adjust offset as needed
             },
           },
           {
@@ -1878,7 +1903,7 @@ class DateRangeTimePicker extends LitElement {
                       role="button"
                       aria-label="Toggle AM/PM"
                     >
-                      ${this._getAmPm(this.startTime)}
+                      ${this.startAmPm}
                     </button>`
                   : ""}
                 <span class="to-spacing">${this.joinBy}</span>
@@ -1933,7 +1958,7 @@ class DateRangeTimePicker extends LitElement {
                       role="button"
                       aria-label="Toggle AM/PM"
                     >
-                      ${this._getAmPm(this.endTime)}
+                      ${this.endAmPm}
                     </button>`
                   : ""}
               </span>
@@ -1966,16 +1991,13 @@ class DateRangeTimePicker extends LitElement {
     let input = event.target.value.replace(/[^0-9]/g, ""); // Remove non-numeric characters
     const selectionStart = event.target.selectionStart; // Capture cursor position
 
-    // If the input is empty, clear the time and trigger validation
+    // Allow the user to clear the input without replacing it
     if (input.length === 0) {
-      // Clear the internal start or end time and update the field
       if (inputType === "start") {
         this.startTime = "";
       } else if (inputType === "end") {
         this.endTime = "";
       }
-
-      // Trigger validation
       this._validateTimeInputs();
       return;
     }
@@ -1988,43 +2010,40 @@ class DateRangeTimePicker extends LitElement {
     // Limit input to 5 characters (HH:MM format)
     input = input.substring(0, 5);
 
-    // Extract hours and minutes from the input
     let [hours, minutes] = input.split(":");
-    hours = hours || ""; // Keep hours empty initially if undefined
-    minutes = minutes || ""; // Keep minutes empty initially if undefined
+    hours = hours || "";
+    minutes = minutes || "";
 
-    // Only validate the hours and minutes after the user has entered enough input
-    if (hours.length === 2 && minutes.length === 2) {
-      if (this.is24HourFormat) {
-        if (parseInt(hours, 10) > 23) hours = "23"; // Limit to 23 hours for 24-hour format
-      } else {
-        if (parseInt(hours, 10) > 12) hours = "12"; // Limit to 12 hours for 12-hour format
-        if (parseInt(hours, 10) < 1) hours = "01"; // Minimum 1 for 12-hour format
+    // Allow the user to type the hour and only validate when the input is complete
+    if (!this.is24HourFormat) {
+      // Only validate once the user has entered both hours and minutes
+      if (hours.length === 2 && minutes.length === 2) {
+        if (parseInt(hours, 10) > 12) hours = "12"; // Max 12 for 12-hour format
+        if (parseInt(hours, 10) < 1) hours = "01"; // Min 1 for 12-hour format
       }
-      if (parseInt(minutes, 10) > 59) minutes = "59"; // Limit minutes to 59
     }
 
-    // Reformat the input with the colon
-    input = `${hours}:${minutes}`.slice(0, 5); // Trim any excess characters
+    // Reformat input with the colon
+    input = `${hours}:${minutes}`.slice(0, 5);
 
-    // Update the value in the input field
+    // Update the input field
     event.target.value = input;
 
-    // Handle cursor movement logic
+    // Maintain cursor position logic
     if (selectionStart <= 2 && input.length >= 2) {
-      event.target.setSelectionRange(selectionStart, selectionStart); // Keep cursor in position for hours
+      event.target.setSelectionRange(selectionStart, selectionStart);
     } else if (selectionStart > 2) {
-      event.target.setSelectionRange(selectionStart + 1, selectionStart + 1); // Adjust for colon when typing minutes
+      event.target.setSelectionRange(selectionStart + 1, selectionStart + 1);
     }
 
-    // Set the time based on whether this is the start or end input
+    // Set the time for the start or end input
     if (inputType === "start") {
-      this.startTime = input;
+      this.startTime = input; // Do not include AM/PM here
     } else if (inputType === "end") {
       this.endTime = input;
     }
 
-    // Validate if times are empty
+    // Update other aspects of the UI
     this._validateTimeInputs();
     this._updateOkButtonState();
     this._updateDuration();
@@ -2090,10 +2109,16 @@ class DateRangeTimePicker extends LitElement {
 
     if (this.startDate && this.endDate && this.startTime && this.endTime) {
       const startDateTime = new Date(
-        `${this.startDate.toISOString().split("T")[0]}T${this.startTime}`
+        `${this.startDate.toISOString().split("T")[0]}T${this.formatTime(
+          this.startTime,
+          this.startAmPm
+        )}`
       );
       const endDateTime = new Date(
-        `${this.endDate.toISOString().split("T")[0]}T${this.endTime}`
+        `${this.endDate.toISOString().split("T")[0]}T${this.formatTime(
+          this.endTime,
+          this.endAmPm
+        )}`
       );
 
       const diffMs = endDateTime - startDateTime;
@@ -2107,12 +2132,10 @@ class DateRangeTimePicker extends LitElement {
       }
       durationText += `${remainingHours}h`;
 
-      // Update the UI with the duration
       if (durationElement) {
         durationElement.textContent = `(${durationText})`;
       }
     } else if (durationElement) {
-      // Clear duration if the dates or times are not valid
       durationElement.textContent = "";
     }
   }
@@ -2124,65 +2147,27 @@ class DateRangeTimePicker extends LitElement {
 
   _toggleAmPm(event) {
     const inputType = event.target.dataset.type;
-    let time = inputType === "start" ? this.startTime : this.endTime;
-
-    // Log the current time before toggling
-    console.log("Before toggle:", time);
-
-    if (!time || !time.includes(":")) return;
-
-    let [hours, minutes] = time.split(":");
-    let period = this._getAmPm(time); // Get current AM/PM value
-
-    // Toggle between AM and PM
-    if (period === "AM") {
-      period = "PM";
-    } else {
-      period = "AM";
-    }
-
-    // Convert the time based on the period toggle
-    if (period === "PM" && parseInt(hours, 10) < 12) {
-      // AM to PM: Add 12 hours unless it's 12 AM
-      hours = (parseInt(hours, 10) === 12 ? 12 : parseInt(hours, 10) + 12)
-        .toString()
-        .padStart(2, "0");
-    } else if (period === "AM" && parseInt(hours, 10) >= 12) {
-      // PM to AM: Subtract 12 hours unless it's 12 PM
-      hours = (parseInt(hours, 10) === 12 ? 12 : parseInt(hours, 10) - 12)
-        .toString()
-        .padStart(2, "0");
-    }
-
-    const updatedTime = `${hours}:${minutes}`;
-
-    // Log the updated time after toggling
-    console.log("After toggle:", updatedTime);
-
-    // Update the startTime or endTime based on input type
     if (inputType === "start") {
-      this.startTime = updatedTime;
+      this.startAmPm = this.startAmPm === "AM" ? "PM" : "AM";
     } else if (inputType === "end") {
-      this.endTime = updatedTime;
+      this.endAmPm = this.endAmPm === "AM" ? "PM" : "AM";
     }
-
-    this.requestUpdate(); // Trigger re-render to reflect changes
+    this._updateDuration(); // Update duration if AM/PM changes
+    this.requestUpdate();
   }
 
-  formatTime(time) {
+  formatTime(time, amPm) {
     if (!time) return "";
 
     let [hours, minutes] = time.split(":");
     hours = parseInt(hours, 10);
 
     if (!this.is24HourFormat) {
-      // const ampm = this._getAmPm(time);
-      if (hours === 0) {
-        hours = 12;
-      } else if (hours > 12) {
-        hours -= 12;
+      if (amPm === "PM" && hours < 12) {
+        hours += 12; // Convert PM to 24-hour format (e.g., 1 PM becomes 13)
+      } else if (amPm === "AM" && hours === 12) {
+        hours = 0; // Convert 12 AM to 00:00 in 24-hour format
       }
-      return `${hours.toString().padStart(2, "0")}:${minutes}`;
     }
 
     return `${hours.toString().padStart(2, "0")}:${minutes}`;
@@ -2229,12 +2214,11 @@ class DateRangeTimePicker extends LitElement {
               : `${this.label}`}
           </label>
 
-          <div
-            class=${ifDefined(
-              this.formLayout === "horizontal"
-                ? "col-md-10 no-padding"
-                : undefined
-            )}
+          <div class="dtrp-field-container${
+              this.formLayout === " horizontal"
+                ? " col-md-10 no-padding"
+                : ""
+            }"
           >
             <div
               class="pl-input-group drtp${this.size === "sm"
@@ -2254,9 +2238,7 @@ class DateRangeTimePicker extends LitElement {
                   >
                     <span
                       class="pl-input-group-text"
-                      aria-label="Toggle Calendar Picker"
-                      aria-haspopup="dialog"
-                      aria-expanded=${this.dropdownOpen ? "true" : "false"}
+                      aria-label="Calendar Icon"
                       ?disabled=${this.disabled}
                     >
                       <i class="${this.icon}"></i>
@@ -2285,17 +2267,32 @@ class DateRangeTimePicker extends LitElement {
                       : ""}"
                   >
                     <span
-                      class="pl-input-group-text"
-                      aria-label="Toggle Calendar Picker"
-                      aria-haspopup="dialog"
-                      aria-expanded=${this.dropdownOpen ? "true" : "false"}
+                      class="pl-input-group-text calendar-icon"
+                      aria-label="Calendar icon"
                       ?disabled=${this.disabled}
                     >
                       <i class="${this.icon}"></i>
                     </span>
                   </div>`
                 : ""}
+
+              <button
+                @click=${() =>
+                  this.dispatchEvent(
+                    new CustomEvent("reset-picker", {
+                      bubbles: true,
+                      composed: true,
+                      detail: { clearDuration: true },
+                    })
+                  )}
+                class="clear-input-button"
+                aria-label="Clear Field"
+                role="button"
+              >
+                <i class="fas fa-times-circle"></i>
+              </button>
             </div>
+
             ${this.validation
               ? html`
                   ${this.warningMessage
@@ -2338,11 +2335,10 @@ class DateRangeTimePicker extends LitElement {
           </label>
 
           <div
-            class=${ifDefined(
-              this.formLayout === "horizontal"
-                ? "col-md-10 no-padding"
-                : undefined
-            )}
+            class="dtrp-field-container${
+              this.formLayout === " horizontal"
+                ? " col-md-10 no-padding"
+                : ""}"
           >
             <div
               class="pl-input-group drtp-plumage${this.size === "sm"
@@ -2352,6 +2348,7 @@ class DateRangeTimePicker extends LitElement {
                 : ""}${this.disabled ? " disabled" : ""}"
               role="group"
               aria-label="Date Picker Group"
+              tabindex="0"
             >
               ${this.prepend
                 ? html`<div
@@ -2361,9 +2358,7 @@ class DateRangeTimePicker extends LitElement {
                   >
                     <span
                       class="pl-input-group-text"
-                      aria-label="Toggle Calendar Picker"
-                      aria-haspopup="dialog"
-                      aria-expanded=${this.dropdownOpen ? "true" : "false"}
+                      aria-label="Calendar Icon"
                       ?disabled=${this.disabled}
                     >
                       <i class="${this.icon}"></i>
@@ -2395,16 +2390,30 @@ class DateRangeTimePicker extends LitElement {
                       : ""}"
                   >
                     <span
-                      class="pl-input-group-text"
-                      aria-label="Toggle Calendar Picker"
-                      aria-haspopup="dialog"
-                      aria-expanded=${this.dropdownOpen ? "true" : "false"}
+                      class="pl-input-group-text calendar-icon"
+                      aria-label="Calendar Icon"
                       ?disabled=${this.disabled}
                     >
                       <i class="${this.icon}"></i>
                     </span>
                   </div>`
                 : ""}
+
+              <button
+                @click=${() =>
+                  this.dispatchEvent(
+                    new CustomEvent("reset-picker", {
+                      bubbles: true,
+                      composed: true,
+                      detail: { clearDuration: true },
+                    })
+                  )}
+                class="clear-input-button"
+                aria-label="Clear Field"
+                role="button"
+              >
+                <i class="fas fa-times-circle"></i>
+              </button>
 
               <div class="b-underline" role="presentation">
                 <div
