@@ -174,6 +174,7 @@ class DateRangePicker extends LitElement {
     this.selectedEndDate = "";
     this.dateFormat = "YYYY-MM-DD";
     this.inputElement = null;
+    this.calendarIconElement = null;
     this.popperInstance = null;
     this.handleOutsideClick = this.handleOutsideClick.bind(this);
     this.preventClose = false;
@@ -209,21 +210,37 @@ class DateRangePicker extends LitElement {
   }
 
   firstUpdated() {
-    this.inputElement = this.shadowRoot.querySelector(".form-control");
-    document.addEventListener("click", this.handleOutsideClick);
+    this.inputElement = this.shadowRoot.querySelector('input.form-control');
+  
+  if (this.inputElement) {
+    this.inputElement.addEventListener("focus", this._addFocusClass.bind(this));
+    this.inputElement.addEventListener("blur", this._removeFocusClass.bind(this));
+  }
 
-    if (!this.inputElement) {
-      console.error("Input element not found.");
-    } else {
-      document.addEventListener("click", this.handleOutsideClick);
+    const inputGroup = this.shadowRoot.querySelector(".pl-input-group");
+
+    if (inputGroup) {
+      inputGroup.addEventListener("click", this.toggleDropdown.bind(this));
     }
 
-    if (this.inputElement) {
-      this.inputElement.addEventListener("focus", () => this._addFocusClass());
-      this.inputElement.addEventListener("blur", () =>
-        this._removeFocusClass()
+    const inputElement = this.shadowRoot.querySelector("input.form-control");
+    const calendarButton = this.shadowRoot.querySelector(".calendar-button");
+
+    // Add focus and blur events for the input and calendar button
+    if (inputElement) {
+      inputElement.addEventListener("focus", this._addFocusClass.bind(this));
+      inputElement.addEventListener("blur", this._removeFocusClass.bind(this));
+    }
+
+    if (calendarButton) {
+      calendarButton.addEventListener("focus", this._addFocusClass.bind(this));
+      calendarButton.addEventListener(
+        "blur",
+        this._removeFocusClass.bind(this)
       );
     }
+
+    document.addEventListener("click", this.handleOutsideClick.bind(this));
 
     this.shadowRoot.addEventListener(
       "reset-picker",
@@ -259,16 +276,16 @@ class DateRangePicker extends LitElement {
   }
 
   _addFocusClass() {
-    const drtpDiv = this.shadowRoot.querySelector(".pl-input-group");
-    if (drtpDiv) {
-      drtpDiv.classList.add("focus");
+    const plInputGroupDiv = this.shadowRoot.querySelector(".pl-input-group");
+    if (plInputGroupDiv) {
+      plInputGroupDiv.classList.add("focus");
     }
   }
 
   _removeFocusClass() {
-    const drtpDiv = this.shadowRoot.querySelector(".pl-input-group");
-    if (drtpDiv) {
-      drtpDiv.classList.remove("focus");
+    const plInputGroupDiv = this.shadowRoot.querySelector(".pl-input-group");
+    if (plInputGroupDiv) {
+      plInputGroupDiv.classList.remove("focus");
     }
   }
 
@@ -420,9 +437,11 @@ class DateRangePicker extends LitElement {
     const bFocusDiv = this.shadowRoot.querySelector(".b-focus");
     const isInputFocused =
       event.target === this.shadowRoot.querySelector("input");
+    const isGroupFocused =
+      event.target === this.shadowRoot.querySelector(".calendar-button");
 
     if (bFocusDiv) {
-      if (isInputFocused) {
+      if (isInputFocused || isGroupFocused) {
         // Handle input focus
         bFocusDiv.style.width = "100%";
         bFocusDiv.style.left = "0";
@@ -1499,7 +1518,7 @@ class DateRangePicker extends LitElement {
           {
             name: "offset",
             options: {
-              offset: [0, 2], // Adjust offset as needed
+              offset: [0, 4], // Adjust offset as needed
             },
           },
           {
@@ -1980,6 +1999,8 @@ class DateRangePicker extends LitElement {
                       aria-haspopup="dialog"
                       aria-expanded=${this.dropdownOpen ? "true" : "false"}
                       ?disabled=${this.disabled}
+                      @focus="${this.handleInputInteraction}"
+                      @blur="${this.handleInputDocumentClick}"
                     >
                       <i class="${this.icon}"></i>
                     </button>
@@ -2027,6 +2048,8 @@ class DateRangePicker extends LitElement {
                       aria-haspopup="dialog"
                       aria-expanded=${this.dropdownOpen ? "true" : "false"}
                       ?disabled=${this.disabled}
+                      @focus="${this.handleInputInteraction}"
+                      @blur="${this.handleInputDocumentClick}"
                     >
                       <i class="${this.icon}"></i>
                     </button>

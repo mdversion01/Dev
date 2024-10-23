@@ -147,7 +147,7 @@ class DateRangeTimePicker extends LitElement {
   }
 
   firstUpdated() {
-    this.inputElement = this.shadowRoot.querySelector(".form-control");
+    // this.inputElement = this.shadowRoot.querySelector(".form-control");
 
     // Ensure time inputs are set to default values
     this._setDefaultTimeInputs();
@@ -459,12 +459,12 @@ class DateRangeTimePicker extends LitElement {
   handleInputInteraction(event) {
     // Stop the event from propagating to the document click handler
     event.stopPropagation();
-  
+
     const bFocusDiv = this.shadowRoot.querySelector(".b-focus");
     const isInputFocused =
       event.target === this.shadowRoot.querySelector(".drtp-plumage");
     const isInput = event.target === this.shadowRoot.querySelector("input");
-  
+
     if (bFocusDiv) {
       if (isInputFocused || isInput) {
         // Expand b-focus when either the plumage or input is focused
@@ -477,7 +477,6 @@ class DateRangeTimePicker extends LitElement {
       }
     }
   }
-  
 
   handleTimeInputInteraction(event) {
     // Stop the event from propagating to the document click handler
@@ -1475,7 +1474,7 @@ class DateRangeTimePicker extends LitElement {
   handleOutsideClick(event) {
     const dropdown = this.shadowRoot.querySelector(".dropdown");
     const okButton = this.shadowRoot.querySelector(".ok-button button");
-    
+
     if (
       dropdown &&
       (!dropdown.contains(event.target) || event.target === okButton)
@@ -2386,7 +2385,7 @@ class DateRangeTimePicker extends LitElement {
               aria-label="Date Picker Group"
               tabindex="0"
               @focus="${this.handleInputInteraction}"
-                @blur="${this.handleInputDocumentClick}"
+              @blur="${this.handleInputDocumentClick}"
             >
               ${this.prepend
                 ? html`<div
