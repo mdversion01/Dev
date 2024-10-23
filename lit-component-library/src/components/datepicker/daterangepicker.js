@@ -33,6 +33,95 @@ class DateRangePicker extends LitElement {
         z-index: 1;
         width: 558px;
       }
+
+      .pl-input-group {
+        flex-wrap: nowrap;
+        border: 1px solid rgb(206, 212, 218);
+        border-radius: 0.25rem;
+        padding: 0 !important;
+      }
+
+      .pl-input-group:hover {
+        border-color: rgb(155, 196, 246);
+      }
+
+      .pl-input-group.focus {
+        background-color: transparent;
+        border-color: rgb(155, 196, 246);
+        color: rgb(56, 56, 56);
+        outline: 0px;
+        box-shadow: rgb(0 123 255 / 25%) 0px 0px 0px 0.2rem;
+        border-radius: 0.25rem;
+      }
+
+      .pl-input-group.focus .calendar-button {
+        opacity: 1;
+      }
+
+      .pl-input-group .form-control {
+        border: none;
+      }
+
+      .pl-input-group .form-control:focus {
+        background-color: transparent;
+        border-color: transparent;
+        outline: 0px;
+        box-shadow: none;
+      }
+
+      .pl-input-group.is-invalid {
+        border-color: #b30009 !important;
+      }
+
+      .drp-input-field {
+        position: relative;
+        width: 100%;
+      }
+
+      .drp-input-field .form-control {
+        border-radius: 0.2rem 0 0 0.2rem;
+        padding: 0.5rem 0.75rem 0.25rem;
+      }
+
+      .drp-input-field .clear-input-button {
+        opacity: 0;
+        transition: opacity 0.2s ease-in-out, color 0.2s ease-in-out;
+        position: absolute;
+        right: 3px;
+        top: 7px;
+      }
+
+      .drp-input-field .clear-input-button:hover {
+        color: #d10000;
+        cursor: pointer;
+      }
+
+      .drp-input-field:hover .clear-input-button,
+      .drp-input-field:focus-within .clear-input-button,
+      .plumage .drp-input-field:hover .clear-input-button,
+      .plumage .drp-input-field:focus-within .clear-input-button {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .plumage .pl-input-group {
+        flex-wrap: nowrap;
+        border: none;
+        border-radius: 0;
+        padding: 0 !important;
+      }
+
+      .plumage .pl-input-group:hover {
+        border-color: transparent;
+      }
+
+      .plumage .pl-input-group.focus {
+        background-color: transparent;
+        border-color: transparent;
+        outline: 0px;
+        box-shadow: none;
+        border-radius: 0;
+      }
     `,
   ];
 
@@ -129,6 +218,13 @@ class DateRangePicker extends LitElement {
       document.addEventListener("click", this.handleOutsideClick);
     }
 
+    if (this.inputElement) {
+      this.inputElement.addEventListener("focus", () => this._addFocusClass());
+      this.inputElement.addEventListener("blur", () =>
+        this._removeFocusClass()
+      );
+    }
+
     this.shadowRoot.addEventListener(
       "reset-picker",
       this.clearInputField.bind(this)
@@ -160,6 +256,20 @@ class DateRangePicker extends LitElement {
 
     // Remove the event listener when the component is disconnected
     this.removeEventListener("reset-picker", this.resetCalendar);
+  }
+
+  _addFocusClass() {
+    const drtpDiv = this.shadowRoot.querySelector(".pl-input-group");
+    if (drtpDiv) {
+      drtpDiv.classList.add("focus");
+    }
+  }
+
+  _removeFocusClass() {
+    const drtpDiv = this.shadowRoot.querySelector(".pl-input-group");
+    if (drtpDiv) {
+      drtpDiv.classList.remove("focus");
+    }
   }
 
   openDropdown() {
@@ -1730,7 +1840,7 @@ class DateRangePicker extends LitElement {
                 ? " pl-input-group-sm"
                 : this.size === "lg"
                 ? " pl-input-group-lg"
-                : ""}"
+                : ""}${this.validation ? " is-invalid" : ""}"
               role="group"
               aria-label="Date Picker Group"
             >
@@ -1752,18 +1862,30 @@ class DateRangePicker extends LitElement {
                     </button>
                   </div>`
                 : ""}
+              <div class="drp-input-field">
+                <input
+                  id="${this.inputId}"
+                  type="text"
+                  class="form-control${this.validation ? " is-invalid" : ""}"
+                  placeholder="${this.placeholder}"
+                  value="${ifDefined(this.value)}"
+                  @input=${this.handleInputChange}
+                  ?disabled=${this.disabled}
+                  aria-label="Selected Date"
+                  aria-describedby="datepicker-desc"
+                />
 
-              <input
-                id="${this.inputId}"
-                type="text"
-                class="form-control${this.validation ? " is-invalid" : ""}"
-                placeholder="${this.placeholder}"
-                value="${ifDefined(this.value)}"
-                @input=${this.handleInputChange}
-                ?disabled=${this.disabled}
-                aria-label="Selected Date"
-                aria-describedby="datepicker-desc"
-              />
+                ${this.value
+                  ? html`<button
+                      @click=${() => this.clearInputField()}
+                      class="clear-input-button"
+                      aria-label="Clear Field"
+                      role="button"
+                    >
+                      <i class="fas fa-times-circle"></i>
+                    </button>`
+                  : ""}
+              </div>
 
               ${this.append
                 ? html`<div
@@ -1773,7 +1895,10 @@ class DateRangePicker extends LitElement {
                   >
                     <button
                       @click=${this.toggleDropdown}
-                      class="calendar-button pl-btn pl-input-group-text"
+                      class="calendar-button pl-btn pl-input-group-text${this
+                        .validation
+                        ? " is-invalid"
+                        : ""}"
                       aria-label="Toggle Calendar Picker"
                       aria-haspopup="dialog"
                       aria-expanded=${this.dropdownOpen ? "true" : "false"}
@@ -1860,22 +1985,32 @@ class DateRangePicker extends LitElement {
                     </button>
                   </div>`
                 : ""}
-
-              <input
-                id="${this.inputId}"
-                type="text"
-                class="form-control${this.validation ? " is-invalid" : ""}"
-                placeholder="${this.placeholder}"
-                value="${ifDefined(this.value)}"
-                @focus="${this.handleInputInteraction}"
-                @blur="${this.handleInputDocumentClick}"
-                @input=${this.handleInputChange}
-                name="selectedDate"
-                aria-label="Selected Date"
-                aria-describedby="datepicker-desc"
-                ?disabled=${this.disabled}
-              />
-
+              <div class="drp-input-field">
+                <input
+                  id="${this.inputId}"
+                  type="text"
+                  class="form-control${this.validation ? " is-invalid" : ""}"
+                  placeholder="${this.placeholder}"
+                  value="${ifDefined(this.value)}"
+                  @focus="${this.handleInputInteraction}"
+                  @blur="${this.handleInputDocumentClick}"
+                  @input=${this.handleInputChange}
+                  name="selectedDate"
+                  aria-label="Selected Date"
+                  aria-describedby="datepicker-desc"
+                  ?disabled=${this.disabled}
+                />
+                ${this.value
+                  ? html`<button
+                      @click=${() => this.clearInputField()}
+                      class="clear-input-button"
+                      aria-label="Clear Field"
+                      role="button"
+                    >
+                      <i class="fas fa-times-circle"></i>
+                    </button>`
+                  : ""}
+              </div>
               ${this.append
                 ? html`<div
                     class="pl-input-group-append${this.validation
@@ -1884,7 +2019,10 @@ class DateRangePicker extends LitElement {
                   >
                     <button
                       @click=${this.toggleDropdown}
-                      class="calendar-button pl-btn pl-input-group-text"
+                      class="calendar-button pl-btn pl-input-group-text${this
+                        .validation
+                        ? " is-invalid"
+                        : ""}"
                       aria-label="Toggle Calendar Picker"
                       aria-haspopup="dialog"
                       aria-expanded=${this.dropdownOpen ? "true" : "false"}
@@ -1894,22 +2032,20 @@ class DateRangePicker extends LitElement {
                     </button>
                   </div>`
                 : ""}
-
-              <div
-                class="b-underline${this.validation ? " invalid" : ""}"
-                role="presentation"
-              >
-                <div
-                  class="b-focus${this.disabled ? " disabled" : ""}${this
-                    .validation
-                    ? " invalid"
-                    : ""}"
-                  role="presentation"
-                  aria-hidden="true"
-                ></div>
-              </div>
             </div>
-
+            <div
+              class="b-underline${this.validation ? " invalid" : ""}"
+              role="presentation"
+            >
+              <div
+                class="b-focus${this.disabled ? " disabled" : ""}${this
+                  .validation
+                  ? " invalid"
+                  : ""}"
+                role="presentation"
+                aria-hidden="true"
+              ></div>
+            </div>
             ${this.validation
               ? html`
                   ${this.warningMessage

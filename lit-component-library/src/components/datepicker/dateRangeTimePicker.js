@@ -71,6 +71,7 @@ class DateRangeTimePicker extends LitElement {
       showDuration: { type: Boolean },
       value: { type: String, reflect: true },
       showOkButton: { type: Boolean },
+      showClearButton: { type: Boolean },
     };
   }
 
@@ -91,6 +92,7 @@ class DateRangeTimePicker extends LitElement {
     this.selectedEndDate = "";
     this.dateFormat = "YYYY-MM-DD";
     this.inputElement = null;
+    this.calendarElement = null;
     this.popperInstance = null;
     this.handleOutsideClick = this.handleOutsideClick.bind(this);
     this.preventClose = false;
@@ -120,6 +122,7 @@ class DateRangeTimePicker extends LitElement {
     this.showOkButton = true;
     this.startAmPm = "PM"; // Default to PM
     this.endAmPm = "PM"; // Default to PM
+    this.showClearButton = false;
     this._setDefaultTimes();
     this.addEventListener("reset-picker", this.resetCalendar);
 
@@ -145,21 +148,39 @@ class DateRangeTimePicker extends LitElement {
 
   firstUpdated() {
     this.inputElement = this.shadowRoot.querySelector(".form-control");
-    document.addEventListener("click", this.handleOutsideClick);
 
     // Ensure time inputs are set to default values
     this._setDefaultTimeInputs();
 
     const inputGroup = this.shadowRoot.querySelector(".date-range-time-input");
+
     if (inputGroup) {
       inputGroup.addEventListener("click", this.toggleDropdown.bind(this));
     }
 
     this.inputElement = this.shadowRoot.querySelector(".date-range-time-input");
+    this.calendarElement = this.plumage
+      ? this.shadowRoot.querySelector(".drtp-plumage")
+      : this.shadowRoot.querySelector(".drtp");
 
     if (this.inputElement) {
       this.inputElement.addEventListener("focus", () => this._addFocusClass());
       this.inputElement.addEventListener("blur", () =>
+        this._removeFocusClass()
+      );
+    }
+
+    if (this.calendarElement) {
+      this.calendarElement.addEventListener("click", () =>
+        this._addFocusClass()
+      );
+    }
+
+    if (this.calendarElement) {
+      this.calendarElement.addEventListener("focus", () =>
+        this._addFocusClass()
+      );
+      this.calendarElement.addEventListener("blur", () =>
         this._removeFocusClass()
       );
     }
@@ -187,15 +208,31 @@ class DateRangeTimePicker extends LitElement {
     }
 
     // Event listener for Enter key to open dropdown on focus
-  const drtpElement = this.plumage ? this.shadowRoot.querySelector('.drtp-plumage') : this.shadowRoot.querySelector('.drtp');
-  if (drtpElement) {
-    drtpElement.addEventListener('keydown', (event) => {
-      if (event.key === 'Enter') {
-        event.preventDefault(); // Prevent any default Enter key action
-        this.toggleDropdown(event); // Open the dropdown
-      }
-    });
-  }
+    const drtpElement = this.plumage
+      ? this.shadowRoot.querySelector(".drtp-plumage")
+      : this.shadowRoot.querySelector(".drtp");
+    if (drtpElement) {
+      drtpElement.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+          event.preventDefault(); // Prevent any default Enter key action
+          this.toggleDropdown(event); // Open the dropdown
+        }
+      });
+    }
+
+    if (drtpElement) {
+      // Add mouseenter and mouseleave event listeners
+      drtpElement.addEventListener("mouseenter", () => {
+        this.showClearButton = true; // Show the button when cursor enters the div
+      });
+      drtpElement.addEventListener("mouseleave", () => {
+        this.showClearButton = false; // Hide the button when cursor leaves the div
+      });
+    }
+
+    if (drtpElement) {
+      drtpElement.addEventListener("click", this.toggleDropdown.bind(this));
+    }
 
     document.addEventListener("click", this.handleOutsideClick);
 
@@ -1436,8 +1473,7 @@ class DateRangeTimePicker extends LitElement {
   handleOutsideClick(event) {
     const dropdown = this.shadowRoot.querySelector(".dropdown");
     const okButton = this.shadowRoot.querySelector(".ok-button button");
-
-    // Only close if the click is outside the dropdown or on the OK button
+    
     if (
       dropdown &&
       (!dropdown.contains(event.target) || event.target === okButton)
@@ -1446,7 +1482,8 @@ class DateRangeTimePicker extends LitElement {
       document.removeEventListener("click", this.handleOutsideClick);
     }
 
-    this.preventClose = false; // Ensure this is reset after every click
+    // Reset preventClose flag
+    this.preventClose = false;
   }
 
   // Helper function to remove the validation classes
@@ -1585,7 +1622,7 @@ class DateRangeTimePicker extends LitElement {
           {
             name: "offset",
             options: {
-              offset: [-2, 2], // Adjust offset as needed
+              offset: this.prepend ? [-28, 2] : [-2, 2], // Adjust offset as needed
             },
           },
           {
@@ -2214,11 +2251,10 @@ class DateRangeTimePicker extends LitElement {
               : `${this.label}`}
           </label>
 
-          <div class="dtrp-field-container${
-              this.formLayout === " horizontal"
-                ? " col-md-10 no-padding"
-                : ""
-            }"
+          <div
+            class="dtrp-field-container${this.formLayout === " horizontal"
+              ? " col-md-10 no-padding"
+              : ""}"
           >
             <div
               class="pl-input-group drtp${this.size === "sm"
@@ -2237,9 +2273,9 @@ class DateRangeTimePicker extends LitElement {
                       : ""}"
                   >
                     <span
-                      class="pl-input-group-text"
-                      aria-label="Calendar Icon"
-                      ?disabled=${this.disabled}
+                      class="pl-input-group-text calendar-icon"
+                      style="opacity: 1;"
+                      aria-label="Calendar icon"
                     >
                       <i class="${this.icon}"></i>
                     </span>
@@ -2268,29 +2304,28 @@ class DateRangeTimePicker extends LitElement {
                   >
                     <span
                       class="pl-input-group-text calendar-icon"
+                      style=${ifDefined(
+                        !this.value ? "opacity: 1;" : undefined
+                      )}
                       aria-label="Calendar icon"
-                      ?disabled=${this.disabled}
                     >
                       <i class="${this.icon}"></i>
                     </span>
                   </div>`
                 : ""}
-
-              <button
-                @click=${() =>
-                  this.dispatchEvent(
-                    new CustomEvent("reset-picker", {
-                      bubbles: true,
-                      composed: true,
-                      detail: { clearDuration: true },
-                    })
-                  )}
-                class="clear-input-button"
-                aria-label="Clear Field"
-                role="button"
-              >
-                <i class="fas fa-times-circle"></i>
-              </button>
+              ${this.showClearButton && this.value
+                ? html`<button
+                    @click=${(event) => {
+                      event.stopPropagation(); // Prevent the dropdown from toggling
+                      this.clearInputField(); // Clear the input field
+                    }}
+                    class="clear-input-button"
+                    aria-label="Clear Field"
+                    role="button"
+                  >
+                    <i class="fas fa-times-circle"></i>
+                  </button>`
+                : ""}
             </div>
 
             ${this.validation
@@ -2335,10 +2370,9 @@ class DateRangeTimePicker extends LitElement {
           </label>
 
           <div
-            class="dtrp-field-container${
-              this.formLayout === " horizontal"
-                ? " col-md-10 no-padding"
-                : ""}"
+            class="dtrp-field-container${this.formLayout === " horizontal"
+              ? " col-md-10 no-padding"
+              : ""}"
           >
             <div
               class="pl-input-group drtp-plumage${this.size === "sm"
@@ -2357,9 +2391,9 @@ class DateRangeTimePicker extends LitElement {
                       : ""}"
                   >
                     <span
-                      class="pl-input-group-text"
-                      aria-label="Calendar Icon"
-                      ?disabled=${this.disabled}
+                      class="pl-input-group-text calendar-icon"
+                      style="opacity: 1;"
+                      aria-label="Calendar icon"
                     >
                       <i class="${this.icon}"></i>
                     </span>
@@ -2391,29 +2425,28 @@ class DateRangeTimePicker extends LitElement {
                   >
                     <span
                       class="pl-input-group-text calendar-icon"
+                      style=${ifDefined(
+                        !this.value ? "opacity: 1;" : undefined
+                      )}
                       aria-label="Calendar Icon"
-                      ?disabled=${this.disabled}
                     >
                       <i class="${this.icon}"></i>
                     </span>
                   </div>`
                 : ""}
-
-              <button
-                @click=${() =>
-                  this.dispatchEvent(
-                    new CustomEvent("reset-picker", {
-                      bubbles: true,
-                      composed: true,
-                      detail: { clearDuration: true },
-                    })
-                  )}
-                class="clear-input-button"
-                aria-label="Clear Field"
-                role="button"
-              >
-                <i class="fas fa-times-circle"></i>
-              </button>
+              ${this.showClearButton && this.value
+                ? html`<button
+                    @click=${(event) => {
+                      event.stopPropagation(); // Prevent the dropdown from toggling
+                      this.clearInputField(); // Clear the input field
+                    }}
+                    class="clear-input-button"
+                    aria-label="Clear Field"
+                    role="button"
+                  >
+                    <i class="fas fa-times-circle"></i>
+                  </button>`
+                : ""}
 
               <div class="b-underline" role="presentation">
                 <div

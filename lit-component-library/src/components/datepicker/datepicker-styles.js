@@ -587,6 +587,7 @@ export const datepickerStyles = css`
     border: 1px solid rgb(206, 212, 218);
     border-radius: 0.25rem;
     padding: 0 !important;
+    cursor: pointer;
   }
 
   .drtp:hover {
@@ -604,6 +605,7 @@ export const datepickerStyles = css`
 
   .drtp .form-control {
     border: none;
+    cursor: pointer;
   }
 
   .drtp .form-control:focus {
@@ -613,8 +615,13 @@ export const datepickerStyles = css`
     box-shadow: none;
   }
 
+  .drtp-plumage,
+  .drtp-plumage .form-control {
+    cursor: pointer;
+  }
+
   .drtp .pl-input-group-text,
-  .plumage .drtp-plumage .pl-input-group-text {
+  .drtp-plumage .pl-input-group-text {
     color: #ccc;
     background-color: transparent;
     border: none;
@@ -627,6 +634,7 @@ export const datepickerStyles = css`
   }
 
   .clear-input-button {
+    color: #838383;
     opacity: 0;
     transition: opacity 0.2s ease-in-out, color 0.2s ease-in-out;
     position: absolute;
@@ -634,9 +642,15 @@ export const datepickerStyles = css`
     top: 7px;
   }
 
-  .clear-input-button:hover {
+  .clear-input-button:hover,
+  .clear-input-button:focus {
     color: #d10000;
     cursor: pointer;
+  }
+
+  .clear-input-button:focus-visible {
+    outline: none;
+    border: none;
   }
 
   .drtp:hover .clear-input-button,
@@ -645,7 +659,6 @@ export const datepickerStyles = css`
   .plumage .drtp-plumage:focus-within .clear-input-button {
     opacity: 1;
     visibility: visible;
-
   }
 
   .drtp .calendar-icon,
@@ -658,16 +671,39 @@ export const datepickerStyles = css`
     opacity: 0; /* Hide the calendar icon when the input is hovered */
   }
 
+  .drtp.pl-input-group-sm .calendar-icon,
+  .drtp-plumage.pl-input-group-sm .calendar-icon {
+    padding-top: 6px !important;
+  }
+
+  .drtp.pl-input-group-sm .clear-input-button,
+  .drtp-plumage.pl-input-group-sm .clear-input-button {
+    right: 0;
+    top: 2px;
+  }
+
+  .drtp.pl-input-group-lg .calendar-icon,
+  .drtp-plumage.pl-input-group-lg .calendar-icon {
+    padding-top: 14px !important;
+  }
+
+  .drtp.pl-input-group-lg .clear-input-button,
+  .drtp-plumage.pl-input-group-lg .clear-input-button {
+    right: 9px;
+    top: 11px;
+  }
+
   .calendar-button {
-    background-color: transparent;
+    background-color: transparent !important;
+    border: none !important;
     cursor: pointer;
-    color: rgb(149, 149, 149);
+    color: rgb(149, 149, 149) !important;
     margin-left: 0px;
     min-height: 38px;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0.375rem 0.75rem;
+    padding: 0.375rem 0.75rem 0.375rem 0.25rem !important;
     font-size: 1rem;
     font-weight: 400;
     line-height: 1.5;
@@ -677,14 +713,53 @@ export const datepickerStyles = css`
       box-shadow 0.15s ease-in-out 0s;
   }
 
-  .calendar-button:hover {
-    color: #fff;
+  .calendar-button:hover,
+  .calendar-button:focus,
+  .calendar-button.is-invalid:hover {
+    color: #333 !important;
+  }
+
+  .calendar-button:focus {
+    outline: none;
+    box-shadow: none;
+  }
+
+  .calendar-button.is-invalid {
+    color: #b30009 !important;
+  }
+
+  /* .input-calendar-icon {
+    padding-right: calc(1.5em + 0.75rem);
+    background-repeat: no-repeat;
+    background-position: right calc(-1em + 1.75rem) center;
+    background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+    background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" fill="%23CCCCCC"><path d="M128 0c17.7 0 32 14.3 32 32l0 32 128 0 0-32c0-17.7 14.3-32 32-32s32 14.3 32 32l0 32 48 0c26.5 0 48 21.5 48 48l0 48L0 160l0-48C0 85.5 21.5 64 48 64l48 0 0-32c0-17.7 14.3-32 32-32zM0 192l448 0 0 272c0 26.5-21.5 48-48 48L48 512c-26.5 0-48-21.5-48-48L0 192zm64 80l0 32c0 8.8 7.2 16 16 16l32 0c8.8 0 16-7.2 16-16l0-32c0-8.8-7.2-16-16-16l-32 0c-8.8 0-16 7.2-16 16zm128 0l0 32c0 8.8 7.2 16 16 16l32 0c8.8 0 16-7.2 16-16l0-32c0-8.8-7.2-16-16-16l-32 0c-8.8 0-16 7.2-16 16zm144-16c-8.8 0-16 7.2-16 16l0 32c0 8.8 7.2 16 16 16l32 0c8.8 0 16-7.2 16-16l0-32c0-8.8-7.2-16-16-16l-32 0zM64 400l0 32c0 8.8 7.2 16 16 16l32 0c8.8 0 16-7.2 16-16l0-32c0-8.8-7.2-16-16-16l-32 0c-8.8 0-16 7.2-16 16zm144-16c-8.8 0-16 7.2-16 16l0 32c0 8.8 7.2 16 16 16l32 0c8.8 0 16-7.2 16-16l0-32c0-8.8-7.2-16-16-16l-32 0zm112 16l0 32c0 8.8 7.2 16 16 16l32 0c8.8 0 16-7.2 16-16l0-32c0-8.8-7.2-16-16-16l-32 0c-8.8 0-16 7.2-16 16z"/></svg>');
+  }
+
+  .input-calendar-icon-hide:hover {
+    background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" fill="%23CCCCCC" fill-opacity="0"><path d="M128 0c17.7 0 32 14.3 32 32l0 32 128 0 0-32c0-17.7 14.3-32 32-32s32 14.3 32 32l0 32 48 0c26.5 0 48 21.5 48 48l0 48L0 160l0-48C0 85.5 21.5 64 48 64l48 0 0-32c0-17.7 14.3-32 32-32zM0 192l448 0 0 272c0 26.5-21.5 48-48 48L48 512c-26.5 0-48-21.5-48-48L0 192zm64 80l0 32c0 8.8 7.2 16 16 16l32 0c8.8 0 16-7.2 16-16l0-32c0-8.8-7.2-16-16-16l-32 0c-8.8 0-16 7.2-16 16zm128 0l0 32c0 8.8 7.2 16 16 16l32 0c8.8 0 16-7.2 16-16l0-32c0-8.8-7.2-16-16-16l-32 0c-8.8 0-16 7.2-16 16zm144-16c-8.8 0-16 7.2-16 16l0 32c0 8.8 7.2 16 16 16l32 0c8.8 0 16-7.2 16-16l0-32c0-8.8-7.2-16-16-16l-32 0zM64 400l0 32c0 8.8 7.2 16 16 16l32 0c8.8 0 16-7.2 16-16l0-32c0-8.8-7.2-16-16-16l-32 0c-8.8 0-16 7.2-16 16zm144-16c-8.8 0-16 7.2-16 16l0 32c0 8.8 7.2 16 16 16l32 0c8.8 0 16-7.2 16-16l0-32c0-8.8-7.2-16-16-16l-32 0zm112 16l0 32c0 8.8 7.2 16 16 16l32 0c8.8 0 16-7.2 16-16l0-32c0-8.8-7.2-16-16-16l-32 0c-8.8 0-16 7.2-16 16z"/></svg>');
+    
+  } */
+
+  // <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M128 0c17.7 0 32 14.3 32 32l0 32 128 0 0-32c0-17.7 14.3-32 32-32s32 14.3 32 32l0 32 48 0c26.5 0 48 21.5 48 48l0 48L0 160l0-48C0 85.5 21.5 64 48 64l48 0 0-32c0-17.7 14.3-32 32-32zM0 192l448 0 0 272c0 26.5-21.5 48-48 48L48 512c-26.5 0-48-21.5-48-48L0 192zm64 80l0 32c0 8.8 7.2 16 16 16l32 0c8.8 0 16-7.2 16-16l0-32c0-8.8-7.2-16-16-16l-32 0c-8.8 0-16 7.2-16 16zm128 0l0 32c0 8.8 7.2 16 16 16l32 0c8.8 0 16-7.2 16-16l0-32c0-8.8-7.2-16-16-16l-32 0c-8.8 0-16 7.2-16 16zm144-16c-8.8 0-16 7.2-16 16l0 32c0 8.8 7.2 16 16 16l32 0c8.8 0 16-7.2 16-16l0-32c0-8.8-7.2-16-16-16l-32 0zM64 400l0 32c0 8.8 7.2 16 16 16l32 0c8.8 0 16-7.2 16-16l0-32c0-8.8-7.2-16-16-16l-32 0c-8.8 0-16 7.2-16 16zm144-16c-8.8 0-16 7.2-16 16l0 32c0 8.8 7.2 16 16 16l32 0c8.8 0 16-7.2 16-16l0-32c0-8.8-7.2-16-16-16l-32 0zm112 16l0 32c0 8.8 7.2 16 16 16l32 0c8.8 0 16-7.2 16-16l0-32c0-8.8-7.2-16-16-16l-32 0c-8.8 0-16 7.2-16 16z"/></svg>
+
+  .pl-input-group-append,
+  .pl-input-group-prepend {
+    pointer-events: auto;
+  }
+
+  .drtp .pl-input-group-prepend .calendar-icon {
+    padding-right: 0 !important;
   }
 
   .pl-input-group-prepend.is-invalid > .calendar-button:hover,
   .pl-input-group-append.is-invalid > .calendar-button:hover {
     color: #fff;
     background-color: rgb(179, 0, 9);
+  }
+
+  .pl-input-group.focus .calendar-button {
+    opacity: 0;
   }
 
   .pl-input-group-append .calendar-button {
@@ -810,5 +885,15 @@ export const datepickerStyles = css`
   .plumage .pl-input-group-append.is-invalid > .calendar-button:hover {
     color: #6e2226;
     background-color: transparent !important;
+  }
+
+  .form-control:invalid,
+  .form-control.is-invalid {
+    border-color: transparent;
+    padding-right: 0;
+    background-repeat: no-repeat;
+    background-position: none;
+    background-size: 0;
+    background-image: none;
   }
 `;
