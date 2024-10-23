@@ -459,23 +459,25 @@ class DateRangeTimePicker extends LitElement {
   handleInputInteraction(event) {
     // Stop the event from propagating to the document click handler
     event.stopPropagation();
-
+  
     const bFocusDiv = this.shadowRoot.querySelector(".b-focus");
     const isInputFocused =
-      event.target === this.shadowRoot.querySelector("input");
-
+      event.target === this.shadowRoot.querySelector(".drtp-plumage");
+    const isInput = event.target === this.shadowRoot.querySelector("input");
+  
     if (bFocusDiv) {
-      if (isInputFocused) {
-        // Handle input focus
+      if (isInputFocused || isInput) {
+        // Expand b-focus when either the plumage or input is focused
         bFocusDiv.style.width = "100%";
         bFocusDiv.style.left = "0";
       } else {
-        // Handle input blur
+        // Collapse b-focus when neither is focused
         bFocusDiv.style.width = "0";
         bFocusDiv.style.left = "50%";
       }
     }
   }
+  
 
   handleTimeInputInteraction(event) {
     // Stop the event from propagating to the document click handler
@@ -2383,6 +2385,8 @@ class DateRangeTimePicker extends LitElement {
               role="group"
               aria-label="Date Picker Group"
               tabindex="0"
+              @focus="${this.handleInputInteraction}"
+                @blur="${this.handleInputDocumentClick}"
             >
               ${this.prepend
                 ? html`<div
