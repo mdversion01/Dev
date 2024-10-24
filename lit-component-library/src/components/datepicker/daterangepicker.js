@@ -210,27 +210,20 @@ class DateRangePicker extends LitElement {
   }
 
   firstUpdated() {
-    this.inputElement = this.shadowRoot.querySelector('input.form-control');
-  
-  if (this.inputElement) {
-    this.inputElement.addEventListener("focus", this._addFocusClass.bind(this));
-    this.inputElement.addEventListener("blur", this._removeFocusClass.bind(this));
-  }
+    this.inputElement = this.shadowRoot.querySelector("input.form-control");
 
-    const inputGroup = this.shadowRoot.querySelector(".pl-input-group");
-
-    if (inputGroup) {
-      inputGroup.addEventListener("click", this.toggleDropdown.bind(this));
+    if (this.inputElement) {
+      this.inputElement.addEventListener(
+        "focus",
+        this._addFocusClass.bind(this)
+      );
+      this.inputElement.addEventListener(
+        "blur",
+        this._removeFocusClass.bind(this)
+      );
     }
 
-    const inputElement = this.shadowRoot.querySelector("input.form-control");
     const calendarButton = this.shadowRoot.querySelector(".calendar-button");
-
-    // Add focus and blur events for the input and calendar button
-    if (inputElement) {
-      inputElement.addEventListener("focus", this._addFocusClass.bind(this));
-      inputElement.addEventListener("blur", this._removeFocusClass.bind(this));
-    }
 
     if (calendarButton) {
       calendarButton.addEventListener("focus", this._addFocusClass.bind(this));

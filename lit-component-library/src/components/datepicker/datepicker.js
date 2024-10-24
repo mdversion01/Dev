@@ -22,6 +22,95 @@ class DatePicker extends LitElement {
       footer .small {
         font-size: 80%;
       }
+
+      .pl-input-group {
+        flex-wrap: nowrap;
+        border: 1px solid rgb(206, 212, 218);
+        border-radius: 0.25rem;
+        padding: 0 !important;
+      }
+
+      .pl-input-group:hover {
+        border-color: rgb(155, 196, 246);
+      }
+
+      .pl-input-group.focus {
+        background-color: transparent;
+        border-color: rgb(155, 196, 246);
+        color: rgb(56, 56, 56);
+        outline: 0px;
+        box-shadow: rgb(0 123 255 / 25%) 0px 0px 0px 0.2rem;
+        border-radius: 0.25rem;
+      }
+
+      .pl-input-group.focus .calendar-button {
+        opacity: 1;
+      }
+
+      .pl-input-group .form-control {
+        border: none;
+      }
+
+      .pl-input-group .form-control:focus {
+        background-color: transparent;
+        border-color: transparent;
+        outline: 0px;
+        box-shadow: none;
+      }
+
+      .pl-input-group.is-invalid {
+        border-color: #b30009 !important;
+      }
+
+      .drp-input-field {
+        position: relative;
+        width: 100%;
+      }
+
+      .drp-input-field .form-control {
+        border-radius: 0.2rem 0 0 0.2rem;
+        padding: 0.5rem 0.75rem 0.25rem;
+      }
+
+      .drp-input-field .clear-input-button {
+        opacity: 0;
+        transition: opacity 0.2s ease-in-out, color 0.2s ease-in-out;
+        position: absolute;
+        right: 3px;
+        top: 7px;
+      }
+
+      .drp-input-field .clear-input-button:hover {
+        color: #d10000;
+        cursor: pointer;
+      }
+
+      .drp-input-field:hover .clear-input-button,
+      .drp-input-field:focus-within .clear-input-button,
+      .plumage .drp-input-field:hover .clear-input-button,
+      .plumage .drp-input-field:focus-within .clear-input-button {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .plumage .pl-input-group {
+        flex-wrap: nowrap;
+        border: none;
+        border-radius: 0;
+        padding: 0 !important;
+      }
+
+      .plumage .pl-input-group:hover {
+        border-color: transparent;
+      }
+
+      .plumage .pl-input-group.focus {
+        background-color: transparent;
+        border-color: transparent;
+        outline: 0px;
+        box-shadow: none;
+        border-radius: 0;
+      }
     `,
   ];
 
@@ -55,6 +144,7 @@ class DatePicker extends LitElement {
       size: { type: String },
       validation: { type: Boolean },
       validationMessage: { type: String },
+      value: { type: String, reflect: true },
       warningMessage: { type: String },
       calendar: { type: Boolean },
     };
@@ -92,11 +182,60 @@ class DatePicker extends LitElement {
     this.size = "";
     this.validation = false;
     this.validationMessage = "";
+    this.value = "";
     this.warningMessage = "";
     this.calendar = false;
+    this.calendarIconElement = null;
 
     // Bind handleOutsideClick once to maintain the same reference
     this.handleOutsideClick = this.handleOutsideClick.bind(this);
+  }
+
+  firstUpdated() {
+    this.renderCalendar(this.currentMonth, this.currentYear);
+    this.updateSelectedDateDisplay("No date selected");
+
+    if (this.displayContextExamples) {
+      this.updateInitialContext();
+    }
+
+    this.inputElement = this.shadowRoot.querySelector("input.form-control");
+
+    // Add focus and blur events for the input and calendar button
+    if (this.inputElement) {
+      this.inputElement.addEventListener(
+        "focus",
+        this._addFocusClass.bind(this)
+      );
+      this.inputElement.addEventListener(
+        "blur",
+        this._removeFocusClass.bind(this)
+      );
+    }
+
+    // Attach the input blur event handler to trigger calendar update when typing is done
+    // this.inputElement.addEventListener("blur", this.handleInputBlur.bind(this));
+    const calendarButton = this.shadowRoot.querySelector(".calendar-button");
+
+    if (calendarButton) {
+      calendarButton.addEventListener("focus", this._addFocusClass.bind(this));
+      calendarButton.addEventListener(
+        "blur",
+        this._removeFocusClass.bind(this)
+      );
+    }
+
+    // Retain the keydown event handler for backspace, arrow keys, etc.
+    this.inputElement.addEventListener(
+      "keydown",
+      this.handleKeyDown.bind(this)
+    );
+
+    document.addEventListener("click", this.handleOutsideClick);
+    document.removeEventListener("click", this.handleDocumentClick);
+    // Ensure the warning message is displayed when the page is loaded
+    // this.setDefaultWarningMessage(); // Call it here to ensure correct initial message
+    this.requestUpdate();
   }
 
   connectedCallback() {
@@ -118,30 +257,18 @@ class DatePicker extends LitElement {
     // document.removeEventListener("click", this.handleDocumentClick);
   }
 
-  firstUpdated() {
-    this.renderCalendar(this.currentMonth, this.currentYear);
-    this.updateSelectedDateDisplay("No date selected");
-
-    if (this.displayContextExamples) {
-      this.updateInitialContext();
+  _addFocusClass() {
+    const plInputGroupDiv = this.shadowRoot.querySelector(".pl-input-group");
+    if (plInputGroupDiv) {
+      plInputGroupDiv.classList.add("focus");
     }
+  }
 
-    this.inputElement = this.shadowRoot.querySelector(".form-control");
-
-    // Attach the input blur event handler to trigger calendar update when typing is done
-    this.inputElement.addEventListener("blur", this.handleInputBlur.bind(this));
-
-    // Retain the keydown event handler for backspace, arrow keys, etc.
-    this.inputElement.addEventListener(
-      "keydown",
-      this.handleKeyDown.bind(this)
-    );
-
-    document.addEventListener("click", this.handleOutsideClick);
-    document.removeEventListener("click", this.handleDocumentClick);
-    // Ensure the warning message is displayed when the page is loaded
-    // this.setDefaultWarningMessage(); // Call it here to ensure correct initial message
-    this.requestUpdate();
+  _removeFocusClass() {
+    const plInputGroupDiv = this.shadowRoot.querySelector(".pl-input-group");
+    if (plInputGroupDiv) {
+      plInputGroupDiv.classList.remove("focus");
+    }
   }
 
   updated(changedProperties) {
@@ -244,7 +371,7 @@ class DatePicker extends LitElement {
         {
           name: "offset",
           options: {
-            offset: [0, 2],
+            offset: [0, 4],
           },
         },
         {
@@ -1333,23 +1460,23 @@ class DatePicker extends LitElement {
     // Clear previous messages
     this.validationMessage = "";
     this.validation = false;
-  
+
     // Helper function to trigger validation error
     const triggerValidation = (message) => {
       this.validation = true;
       this.validationMessage = message;
       this.requestUpdate(); // Ensures that the error message is reflected in the UI
     };
-  
+
     let parts, year, month, day;
-  
+
     // Parse the input based on the date format
     if (this.dateFormat === "YYYY-MM-DD") {
       parts = value.split("-");
       year = parts[0] ? parts[0] : null;
       month = parts[1] ? parseInt(parts[1], 10) : null;
       day = parts[2] ? parseInt(parts[2], 10) : null;
-  
+
       // Validate year: must be present and exactly 4 digits
       if (
         year === null ||
@@ -1362,37 +1489,36 @@ class DatePicker extends LitElement {
         );
         return;
       }
-  
+
       // Validate month if present or empty (i.e. being deleted)
       if (month === null || isNaN(month) || month < 1 || month > 12) {
         triggerValidation("Month is required and must be between 01 and 12.");
         return;
       }
-  
+
       // Validate day if present or empty (i.e. being deleted)
       if (day === null || isNaN(day) || day < 1 || day > 31) {
         triggerValidation("Day is required and must be between 01 and 31.");
         return;
       }
-  
     } else if (this.dateFormat === "MM-DD-YYYY") {
       parts = value.split("-");
       month = parts[0] ? parseInt(parts[0], 10) : null;
       day = parts[1] ? parseInt(parts[1], 10) : null;
       year = parts[2] ? parts[2] : null;
-  
+
       // Validate month: must be present and between 01 and 12, or trigger validation when deleted
       if (month === null || isNaN(month) || month < 1 || month > 12) {
         triggerValidation("Month is required and must be between 01 and 12.");
         return;
       }
-  
+
       // Validate day: must be present and between 01 and 31, or trigger validation when deleted
       if (day === null || isNaN(day) || day < 1 || day > 31) {
         triggerValidation("Day is required and must be between 01 and 31.");
         return;
       }
-  
+
       // Validate year: it should be present and exactly 4 digits
       if (
         year === null ||
@@ -1406,14 +1532,13 @@ class DatePicker extends LitElement {
         return;
       }
     }
-  
+
     // If all checks pass, clear validation
     this.validation = false;
     this.validationMessage = "";
     this.requestUpdate();
   }
-  
-  
+
   prevMonth() {
     this.preventClose = true; // Prevent closing the dropdown
     this.currentMonth--;
@@ -1583,9 +1708,11 @@ class DatePicker extends LitElement {
     const bFocusDiv = this.shadowRoot.querySelector(".b-focus");
     const isInputFocused =
       event.target === this.shadowRoot.querySelector("input");
+    const isGroupFocused =
+      event.target === this.shadowRoot.querySelector(".calendar-button");
 
     if (bFocusDiv) {
-      if (isInputFocused) {
+      if (isInputFocused || isGroupFocused) {
         // Handle input focus
         bFocusDiv.style.width = "100%";
         bFocusDiv.style.left = "0";
@@ -1842,25 +1969,39 @@ class DatePicker extends LitElement {
                   : this.size === "lg"
                   ? " pl-input-group-lg"
                   : ""
-              }"
+              }${this.validation ? " is-invalid" : ""}"
               role="group"
               aria-label="Date Picker Group"
             >
               ${this.prepend ? this.renderPrepend() : ""}
-              <input
-                id="${this.inputId}"
-                type="text"
-                class="form-control${this.validation ? " is-invalid" : ""}"
-                placeholder=${this.placeholder}
-                value=${
-                  this.selectedDate ? this.formatDate(this.selectedDate) : ""
+              <div class="drp-input-field">
+                <input
+                  id="${this.inputId}"
+                  type="text"
+                  class="form-control${this.validation ? " is-invalid" : ""}"
+                  placeholder=${this.placeholder}
+                  value=${
+                    this.selectedDate ? this.formatDate(this.selectedDate) : ""
+                  }
+                  @input=${this.handleInputChange}
+                  @blur=${this.handleInputBlur}
+                  ?disabled=${this.disabled}
+                  aria-label="Selected Date"
+                  aria-describedby="datepicker-desc"
+                />
+                ${
+                  this.selectedDate
+                    ? html`<button
+                        @click=${() => this.clearInputField()}
+                        class="clear-input-button"
+                        aria-label="Clear Field"
+                        role="button"
+                      >
+                        <i class="fas fa-times-circle"></i>
+                      </button>`
+                    : ""
                 }
-                @input=${this.handleInputChange}
-                @blur=${this.handleInputBlur}
-                ?disabled=${this.disabled}
-                aria-label="Selected Date"
-                aria-describedby="datepicker-desc"
-              />
+              </div>
               ${this.append ? this.renderAppend() : ""}
             </div>
             ${
@@ -1937,32 +2078,44 @@ class DatePicker extends LitElement {
                     aria-haspopup="dialog"
                     aria-expanded=${this.dropdownOpen ? "true" : "false"}
                     ?disabled=${this.disabled}
+                    @focus="${this.handleInteraction}"
+                    @blur="${this.handleDocumentClick}"
                   >
                     <i class="${this.icon}"></i>
                   </button>
                 </div>`
               : ""}
-
-            <input
-              id="${this.inputId}"
-              type="text"
-              class="form-control${this.validation ? " is-invalid" : ""}"
-              placeholder=${this.placeholder}
-              value=${this.selectedDate
-                ? this.formatDate(this.selectedDate)
+            <div class="drp-input-field">
+              <input
+                id="${this.inputId}"
+                type="text"
+                class="form-control${this.validation ? " is-invalid" : ""}"
+                placeholder=${this.placeholder}
+                value=${this.selectedDate
+                  ? this.formatDate(this.selectedDate)
+                  : ""}
+                @focus="${this.handleInteraction}"
+                @blur="${this.handleDocumentClick}"
+                @input=${this.handleInputChange}
+                name="selectedDate"
+                aria-label="Selected Date"
+                aria-describedby="datepicker-desc"
+                aria-describedby=${ifDefined(
+                  this.validation ? "validationMessage" : undefined
+                )}
+                ?disabled=${this.disabled}
+              />
+              ${this.selectedDate
+                ? html`<button
+                    @click=${() => this.clearInputField()}
+                    class="clear-input-button"
+                    aria-label="Clear Field"
+                    role="button"
+                  >
+                    <i class="fas fa-times-circle"></i>
+                  </button>`
                 : ""}
-              @focus="${this.handleInteraction}"
-              @blur="${this.handleDocumentClick}"
-              @input=${this.handleInputChange}
-              name="selectedDate"
-              aria-label="Selected Date"
-              aria-describedby="datepicker-desc"
-              aria-describedby=${ifDefined(
-                this.validation ? "validationMessage" : undefined
-              )}
-              ?disabled=${this.disabled}
-            />
-
+            </div>
             ${this.append
               ? html`<div
                   class="pl-input-group-append${this.validation
@@ -1976,25 +2129,25 @@ class DatePicker extends LitElement {
                     aria-haspopup="dialog"
                     aria-expanded=${this.dropdownOpen ? "true" : "false"}
                     ?disabled=${this.disabled}
+                    @focus="${this.handleInteraction}"
+                    @blur="${this.handleDocumentClick}"
                   >
                     <i class="${this.icon}"></i>
                   </button>
                 </div>`
               : ""}
-
+          </div>
+          <div
+            class="b-underline${this.validation ? " invalid" : ""}"
+            role="presentation"
+          >
             <div
-              class="b-underline${this.validation ? " invalid" : ""}"
+              class="b-focus${this.disabled ? " disabled" : ""}${this.validation
+                ? " invalid"
+                : ""}"
               role="presentation"
-            >
-              <div
-                class="b-focus${this.disabled ? " disabled" : ""}${this
-                  .validation
-                  ? " invalid"
-                  : ""}"
-                role="presentation"
-                aria-hidden="true"
-              ></div>
-            </div>
+              aria-hidden="true"
+            ></div>
           </div>
           ${this.validation
             ? html`
