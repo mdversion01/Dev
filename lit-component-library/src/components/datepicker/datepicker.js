@@ -24,7 +24,7 @@ class DatePicker extends LitElement {
       }
 
       footer:focus-visible {
-        outline: 0; 
+        outline: 0;
       }
 
       .pl-input-group {
@@ -120,79 +120,79 @@ class DatePicker extends LitElement {
 
   static get properties() {
     return {
+      append: { type: Boolean },
+      appendId: { type: String },
+      calendar: { type: Boolean },
+      currentMonth: { type: Number },
+      currentSelectedDate: { type: Object },
+      currentYear: { type: Number },
+      dateFormat: { type: String }, // Property for date format
+      disabled: { type: Boolean },
+      displayContextExamples: { type: Boolean },
+      dropdownOpen: { type: Boolean },
+      formLayout: { type: String },
+      icon: { type: String },
+      inputId: { type: String },
+      isCalendarFocused: { type: Boolean },
+      label: { type: String },
+      labelHidden: { type: Boolean },
+      placeholder: { type: String },
+      plumage: { type: Boolean },
+      prepend: { type: Boolean },
+      prependId: { type: String },
+      previousSelectedDayElement: { type: Object },
+      required: { type: Boolean },
       selectedDate: { type: Object },
       selectedMonth: { type: Number },
       selectedYear: { type: Number },
-      previousSelectedDayElement: { type: Object },
-      currentSelectedDate: { type: Object },
       shouldClearSelectedDate: { type: Boolean },
-      isCalendarFocused: { type: Boolean },
-      currentMonth: { type: Number },
-      currentYear: { type: Number },
-      displayContextExamples: { type: Boolean },
-      dateFormat: { type: String }, // Property for date format
-      plumage: { type: Boolean },
-      dropdownOpen: { type: Boolean },
-      inputId: { type: String },
-      append: { type: Boolean },
-      appendId: { type: String },
-      disabled: { type: Boolean },
-      label: { type: String },
-      labelHidden: { type: Boolean },
-      formLayout: { type: String },
-      icon: { type: String },
-      placeholder: { type: String },
-      prepend: { type: Boolean },
-      prependId: { type: String },
-      required: { type: Boolean },
       size: { type: String },
       validation: { type: Boolean },
       validationMessage: { type: String },
       value: { type: String, reflect: true },
       warningMessage: { type: String },
-      calendar: { type: Boolean },
     };
   }
 
   constructor() {
     super();
+    this.addEventListener("reset-picker", this.resetCalendar);
+    this.addEventListener("update-calendar", this.handleUpdateCalendar); // Listen for updates
+    this.append = true;
+    this.appendId = "";
+    this.calendar = false;
+    this.calendarIconElement = null;
+    // Initialize currentSelectedDate to a valid Date object first
+    this.currentSelectedDate = new Date();
+    // Then, access its properties
+    this.currentMonth = this.currentSelectedDate.getMonth();
+    this.currentYear = this.currentSelectedDate.getFullYear();
+    this.dateFormat = "YYYY-MM-DD"; // Default to YYYY-MM-DD format
+    this.disabled = false;
+    this.displayContextExamples = false;
+    this.dropdownOpen = false;
+    this.formLayout = "";
+    this.handleOutsideClick = this.handleOutsideClick.bind(this); // Bind handleOutsideClick once to maintain the same reference
+    this.icon = "fas fa-calendar-alt";
+    this.inputId = "datepicker";
+    this.isCalendarFocused = false;
+    this.label = "Date Picker";
+    this.labelHidden = false;
+    this.placeholder = `${this.dateFormat}`;
+    this.plumage = false;
+    this.prepend = false;
+    this.prependId = "";
+    this.previousSelectedDayElement = null;
+    this.required = false;
     this.selectedDate = null;
     this.selectedMonth = null;
     this.selectedYear = null;
-    this.previousSelectedDayElement = null;
-    this.currentSelectedDate = new Date();
     this.shouldClearSelectedDate = false;
-    this.isCalendarFocused = false;
-    this.currentMonth = this.currentSelectedDate.getMonth();
-    this.currentYear = this.currentSelectedDate.getFullYear();
-    this.displayContextExamples = false;
-    this.dateFormat = "YYYY-MM-DD"; // Default to YYYY-MM-DD format
-    this.plumage = false;
-    this.addEventListener("reset-picker", this.resetCalendar);
-    this.addEventListener("update-calendar", this.handleUpdateCalendar); // Listen for updates
-    this.dropdownOpen = false;
-    this.inputId = "datepicker";
-    this.append = true;
-    this.appendId = "";
-    this.disabled = false;
-    this.label = "Date Picker";
-    this.labelHidden = false;
-    this.formLayout = "";
-    this.icon = "fas fa-calendar-alt";
-    this.placeholder = `${this.dateFormat}`;
-    this.prepend = false;
-    this.prependId = "";
-    this.required = false;
     this.size = "";
     this.validation = false;
     this.validationMessage = "";
     this.value = "";
     this.warningMessage = "";
-    this.calendar = false;
-    this.calendarIconElement = null;
-
-    // Bind handleOutsideClick once to maintain the same reference
-    this.handleOutsideClick = this.handleOutsideClick.bind(this);
   }
 
   firstUpdated() {
@@ -200,36 +200,47 @@ class DatePicker extends LitElement {
     this.updateSelectedDateDisplay("No date selected");
 
     if (this.displayContextExamples) {
-        this.updateInitialContext();
+      this.updateInitialContext();
     }
 
     this.inputElement = this.shadowRoot.querySelector(".form-control");
 
     // Check if inputElement exists before adding event listeners
     if (this.inputElement) {
-        // Add focus and blur events for the input and calendar button
-        this.inputElement.addEventListener("focus", this._addFocusClass.bind(this));
-        this.inputElement.addEventListener("blur", this._removeFocusClass.bind(this));
+      // Add focus and blur events for the input and calendar button
+      this.inputElement.addEventListener(
+        "focus",
+        this._addFocusClass.bind(this)
+      );
+      this.inputElement.addEventListener(
+        "blur",
+        this._removeFocusClass.bind(this)
+      );
 
-        // Retain the keydown event handler for backspace, arrow keys, etc.
-        this.inputElement.addEventListener("keydown", this.handleKeyDown.bind(this));
+      // Retain the keydown event handler for backspace, arrow keys, etc.
+      this.inputElement.addEventListener(
+        "keydown",
+        this.handleKeyDown.bind(this)
+      );
     } else {
-        console.error('.form-control not found in the DOM.');
+      console.error(".form-control not found in the DOM.");
     }
 
     const calendarButton = this.shadowRoot.querySelector(".calendar-button");
 
     if (calendarButton) {
-        calendarButton.addEventListener("focus", this._addFocusClass.bind(this));
-        calendarButton.addEventListener("blur", this._removeFocusClass.bind(this));
+      calendarButton.addEventListener("focus", this._addFocusClass.bind(this));
+      calendarButton.addEventListener(
+        "blur",
+        this._removeFocusClass.bind(this)
+      );
     }
 
     document.addEventListener("click", this.handleOutsideClick);
     document.removeEventListener("click", this.handleDocumentClick);
-    
-    this.requestUpdate();
-}
 
+    this.requestUpdate();
+  }
 
   connectedCallback() {
     super.connectedCallback();
@@ -530,7 +541,11 @@ class DatePicker extends LitElement {
 
   renderDatePicker() {
     return html`
-      <div class="dp-single-calendar${this.plumage ? " plumage" : ""}">
+      <div
+        class="dp-single-calendar${this.plumage ? " plumage" : ""}"
+        aria-label="${this.ariaLabel || "Date Picker"}"
+        role="region"
+      >
         <div
           class="calendar-inner"
           dir="ltr"
@@ -688,7 +703,10 @@ class DatePicker extends LitElement {
               >
             </div>
             <div class="calendar-grid" id="calendar-grid"></div>
-            <footer class="border-top small text-muted text-center bg-light" tabindex="0">
+            <footer
+              class="border-top small text-muted text-center bg-light"
+              tabindex="0"
+            >
               <div class="small">
                 Use cursor keys to navigate calendar dates
               </div>
@@ -1894,7 +1912,9 @@ class DatePicker extends LitElement {
       <div class="pl-input-group-append">
         <button
           @click=${this.toggleDropdown}
-          class="calendar-button pl-btn pl-input-group-text${this.validation ? " is-invalid" : ""}"
+          class="calendar-button pl-btn pl-input-group-text${this.validation
+            ? " is-invalid"
+            : ""}"
           aria-label="Toggle Calendar Picker"
           aria-haspopup="dialog"
           aria-expanded=${this.dropdownOpen ? "true" : "false"}
@@ -1907,12 +1927,12 @@ class DatePicker extends LitElement {
   }
 
   renderPrepend() {
-    return html` <div
-      class="pl-input-group-prepend"
-    >
+    return html` <div class="pl-input-group-prepend">
       <button
         @click=${this.toggleDropdown}
-        class="calendar-button pl-btn pl-input-group-text${this.validation ? " is-invalid" : ""}"
+        class="calendar-button pl-btn pl-input-group-text${this.validation
+          ? " is-invalid"
+          : ""}"
         aria-label="Toggle Calendar Picker"
         aria-haspopup="dialog"
         aria-expanded=${this.dropdownOpen ? "true" : "false"}
@@ -1986,7 +2006,9 @@ class DatePicker extends LitElement {
                   this.selectedDate
                     ? html`<button
                         @click=${() => this.clearInputField()}
-                        class="clear-input-button${this.validation ? " is-invalid" : ""}"
+                        class="clear-input-button${this.validation
+                          ? " is-invalid"
+                          : ""}"
                         aria-label="Clear Field"
                         role="button"
                       >
@@ -2059,12 +2081,13 @@ class DatePicker extends LitElement {
             aria-label="Date Picker Group"
           >
             ${this.prepend
-              ? html`<div
-                  class="pl-input-group-prepend"
-                >
+              ? html`<div class="pl-input-group-prepend">
                   <button
                     @click=${this.toggleDropdown}
-                    class="calendar-button pl-btn pl-input-group-text${this.validation ? " is-invalid" : ""}"
+                    class="calendar-button pl-btn pl-input-group-text${this
+                      .validation
+                      ? " is-invalid"
+                      : ""}"
                     aria-label="Toggle Calendar Picker"
                     aria-haspopup="dialog"
                     aria-expanded=${this.dropdownOpen ? "true" : "false"}
@@ -2108,12 +2131,13 @@ class DatePicker extends LitElement {
                 : ""}
             </div>
             ${this.append
-              ? html`<div
-                  class="pl-input-group-append"
-                >
+              ? html`<div class="pl-input-group-append">
                   <button
                     @click=${this.toggleDropdown}
-                    class="calendar-button pl-btn pl-input-group-text${this.validation ? " is-invalid" : ""}"
+                    class="calendar-button pl-btn pl-input-group-text${this
+                      .validation
+                      ? " is-invalid"
+                      : ""}"
                     aria-label="Toggle Calendar Picker"
                     aria-haspopup="dialog"
                     aria-expanded=${this.dropdownOpen ? "true" : "false"}

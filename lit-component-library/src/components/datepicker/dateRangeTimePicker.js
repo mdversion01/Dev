@@ -40,38 +40,38 @@ class DateRangeTimePicker extends LitElement {
 
   static get properties() {
     return {
-      ariaLabel: { type: String },
-      dateFormat: { type: String },
-      plumage: { type: Boolean },
-      dropdownOpen: { type: Boolean },
-      selectedDate: { type: String },
-      selectedStartDate: { type: String },
-      selectedEndDate: { type: String },
-      joinBy: { type: String },
-      inputId: { type: String },
       append: { type: Boolean },
       appendId: { type: String },
+      ariaLabel: { type: String },
+      dateFormat: { type: String },
       disabled: { type: Boolean },
-      label: { type: String },
-      labelHidden: { type: Boolean },
+      dropdownOpen: { type: Boolean },
+      endTime: { type: String },
       formLayout: { type: String },
       icon: { type: String },
+      inputId: { type: String },
+      is24HourFormat: { type: Boolean },
+      joinBy: { type: String },
+      label: { type: String },
+      labelHidden: { type: Boolean },
       placeholder: { type: String },
+      plumage: { type: Boolean },
       prepend: { type: Boolean },
       prependId: { type: String },
-      required: { type: Boolean },
-      size: { type: String },
-      // validation: { type: Boolean },
-      // validationMessage: { type: String },
-      warningMessage: { type: String },
       rangeTimePicker: { type: Boolean },
-      startTime: { type: String },
-      endTime: { type: String },
-      is24HourFormat: { type: Boolean },
-      showDuration: { type: Boolean },
-      value: { type: String, reflect: true },
-      showOkButton: { type: Boolean },
+      required: { type: Boolean },
+      selectedDate: { type: String },
+      selectedEndDate: { type: String },
+      selectedStartDate: { type: String },
       showClearButton: { type: Boolean },
+      showDuration: { type: Boolean },
+      showOkButton: { type: Boolean },
+      size: { type: String },
+      startTime: { type: String },
+      value: { type: String, reflect: true },
+      warningMessage: { type: String },
+      validation: { type: Boolean },
+      validationMessage: { type: String },
     };
   }
 
@@ -113,8 +113,8 @@ class DateRangeTimePicker extends LitElement {
     this.prependId = "";
     this.required = false;
     this.size = "";
-    // this.validation = false;
-    // this.validationMessage = "Required field";
+    this.validation = false;
+    this.validationMessage = "Required field";
     this.warningMessage = "";
     this.rangeTimePicker = false;
     this.showDuration = false;

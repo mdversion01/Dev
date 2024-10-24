@@ -127,33 +127,33 @@ class DateRangePicker extends LitElement {
 
   static get properties() {
     return {
-      ariaLabel: { type: String },
-      dateFormat: { type: String },
-      plumage: { type: Boolean },
-      dropdownOpen: { type: Boolean },
-      selectedDate: { type: String },
-      selectedStartDate: { type: String },
-      selectedEndDate: { type: String },
-      joinBy: { type: String },
-      inputId: { type: String },
       append: { type: Boolean },
       appendId: { type: String },
+      ariaLabel: { type: String },
+      dateFormat: { type: String },
       disabled: { type: Boolean },
-      label: { type: String },
-      labelHidden: { type: Boolean },
+      dropdownOpen: { type: Boolean },
       formLayout: { type: String },
       icon: { type: String },
+      inputId: { type: String },
+      joinBy: { type: String },
+      label: { type: String },
+      labelHidden: { type: Boolean },
       placeholder: { type: String },
+      plumage: { type: Boolean },
       prepend: { type: Boolean },
       prependId: { type: String },
+      rangePicker: { type: Boolean },
       required: { type: Boolean },
+      selectedDate: { type: String },
+      selectedEndDate: { type: String },
+      selectedStartDate: { type: String },
+      showOkButton: { type: Boolean },
       size: { type: String },
       validation: { type: Boolean },
       validationMessage: { type: String },
-      warningMessage: { type: String },
-      rangePicker: { type: Boolean },
       value: { type: String, reflect: true },
-      showOkButton: { type: Boolean },
+      warningMessage: { type: String },
     };
   }
 
@@ -1857,14 +1857,13 @@ class DateRangePicker extends LitElement {
               aria-label="Date Picker Group"
             >
               ${this.prepend
-                ? html`<div
-                    class="pl-input-group-prepend"
-                  >
+                ? html`<div class="pl-input-group-prepend">
                     <button
                       @click=${this.toggleDropdown}
-                      class="calendar-button pl-btn pl-input-group-text${this.validation
-                      ? " is-invalid"
-                      : ""}"
+                      class="calendar-button pl-btn pl-input-group-text${this
+                        .validation
+                        ? " is-invalid"
+                        : ""}"
                       aria-label="Toggle Calendar Picker"
                       aria-haspopup="dialog"
                       aria-expanded=${this.dropdownOpen ? "true" : "false"}
@@ -1900,9 +1899,7 @@ class DateRangePicker extends LitElement {
               </div>
 
               ${this.append
-                ? html`<div
-                    class="pl-input-group-append"
-                  >
+                ? html`<div class="pl-input-group-append">
                     <button
                       @click=${this.toggleDropdown}
                       class="calendar-button pl-btn pl-input-group-text${this
@@ -1978,14 +1975,13 @@ class DateRangePicker extends LitElement {
               aria-label="Date Picker Group"
             >
               ${this.prepend
-                ? html`<div
-                    class="pl-input-group-prepend"
-                  >
+                ? html`<div class="pl-input-group-prepend">
                     <button
                       @click=${this.toggleDropdown}
-                      class="calendar-button pl-btn pl-input-group-text${this.validation
-                      ? " is-invalid"
-                      : ""}"
+                      class="calendar-button pl-btn pl-input-group-text${this
+                        .validation
+                        ? " is-invalid"
+                        : ""}"
                       aria-label="Toggle Calendar Picker"
                       aria-haspopup="dialog"
                       aria-expanded=${this.dropdownOpen ? "true" : "false"}
@@ -2024,9 +2020,7 @@ class DateRangePicker extends LitElement {
                   : ""}
               </div>
               ${this.append
-                ? html`<div
-                    class="pl-input-group-append"
-                  >
+                ? html`<div class="pl-input-group-append">
                     <button
                       @click=${this.toggleDropdown}
                       class="calendar-button pl-btn pl-input-group-text${this

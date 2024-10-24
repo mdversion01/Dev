@@ -47,8 +47,9 @@
               <section class="display-box-meta markdown">
                 <div class="display-box-title">Basic Usage</div>
                 <div class="display-box-description">
-                  Date picker calendar or Date Picker Input field, basic and
-                  Plumage themed.
+                  Date picker calendar (stand alone) or Date Picker Input field,
+                  basic and Plumage themed. Start with
+                  &#60;date-picker&#62;&#60;/date-picker&#62;
                 </div>
                 <div class=""></div>
               </section>
@@ -69,8 +70,9 @@
               <section class="display-box-meta markdown">
                 <div class="display-box-title">Basic Usage</div>
                 <div class="display-box-description">
-                  Date Range Picker and Input Field with Date Range Picker,
-                  basic theme.
+                  Date Range Picker (stand alone) and Input Field with Date
+                  Range Picker, basic theme. Start with
+                  &#60;date-range-picker&#62;&#60;/date-range-picker&#62;
                 </div>
                 <div class=""></div>
               </section>
@@ -89,14 +91,19 @@
                 </div>
 
                 <div style="width: 325px">
-                  <date-range-picker joinBy="to" plumage></date-range-picker>
+                  <date-range-picker
+                    joinByTo
+                    plumage
+                    joinBy="to"
+                  ></date-range-picker>
                 </div>
               </section>
               <section class="display-box-meta markdown">
                 <div class="display-box-title">Basic Usage</div>
                 <div class="display-box-description">
-                  Date Range Picker and Input Field with Date Range Picker,
-                  Plumage theme.
+                  Date Range Picker (stand alone) and Input Field with Date
+                  Range Picker, Plumage theme. Start with &#60;date-range-picker
+                  plumage&#62;&#60;/date-range-picker&#62;
                 </div>
                 <div class=""></div>
               </section>
@@ -127,8 +134,9 @@
                 <section class="display-box-meta markdown">
                   <div class="display-box-title">Basic Usage</div>
                   <div class="display-box-description">
-                    Date Range and Time Picker and Input Field with Date Range
-                    and Time Picker, basic theme.
+                    Date Range and Time Picker (stand alone) and Input Field
+                    with Date Range and Time Picker, basic theme. Start with
+                    &#60;date-range-time-picker&#62;&#60;/date-range-time-picker&#62;
                   </div>
                   <div class=""></div>
                 </section>
@@ -157,14 +165,284 @@
               <section class="display-box-meta markdown">
                 <div class="display-box-title">Basic Usage</div>
                 <div class="display-box-description">
-                  Date Range and Time Picker and Input Field with Date Range and
-                  Time Picker, Plumage theme.
+                  Date Range and Time Picker (stand alone) and Input Field with
+                  Date Range and Time Picker, Plumage theme. Start with
+                  &#60;date-range-time-picker
+                  plumage&#62;&#60;/date-range-time-picker&#62;
                 </div>
                 <div class=""></div>
               </section>
             </section>
           </section>
         </section>
+      </div>
+    </div>
+
+    <!-- Props -->
+    <div style="margin-top: 50px">
+      <div class="title">Props</div>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Property</th>
+              <th>Type</th>
+              <th>Default</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td>append</td>
+              <td>Boolean</td>
+              <td>true</td>
+              <td>
+                This adds an append area to the input field. For these
+                components it contains the calendar icon and for the Date Picker
+                and the Date Range Picker, they are buttons. The default is
+                true.
+              </td>
+            </tr>
+            <tr>
+              <td>appendId</td>
+              <td>String</td>
+              <td></td>
+              <td>
+                This is the id of the append area. When used, the id is added to
+                the append area.
+              </td>
+            </tr>
+            <tr>
+              <td>ariaLabel</td>
+              <td>String</td>
+              <td></td>
+              <td>
+                This is the aria-label for the div that the displays the
+                calendar or calendars. When used, the aria-label is added to the
+                div.
+              </td>
+            </tr>
+            <tr>
+              <td>calendar</td>
+              <td>Boolean</td>
+              <td>false</td>
+              <td>
+                When added to the Date Picker component, this will display the
+                stand alone date picker calendar. The default is false. Used
+                only with Date Picker component.
+              </td>
+            </tr>
+            <tr>
+              <td>dateFormat</td>
+              <td>String</td>
+              <td>YYYY-MM-DD</td>
+              <td>
+                This is the format of the date. The default is YYYY-MM-DD. It
+                can be set to MM-DD-YYYY instead of the default. The format is
+                based on the moment.js library.
+              </td>
+            </tr>
+            <tr>
+              <td>disabled</td>
+              <td>Boolean</td>
+              <td>false</td>
+              <td>
+                When this is true, the input field is disabled and users cannot
+                interact with it.
+              </td>
+            </tr>
+            <tr>
+              <td>displayContextExamples</td>
+              <td>Boolean</td>
+              <td>false</td>
+              <td>
+                This is used to display the context examples for the Date Picker
+                component. The default is false.
+              </td>
+            </tr>
+            <tr>
+              <td>formLayout</td>
+              <td>String</td>
+              <td>horizontal, inline</td>
+              <td>
+                This changes the layout of the input field. The default is
+                vertical. If input component is used inside a form component,
+                then formLayout prop of form component will be applied to input
+                component and therefore it does not have to be added to the
+                input component. Also, remember to import your components in the
+                correct order.
+              </td>
+            </tr>
+            <tr>
+              <td>inputId</td>
+              <td>String</td>
+              <td></td>
+              <td>
+                This is the id of the input field. When used, the id is added to
+                the input and to the label's 'for' attribute.
+              </td>
+            </tr>
+            <tr>
+              <td>is24HourFormat</td>
+              <td>Boolean</td>
+              <td>true</td>
+              <td>
+                This is used with the Date Range Time Picker component. When
+                true, the time is displayed in 24 hour format, when false the
+                time is displayed in 12 hour format. The default is true.
+              </td>
+            </tr>
+            <tr>
+              <td>joinBy</td>
+              <td>String</td>
+              <td>-</td>
+              <td>
+                This is the text that is displayed between the start and end
+                dates in the Date Range and Date Range Time Picker components.
+                The default is a hyphen, '-' but you can change the prop to
+                'joinBy="to"', which is the other acceptable format . This is
+                used only with the Date Range and Date Range Time Picker
+                component.
+              </td>
+            </tr>
+            <tr>
+              <td>label</td>
+              <td>String</td>
+              <td></td>
+              <td>
+                This is the label for the input field. When used the label is
+                added to the aria-label and placeholder (unless placeholder prop
+                is used) attribute.
+              </td>
+            </tr>
+            <tr>
+              <td>labelHidden</td>
+              <td>Boolean</td>
+              <td>false</td>
+              <td>
+                This hides the label to be used by screen readers and uses it as
+                the placeholder text (unless placeholder prop is used).
+              </td>
+            </tr>
+            <tr>
+              <td>placeholder</td>
+              <td>String</td>
+              <td></td>
+              <td>
+                This is the placeholder text for the input field. When used, the
+                placeholder is added to the input field. By default, this uses
+                what has been set in the dateFormat prop.
+              </td>
+            </tr>
+            <tr>
+              <td>plumage</td>
+              <td>Boolean</td>
+              <td>false</td>
+              <td>
+                This changes the Plumage styles theme. The default is false.
+              </td>
+            </tr>
+            <tr>
+              <td>prepend</td>
+              <td>Boolean</td>
+              <td>false</td>
+              <td>
+                This adds a prepend area to the input field. For these
+                components it contains the calendar icon and for the Date Picker
+                and the Date Range Picker, they are buttons. The default is
+                false.
+              </td>
+            </tr>
+            <tr>
+              <td>prependId</td>
+              <td>String</td>
+              <td></td>
+              <td>
+                This is the id of the prepend area. When used, the id is added
+                to the prepend area.
+              </td>
+            </tr>
+            <tr>
+              <td>rangePicker</td>
+              <td>Boolean</td>
+              <td>false</td>
+              <td>
+                When added to the Date Range Picker component, this will display
+                the stand alone date range picker calendars. The default is
+                false. Used only with Date Range Picker component.
+              </td>
+            </tr>
+            <tr>
+              <td>rangeTimePicker</td>
+              <td>Boolean</td>
+              <td>false</td>
+              <td>
+                When added to the Date Range Time Picker component, this will
+                display the stand alone date range and time picker calendars. The
+                default is false. Used only with Date Range Time Picker component.
+              </td>
+            </tr>
+            <tr>
+              <td>required</td>
+              <td>Boolean</td>
+              <td>false</td>
+              <td>
+                This makes the input field required and displays an asterisk
+                next to the label.
+              </td>
+            </tr>
+            <tr>
+              <td>showDuration</td>
+              <td>Boolean</td>
+              <td>false</td>
+              <td>
+                This is used with the Date Range Time Picker component. When
+                true, the duration of the time is displayed. The default is
+                false.
+              </td>
+            </tr>
+            <tr>
+              <td>size</td>
+              <td>String</td>
+              <td>sm, lg</td>
+              <td>
+                This changes the size of the input field. The default is
+                default.
+              </td>
+            </tr>
+            <tr>
+              <td>validation</td>
+              <td>Boolean</td>
+              <td>false</td>
+              <td>When true, this will display the input in red.</td>
+            </tr>
+            <tr>
+              <td>validationMessage</td>
+              <td>String</td>
+              <td></td>
+              <td>
+                This is the message that will be displayed when the input field
+                is in a validation state.
+              </td>
+            </tr>
+            <tr>
+              <td>value</td>
+              <td>String</td>
+              <td></td>
+              <td>This is the value of the input field.</td>
+            </tr>
+            <tr>
+              <td>warningMessage</td>
+              <td>String</td>
+              <td></td>
+              <td>
+                This is the message that will be displayed when the input field
+                is in a warning state.
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
 
