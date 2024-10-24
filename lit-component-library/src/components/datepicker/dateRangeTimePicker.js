@@ -2214,7 +2214,7 @@ class DateRangeTimePicker extends LitElement {
   renderDropdown() {
     this.showOkButton = true;
     return html`
-      <div class="dropdown ${this.dropdownOpen ? "open" : ""}">
+      <div class="dropdown${this.dropdownOpen ? " open" : ""}">
         <div
           class="dropdown-content"
           role="dialog"
@@ -2268,13 +2268,11 @@ class DateRangeTimePicker extends LitElement {
               tabindex="0"
             >
               ${this.prepend
-                ? html`<div
-                    class="pl-input-group-prepend${this.validation
-                      ? " is-invalid"
-                      : ""}"
-                  >
+                ? html`<div class="pl-input-group-prepend">
                     <span
-                      class="pl-input-group-text calendar-icon"
+                      class="pl-input-group-text calendar-icon${this.validation
+                        ? " is-invalid"
+                        : ""}"
                       style="opacity: 1;"
                       aria-label="Calendar icon"
                     >
@@ -2298,13 +2296,11 @@ class DateRangeTimePicker extends LitElement {
               />
 
               ${this.append
-                ? html`<div
-                    class="pl-input-group-append${this.validation
-                      ? " is-invalid"
-                      : ""}"
-                  >
+                ? html`<div class="pl-input-group-append">
                     <span
-                      class="pl-input-group-text calendar-icon"
+                      class="pl-input-group-text calendar-icon${this.validation
+                        ? " is-invalid"
+                        : ""}"
                       style=${ifDefined(
                         !this.value ? "opacity: 1;" : undefined
                       )}
@@ -2388,13 +2384,11 @@ class DateRangeTimePicker extends LitElement {
               @blur="${this.handleInputDocumentClick}"
             >
               ${this.prepend
-                ? html`<div
-                    class="pl-input-group-prepend${this.validation
-                      ? " is-invalid"
-                      : ""}"
-                  >
+                ? html`<div class="pl-input-group-prepend">
                     <span
-                      class="pl-input-group-text calendar-icon"
+                      class="pl-input-group-text calendar-icon${this.validation
+                        ? " is-invalid"
+                        : ""}"
                       style="opacity: 1;"
                       aria-label="Calendar icon"
                     >
@@ -2421,13 +2415,11 @@ class DateRangeTimePicker extends LitElement {
               />
 
               ${this.append
-                ? html`<div
-                    class="pl-input-group-append${this.validation
-                      ? " is-invalid"
-                      : ""}"
-                  >
+                ? html`<div class="pl-input-group-append">
                     <span
-                      class="pl-input-group-text calendar-icon"
+                      class="pl-input-group-text calendar-icon${this.validation
+                        ? " is-invalid"
+                        : ""}"
                       style=${ifDefined(
                         !this.value ? "opacity: 1;" : undefined
                       )}
@@ -2481,7 +2473,7 @@ class DateRangeTimePicker extends LitElement {
 
   renderInputs() {
     return html`
-      <div class="dropdown-wrapper">
+      <div class="dropdown-wrapper${this.plumage ? " plumage" : ""}">
         ${this.plumage ? this.renderPlInputGroup() : this.renderInputGroup()}
         ${this.renderDropdown()}
       </div>

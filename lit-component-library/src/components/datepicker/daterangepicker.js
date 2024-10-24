@@ -1802,7 +1802,7 @@ class DateRangePicker extends LitElement {
   renderDropdown() {
     this.showOkButton = true;
     return html`
-      <div class="dropdown ${this.dropdownOpen ? "open" : ""}">
+      <div class="dropdown${this.dropdownOpen ? " open" : ""}">
         <div
           class="dropdown-content"
           role="dialog"
@@ -1858,13 +1858,13 @@ class DateRangePicker extends LitElement {
             >
               ${this.prepend
                 ? html`<div
-                    class="pl-input-group-prepend${this.validation
-                      ? " is-invalid"
-                      : ""}"
+                    class="pl-input-group-prepend"
                   >
                     <button
                       @click=${this.toggleDropdown}
-                      class="calendar-button pl-btn pl-input-group-text"
+                      class="calendar-button pl-btn pl-input-group-text${this.validation
+                      ? " is-invalid"
+                      : ""}"
                       aria-label="Toggle Calendar Picker"
                       aria-haspopup="dialog"
                       aria-expanded=${this.dropdownOpen ? "true" : "false"}
@@ -1901,9 +1901,7 @@ class DateRangePicker extends LitElement {
 
               ${this.append
                 ? html`<div
-                    class="pl-input-group-append${this.validation
-                      ? " is-invalid"
-                      : ""}"
+                    class="pl-input-group-append"
                   >
                     <button
                       @click=${this.toggleDropdown}
@@ -1981,13 +1979,13 @@ class DateRangePicker extends LitElement {
             >
               ${this.prepend
                 ? html`<div
-                    class="pl-input-group-prepend${this.validation
-                      ? " is-invalid"
-                      : ""}"
+                    class="pl-input-group-prepend"
                   >
                     <button
                       @click=${this.toggleDropdown}
-                      class="calendar-button pl-btn pl-input-group-text"
+                      class="calendar-button pl-btn pl-input-group-text${this.validation
+                      ? " is-invalid"
+                      : ""}"
                       aria-label="Toggle Calendar Picker"
                       aria-haspopup="dialog"
                       aria-expanded=${this.dropdownOpen ? "true" : "false"}
@@ -2027,9 +2025,7 @@ class DateRangePicker extends LitElement {
               </div>
               ${this.append
                 ? html`<div
-                    class="pl-input-group-append${this.validation
-                      ? " is-invalid"
-                      : ""}"
+                    class="pl-input-group-append"
                   >
                     <button
                       @click=${this.toggleDropdown}
@@ -2081,7 +2077,7 @@ class DateRangePicker extends LitElement {
 
   renderInputs() {
     return html`
-      <div class="dropdown-wrapper">
+      <div class="dropdown-wrapper${this.plumage ? " plumage" : ""}">
         ${this.plumage ? this.renderPlInputGroup() : this.renderInputGroup()}
         ${this.renderDropdown()}
       </div>

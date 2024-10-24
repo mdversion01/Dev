@@ -23,6 +23,10 @@ class DatePicker extends LitElement {
         font-size: 80%;
       }
 
+      footer:focus-visible {
+        outline: 0; 
+      }
+
       .pl-input-group {
         flex-wrap: nowrap;
         border: 1px solid rgb(206, 212, 218);
@@ -196,47 +200,36 @@ class DatePicker extends LitElement {
     this.updateSelectedDateDisplay("No date selected");
 
     if (this.displayContextExamples) {
-      this.updateInitialContext();
+        this.updateInitialContext();
     }
 
-    this.inputElement = this.shadowRoot.querySelector("input.form-control");
+    this.inputElement = this.shadowRoot.querySelector(".form-control");
 
-    // Add focus and blur events for the input and calendar button
+    // Check if inputElement exists before adding event listeners
     if (this.inputElement) {
-      this.inputElement.addEventListener(
-        "focus",
-        this._addFocusClass.bind(this)
-      );
-      this.inputElement.addEventListener(
-        "blur",
-        this._removeFocusClass.bind(this)
-      );
+        // Add focus and blur events for the input and calendar button
+        this.inputElement.addEventListener("focus", this._addFocusClass.bind(this));
+        this.inputElement.addEventListener("blur", this._removeFocusClass.bind(this));
+
+        // Retain the keydown event handler for backspace, arrow keys, etc.
+        this.inputElement.addEventListener("keydown", this.handleKeyDown.bind(this));
+    } else {
+        console.error('.form-control not found in the DOM.');
     }
 
-    // Attach the input blur event handler to trigger calendar update when typing is done
-    // this.inputElement.addEventListener("blur", this.handleInputBlur.bind(this));
     const calendarButton = this.shadowRoot.querySelector(".calendar-button");
 
     if (calendarButton) {
-      calendarButton.addEventListener("focus", this._addFocusClass.bind(this));
-      calendarButton.addEventListener(
-        "blur",
-        this._removeFocusClass.bind(this)
-      );
+        calendarButton.addEventListener("focus", this._addFocusClass.bind(this));
+        calendarButton.addEventListener("blur", this._removeFocusClass.bind(this));
     }
-
-    // Retain the keydown event handler for backspace, arrow keys, etc.
-    this.inputElement.addEventListener(
-      "keydown",
-      this.handleKeyDown.bind(this)
-    );
 
     document.addEventListener("click", this.handleOutsideClick);
     document.removeEventListener("click", this.handleDocumentClick);
-    // Ensure the warning message is displayed when the page is loaded
-    // this.setDefaultWarningMessage(); // Call it here to ensure correct initial message
+    
     this.requestUpdate();
-  }
+}
+
 
   connectedCallback() {
     super.connectedCallback();
@@ -695,7 +688,7 @@ class DatePicker extends LitElement {
               >
             </div>
             <div class="calendar-grid" id="calendar-grid"></div>
-            <footer class="border-top small text-muted text-center bg-light">
+            <footer class="border-top small text-muted text-center bg-light" tabindex="0">
               <div class="small">
                 Use cursor keys to navigate calendar dates
               </div>
@@ -1883,7 +1876,7 @@ class DatePicker extends LitElement {
 
   renderDropdown() {
     return html`
-      <div class="dropdown ${this.dropdownOpen ? "open" : ""}">
+      <div class="dropdown${this.dropdownOpen ? " open" : ""}">
         <div
           class="dropdown-content"
           role="dialog"
@@ -1898,10 +1891,10 @@ class DatePicker extends LitElement {
 
   renderAppend() {
     return html`
-      <div class="pl-input-group-append${this.validation ? " is-invalid" : ""}">
+      <div class="pl-input-group-append">
         <button
           @click=${this.toggleDropdown}
-          class="calendar-button pl-btn pl-input-group-text"
+          class="calendar-button pl-btn pl-input-group-text${this.validation ? " is-invalid" : ""}"
           aria-label="Toggle Calendar Picker"
           aria-haspopup="dialog"
           aria-expanded=${this.dropdownOpen ? "true" : "false"}
@@ -1915,11 +1908,11 @@ class DatePicker extends LitElement {
 
   renderPrepend() {
     return html` <div
-      class="pl-input-group-prepend${this.validation ? " is-invalid" : ""}"
+      class="pl-input-group-prepend"
     >
       <button
         @click=${this.toggleDropdown}
-        class="calendar-button pl-btn pl-input-group-text"
+        class="calendar-button pl-btn pl-input-group-text${this.validation ? " is-invalid" : ""}"
         aria-label="Toggle Calendar Picker"
         aria-haspopup="dialog"
         aria-expanded=${this.dropdownOpen ? "true" : "false"}
@@ -1993,7 +1986,7 @@ class DatePicker extends LitElement {
                   this.selectedDate
                     ? html`<button
                         @click=${() => this.clearInputField()}
-                        class="clear-input-button"
+                        class="clear-input-button${this.validation ? " is-invalid" : ""}"
                         aria-label="Clear Field"
                         role="button"
                       >
@@ -2067,13 +2060,11 @@ class DatePicker extends LitElement {
           >
             ${this.prepend
               ? html`<div
-                  class="pl-input-group-prepend${this.validation
-                    ? " is-invalid"
-                    : ""}"
+                  class="pl-input-group-prepend"
                 >
                   <button
                     @click=${this.toggleDropdown}
-                    class="calendar-button pl-btn pl-input-group-text"
+                    class="calendar-button pl-btn pl-input-group-text${this.validation ? " is-invalid" : ""}"
                     aria-label="Toggle Calendar Picker"
                     aria-haspopup="dialog"
                     aria-expanded=${this.dropdownOpen ? "true" : "false"}
@@ -2118,13 +2109,11 @@ class DatePicker extends LitElement {
             </div>
             ${this.append
               ? html`<div
-                  class="pl-input-group-append${this.validation
-                    ? " is-invalid"
-                    : ""}"
+                  class="pl-input-group-append"
                 >
                   <button
                     @click=${this.toggleDropdown}
-                    class="calendar-button pl-btn pl-input-group-text"
+                    class="calendar-button pl-btn pl-input-group-text${this.validation ? " is-invalid" : ""}"
                     aria-label="Toggle Calendar Picker"
                     aria-haspopup="dialog"
                     aria-expanded=${this.dropdownOpen ? "true" : "false"}
