@@ -2144,7 +2144,7 @@ class DateRangeTimePicker extends LitElement {
 
   _updateDuration() {
     const durationElement = this.shadowRoot.querySelector(".duration");
-
+  
     if (this.startDate && this.endDate && this.startTime && this.endTime) {
       const startDateTime = new Date(
         `${this.startDate.toISOString().split("T")[0]}T${this.formatTime(
@@ -2158,18 +2158,24 @@ class DateRangeTimePicker extends LitElement {
           this.endAmPm
         )}`
       );
-
-      const diffMs = endDateTime - startDateTime;
-      const diffHours = Math.round(diffMs / (1000 * 60 * 60));
+  
+      // Calculate time difference, including timezone offsets
+      const diffMs = endDateTime.getTime() - startDateTime.getTime();
+      const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
       const diffDays = Math.floor(diffHours / 24);
       const remainingHours = diffHours % 24;
-
+  
+      // Check if a daylight saving time transition has occurred
+      const startOffset = startDateTime.getTimezoneOffset();
+      const endOffset = endDateTime.getTimezoneOffset();
+      const offsetDifference = (startOffset - endOffset) / 60; // Get difference in hours
+  
       let durationText = "";
       if (diffDays > 0) {
         durationText += `${diffDays}d `;
       }
-      durationText += `${remainingHours}h`;
-
+      durationText += `${remainingHours + offsetDifference}h`; // Adjust hours for DST
+  
       if (durationElement) {
         durationElement.textContent = `(${durationText})`;
       }
@@ -2177,6 +2183,7 @@ class DateRangeTimePicker extends LitElement {
       durationElement.textContent = "";
     }
   }
+  
 
   _getAmPm(time) {
     const hours = parseInt(time.split(":")[0], 10);
