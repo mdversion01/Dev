@@ -6,6 +6,7 @@ export const plInputGroupStyles = css`
     display: flex;
     flex-wrap: wrap;
     align-items: stretch;
+    border: none;
     width: 100%;
   }
 

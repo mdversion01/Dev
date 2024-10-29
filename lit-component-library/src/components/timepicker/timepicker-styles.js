@@ -224,6 +224,10 @@ export const timepickerStyles = css`
     color: #ac0000;
   }
 
+  .clear-button:focus-visible {
+    outline: none;
+  }
+
   .toggle-format-btn {
     height: 38px !important;
     color: rgb(108, 117, 125);

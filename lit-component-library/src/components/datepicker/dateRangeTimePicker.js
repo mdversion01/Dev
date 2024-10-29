@@ -31,10 +31,10 @@ class DateRangeTimePicker extends LitElement {
         font-size: 80%;
       }
 
-      .dropdown-wrapper .dropdown {
+      /* .dropdown-wrapper .dropdown {
         z-index: 1;
         width: 558px;
-      }
+      } */
     `,
   ];
 

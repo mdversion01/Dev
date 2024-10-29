@@ -379,8 +379,9 @@
               <td>false</td>
               <td>
                 When added to the Date Range Time Picker component, this will
-                display the stand alone date range and time picker calendars. The
-                default is false. Used only with Date Range Time Picker component.
+                display the stand alone date range and time picker calendars.
+                The default is false. Used only with Date Range Time Picker
+                component.
               </td>
             </tr>
             <tr>
@@ -444,6 +445,318 @@
           </tbody>
         </table>
       </div>
+    </div>
+
+    <!-- Instructions -->
+    <div style="margin-top: 50px">
+      <div class="title">Using Component in other JavaScript Frameworks</div>
+
+      <p>
+        Integrating a Lit Element component with other JavaScript frameworks
+        like Vue, React, and Angular involves creating a wrapper component in
+        each framework to encapsulate and use the Lit Element component. Here
+        are examples for each framework:
+      </p>
+
+      <h5>Dependencies</h5>
+      <p>
+        Here’s a breakdown of the main dependencies you'll likely need for these
+        components:
+      </p>
+
+      <p>1. Lit (Core library for web components):</p>
+
+      <ul>
+        <li>
+          Since the components are written in Lit, you need to install lit in
+          each project (Vue, React, Angular) to support the custom elements.
+        </li>
+      </ul>
+      <pre>
+          <code>
+            // bash
+            npm install lit
+          </code>
+        </pre>
+
+      <p>2. Popper.js (Positioning of dropdowns/popups):</p>
+
+      <ul>
+        <li>
+          Popper.js is used to position elements like date and time dropdowns.
+        </li>
+      </ul>
+      <pre>
+          <code>
+            // bash
+            npm install @popperjs/core
+          </code>
+        </pre>
+
+      <p>Font Awesome (Icons):</p>
+
+      <ul>
+        <li>Font Awesome is used for icons (e.g., calendar icon).</li>
+      </ul>
+      <pre>
+          <code>
+            // bash
+            npm install @fortawesome/fontawesome-free
+          </code>
+        </pre>
+
+      <p>Web Component Support:</p>
+
+      <ul>
+        <li>
+          Ensure your framework supports custom elements. For Vue, React, and
+          Angular, there are specific configurations to allow the use of custom
+          elements like the date picker components.
+        </li>
+      </ul>
+
+      <h5>Vue.js</h5>
+
+      <p>
+        To make sure Vue supports custom elements, update vue.config.js or add
+        the following to the main Vue file:
+      </p>
+      <pre>
+        <code>
+          Vue.config.ignoredElements = [/date-picker/, /date-range-picker/, /date-range-time-picker/];
+        </code>
+      </pre>
+
+      <p>Step 1: Installation</p>
+      <p>Install the required packages as before.</p>
+
+      <p>Step 2: Register Custom Elements</p>
+      <p>In main.js, register the Lit components as custom elements:</p>
+      <pre>
+          <code>
+             // main.js
+             import Vue from 'vue';
+             import vueCustomElement from 'vue-custom-element';
+             import 'path-to-datepicker-package/datepicker';
+             import 'path-to-datepicker-package/daterangepicker';
+             import 'path-to-datepicker-package/dateRangeTimePicker';
+             
+             Vue.use(vueCustomElement);
+             Vue.customElement('date-picker', {});
+             Vue.customElement('date-range-picker', {});
+             Vue.customElement('date-range-time-picker', {});
+          </code>
+        </pre>
+
+      <p>Step 3: Using Components and Displaying Values</p>
+      <p>
+        In your Vue component, create a data property to hold the selected
+        values and display them in the template.
+      </p>
+
+      <pre>
+        <code>
+          &#60;!-- MyComponent.vue --&#62;
+          &#60;template&#62;
+          &#60;div&#62;
+          &#60;!-- Single Date Picker --&#62;
+          &#60;date-picker
+                aria-label="Select Date"
+                @date-updated="handleDateUpdate"
+                &#62;&#60;/date-picker&#62;
+              &#60;p&#62;Selected Date: {{ selectedDate }}&#60;/p&#62;
+          
+              &#60;!-- Date Range Picker --&#62;
+              &#60;date-range-picker
+                aria-label="Select Date Range"
+                @range-updated="handleRangeUpdate"
+              >&#60;/date-range-picker&#62;
+              &#60;p&#62;Selected Date Range: {{ selectedRange }}&#60;/p&#62;
+          
+              &#60;!-- Date Range Time Picker --&#62;
+              &#60;date-range-time-picker
+                aria-label="Select Date and Time Range"
+                @date-time-updated="handleDateTimeUpdate"
+                &#62;&#60;/date-range-time-picker&#62;
+              &#60;p&#62;Selected Date & Time Range: {{ selectedDateTimeRange }}&#60;/p&#62;
+              &#60;/div&#62;
+              &#60;/template&#62;
+          
+              &#60;script&#62;
+          export default {
+            data() {
+              return {
+                selectedDate: '',               // Single date selection
+                selectedRange: '',               // Date range selection
+                selectedDateTimeRange: '',       // Date-time range selection
+              };
+            },
+            methods: {
+              handleDateUpdate(event) {
+                this.selectedDate = event.detail.value;           // Capture as single string
+              },
+              handleRangeUpdate(event) {
+                this.selectedRange = event.detail.value;          // Capture as single string
+              },
+              handleDateTimeUpdate(event) {
+                this.selectedDateTimeRange = event.detail.value;  // Capture as single string
+              },
+            },
+          };
+          &#60;/script&#62;
+        </code>
+      </pre>
+
+    
+
+      <h5>React</h5>
+      <p>Step 1: Installation</p>
+      <p>Install the necessary packages.</p>
+
+      <p>Step 2: Create React Wrappers</p>
+        <p>Define wrappers for each Lit component as before.</p>
+
+          <p>Step 3: Using Components and Displaying Values</p>
+            <p>In the main React component, add state variables to store the selected values and display them.</p>
+      <pre>
+          <code>
+            import React, { useState } from 'react';
+            import { DatePicker, DateRangePicker, DateRangeTimePicker } from './DatePickerWrapper';
+            
+            function App() {
+              const [selectedDate, setSelectedDate] = useState('');               // Single date selection
+              const [selectedRange, setSelectedRange] = useState('');              // Date range selection
+              const [selectedDateTimeRange, setSelectedDateTimeRange] = useState(''); // Date-time range selection
+            
+              const handleDateUpdate = (e) => {
+                setSelectedDate(e.detail.value);           // Capture as single string
+              };
+            
+              const handleRangeUpdate = (e) => {
+                setSelectedRange(e.detail.value);          // Capture as single string
+              };
+            
+              const handleDateTimeUpdate = (e) => {
+                setSelectedDateTimeRange(e.detail.value);  // Capture as single string
+              };
+            
+              return (
+                &#60;div&#62;
+                &#60;DatePicker aria-label="Select Date" onDateUpdated={handleDateUpdate} /&#62;
+                &#60;p&#62;Selected Date: {selectedDate}&#60;/p&#62;
+            
+                &#60;DateRangePicker aria-label="Select Date Range" onRangeUpdated={handleRangeUpdate} /&#62;
+                &#60;p&#62;Selected Date Range: {selectedRange}&#60;/p&#62;
+            
+                &#60;DateRangeTimePicker aria-label="Select Date and Time Range" onDateTimeUpdated={handleDateTimeUpdate} /&#62;
+                &#60;p&#62;Selected Date & Time Range: {selectedDateTimeRange}&#60;/p&#62;
+                &#60;/div&#62;
+              );
+            }
+            
+            export default App;
+            
+          </code>
+        </pre>
+
+      
+
+      <h5>Angular</h5>
+      <p>Step 1: Installation</p>
+      <p>Install the necessary packages.</p>
+
+        <p>Step 2: Register Components in app.module.ts</p>
+          <p>Enable CUSTOM_ELEMENTS_SCHEMA and import the components.</p>
+
+      <pre>
+          <code>
+            import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+            import { BrowserModule } from '@angular/platform-browser';
+            import { AppComponent } from './app.component';
+            
+            import 'path-to-datepicker-package/datepicker';
+            import 'path-to-datepicker-package/daterangepicker';
+            import 'path-to-datepicker-package/daterangetimepicker';
+            
+            @NgModule({
+              declarations: [AppComponent],
+              imports: [BrowserModule],
+              schemas: [CUSTOM_ELEMENTS_SCHEMA],
+              bootstrap: [AppComponent]
+            })
+            export class AppModule {}
+          </code>
+        </pre>
+
+        <p>Step 3: Using Components and Displaying Values in Angular</p>
+        <p>In app.component.html, add the custom elements and display selected values.</p>
+
+      <pre>
+        <code>
+          // html
+          &#60;div&#62;
+          &#60;!-- Single Date Picker --&#62;
+          &#60;date-picker aria-label="Select Date" (date-updated)="onDateUpdate($event)">&#60;/date-picker&#62;
+          &#60;p&#62;Selected Date: {{ selectedDate }}&#60;/p&#62;
+          
+          &#60;!-- Date Range Picker --&#62;
+          &#60;date-range-picker aria-label="Select Date Range" (range-updated)="onRangeUpdate($event)"&#62;&#60;/date-range-picker&#62;
+          &#60;p&#62;Selected Date Range: {{ selectedRange }}&#60;/p&#62;
+          
+          &#60;!-- Date Range Time Picker --&#62;
+          &#60;date-range-time-picker aria-label="Select Date and Time Range" (date-time-updated)="onDateTimeUpdate($event)"&#62;&#60;/date-range-time-picker&#62;
+          &#60;p&#62;Selected Date & Time Range: {{ selectedDateTimeRange }}&#60;/p&#62;
+          &#60;/div&#62;
+          
+        </code>
+      </pre>
+
+      <p>In app.component.ts, store each value as a single string.</p>
+      
+
+      <pre>
+          <code>
+            import { Component } from '@angular/core';
+
+            @Component({
+              selector: 'app-root',
+              templateUrl: './app.component.html',
+              styleUrls: ['./app.component.css']
+            })
+            export class AppComponent {
+              selectedDate = '';               // Single date selection
+              selectedRange = '';              // Date range selection
+              selectedDateTimeRange = '';      // Date-time range selection
+
+              onDateUpdate(event: any) {
+                this.selectedDate = event.detail.value;           // Capture as single string
+              }
+
+              onRangeUpdate(event: any) {
+                this.selectedRange = event.detail.value;          // Capture as single string
+              }
+
+              onDateTimeUpdate(event: any) {
+                this.selectedDateTimeRange = event.detail.value;  // Capture as single string
+              }
+            }
+          </code>
+        </pre>
+
+      
+      <h3>Summary</h3>
+      
+      <p>
+        These examples assume that you've configured your framework project to
+        work with web components and that you've imported the Lit Element
+        component correctly. Adjust import paths accordingly.
+      </p>
+
+      <p>
+        The interoperability is possible because Web Components, once defined
+        and registered as custom elements, act like native HTML elements that
+        these frameworks can understand and interact with.
+      </p>
     </div>
 
     <script type="module" src="./datepicker.js"></script>
